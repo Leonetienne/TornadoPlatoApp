@@ -1,0 +1,156 @@
+#include "Vector4.h"
+#include <iostream>
+
+// Good, optimized chad version for doubles
+double Vector4<double>::SqrMagnitude() const
+{
+	return (x * x) +
+		   (y * y) +
+		   (z * z) +
+		   (w * w);
+}
+
+// Slow, lame version for intcels
+double Vector4<int>::SqrMagnitude() const
+{
+	return ((double)x * (double)x) +
+		   ((double)y * (double)y) +
+		   ((double)z * (double)z) +
+		   ((double)w * (double)w);
+}
+
+template<typename T>
+double Vector4<T>::Magnitude() const
+{
+	return sqrt(SqrMagnitude());
+}
+
+
+
+// Method to normalize a Vector43d
+void Vector4<double>::Normalize()
+{
+	double length = Magnitude();
+
+	// Prevent division by 0
+	if (length == 0)
+	{
+		x = 0;
+		y = 0;
+		z = 0;
+		w = 0;
+	}
+	else
+	{
+		x /= length;
+		y /= length;
+		z /= length;
+		w /= length;
+	}
+
+	return;
+}
+
+// You can't normalize an int vector, ffs!
+// But we need an implementation for T=int
+void Vector4<int>::Normalize()
+{
+	std::cerr << "Stop normalizing int-vectors!!" << std::endl;
+	x = 0;
+	y = 0;
+	z = 0;
+	w = 0;
+
+	return;
+}
+
+
+
+template<typename T>
+Vector4<T> Vector4<T>::operator+(const Vector4<T> other) const
+{
+	return Vector4<T>(
+		x + other.x,
+		y + other.y,
+		z + other.z,
+		w + other.w
+	);
+}
+
+template<typename T>
+void  Vector4<T>::operator+=(const Vector4<T> other)
+{
+	x += other.x;
+	y += other.y;
+	z += other.z;
+	w += other.w;
+	return;
+}
+
+template<typename T>
+Vector4<T> Vector4<T>::operator-(const Vector4<T> other) const
+{
+	return Vector4<T>(
+		x - other.x,
+		y - other.y,
+		z - other.z,
+		w - other.w
+	);
+}
+
+template<typename T>
+void Vector4<T>::operator-=(const Vector4<T> other)
+{
+	x -= other.x;
+	y -= other.y;
+	z -= other.z;
+	w -= other.w;
+	return;
+}
+
+template<typename T>
+Vector4<T> Vector4<T>::operator*(const T scale) const
+{
+	return Vector4<T>(
+		x * scale,
+		y * scale,
+		z * scale,
+		w * scale
+	);
+}
+
+template<typename T>
+void Vector4<T>::operator*=(const T scale)
+{
+	x *= scale;
+	y *= scale;
+	z *= scale;
+	w *= scale;
+
+	return;
+}
+
+template<typename T>
+Vector4<T> Vector4<T>::operator/(const T scale) const
+{
+	return Vector4<T>(
+		x / scale,
+		y / scale,
+		z / scale,
+		w / scale
+	);
+}
+
+template<typename T>
+void Vector4<T>::operator/=(const T scale)
+{
+	x /= scale;
+	y /= scale;
+	z /= scale;
+	w /= scale;
+
+	return;
+}
+
+template class Vector4<int>;
+template class Vector4<double>;

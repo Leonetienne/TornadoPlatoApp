@@ -1,5 +1,8 @@
 #pragma once
 #include <cstddef>
+#include "../Tornado/Vector2.h"
+#include "../Tornado/Vector3.h"
+#include "../Tornado/Vector4.h"
 
 class AppImplementation
 {
