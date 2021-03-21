@@ -75,6 +75,24 @@ void Vector2<double>::Normalize()
 	return;
 }
 
+template<typename T>
+Vector2<double> Vector2<T>::Lerp(const Vector2<T>& other, double t)
+{
+	return Vector2::Lerp(*this, other, t);
+}
+
+template<typename T>
+Vector2<double> Vector2<T>::Lerp(const Vector2<T>& a, const Vector2<T>& b, double t)
+{
+	double t1 = 1.0f - t;
+
+	return Vector2<double>(
+		t1 * a.x + t * b.x,
+		t1 * a.y + t * b.y
+	);
+}
+
+
 // You can't normalize an int vector, ffs!
 // But we need an implementation for T=int
 void Vector2<int>::Normalize()

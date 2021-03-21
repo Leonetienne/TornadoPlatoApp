@@ -14,6 +14,8 @@ public:
 	double SqrMagnitude() const;
 	double Magnitude() const;
 	void Normalize();
+	Vector4<double> Lerp(const Vector4<T>& other, double t);
+	static Vector4<double> Lerp(const Vector4<T>& a, const Vector4<T>& b, double t);
 
 	Vector4<T> operator+(const Vector4<T> other) const;
 	void operator+=(const Vector4<T> other);
