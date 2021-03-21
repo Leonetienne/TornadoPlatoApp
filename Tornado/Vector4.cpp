@@ -64,6 +64,25 @@ void Vector4<int>::Normalize()
 	return;
 }
 
+template<typename T>
+Vector4<double> Vector4<T>::Lerp(const Vector4<T>& other, double t)
+{
+	return Vector4::Lerp(*this, other, t);
+}
+
+template<typename T>
+Vector4<double> Vector4<T>::Lerp(const Vector4<T>& a, const Vector4<T>& b, double t)
+{
+	double t1 = 1.0f - t;
+
+	return Vector4<double>(
+		t1 * a.x + t * b.x,
+		t1 * a.y + t * b.y,
+		t1 * a.z + t * b.z,
+		t1 * a.w + t * b.w
+	);
+}
+
 
 
 template<typename T>

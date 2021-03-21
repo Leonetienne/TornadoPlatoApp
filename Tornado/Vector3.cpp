@@ -120,6 +120,7 @@ Vector3<double> Vector3<T>::Lerp(const Vector3<T>& a, const Vector3<T>& b, doubl
 	);
 }
 
+
 template<typename T>
 Vector3<T> Vector3<T>::operator+(const Vector3<T>& other) const
 {
