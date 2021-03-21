@@ -11,6 +11,9 @@
 
 #define MAX_LOADSTRING 100
 
+#define RENDER_WIDTH  800
+#define RENDER_HEIGHT 600
+
 HINSTANCE hInst;                                // Our instance
 WCHAR szTitle[MAX_LOADSTRING];                  // Title of the main window
 WCHAR szWindowClass[MAX_LOADSTRING];            // Class name of the main window
@@ -30,7 +33,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // Custom code here
-    appImplementation = new AppImplementation(800, 600);
+    appImplementation = new AppImplementation(RENDER_WIDTH, RENDER_HEIGHT);
 
     // Load strings from resources
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -91,8 +94,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
        CW_USEDEFAULT,
        0,
-       800,
-       600,
+       RENDER_WIDTH,
+       RENDER_HEIGHT,
        nullptr,
        nullptr,
        hInstance,
@@ -132,23 +135,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             BITMAPINFO bmi;
             memset(&bmi, 0, sizeof(bmi));
             bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-            bmi.bmiHeader.biWidth = 800;
+            bmi.bmiHeader.biWidth = RENDER_WIDTH;
             bmi.bmiHeader.biHeight = 600;
             bmi.bmiHeader.biPlanes = 1;
-            bmi.bmiHeader.biBitCount = 32;
+            bmi.bmiHeader.biBitCount = 24;
             bmi.bmiHeader.biCompression = BI_RGB;
 
             unsigned char* buffer;
             HBITMAP hDib = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, (void**)&buffer, 0, 0);
             if (buffer == NULL)
                 PostQuitMessage(-1);
+            if (hDib == NULL)
+                PostQuitMessage(-2);
+            else
+            {
 
-            HDC hDibDC = CreateCompatibleDC(hdc);
-            HGDIOBJ hOldObj = SelectObject(hDibDC, hDib);
+                HDC hDibDC = CreateCompatibleDC(hdc);
+                HGDIOBJ hOldObj = SelectObject(hDibDC, hDib);
 
-            memcpy(buffer, appImplementation->GetBGRUPixelBuffer(), 800 * 600 * 4);
+                #pragma warning( push )
+                #pragma warning( disable : 6386)
+                memcpy(buffer, appImplementation->GetBGRUPixelBuffer(), RENDER_WIDTH * RENDER_HEIGHT * 3);
+                #pragma warning( pop ) 
 
-            BitBlt(hdc, 0, 0, 800, 600, hDibDC, 0, 0, SRCCOPY);
+                BitBlt(hdc, 0, 0, RENDER_WIDTH, RENDER_HEIGHT, hDibDC, 0, 0, SRCCOPY);
+
+                DeleteObject(SelectObject(hDibDC, hOldObj));
+            }
+            
             EndPaint(hWnd, &ps);
         }
         break;

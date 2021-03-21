@@ -3,24 +3,16 @@
 
 AppImplementation::AppImplementation(std::size_t width, std::size_t height)
 {
-	bgruPixelBuffer = new unsigned char[width * height * 4];
+	bgrPixelBuffer = new unsigned char[width * height * 3];
 
-	Vector2d vd2;
-	Vector3d vd3;
-	Vector4d vd4;
-
-	Vector2i vi2;
-	Vector3i vi3;
-	Vector4i vi4;
-	
 	return;
 }
 
 AppImplementation::~AppImplementation()
 {
-	delete[] bgruPixelBuffer;
+	delete[] bgrPixelBuffer;
 
-	bgruPixelBuffer = nullptr;
+	bgrPixelBuffer = nullptr;
 }
 
 void AppImplementation::Tick()
@@ -30,9 +22,9 @@ void AppImplementation::Tick()
 	for (std::size_t x = 0; x < 800; x++)
 		for (std::size_t y = 0; y < 600; y++)
 		{
-			bgruPixelBuffer[(y * 4 * 800 + x * 4) + 2] = (unsigned char)(tan((x + t) / 40.0) * tan((y + t) / 40.0) * 255); // r
-			bgruPixelBuffer[(y * 4 * 800 + x * 4) + 1] = (unsigned char)(tan((x + t) / 40.0) * tan((y + t) / 40.0) * 255); // g
-			bgruPixelBuffer[(y * 4 * 800 + x * 4) + 0] = (unsigned char)(tan((x + t) / 40.0) * tan((y + t) / 40.0) * 255); // b
+			bgrPixelBuffer[3 * (y * 800 + x) + 2] = (unsigned char)(tan((x + t) / 40.0) * tan((y + t) / 40.0) * 255); // r
+			bgrPixelBuffer[3 * (y * 800 + x) + 1] = (unsigned char)(tan((x + t) / 40.0) * tan((y + t) / 40.0) * 255); // g
+			bgrPixelBuffer[3 * (y * 800 + x) + 0] = (unsigned char)(tan((x + t) / 40.0) * tan((y + t) / 40.0) * 255); // b
 		}
 
 	return;
@@ -40,5 +32,5 @@ void AppImplementation::Tick()
 
 unsigned const char* AppImplementation::GetBGRUPixelBuffer()
 {
-	return bgruPixelBuffer;
+	return bgrPixelBuffer;
 }

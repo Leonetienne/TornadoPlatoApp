@@ -14,5 +14,5 @@ public:
 	unsigned const char* GetBGRUPixelBuffer();
 
 private:
-	unsigned char* bgruPixelBuffer; // BitBlt uses bgru. u is useless, because it's unused.
+	unsigned char* bgrPixelBuffer; // BitBlt uses bgr.
 };
