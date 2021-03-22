@@ -36,9 +36,8 @@ public:
 
 	std::array<double, 4>& operator[](std::size_t x);
 	const std::array<double, 4>& operator[](std::size_t x) const;
-	void operator=(const Matrix4x4& other);
 
-	Vector3d GetTranslationComponent();
+	const Vector3d GetTranslationComponent();
 
 	// Shorthands
 	double& a = v[0][0];
