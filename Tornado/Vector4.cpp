@@ -218,6 +218,36 @@ bool Vector4<T>::operator==(const Vector4<T>& other) const
 }
 
 template<typename T>
+Vector4<T> Vector4<T>::operator*(const Matrix4x4 mat) const
+{
+	Vector4<T> newVec;
+	
+	// Should this still be reversed...? like, instead of mat[x][y], use mat[y][m]
+	// idk right now. check that if something doesn't work
+	newVec.x = (mat[0][0] * x) + (mat[0][1] * y) + (mat[0][2] * z) + (mat[0][3] * w);
+	newVec.y = (mat[1][0] * x) + (mat[1][1] * y) + (mat[1][2] * z) + (mat[1][3] * w);
+	newVec.z = (mat[2][0] * x) + (mat[2][1] * y) + (mat[2][2] * z) + (mat[2][3] * w);
+	newVec.w = (mat[3][0] * x) + (mat[3][1] * y) + (mat[3][2] * z) + (mat[3][3] * w);
+
+	return newVec;
+}
+
+template<typename T>
+void Vector4<T>::operator*=(const Matrix4x4 mat)
+{
+	Vector4<T> buffer = *this;
+
+	// Should this still be reversed...? like, instead of mat[x][y], use mat[y][m]
+	// idk right now. check that if something doesn't work
+	x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z) + (mat[0][3] * buffer.w);
+	y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z) + (mat[1][3] * buffer.w);
+	z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z) + (mat[2][3] * buffer.w);
+	w = (mat[3][0] * buffer.x) + (mat[3][1] * buffer.y) + (mat[3][2] * buffer.z) + (mat[3][3] * buffer.w);
+
+	return;
+}
+
+template<typename T>
 bool Vector4<T>::operator!=(const Vector4<T>& other) const
 {
 	return !operator==(other);
