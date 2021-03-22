@@ -4,8 +4,8 @@
 Matrix4x4::Matrix4x4()
 {
 	// Zero it all
-	for (std::size_t i = 0; i < 3; i++)
-		for (std::size_t j = 0; j < 3; j++)
+	for (std::size_t i = 0; i < 4; i++)
+		for (std::size_t j = 0; j < 4; j++)
 			v[i][j] = 0;
 
 	return;
@@ -14,8 +14,8 @@ Matrix4x4::Matrix4x4()
 Matrix4x4::Matrix4x4(const Matrix4x4& other)
 {
 	// Clone
-	for (std::size_t i = 0; i < 3; i++)
-		for (std::size_t j = 0; j < 3; j++)
+	for (std::size_t i = 0; i < 4; i++)
+		for (std::size_t j = 0; j < 4; j++)
 			v[i][j] = other[i][j];
 
 	return;
@@ -81,17 +81,7 @@ const std::array<double, 4>& Matrix4x4::operator[](std::size_t x) const
 	return v[x];
 }
 
-void Matrix4x4::operator=(const Matrix4x4& other)
-{
-	// Clone
-	for (std::size_t i = 0; i < 3; i++)
-		for (std::size_t j = 0; j < 3; j++)
-			v[i][j] = other[i][j];
-
-	return;
-}
-
-Vector3d Matrix4x4::GetTranslationComponent()
+const Vector3d Matrix4x4::GetTranslationComponent()
 {
 	return Vector3d(d, h, l);
 }

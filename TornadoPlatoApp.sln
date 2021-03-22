@@ -17,6 +17,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinWindowDisplay", "WinWind
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tornado", "Tornado\Tornado.vcxproj", "{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_Test_Tornado", "_Test_Tornado\_Test_Tornado.vcxproj", "{B7CD16F3-D823-4E42-B92A-C4248F6153A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2} = {EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -57,6 +62,14 @@ Global
 		{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}.Release|x64.Build.0 = Release|x64
 		{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}.Release|x86.ActiveCfg = Release|Win32
 		{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}.Release|x86.Build.0 = Release|Win32
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Debug|x64.ActiveCfg = Debug|x64
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Debug|x64.Build.0 = Debug|x64
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Debug|x86.ActiveCfg = Debug|Win32
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Debug|x86.Build.0 = Debug|Win32
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Release|x64.ActiveCfg = Release|x64
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Release|x64.Build.0 = Release|x64
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Release|x86.ActiveCfg = Release|Win32
+		{B7CD16F3-D823-4E42-B92A-C4248F6153A6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
