@@ -64,6 +64,44 @@ void Vector4<int>::Normalize()
 	return;
 }
 
+
+
+template<typename T>
+T& Vector4<T>::operator[](std::size_t idx)
+{
+	switch (idx)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	case 3:
+		return w;
+	default:
+		throw std::out_of_range("Array descriptor on Vector4<T> out of range!");
+	}
+}
+
+template<typename T>
+const T& Vector4<T>::operator[](std::size_t idx) const
+{
+	switch (idx)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	case 3:
+		return w;
+	default:
+		throw std::out_of_range("Array descriptor on Vector4<T> out of range!");
+	}
+}
+
 template<typename T>
 Vector4<double> Vector4<T>::Lerp(const Vector4<T>& other, double t)
 {

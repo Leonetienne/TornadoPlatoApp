@@ -20,6 +20,9 @@ public:
 	Vector3<double> Lerp(const Vector3<T>& other, double t);
 	static Vector3<double> Lerp(const Vector3<T>& a, const Vector3<T>& b, double t);
 
+	T& operator[](std::size_t idx);
+	const T& operator[](std::size_t idx) const;
+
 	Vector3<T> operator+(const Vector3<T>& other) const;
 	void operator+=(const Vector3<T>& other);
 	Vector3<T> operator-(const Vector3<T>& other) const;
