@@ -4,7 +4,7 @@
 #include "Constants.h"
 
 /*
-* myMatrix[x][y] = 3
+* myMatrix[y][x] = 3
 *
 *  X ==============>
 * Y

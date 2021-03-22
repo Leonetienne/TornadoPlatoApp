@@ -235,14 +235,14 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 	Vector3<double> newVec;
 
 	// Rotation, Scaling
-	newVec.x = (mat.a * x) + (mat.b * y) + (mat.c * z);
-	newVec.y = (mat.e * x) + (mat.f * y) + (mat.g * z);
-	newVec.z = (mat.i * x) + (mat.j * y) + (mat.k * z);
+	newVec.x = (mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z);
+	newVec.y = (mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z);
+	newVec.z = (mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z);
 
 	// Translation
-	newVec.x += mat.d;
-	newVec.y += mat.h;
-	newVec.z += mat.l;
+	newVec.x += mat[3][0];
+	newVec.y += mat[3][1];
+	newVec.z += mat[3][2];
 
 	return newVec;
 }
@@ -254,14 +254,14 @@ Vector3<int> Vector3<int>::operator*(const Matrix4x4& mat) const
 	Vector3<int> newVec;
 
 	// Rotation, Scaling
-	newVec.x = (int)((mat.a * x) + (mat.b * y) + (mat.c * z));
-	newVec.y = (int)((mat.e * x) + (mat.f * y) + (mat.g * z));
-	newVec.z = (int)((mat.i * x) + (mat.j * y) + (mat.k * z));
+	newVec.x = (int)((mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z));
+	newVec.y = (int)((mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z));
+	newVec.z = (int)((mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z));
 
 	// Translation
-	newVec.x += (int)mat.d;
-	newVec.y += (int)mat.h;
-	newVec.z += (int)mat.l;
+	newVec.x += (int)mat[3][0];
+	newVec.y += (int)mat[3][1];
+	newVec.z += (int)mat[3][2];
 
 	return newVec;
 }
@@ -272,14 +272,17 @@ void Vector3<double>::operator*=(const Matrix4x4& mat)
 {
 	Vector3<double> buffer = *this;
 
-	x = (mat.a * buffer.x) + (mat.b * buffer.y) + (mat.c * buffer.z);
-	y = (mat.e * buffer.x) + (mat.f * buffer.y) + (mat.g * buffer.z);
-	z = (mat.i * buffer.x) + (mat.j * buffer.y) + (mat.k * buffer.z);
+	//x = (mat[0][0] * buffer.x) + (mat[1][0] * buffer.y) + (mat[2][0] * buffer.z);
+	//y = (mat[0][1] * buffer.x) + (mat[1][1] * buffer.y) + (mat[2][1] * buffer.z);
+	//z = (mat[0][2] * buffer.x) + (mat[1][2] * buffer.y) + (mat[2][2] * buffer.z);
+	x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z);
+	y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z);
+	z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z);
 
 	// Translation
-	x += mat.d;
-	y += mat.h;
-	z += mat.l;
+	x += mat[0][3];
+	y += mat[1][3];
+	z += mat[2][3];
 
 	return;
 }
@@ -292,14 +295,14 @@ void Vector3<int>::operator*=(const Matrix4x4& mat)
 	buffer.x = x;
 	buffer.y = y;
 
-	x = (int)((mat.a * buffer.x) + (mat.b * buffer.y) + (mat.c * buffer.z));
-	y = (int)((mat.e * buffer.x) + (mat.f * buffer.y) + (mat.g * buffer.z));
-	z = (int)((mat.i * buffer.x) + (mat.j * buffer.y) + (mat.k * buffer.z));
+	x = (int)((mat[0][0] * buffer.x) + (mat[1][0] * buffer.y) + (mat[2][0] * buffer.z));
+	y = (int)((mat[0][1] * buffer.x) + (mat[1][1] * buffer.y) + (mat[2][1] * buffer.z));
+	z = (int)((mat[0][2] * buffer.x) + (mat[1][2] * buffer.y) + (mat[2][2] * buffer.z));
 
 	// Translation
-	x += (int)mat.d;
-	y += (int)mat.h;
-	z += (int)mat.l;
+	x += (int)mat[3][0];
+	y += (int)mat[3][1];
+	z += (int)mat[3][2];
 
 	return;
 }

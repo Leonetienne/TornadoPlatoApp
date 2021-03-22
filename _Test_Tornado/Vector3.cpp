@@ -757,12 +757,14 @@ namespace Vectors
 
 			// Create 90deg yaw rotation matrix
 			Matrix4x4 mat;
-			mat[2][0] = 1;
+			//mat[2][0] = 1;
+			//mat[1][1] = 1;
+			//mat[0][2] = -1;
+			mat[0][2] = 1;
 			mat[1][1] = 1;
-			mat[0][2] = -1;
+			mat[2][0] = -1;
 
 			// Rotate vector
-
 			vec *= mat;
 
 			// Did we succeed?
@@ -798,7 +800,7 @@ namespace Vectors
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg yaw rotation matrix
+			// Create 90deg pitch rotation matrix
 			Matrix4x4 mat;
 			//mat[1][0] = -1;
 			//mat[0][1] = 1;
@@ -808,13 +810,12 @@ namespace Vectors
 			mat[2][2] = 1;
 
 			// Rotate vector
-
 			vec *= mat;
 
 			// Did we succeed?
 			std::wstringstream wss;
 			wss << L"Rot #1 " << vec;
-			Assert::IsTrue(Vector3d(32, -69, 16) == vec, wss.str().c_str());
+			Assert::IsTrue(Vector3d(-32, 69, 16) == vec, wss.str().c_str());
 
 			// Rotate again!
 			vec *= mat;
@@ -826,7 +827,7 @@ namespace Vectors
 			vec *= mat;
 			wss.str(L"");
 			wss << L"Rot #3 " << vec;
-			Assert::IsTrue(Vector3d(-32, 69, 16) == vec, wss.str().c_str());
+			Assert::IsTrue(Vector3d(32, -69, 16) == vec, wss.str().c_str());
 
 			// Rotate by 90 deg a last time, having completed a 360° rotation.
 			vec *= mat;
@@ -844,7 +845,7 @@ namespace Vectors
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg yaw rotation matrix
+			// Create 90deg roll rotation matrix
 			Matrix4x4 mat;
 			//mat[0][0] = 1;
 			//mat[2][1] = -1;
@@ -854,13 +855,12 @@ namespace Vectors
 			mat[2][1] = 1;
 
 			// Rotate vector
-
 			vec *= mat;
 
 			// Did we succeed?
 			std::wstringstream wss;
 			wss << L"Rot #1 " << vec;
-			Assert::IsTrue(Vector3d(69, 16, -32) == vec, wss.str().c_str());
+			Assert::IsTrue(Vector3d(69, -16, 32) == vec, wss.str().c_str());
 
 			// Rotate again!
 			vec *= mat;
@@ -872,13 +872,85 @@ namespace Vectors
 			vec *= mat;
 			wss.str(L"");
 			wss << L"Rot #3 " << vec;
-			Assert::IsTrue(Vector3d(69, -16, 32) == vec, wss.str().c_str());
+			Assert::IsTrue(Vector3d(69, 16, -32) == vec, wss.str().c_str());
 
 			// Rotate by 90 deg a last time, having completed a 360° rotation.
 			vec *= mat;
 			wss.str(L"");
 			wss << L"Rot #4 " << vec;
 			Assert::IsTrue(originalVec == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if rotating a vector (1,1,1) by (45,45,45) eulers works
+		TEST_METHOD(MatrixMult_Rotate_Unit_Combined)
+		{
+			// Create vector
+			Vector3d vec(1, 1, 1);
+			Vector3d originalVec = vec;
+
+			// Create rotation matrix
+			Matrix4x4 mat;
+			mat[0][0] = 0.5;
+			mat[0][1] = -0.1465;
+			mat[0][2] = 0.8535;
+
+			mat[1][0] = 0.5;
+			mat[1][1] = 0.8535;
+			mat[1][2] = -0.1465;
+
+			mat[2][0] = -0.7072;
+			mat[2][1] = 0.5;
+			mat[2][2] = 0.5;
+
+			// Rotate vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << L"Rot #1 " << vec;
+			Assert::IsTrue(
+				Similar(vec.x, 1.207, 0.001) &&
+				Similar(vec.y, 1.207, 0.001) &&
+				Similar(vec.z, 0.2928, 0.001),
+				wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if rotating a vector (69,32,16) by (45,45,45) eulers works
+		TEST_METHOD(MatrixMult_Rotate_HalfUnit_Combined)
+		{
+			// Create vector
+			Vector3d vec(69, 32, 16);
+			Vector3d originalVec = vec;
+
+			// Create rotation matrix
+			Matrix4x4 mat;
+			mat[0][0] = 0.5;
+			mat[0][1] = -0.1465;
+			mat[0][2] = 0.8535;
+
+			mat[1][0] = 0.5;
+			mat[1][1] = 0.8535;
+			mat[1][2] = -0.1465;
+
+			mat[2][0] = -0.7072;
+			mat[2][1] = 0.5;
+			mat[2][2] = 0.5;
+
+			// Rotate vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << L"Rot #1 " << vec;
+			Assert::IsTrue(
+				Similar(vec.x, 43.468, 0.001) &&
+				Similar(vec.y, 59.468, 0.001) &&
+				Similar(vec.z, -24.7968, 0.001),
+				wss.str().c_str());
 
 			return;
 		}
