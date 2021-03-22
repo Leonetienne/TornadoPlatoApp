@@ -38,6 +38,10 @@ public:
 	{
 		return os << "[x: " << v.x << "  y: " << v.y << "  z: " << v.z << "]";
 	}
+	friend std::wostream& operator << (std::wostream& os, const Vector3<T>& v)
+	{
+		return os << L"[x: " << v.x << L"  y: " << v.y << L"  z: " << v.z << L"]";
+	}
 
 	T x;
 	T y;
