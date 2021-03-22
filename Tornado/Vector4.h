@@ -29,6 +29,9 @@ public:
 	Vector4<T> operator/(const T scale) const;
 	void operator/=(const T scale);
 
+	bool operator==(const Vector4<T>& other) const;
+	bool operator!=(const Vector4<T>& other) const;
+
 	friend std::ostream& operator << (std::ostream& os, const Vector4<T>& v)
 	{
 		return os << "[x: " << v.x << "  y: " << v.y << "  z: " << v.z << "  w: " << v.w << "]";

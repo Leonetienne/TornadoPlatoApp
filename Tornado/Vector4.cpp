@@ -209,5 +209,21 @@ void Vector4<T>::operator/=(const T scale)
 	return;
 }
 
+template<typename T>
+bool Vector4<T>::operator==(const Vector4<T>& other) const
+{
+	return
+		(x == other.x) &&
+		(y == other.y) &&
+		(z == other.z) &&
+		(w == other.w);
+}
+
+template<typename T>
+bool Vector4<T>::operator!=(const Vector4<T>& other) const
+{
+	return !operator==(other);
+}
+
 template class Vector4<int>;
 template class Vector4<double>;

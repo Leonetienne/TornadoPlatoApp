@@ -34,6 +34,9 @@ public:
 	Vector3<T> operator*(const Matrix4x4& mat) const;
 	void operator*=(const Matrix4x4& mat);
 
+	bool operator==(const Vector3<T>& other) const;
+	bool operator!=(const Vector3<T>& other) const;
+
 	friend std::ostream& operator << (std::ostream& os, const Vector3<T>& v)
 	{
 		return os << "[x: " << v.x << "  y: " << v.y << "  z: " << v.z << "]";
