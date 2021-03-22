@@ -11,7 +11,7 @@ public:
 	~AppImplementation();
 
 	void Tick();
-	unsigned const char* GetBGRUPixelBuffer();
+	unsigned const char* GetBGRPixelBuffer();
 
 private:
 	unsigned char* bgrPixelBuffer; // BitBlt uses bgr.
