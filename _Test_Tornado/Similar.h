@@ -1,8 +1,8 @@
 #pragma once
 #include <math.h>
 
-// Compares double values with an accuracy of 0.00001
-inline bool Similar(double a, double b)
+// Compares double values with a given accuracy
+inline bool Similar(double a, double b, double epsilon = 0.00001)
 {
-	return fabs(a - b) < 0.00001;
+	return fabs(a - b) < epsilon;
 }
