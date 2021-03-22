@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <ostream>
 #include <sstream>
+#include "Matrix4x4.h"
 
 template <typename T>
 class Vector4
@@ -28,6 +29,8 @@ public:
 	void operator*=(const T scale);
 	Vector4<T> operator/(const T scale) const;
 	void operator/=(const T scale);
+	Vector4<T> operator*(const Matrix4x4 mat) const;
+	void operator*=(const Matrix4x4 mat);
 
 	bool operator==(const Vector4<T>& other) const;
 	bool operator!=(const Vector4<T>& other) const;

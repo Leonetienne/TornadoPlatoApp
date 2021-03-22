@@ -295,14 +295,14 @@ void Vector3<int>::operator*=(const Matrix4x4& mat)
 	buffer.x = x;
 	buffer.y = y;
 
-	x = (int)((mat[0][0] * buffer.x) + (mat[1][0] * buffer.y) + (mat[2][0] * buffer.z));
-	y = (int)((mat[0][1] * buffer.x) + (mat[1][1] * buffer.y) + (mat[2][1] * buffer.z));
-	z = (int)((mat[0][2] * buffer.x) + (mat[1][2] * buffer.y) + (mat[2][2] * buffer.z));
+	x = (int)((mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z));
+	y = (int)((mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z));
+	z = (int)((mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z));
 
 	// Translation
-	x += (int)mat[3][0];
-	y += (int)mat[3][1];
-	z += (int)mat[3][2];
+	x += (int)mat[0][3];
+	y += (int)mat[1][3];
+	z += (int)mat[2][3];
 
 	return;
 }
