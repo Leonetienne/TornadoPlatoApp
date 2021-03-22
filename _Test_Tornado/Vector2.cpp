@@ -446,7 +446,7 @@ namespace Vectors
 
 				Vector2d vec(x, y);
 
-				Vector2d vec_n(vec.x, vec.y);
+				Vector2d vec_n(x, y);
 				vec_n.Normalize();
 
 				std::wstringstream wss;
