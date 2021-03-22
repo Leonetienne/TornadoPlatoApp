@@ -117,7 +117,7 @@ namespace TornadoTest
 			// Fill with values
 			for (std::size_t i = 0; i < 4; i++)
 				for (std::size_t j = 0; j < 4; j++)
-					mat1[i][j] = i * 4 + j;
+					mat1[i][j] = i * 4.0 + j;
 
 			// Copy
 			Matrix4x4 mat2(mat1);
@@ -138,7 +138,7 @@ namespace TornadoTest
 			// Fill with values
 			for (std::size_t i = 0; i < 4; i++)
 				for (std::size_t j = 0; j < 4; j++)
-					mat1[i][j] = i * 4 + j;
+					mat1[i][j] = i * 4.0 + j;
 
 			// Copy
 			Matrix4x4 mat2 = mat1;
@@ -159,7 +159,7 @@ namespace TornadoTest
 			// Fill with values
 			for (std::size_t i = 0; i < 4; i++)
 				for (std::size_t j = 0; j < 4; j++)
-					mat1[i][j] = i * 4 + j;
+					mat1[i][j] = i * 4.0 + j;
 
 			// Copy
 			Matrix4x4 mat2(mat1);
@@ -190,7 +190,7 @@ namespace TornadoTest
 			// Fill with values
 			for (std::size_t i = 0; i < 4; i++)
 				for (std::size_t j = 0; j < 4; j++)
-					mat1[i][j] = i * 4 + j;
+					mat1[i][j] = i * 4.0 + j;
 
 			// Copy
 			Matrix4x4 mat2 = mat1;
