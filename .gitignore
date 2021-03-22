@@ -16,6 +16,9 @@
 # Mono auto generated files
 mono_crash.*
 
+# Visual Paradigm Shitfiles
+*tornado.vpp.bak*
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
