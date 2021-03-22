@@ -30,7 +30,7 @@ void AppImplementation::Tick()
 	return;
 }
 
-unsigned const char* AppImplementation::GetBGRUPixelBuffer()
+unsigned const char* AppImplementation::GetBGRPixelBuffer()
 {
 	return bgrPixelBuffer;
 }

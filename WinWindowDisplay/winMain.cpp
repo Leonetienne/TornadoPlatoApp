@@ -155,7 +155,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
                 #pragma warning( push )
                 #pragma warning( disable : 6386)
-                memcpy(buffer, appImplementation->GetBGRUPixelBuffer(), RENDER_WIDTH * RENDER_HEIGHT * 3);
+                memcpy(buffer, appImplementation->GetBGRPixelBuffer(), RENDER_WIDTH * RENDER_HEIGHT * 3);
                 #pragma warning( pop ) 
 
                 BitBlt(hdc, 0, 0, RENDER_WIDTH, RENDER_HEIGHT, hDibDC, 0, 0, SRCCOPY);
