@@ -1,5 +1,6 @@
 #include "Vector2.h"
 #include <iostream>
+#include <exception>
 
 // Good, optimized chad version for doubles
 double Vector2<double>::DotProduct(const Vector2<double>& other)
@@ -75,6 +76,19 @@ void Vector2<double>::Normalize()
 	return;
 }
 
+// You can't normalize an int vector, ffs!
+// But we need an implementation for T=int
+void Vector2<int>::Normalize()
+{
+	std::cerr << "Stop normalizing int-vectors!!" << std::endl;
+	x = 0;
+	y = 0;
+
+	return;
+}
+
+
+
 template<typename T>
 Vector2<double> Vector2<T>::Lerp(const Vector2<T>& other, double t)
 {
@@ -93,18 +107,34 @@ Vector2<double> Vector2<T>::Lerp(const Vector2<T>& a, const Vector2<T>& b, doubl
 }
 
 
-// You can't normalize an int vector, ffs!
-// But we need an implementation for T=int
-void Vector2<int>::Normalize()
-{
-	std::cerr << "Stop normalizing int-vectors!!" << std::endl;
-	x = 0;
-	y = 0;
 
-	return;
+template<typename T>
+T& Vector2<T>::operator[](std::size_t idx)
+{
+	switch (idx)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	default:
+		throw std::out_of_range("Array descriptor on Vector2<T> out of range!");
+	}
 }
 
-
+template<typename T>
+const T& Vector2<T>::operator[](std::size_t idx) const
+{
+	switch (idx)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	default:
+		throw std::out_of_range("Array descriptor on Vector2<T> out of range!");
+	}
+}
 
 template<typename T>
 Vector2<T> Vector2<T>::operator+(const Vector2<T>& other) const

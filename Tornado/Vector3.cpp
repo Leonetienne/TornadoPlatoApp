@@ -103,6 +103,38 @@ void Vector3<int>::Normalize()
 
 
 template<typename T>
+T& Vector3<T>::operator[](std::size_t idx)
+{
+	switch (idx)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	default:
+		throw std::out_of_range("Array descriptor on Vector3<T> out of range!");
+	}
+}
+
+template<typename T>
+const T& Vector3<T>::operator[](std::size_t idx) const
+{
+	switch (idx)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	default:
+		throw std::out_of_range("Array descriptor on Vector3<T> out of range!");
+	}
+}
+
+template<typename T>
 Vector3<double> Vector3<T>::Lerp(const Vector3<T>& other, double t)
 {
 	return Vector3::Lerp(*this, other, t);

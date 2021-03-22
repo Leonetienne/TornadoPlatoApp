@@ -17,6 +17,9 @@ public:
 	Vector2<double> Lerp(const Vector2<T>& other, double t);
 	static Vector2<double> Lerp(const Vector2<T>& a, const Vector2<T>& b, double t);
 
+	T& operator[](std::size_t idx);
+	const T& operator[](std::size_t idx) const;
+
 	Vector2<T> operator+(const Vector2<T>& other) const;
 	void operator+=(const Vector2<T>& other);
 	Vector2<T> operator-(const Vector2<T>& other) const;
