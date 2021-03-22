@@ -305,5 +305,20 @@ void Vector3<int>::operator*=(const Matrix4x4& mat)
 	return;
 }
 
+template<typename T>
+bool Vector3<T>::operator==(const Vector3<T>& other) const
+{
+	return
+		(x == other.x) &&
+		(y == other.y) &&
+		(z == other.z);
+}
+
+template<typename T>
+bool Vector3<T>::operator!=(const Vector3<T>& other) const
+{
+	return !operator==(other);
+}
+
 template class Vector3<int>;
 template class Vector3<double>;

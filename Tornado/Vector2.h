@@ -28,6 +28,9 @@ public:
 	void operator*=(const T scale);
 	Vector2<T> operator/(const T scale) const;
 	void operator/=(const T scale);
+	
+	bool operator==(const Vector2<T>& other) const;
+	bool operator!=(const Vector2<T>& other) const;
 
 	friend std::ostream& operator << (std::ostream& os, const Vector2<T>& v)
 	{
