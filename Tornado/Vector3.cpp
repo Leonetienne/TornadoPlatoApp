@@ -53,9 +53,8 @@ double Vector3<double>::SqrMagnitude()
 // Slow, lame version for intcels
 double Vector3<int>::SqrMagnitude()
 {
-	return ((double)x * (double)x) +
-		   ((double)y * (double)y) +
-		   ((double)z * (double)z);
+	int iSqrMag = x*x + y*y + z*z;
+	return (double)iSqrMag;
 }
 
 template <typename T>

@@ -13,10 +13,8 @@ double Vector4<double>::SqrMagnitude() const
 // Slow, lame version for intcels
 double Vector4<int>::SqrMagnitude() const
 {
-	return ((double)x * (double)x) +
-		   ((double)y * (double)y) +
-		   ((double)z * (double)z) +
-		   ((double)w * (double)w);
+	int iSqrMag = x*x + y*y + z*z + w*w;
+	return (double)iSqrMag;
 }
 
 template<typename T>

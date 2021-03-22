@@ -44,8 +44,8 @@ double Vector2<double>::SqrMagnitude()
 // Slow, lame version for intcels
 double Vector2<int>::SqrMagnitude()
 {
-	int iSqrtMag = x*x + y*y;
-	return (double)iSqrtMag;
+	int iSqrMag = x*x + y*y;
+	return (double)iSqrMag;
 }
 
 template<typename T>
