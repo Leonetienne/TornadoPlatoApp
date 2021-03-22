@@ -4,7 +4,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace TornadoTest
+namespace Matrices
 {
 	TEST_CLASS(_Matrix4x4)
 	{
