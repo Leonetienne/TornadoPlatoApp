@@ -1,6 +1,7 @@
 #pragma once
 #include <cstring>
 #include <array>
+#include <initializer_list>
 #include "Constants.h"
 
 /*
@@ -34,26 +35,26 @@ public:
 	Matrix4x4 operator*(const Matrix4x4& other) const;
 	void operator*=(const Matrix4x4& other);
 
-	std::array<double, 4>& operator[](std::size_t x);
-	const std::array<double, 4>& operator[](std::size_t x) const;
+	std::array<double, 4>& operator[](std::size_t y);
+	const std::array<double, 4>& operator[](std::size_t y) const;
 
 	const Vector3d GetTranslationComponent();
 
 	// Shorthands
 	double& a = v[0][0];
-	double& b = v[1][0];
-	double& c = v[2][0];
-	double& d = v[3][0];
-	double& e = v[0][1];
+	double& b = v[0][1];
+	double& c = v[0][2];
+	double& d = v[0][3];
+	double& e = v[1][0];
 	double& f = v[1][1];
-	double& g = v[2][1];
-	double& h = v[3][1];
-	double& i = v[0][2];
-	double& j = v[1][2];
+	double& g = v[1][2];
+	double& h = v[1][3];
+	double& i = v[2][0];
+	double& j = v[2][1];
 	double& k = v[2][2];
-	double& l = v[3][2];
-	double& m = v[0][3];
-	double& n = v[1][3];
-	double& o = v[2][3];
+	double& l = v[2][3];
+	double& m = v[3][0];
+	double& n = v[3][1];
+	double& o = v[3][2];
 	double& p = v[3][3];
 };

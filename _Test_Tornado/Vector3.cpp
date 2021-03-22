@@ -757,12 +757,9 @@ namespace Vectors
 
 			// Create 90deg yaw rotation matrix
 			Matrix4x4 mat;
-			//mat[2][0] = 1;
-			//mat[1][1] = 1;
-			//mat[0][2] = -1;
-			mat[0][2] = 1;
-			mat[1][1] = 1;
-			mat[2][0] = -1;
+			mat[0] = {  0, 0, 1, 0 };
+			mat[1] = {  0, 1, 0, 0 };
+			mat[2] = { -1, 0, 0, 0 };
 
 			// Rotate vector
 			vec *= mat;
@@ -794,20 +791,17 @@ namespace Vectors
 		}
 
 		// Tests for matrix multiplication working regarding rotation
-		TEST_METHOD(MatrixMult_Rotate_Pitch)
+		TEST_METHOD(MatrixMult_Rotate_Roll)
 		{
 			// Create vector
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg pitch rotation matrix
+			// Create 90deg roll rotation matrix
 			Matrix4x4 mat;
-			//mat[1][0] = -1;
-			//mat[0][1] = 1;
-			//mat[2][2] = 1;
-			mat[0][1] = -1;
-			mat[1][0] = 1;
-			mat[2][2] = 1;
+			mat[0] = { 0, -1, 0, 0 };
+			mat[1] = { 1,  0, 0, 0 };
+			mat[2] = { 0,  0, 1, 0 };
 
 			// Rotate vector
 			vec *= mat;
@@ -839,20 +833,17 @@ namespace Vectors
 		}
 
 		// Tests for matrix multiplication working regarding rotation
-		TEST_METHOD(MatrixMult_Rotate_Roll)
+		TEST_METHOD(MatrixMult_Rotate_Pitch)
 		{
 			// Create vector
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg roll rotation matrix
+			// Create 90deg pitch rotation matrix
 			Matrix4x4 mat;
-			//mat[0][0] = 1;
-			//mat[2][1] = -1;
-			//mat[1][2] = 1;
-			mat[0][0] = 1;
-			mat[1][2] = -1;
-			mat[2][1] = 1;
+			mat[0] = { 1, 0,  0, 0 };
+			mat[1] = { 0, 0, -1, 0 };
+			mat[2] = { 0, 1,  0, 0 };
 
 			// Rotate vector
 			vec *= mat;
@@ -888,28 +879,19 @@ namespace Vectors
 		{
 			// Create vector
 			Vector3d vec(1, 1, 1);
-			Vector3d originalVec = vec;
 
 			// Create rotation matrix
 			Matrix4x4 mat;
-			mat[0][0] = 0.5;
-			mat[0][1] = -0.1465;
-			mat[0][2] = 0.8535;
-
-			mat[1][0] = 0.5;
-			mat[1][1] = 0.8535;
-			mat[1][2] = -0.1465;
-
-			mat[2][0] = -0.7072;
-			mat[2][1] = 0.5;
-			mat[2][2] = 0.5;
+			mat[0] = {     0.5, -0.1465,  0.8535, 0 };
+			mat[1] = {     0.5,  0.8535, -0.1465, 0 };
+			mat[2] = { -0.7072,     0.5,     0.5, 0 };
 
 			// Rotate vector
 			vec *= mat;
 
 			// Did we succeed?
 			std::wstringstream wss;
-			wss << L"Rot #1 " << vec;
+			wss << vec;
 			Assert::IsTrue(
 				Similar(vec.x, 1.207, 0.001) &&
 				Similar(vec.y, 1.207, 0.001) &&
@@ -924,33 +906,166 @@ namespace Vectors
 		{
 			// Create vector
 			Vector3d vec(69, 32, 16);
-			Vector3d originalVec = vec;
 
 			// Create rotation matrix
 			Matrix4x4 mat;
-			mat[0][0] = 0.5;
-			mat[0][1] = -0.1465;
-			mat[0][2] = 0.8535;
-
-			mat[1][0] = 0.5;
-			mat[1][1] = 0.8535;
-			mat[1][2] = -0.1465;
-
-			mat[2][0] = -0.7072;
-			mat[2][1] = 0.5;
-			mat[2][2] = 0.5;
+			mat[0] = {     0.5, -0.1465,  0.8535, 0 };
+			mat[1] = {     0.5,  0.8535, -0.1465, 0 };
+			mat[2] = { -0.7072,     0.5,     0.5, 0 };
 
 			// Rotate vector
 			vec *= mat;
 
 			// Did we succeed?
 			std::wstringstream wss;
-			wss << L"Rot #1 " << vec;
+			wss << vec;
 			Assert::IsTrue(
 				Similar(vec.x, 43.468, 0.001) &&
 				Similar(vec.y, 59.468, 0.001) &&
 				Similar(vec.z, -24.7968, 0.001),
 				wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if rotating a vector (69,32,16) by (45,45,45) eulers works
+		TEST_METHOD(MatrixMult_Rotate_Combined)
+		{
+			// Create vector
+			Vector3d vec(69, 32, 16);
+
+			// Create rotation matrix
+			Matrix4x4 mat;
+			mat[0] = { -0.1639, -0.9837, -0.0755, 0 };
+			mat[1] = {  0.128,   -0.097,   0.987, 0 };
+			mat[2] = { -0.9782,   0.152,  0.1417, 0 };
+
+			// Rotate vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(
+				Similar(vec.x, -43.9955, 0.001) &&
+				Similar(vec.y, 21.52, 0.001) &&
+				Similar(vec.z, -60.3646, 0.001),
+				wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if matrix scaling works ( x axis only )
+		TEST_METHOD(MatrixMult_Scale_X)
+		{
+			// Create vector
+			Vector3d vec(5, 6, 7);
+
+			// Create scaling matrix
+			Matrix4x4 mat;
+			mat[0] = { 3, 0, 0, 0 };
+			mat[1] = { 0, 1, 0, 0 };
+			mat[2] = { 0, 0, 1, 0 };
+
+			// Scale vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3d(15, 6, 7) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if matrix scaling works ( y axis only )
+		TEST_METHOD(MatrixMult_Scale_Y)
+		{
+			// Create vector
+			Vector3d vec(5, 6, 7);
+
+			// Create scaling matrix
+			Matrix4x4 mat;
+			mat[0] = { 1, 0, 0, 0 };
+			mat[1] = { 0, 3, 0, 0 };
+			mat[2] = { 0, 0, 1, 0 };
+
+			// Scale vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3d(5, 18, 7) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if matrix scaling works ( z axis only )
+		TEST_METHOD(MatrixMult_Scale_Z)
+		{
+			// Create vector
+			Vector3d vec(5, 6, 7);
+
+			// Create scaling matrix
+			Matrix4x4 mat;
+			mat[0] = { 1, 0, 0, 0 };
+			mat[1] = { 0, 1, 0, 0 };
+			mat[2] = { 0, 0, 3, 0 };
+
+			// Scale vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3d(5, 6, 21) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if matrix scaling works ( all axes )
+		TEST_METHOD(MatrixMult_Scale_Combined)
+		{
+			// Create vector
+			Vector3d vec(5, 6, 7);
+
+			// Create scaling matrix
+			Matrix4x4 mat;
+			mat[0] = { 4, 0, 0, 0 };
+			mat[1] = { 0, 5, 0, 0 };
+			mat[2] = { 0, 0, 8, 0 };
+
+			// Scale vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3d(20, 30, 56) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests if translation via matrix multiplication works
+		TEST_METHOD(MatrixMult_Translation)
+		{
+			// Create vector
+			Vector3d vec(5, 6, 7);
+
+			// Create scaling matrix
+			Matrix4x4 mat;
+			mat[0] = { 1, 0, 0, 155 };
+			mat[1] = { 0, 1, 0, -23 };
+			mat[2] = { 0, 0, 1, 333 };
+
+			// Translate vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3d(160, -17, 340) == vec, wss.str().c_str());
 
 			return;
 		}
