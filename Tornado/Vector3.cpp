@@ -1,6 +1,15 @@
 #include "Vector3.h"
 #include <iostream>
 
+/*
+	NOTE:
+	Here you will find bad, unoptimized methods for T=int.
+	This is because the compiler needs a method for each type in each instanciation of the template!
+	I can't generalize the methods when heavily optimizing for doubles.
+	These functions will get called VERY rarely, if ever at all, for T=int, so it's ok.
+	The T=int instanciation only exists to store a value-pair of two ints. Not so-much as a vector in terms of vector calculus.
+*/
+
 // Good, optimized chad version for doubles
 double Vector3<double>::DotProduct(const Vector3<double>& other)
 {
@@ -228,8 +237,9 @@ void Vector3<T>::operator/=(const T scale)
 	return;
 }
 
-// This is the method for T=double
-// This is good. Use this!
+
+
+// Good, optimized chad version for doubles
 Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 {
 	Vector3<double> newVec;
@@ -247,34 +257,35 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 	return newVec;
 }
 
-// This is just that we have SOME variant for T=int.
-// Not optimized and should not be used.
+// Slow, lame version for intcels
 Vector3<int> Vector3<int>::operator*(const Matrix4x4& mat) const
 {
-	Vector3<int> newVec;
+	Vector3<double> newVec;
 
 	// Rotation, Scaling
-	newVec.x = (int)((mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z));
-	newVec.y = (int)((mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z));
-	newVec.z = (int)((mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z));
+	newVec.x = ((mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z));
+	newVec.y = ((mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z));
+	newVec.z = ((mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z));
 
 	// Translation
-	newVec.x += (int)mat[3][0];
-	newVec.y += (int)mat[3][1];
-	newVec.z += (int)mat[3][2];
+	newVec.x += mat[3][0];
+	newVec.y += mat[3][1];
+	newVec.z += mat[3][2];
 
-	return newVec;
+	return Vector3<int>(
+		(int)newVec.x,
+		(int)newVec.y,
+		(int)newVec.z
+	);
 }
 
-// This is the method for T=double
-// This is good. Use this!
+
+
+// Good, optimized chad version for doubles
 void Vector3<double>::operator*=(const Matrix4x4& mat)
 {
 	Vector3<double> buffer = *this;
 
-	//x = (mat[0][0] * buffer.x) + (mat[1][0] * buffer.y) + (mat[2][0] * buffer.z);
-	//y = (mat[0][1] * buffer.x) + (mat[1][1] * buffer.y) + (mat[2][1] * buffer.z);
-	//z = (mat[0][2] * buffer.x) + (mat[1][2] * buffer.y) + (mat[2][2] * buffer.z);
 	x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z);
 	y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z);
 	z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z);
@@ -287,13 +298,10 @@ void Vector3<double>::operator*=(const Matrix4x4& mat)
 	return;
 }
 
-// This is just that we have SOME variant for T=int.
-// Not optimized and should not be used.
+// Slow, lame version for intcels
 void Vector3<int>::operator*=(const Matrix4x4& mat)
 {
-	Vector3<double> buffer;
-	buffer.x = x;
-	buffer.y = y;
+	Vector3<double> buffer(x, y, z);
 
 	x = (int)((mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z));
 	y = (int)((mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z));
@@ -306,6 +314,8 @@ void Vector3<int>::operator*=(const Matrix4x4& mat)
 
 	return;
 }
+
+
 
 template<typename T>
 bool Vector3<T>::operator==(const Vector3<T>& other) const

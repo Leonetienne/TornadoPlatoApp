@@ -2,6 +2,15 @@
 #include <iostream>
 #include <exception>
 
+/*
+	NOTE:
+	Here you will find bad, unoptimized methods for T=int.
+	This is because the compiler needs a method for each type in each instanciation of the template!
+	I can't generalize the methods when heavily optimizing for doubles.
+	These functions will get called VERY rarely, if ever at all, for T=int, so it's ok.
+	The T=int instanciation only exists to store a value-pair of two ints. Not so-much as a vector in terms of vector calculus.
+*/
+
 // Good, optimized chad version for doubles
 double Vector2<double>::DotProduct(const Vector2<double>& other)
 {
