@@ -140,9 +140,17 @@ namespace Vectors
 			Vector3d a(69, 32, 16);
 			Vector3d b = a;
 
-			Assert::AreEqual(a.x, b.x);
-			Assert::AreEqual(a.y, b.y);
-			Assert::AreEqual(a.z, b.z);
+			b.x = 169;
+			b.y = 132;
+			b.z = 116;
+
+			Assert::AreEqual(69.0, a.x);
+			Assert::AreEqual(32.0, a.y);
+			Assert::AreEqual(16.0, a.z);
+
+			Assert::AreEqual(169.0, b.x);
+			Assert::AreEqual(132.0, b.y);
+			Assert::AreEqual(116.0, b.z);
 
 			return;
 		}
@@ -247,6 +255,40 @@ namespace Vectors
 			return;
 		}
 
+		// Quick and dirty check if the useless int-method is working
+		TEST_METHOD(DotProduct_Dirty_Int)
+		{
+			Vector3i a;
+			Vector3i b;
+			std::wstringstream wss;
+
+			// 90 deg
+			a = { 0, 10, 0 };
+			b = { 10, 0, 0 };
+			wss.str(L"");
+			wss << a << L" DOT " << b << L" = " << a.DotProduct(b) << std::endl;
+			Assert::AreEqual(0.0, a.DotProduct(b), wss.str().c_str());
+			Assert::AreEqual(0.0, b.DotProduct(a), wss.str().c_str());
+
+			// < 90 deg
+			a = { 7, 10, 10 };
+			b = { 10, 1, 10 };
+			wss.str(L"");
+			wss << a << L" DOT " << b << L" = " << a.DotProduct(b) << std::endl;
+			Assert::IsTrue(a.DotProduct(b) > 0.0, wss.str().c_str());
+			Assert::IsTrue(b.DotProduct(a) > 0.0, wss.str().c_str());
+
+			// > 90 deg
+			a = { -3, 10, -10 };
+			b = { 10, -4,  10 };
+			wss.str(L"");
+			wss << a << L" DOT " << b << L" = " << a.DotProduct(b) << std::endl;
+			Assert::IsTrue(a.DotProduct(b) < 0.0, wss.str().c_str());
+			Assert::IsTrue(b.DotProduct(a) < 0.0, wss.str().c_str());
+
+			return;
+		}
+
 		// Tests for the cross product between the same vector being 0
 		TEST_METHOD(CrossProduct_Same_Vector_Is_0)
 		{
@@ -341,6 +383,59 @@ namespace Vectors
 			return;
 		}
 
+		// Tests for known values, but with int vectors
+		TEST_METHOD(CrossProduct_KnownValues_Int)
+		{
+			Vector3i a;
+			Vector3i b;
+
+			std::wstringstream wss;
+
+			wss.str(L"");
+			a = Vector3i(1, 0, 0);
+			b = Vector3i(0, 0, 1);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, -1, 0) == a.CrossProduct(b), wss.str().c_str());
+
+			wss.str(L"");
+			a = Vector3i(-1, 0, 0);
+			b = Vector3i(0, 0, -1);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, -1, 0) == a.CrossProduct(b), wss.str().c_str());
+
+			wss.str(L"");
+			a = Vector3i(1, 0, 0);
+			b = Vector3i(0, 0, -1);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, 1, 0) == a.CrossProduct(b), wss.str().c_str());
+
+			wss.str(L"");
+			a = Vector3i(1, 0, 0);
+			b = Vector3i(0, 1, 0);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, 0, 1) == a.CrossProduct(b), wss.str().c_str());
+
+			wss.str(L"");
+			a = Vector3i(1, 0, 0);
+			b = Vector3i(1, 0, 1);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, -1, 0) == a.CrossProduct(b), wss.str().c_str());
+
+			wss.str(L"");
+			a = Vector3i(1, 0, 0);
+			b = Vector3i(1, 1, 1);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, -1, 1) == a.CrossProduct(b), wss.str().c_str());
+
+			wss.str(L"");
+			a = Vector3i(3, -1, -3);
+			b = Vector3i(-1, 1, 3);
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(Vector3d(0, -6, 2) == a.CrossProduct(b), wss.str().c_str());
+
+			return;
+		}
+
 		// Tests the SqrMagnitude method to work as expected with random numbers
 		TEST_METHOD(SqrMagnitude)
 		{
@@ -358,7 +453,24 @@ namespace Vectors
 			return;
 		}
 
-		// Tests for the length of the vector (0,0) being 0
+		// Tests the SqrMagnitude method to work as expected with random numbers, but with an int-vector
+		TEST_METHOD(SqrMagnitude_Int)
+		{
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				int x = (rng() % 6969) - 3500;
+				int y = (rng() % 6969) - 3500;
+				int z = (rng() % 6969) - 3500;
+				int expected = x*x + y*y + z*z;
+
+				Assert::AreEqual((double)expected, Vector3i(x, y, z).SqrMagnitude());
+			}
+
+			return;
+		}
+
+		// Tests for the length of the vector (0,0,0) being 0
 		TEST_METHOD(Magnitude_Is_0_On_Vec0)
 		{
 			Assert::AreEqual(0.0, Vector3d(0, 0, 0).Magnitude());
@@ -496,7 +608,6 @@ namespace Vectors
 				std::wstringstream wss;
 				wss << vec;
 				Assert::IsTrue(Similar(vec.Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
-
 			}
 
 			return;
@@ -530,6 +641,27 @@ namespace Vectors
 					wss.str().c_str());
 			}
 			return;
+		}
+
+		// Kinda dumb method, but ok lol
+		// DON'T NORMALIZE INT-VECTORS WHAT IS WRONG WITH YOU
+		TEST_METHOD(Normalized_Int_Vector_Is_0)
+		{
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				int x = (rng() % 6969) - 3500;
+				int y = (rng() % 6969) - 3500;
+				int z = (rng() % 6969) - 3500;
+
+				Vector3i vec(x, y, z);
+
+				vec.Normalize();
+
+				std::wstringstream wss;
+				wss << vec;
+				Assert::AreEqual(0.0, vec.Magnitude(), wss.str().c_str());
+			}
 		}
 
 		// Tests for operator+ to work as expected
@@ -1066,6 +1198,175 @@ namespace Vectors
 			std::wstringstream wss;
 			wss << vec;
 			Assert::IsTrue(Vector3d(160, -17, 340) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests the multiplication operator (*) with a simple matrix. All other tests used the * operator (without the '=')
+		TEST_METHOD(MatrixMult_Not_Using_MultEqualsOperator)
+		{
+			// Create vector
+			Vector3d vec(5.1, 6.4, 7.99);
+
+			// Create scaling and translation matrix
+			Matrix4x4 mat;
+			mat[0] = { 3.8, 0, 0, -5.1 };
+			mat[1] = { 0, -1.5, 0, 15.2 };
+			mat[2] = { 0, 0, 3.01, 19.9 };
+
+			// Transform vector
+			vec = vec * mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3d(
+				5.1*3.8 - 5.1,
+				6.4*-1.5 + 15.2,
+				7.99*3.01 + 19.9
+			) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// A simple matrix multiplication tested on an int vector
+		TEST_METHOD(MatrixMult_Dirty_Int_Check)
+		{
+			// Create vector
+			Vector3i vec(5, 6, 7);
+
+			// Create scaling and translation matrix
+			Matrix4x4 mat;
+			mat[0] = { 3,  0, 0, -5 };
+			mat[1] = { 0, -1, 0, 15 };
+			mat[2] = { 0,  0, 3, 20 };
+
+			// Transform vector
+			vec *= mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3i(
+				5*3 + -5,
+				6*-1 + 15,
+				7*3 + 20
+			) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		// Tests the multiplication operator (*) with a simple matrix. All other tests used the * operator (without the '=')
+		TEST_METHOD(MatrixMult_Dirty_Int_Check_Not_Using_MultEqualsOperator)
+		{
+			// Create vector
+			Vector3i vec(5, 6, 7);
+
+			// Create scaling and translation matrix
+			Matrix4x4 mat;
+			mat[0] = { 3,  0, 0, -5 };
+			mat[1] = { 0, -1, 0, 15 };
+			mat[2] = { 0,  0, 3, 20 };
+
+			// Scale vector
+			vec = vec * mat;
+
+			// Did we succeed?
+			std::wstringstream wss;
+			wss << vec;
+			Assert::IsTrue(Vector3i(
+				5 * 3 + -5,
+				6 * -1 + 15,
+				7 * 3 + 20
+			) == vec, wss.str().c_str());
+
+			return;
+		}
+
+		//This tests the multiplication equals operator (*=) procedurally
+		TEST_METHOD(MatrixMult_Equals_Procedural)
+		{
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Generate parameters
+				double initialX = ((rng() % 696900) - 350000) / 1000.0;
+				double initialY = ((rng() % 696900) - 350000) / 1000.0;
+				double initialZ = ((rng() % 696900) - 350000) / 1000.0;
+				double scaleX   = ((rng() % 696900) - 350000) / 1000.0;
+				double scaleY   = ((rng() % 696900) - 350000) / 1000.0;
+				double scaleZ   = ((rng() % 696900) - 350000) / 1000.0;
+				double transX   = ((rng() % 696900) - 350000) / 1000.0;
+				double transY   = ((rng() % 696900) - 350000) / 1000.0;
+				double transZ   = ((rng() % 696900) - 350000) / 1000.0;
+
+				// Create vector
+				Vector3d vec(initialX, initialY, initialZ);
+
+				// Create matrix
+				Matrix4x4 mat;
+				mat[0] = { scaleX,      0,      0, transX };
+				mat[1] = {      0, scaleY,      0, transY };
+				mat[2] = {      0,      0, scaleZ, transZ };
+				mat[3] = {      0,      0,      0,      0 };
+
+				// Create expected vector
+				Vector3d expected(
+					initialX * scaleX + transX,
+					initialY * scaleY + transY,
+					initialZ * scaleZ + transZ
+				);
+
+				// Transform vector
+				vec *= mat;
+
+				// Compare
+				Assert::IsTrue(vec == expected);
+			}
+
+			return;
+		}
+
+		//This tests the multiplication operator (*) procedurally
+		TEST_METHOD(MatrixMult_Procedural)
+		{
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Generate parameters
+				double initialX = ((rng() % 696900) - 350000) / 1000.0;
+				double initialY = ((rng() % 696900) - 350000) / 1000.0;
+				double initialZ = ((rng() % 696900) - 350000) / 1000.0;
+				double scaleX   = ((rng() % 696900) - 350000) / 1000.0;
+				double scaleY   = ((rng() % 696900) - 350000) / 1000.0;
+				double scaleZ   = ((rng() % 696900) - 350000) / 1000.0;
+				double transX   = ((rng() % 696900) - 350000) / 1000.0;
+				double transY   = ((rng() % 696900) - 350000) / 1000.0;
+				double transZ   = ((rng() % 696900) - 350000) / 1000.0;
+
+				// Create vector
+				Vector3d vec(initialX, initialY, initialZ);
+
+				// Create matrix
+				Matrix4x4 mat;
+				mat[0] = { scaleX,      0,      0, transX };
+				mat[1] = {      0, scaleY,      0, transY };
+				mat[2] = {      0,      0, scaleZ, transZ };
+				mat[3] = {      0,      0,      0,      0 };
+
+				// Create expected vector
+				Vector3d expected(
+					initialX * scaleX + transX,
+					initialY * scaleY + transY,
+					initialZ * scaleZ + transZ
+				);
+
+				// Transform vector
+				vec = vec * mat;
+
+				// Compare
+				Assert::IsTrue(vec == expected);
+			}
 
 			return;
 		}

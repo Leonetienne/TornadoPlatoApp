@@ -250,9 +250,9 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 	newVec.z = (mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z);
 
 	// Translation
-	newVec.x += mat[3][0];
-	newVec.y += mat[3][1];
-	newVec.z += mat[3][2];
+	newVec.x += mat[0][3];
+	newVec.y += mat[1][3];
+	newVec.z += mat[2][3];
 
 	return newVec;
 }
@@ -268,9 +268,9 @@ Vector3<int> Vector3<int>::operator*(const Matrix4x4& mat) const
 	newVec.z = ((mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z));
 
 	// Translation
-	newVec.x += mat[3][0];
-	newVec.y += mat[3][1];
-	newVec.z += mat[3][2];
+	newVec.x += mat[0][3];
+	newVec.y += mat[1][3];
+	newVec.z += mat[2][3];
 
 	return Vector3<int>(
 		(int)newVec.x,
