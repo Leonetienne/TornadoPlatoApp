@@ -511,6 +511,15 @@ namespace Vectors
 			return;
 		}
 
+		// Tests if an input vector of length 0 is handled correctly by the normalize method
+		TEST_METHOD(Normalize_Length_Before_Is_0)
+		{
+			Vector2d vec(0, 0);
+			vec.Normalize();
+			Assert::AreEqual(0.0, vec.Magnitude());
+			return;
+		}
+
 		// Tests for any normalized vector to be of length 1
 		TEST_METHOD(Normalize_Length_Is_1)
 		{
@@ -519,6 +528,9 @@ namespace Vectors
 			{
 				double x = LARGE_RAND_DOUBLE;
 				double y = LARGE_RAND_DOUBLE;
+				if (x == 0) x++;
+				if (y == 0) y++;
+
 				Vector2d vec(x, y);
 
 				vec.Normalize();
@@ -539,10 +551,12 @@ namespace Vectors
 			{
 				double x = LARGE_RAND_DOUBLE;
 				double y = LARGE_RAND_DOUBLE;
-				if (x == 0) x++;
-				if (y == 0) y++;
 
 				Vector2d vec(x, y);
+
+				// Prevent a vector of length 0 going in
+				if (vec.SqrMagnitude() == 0)
+					vec.x++;
 
 				Vector2d vec_n(x, y);
 				vec_n.Normalize();
