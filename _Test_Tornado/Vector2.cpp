@@ -1,8 +1,9 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector2.h"
-#include "Similar.h"
 #include <random>
 #include <sstream>
+#include "Similar.h"
+#include "HandyMacros.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -244,17 +245,18 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE / 1000.0;
+				double y = LARGE_RAND_DOUBLE / 1000.0;
 
 				// Vector length should not matter, so randomize it
 				// In this case, they are allowed to be of length 0
-				Vector2d a = Vector2d(x, y) * (rng() % 6969);
-				Vector2d b = Vector2d(-x, -y) * (rng() % 6969);
+				// Don't scale it up too much to avoid failure due to floating point inaccuracy
+				Vector2d a = Vector2d( x,  y) * (LARGE_RAND_DOUBLE / 1000.0);
+				Vector2d b = Vector2d(-x, -y) * (LARGE_RAND_DOUBLE / 1000.0);
 
 				std::wstringstream wss;
 				wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
-				Assert::AreEqual(0.0, a.CrossProduct(b), wss.str().c_str());
+				Assert::IsTrue(Similar(a.CrossProduct(b), 0.0, 10), wss.str().c_str());
 			}
 
 			return;
@@ -266,17 +268,18 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE / 1000.0;
+				double y = LARGE_RAND_DOUBLE / 1000.0;
 
 				// Vector length should not matter, so randomize it
 				// In this case, they are allowed to be of length 0
-				Vector2d a = Vector2d(x, y) * (rng() % 6969);
-				Vector2d b = Vector2d(x, y) * (rng() % 6969);
+				// Don't scale it up too much to avoid failure due to floating point inaccuracy
+				Vector2d a = Vector2d(x, y) * (LARGE_RAND_DOUBLE / 1000.0);
+				Vector2d b = Vector2d(x, y) * (LARGE_RAND_DOUBLE / 1000.0);
 
 				std::wstringstream wss;
 				wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
-				Assert::AreEqual(0.0, a.CrossProduct(b), wss.str().c_str());
+				Assert::IsTrue(Similar(a.CrossProduct(b), 0.0, 10), wss.str().c_str());
 			}
 
 			return;
@@ -288,8 +291,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
 				if (x == 0) x++;
 				if (y == 0) y++;
 
@@ -311,8 +314,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
 				if (x == 0) x++;
 				if (y == 0) y++;
 
@@ -374,8 +377,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
 				double expected = x*x + y*y;
 
 				Assert::AreEqual(expected, Vector2d(x, y).SqrMagnitude());
@@ -390,8 +393,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = (rng() % 6969) - 3500;
-				int y = (rng() % 6969) - 3500;
+				int x = LARGE_RAND_INT;
+				int y = LARGE_RAND_INT;
 				int expected = x*x + y*y;
 
 				Assert::AreEqual((double)expected, Vector2i(x, y).SqrMagnitude());
@@ -413,7 +416,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
 				Vector2d vec(x, 0);
 				Assert::AreEqual(abs(x), vec.Magnitude());
 			}
@@ -427,7 +430,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double y = (rng() % 6969) - 3500;
+				double y = LARGE_RAND_DOUBLE;
 				Vector2d vec(0, y);
 				Assert::AreEqual(abs(y), vec.Magnitude());
 			}
@@ -514,8 +517,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
 				Vector2d vec(x, y);
 
 				vec.Normalize();
@@ -534,8 +537,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
 				if (x == 0) x++;
 				if (y == 0) y++;
 
@@ -563,8 +566,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = (rng() % 6969) - 3500;
-				int y = (rng() % 6969) - 3500;
+				int x = LARGE_RAND_INT;
+				int y = LARGE_RAND_INT;
 
 				Vector2i vec(x, y);
 
@@ -582,10 +585,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
 
 				Vector2d a(ax, ay);
 				Vector2d b(bx, by);
@@ -602,10 +605,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
 
 				Vector2d a(ax, ay);
 				a += Vector2d(bx, by);
@@ -622,10 +625,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
 
 				Vector2d a(ax, ay);
 				Vector2d b(bx, by);
@@ -642,10 +645,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
 
 				Vector2d a(ax, ay);
 				a -= Vector2d(bx, by);
@@ -662,9 +665,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector2d a(x, y);
 
@@ -680,9 +683,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector2d a(x, y);
 				a *= scalar;
@@ -699,9 +702,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector2d a(x, y);
 
@@ -717,9 +720,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector2d a(x, y);
 				a /= scalar;
@@ -736,10 +739,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 20) - 10;
-				double ay = (rng() % 20) - 10;
-				double bx = (rng() % 20) - 10;
-				double by = (rng() % 20) - 10;
+				double ax = (rng() % 10) - 5;
+				double ay = (rng() % 10) - 5;
+				double bx = (rng() % 10) - 5;
+				double by = (rng() % 10) - 5;
 
 				Vector2d a(ax, ay);
 				Vector2d b(bx, by);
@@ -759,10 +762,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 20) - 10;
-				double ay = (rng() % 20) - 10;
-				double bx = (rng() % 20) - 10;
-				double by = (rng() % 20) - 10;
+				double ax = (rng() % 10) - 5;
+				double ay = (rng() % 10) - 5;
+				double bx = (rng() % 10) - 5;
+				double by = (rng() % 10) - 5;
 
 				Vector2d a(ax, ay);
 				Vector2d b(bx, by);
