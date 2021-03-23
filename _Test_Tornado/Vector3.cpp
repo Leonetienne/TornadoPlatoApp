@@ -1,8 +1,9 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector3.h"
-#include "Similar.h"
 #include <random>
 #include <sstream>
+#include "Similar.h"
+#include "HandyMacros.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -295,9 +296,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
 
 				Vector3d a(x, y, z);
 
@@ -315,9 +316,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
 
 				Vector3d a(x, y, z);
 				Vector3d b(-x, -y, -z);
@@ -442,9 +443,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
 				double expected = x*x + y*y + z*z;
 
 				Assert::AreEqual(expected, Vector3d(x, y, z).SqrMagnitude());
@@ -459,9 +460,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = (rng() % 6969) - 3500;
-				int y = (rng() % 6969) - 3500;
-				int z = (rng() % 6969) - 3500;
+				int x = LARGE_RAND_INT;
+				int y = LARGE_RAND_INT;
+				int z = LARGE_RAND_INT;
 				int expected = x*x + y*y + z*z;
 
 				Assert::AreEqual((double)expected, Vector3i(x, y, z).SqrMagnitude());
@@ -483,7 +484,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
 				Vector3d vec(x, 0, 0);
 				Assert::AreEqual(abs(x), vec.Magnitude());
 			}
@@ -497,7 +498,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double y = (rng() % 6969) - 3500;
+				double y = LARGE_RAND_DOUBLE;
 				Vector3d vec(0, y, 0);
 				Assert::AreEqual(abs(y), vec.Magnitude());
 			}
@@ -511,7 +512,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double z = (rng() % 6969) - 3500;
+				double z = LARGE_RAND_DOUBLE;
 				Vector3d vec(0, 0, z);
 				Assert::AreEqual(abs(z), vec.Magnitude());
 			}
@@ -598,9 +599,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
 				Vector3d vec(x, y, z);
 
 				vec.Normalize();
@@ -619,9 +620,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
 				if (x == 0) x++;
 				if (y == 0) y++;
 				if (z == 0) z++;
@@ -650,9 +651,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = (rng() % 6969) - 3500;
-				int y = (rng() % 6969) - 3500;
-				int z = (rng() % 6969) - 3500;
+				int x = LARGE_RAND_INT;
+				int y = LARGE_RAND_INT;
+				int z = LARGE_RAND_INT;
 
 				Vector3i vec(x, y, z);
 
@@ -670,12 +671,12 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
 
 				Vector3d a(ax, ay, az);
 				Vector3d b(bx, by, bz);
@@ -692,12 +693,12 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
 
 				Vector3d a(ax, ay, az);
 				a += Vector3d(bx, by, bz);
@@ -714,12 +715,12 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
 
 				Vector3d a(ax, ay, az);
 				Vector3d b(bx, by, bz);
@@ -736,12 +737,12 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
 
 				Vector3d a(ax, ay, az);
 				a -= Vector3d(bx, by, bz);
@@ -758,10 +759,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector3d a(x, y, z);
 
@@ -777,10 +778,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector3d a(x, y, z);
 				a *= scalar;
@@ -797,10 +798,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector3d a(x, y, z);
 
@@ -816,10 +817,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector3d a(x, y, z);
 				a /= scalar;
@@ -834,14 +835,14 @@ namespace Vectors
 		TEST_METHOD(Operator_Equals)
 		{
 			// Test 1000 times
-			for (std::size_t i = 0; i < 1000; i++)
+			for (std::size_t i = 0; i < 10000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
+				double ax = (rng() % 10) - 5;
+				double ay = (rng() % 10) - 5;
+				double az = (rng() % 10) - 5;
+				double bx = (rng() % 10) - 5;
+				double by = (rng() % 10) - 5;
+				double bz = (rng() % 10) - 5;
 
 				Vector3d a(ax, ay, az);
 				Vector3d b(bx, by, bz);
@@ -859,20 +860,20 @@ namespace Vectors
 		TEST_METHOD(Operator_Not_Equals)
 		{
 			// Test 1000 times
-			for (std::size_t i = 0; i < 1000; i++)
+			for (std::size_t i = 0; i < 10000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
+				double ax = (rng() % 10) - 5;
+				double ay = (rng() % 10) - 5;
+				double az = (rng() % 10) - 5;
+				double bx = (rng() % 10) - 5;
+				double by = (rng() % 10) - 5;
+				double bz = (rng() % 10) - 5;
 
 				Vector3d a(ax, ay, az);
 				Vector3d b(bx, by, bz);
 
 				Assert::IsTrue(
-					((ax != bx) || (ay != by) || (az == bz)) ==
+					((ax != bx) || (ay != by) || (az != bz)) ==
 					(a != b)
 				);
 			}
@@ -1290,15 +1291,15 @@ namespace Vectors
 			for (std::size_t i = 0; i < 1000; i++)
 			{
 				// Generate parameters
-				double initialX = ((rng() % 696900) - 350000) / 1000.0;
-				double initialY = ((rng() % 696900) - 350000) / 1000.0;
-				double initialZ = ((rng() % 696900) - 350000) / 1000.0;
-				double scaleX   = ((rng() % 696900) - 350000) / 1000.0;
-				double scaleY   = ((rng() % 696900) - 350000) / 1000.0;
-				double scaleZ   = ((rng() % 696900) - 350000) / 1000.0;
-				double transX   = ((rng() % 696900) - 350000) / 1000.0;
-				double transY   = ((rng() % 696900) - 350000) / 1000.0;
-				double transZ   = ((rng() % 696900) - 350000) / 1000.0;
+				double initialX = LARGE_RAND_DOUBLE;
+				double initialY = LARGE_RAND_DOUBLE;
+				double initialZ = LARGE_RAND_DOUBLE;
+				double scaleX   = LARGE_RAND_DOUBLE;
+				double scaleY   = LARGE_RAND_DOUBLE;
+				double scaleZ   = LARGE_RAND_DOUBLE;
+				double transX   = LARGE_RAND_DOUBLE;
+				double transY   = LARGE_RAND_DOUBLE;
+				double transZ   = LARGE_RAND_DOUBLE;
 
 				// Create vector
 				Vector3d vec(initialX, initialY, initialZ);
@@ -1334,15 +1335,15 @@ namespace Vectors
 			for (std::size_t i = 0; i < 1000; i++)
 			{
 				// Generate parameters
-				double initialX = ((rng() % 696900) - 350000) / 1000.0;
-				double initialY = ((rng() % 696900) - 350000) / 1000.0;
-				double initialZ = ((rng() % 696900) - 350000) / 1000.0;
-				double scaleX   = ((rng() % 696900) - 350000) / 1000.0;
-				double scaleY   = ((rng() % 696900) - 350000) / 1000.0;
-				double scaleZ   = ((rng() % 696900) - 350000) / 1000.0;
-				double transX   = ((rng() % 696900) - 350000) / 1000.0;
-				double transY   = ((rng() % 696900) - 350000) / 1000.0;
-				double transZ   = ((rng() % 696900) - 350000) / 1000.0;
+				double initialX = LARGE_RAND_DOUBLE;
+				double initialY = LARGE_RAND_DOUBLE;
+				double initialZ = LARGE_RAND_DOUBLE;
+				double scaleX   = LARGE_RAND_DOUBLE;
+				double scaleY   = LARGE_RAND_DOUBLE;
+				double scaleZ   = LARGE_RAND_DOUBLE;
+				double transX   = LARGE_RAND_DOUBLE;
+				double transY   = LARGE_RAND_DOUBLE;
+				double transZ   = LARGE_RAND_DOUBLE;
 
 				// Create vector
 				Vector3d vec(initialX, initialY, initialZ);

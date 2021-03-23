@@ -1,9 +1,10 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector4.h"
 #include "../Tornado/Matrix4x4.h"
-#include "Similar.h"
 #include <random>
 #include <sstream>
+#include "Similar.h"
+#include "HandyMacros.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -177,10 +178,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double w = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double w = LARGE_RAND_DOUBLE;
 				double expected = x*x + y*y + z*z + w*w;
 
 				Assert::AreEqual(expected, Vector4d(x, y, z, w).SqrMagnitude());
@@ -202,7 +203,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
 				Vector4d vec(x, 0, 0, 0);
 				Assert::AreEqual(abs(x), vec.Magnitude());
 			}
@@ -216,7 +217,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double y = (rng() % 6969) - 3500;
+				double y = LARGE_RAND_DOUBLE;
 				Vector4d vec(0, y, 0, 0);
 				Assert::AreEqual(abs(y), vec.Magnitude());
 			}
@@ -230,7 +231,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double z = (rng() % 6969) - 3500;
+				double z = LARGE_RAND_DOUBLE;
 				Vector4d vec(0, 0, z, 0);
 				Assert::AreEqual(abs(z), vec.Magnitude());
 			}
@@ -244,7 +245,7 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double w = (rng() % 6969) - 3500;
+				double w = LARGE_RAND_DOUBLE;
 				Vector4d vec(0, 0, 0, w);
 				Assert::AreEqual(abs(w), vec.Magnitude());
 			}
@@ -331,10 +332,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double w = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double w = LARGE_RAND_DOUBLE;
 				Vector4d vec(x, y, z, w);
 
 				vec.Normalize();
@@ -354,10 +355,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = (rng() % 6969) - 3500;
-				int y = (rng() % 6969) - 3500;
-				int z = (rng() % 6969) - 3500;
-				int w = (rng() % 6969) - 3500;
+				int x = LARGE_RAND_DOUBLE;
+				int y = LARGE_RAND_DOUBLE;
+				int z = LARGE_RAND_DOUBLE;
+				int w = LARGE_RAND_DOUBLE;
 
 				Vector4i vec(x, y, z, w);
 
@@ -375,14 +376,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double aw = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
-				double bw = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double aw = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
+				double bw = LARGE_RAND_DOUBLE;
 
 				Vector4d a(ax, ay, az, aw);
 				Vector4d b(bx, by, bz, bw);
@@ -399,14 +400,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double aw = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
-				double bw = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double aw = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
+				double bw = LARGE_RAND_DOUBLE;
 
 				Vector4d a(ax, ay, az, aw);
 				a += Vector4d(bx, by, bz, bw);
@@ -423,14 +424,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double aw = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
-				double bw = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double aw = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
+				double bw = LARGE_RAND_DOUBLE;
 
 				Vector4d a(ax, ay, az, aw);
 				Vector4d b(bx, by, bz, bw);
@@ -447,14 +448,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double aw = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
-				double bw = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double aw = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
+				double bw = LARGE_RAND_DOUBLE;
 
 				Vector4d a(ax, ay, az, aw);
 				a -= Vector4d(bx, by, bz, bw);
@@ -471,11 +472,11 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double w = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double w = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector4d a(x, y, z, w);
 
@@ -491,11 +492,11 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double w = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double w = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector4d a(x, y, z, w);
 				a *= scalar;
@@ -512,11 +513,11 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double w = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double w = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector4d a(x, y, z, w);
 
@@ -532,11 +533,11 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = (rng() % 6969) - 3500;
-				double y = (rng() % 6969) - 3500;
-				double z = (rng() % 6969) - 3500;
-				double w = (rng() % 6969) - 3500;
-				double scalar = (rng() % 6969) - 3500;
+				double x = LARGE_RAND_DOUBLE;
+				double y = LARGE_RAND_DOUBLE;
+				double z = LARGE_RAND_DOUBLE;
+				double w = LARGE_RAND_DOUBLE;
+				double scalar = LARGE_RAND_DOUBLE;
 
 				Vector4d a(x, y, z, w);
 				a /= scalar;
@@ -553,14 +554,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double aw = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
-				double bw = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double aw = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
+				double bw = LARGE_RAND_DOUBLE;
 
 				Vector4d a(ax, ay, az, aw);
 				Vector4d b(bx, by, bz, bw);
@@ -580,14 +581,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double ax = (rng() % 6969) - 3500;
-				double ay = (rng() % 6969) - 3500;
-				double az = (rng() % 6969) - 3500;
-				double aw = (rng() % 6969) - 3500;
-				double bx = (rng() % 6969) - 3500;
-				double by = (rng() % 6969) - 3500;
-				double bz = (rng() % 6969) - 3500;
-				double bw = (rng() % 6969) - 3500;
+				double ax = LARGE_RAND_DOUBLE;
+				double ay = LARGE_RAND_DOUBLE;
+				double az = LARGE_RAND_DOUBLE;
+				double aw = LARGE_RAND_DOUBLE;
+				double bx = LARGE_RAND_DOUBLE;
+				double by = LARGE_RAND_DOUBLE;
+				double bz = LARGE_RAND_DOUBLE;
+				double bw = LARGE_RAND_DOUBLE;
 
 				Vector4d a(ax, ay, az, aw);
 				Vector4d b(bx, by, bz, bw);
