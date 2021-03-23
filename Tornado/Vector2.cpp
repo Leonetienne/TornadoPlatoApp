@@ -21,7 +21,9 @@ double Vector2<double>::DotProduct(const Vector2<double>& other)
 // Slow, lame version for intcels
 double Vector2<int>::DotProduct(const Vector2<int>& other)
 {
-	int iDot = (x * other.x) + (y * other.y);
+	int iDot = (x * other.x) +
+			   (y * other.y);
+
 	return (double)iDot;
 }
 
@@ -37,7 +39,9 @@ double Vector2<double>::CrossProduct(const Vector2<double>& other)
 // Slow, lame version for intcels
 double Vector2<int>::CrossProduct(const Vector2<int>& other)
 {
-	int iCross = (x * other.y) - (y * other.x);
+	int iCross = (x * other.y) -
+				 (y * other.x);
+
 	return (double)iCross;
 }
 

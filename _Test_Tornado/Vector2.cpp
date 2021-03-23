@@ -128,8 +128,14 @@ namespace Vectors
 			Vector2d a(69, 32);
 			Vector2d b = a;
 
-			Assert::AreEqual(a.x, b.x);
-			Assert::AreEqual(a.y, b.y);
+			b.x = 169;
+			b.y = 132;
+
+			Assert::AreEqual(69.0, a.x);
+			Assert::AreEqual(32.0, a.y);
+
+			Assert::AreEqual(169.0, b.x);
+			Assert::AreEqual(132.0, b.y);
 
 			return;
 		}
@@ -194,6 +200,40 @@ namespace Vectors
 				Assert::IsTrue(a.DotProduct(b) < 0, wss.str().c_str());
 				Assert::IsTrue(b.DotProduct(a) < 0, wss.str().c_str());
 			}
+
+			return;
+		}
+
+		// Quick and dirty check if the useless int-method is working
+		TEST_METHOD(DotProduct_Dirty_Int)
+		{
+			Vector2i a;
+			Vector2i b;
+			std::wstringstream wss;
+
+			// 90 deg
+			a = {0, 10};
+			b = {10, 0};
+			wss.str(L"");
+			wss << a << L" DOT " << b << L" = " << a.DotProduct(b) << std::endl;
+			Assert::AreEqual(0.0, a.DotProduct(b), wss.str().c_str());
+			Assert::AreEqual(0.0, b.DotProduct(a), wss.str().c_str());
+
+			// < 90 deg
+			a = { 7, 10 };
+			b = { 10, 1 };
+			wss.str(L"");
+			wss << a << L" DOT " << b << L" = " << a.DotProduct(b) << std::endl;
+			Assert::IsTrue(a.DotProduct(b) > 0.0, wss.str().c_str());
+			Assert::IsTrue(b.DotProduct(a) > 0.0, wss.str().c_str());
+
+			// > 90 deg
+			a = { -3, 10 };
+			b = { 10, -4 };
+			wss.str(L"");
+			wss << a << L" DOT " << b << L" = " << a.DotProduct(b) << std::endl;
+			Assert::IsTrue(a.DotProduct(b) < 0.0, wss.str().c_str());
+			Assert::IsTrue(b.DotProduct(a) < 0.0, wss.str().c_str());
 
 			return;
 		}
@@ -288,6 +328,46 @@ namespace Vectors
 			return;
 		}
 
+		// Quick and dirty check if the useless int-method is working
+		TEST_METHOD(CrossProduct_Dirty_Int)
+		{
+			Vector2i a;
+			Vector2i b;
+			std::wstringstream wss;
+
+			// Same direction
+			a = { 10, 0 };
+			b = { 10, 0 };
+			wss.str(L"");
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::AreEqual(0.0, a.CrossProduct(b), wss.str().c_str());
+			Assert::AreEqual(0.0, b.CrossProduct(a), wss.str().c_str());
+
+			// Opposite direction
+			a = { -10, 0 };
+			b = { 10, 0 };
+			wss.str(L"");
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::AreEqual(0.0, a.CrossProduct(b), wss.str().c_str());
+			Assert::AreEqual(0.0, b.CrossProduct(a), wss.str().c_str());
+
+			// B to the left
+			a = { 0, 10 };
+			b = { -5, 10 };
+			wss.str(L"");
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(a.CrossProduct(b) > 0.0, wss.str().c_str());
+
+			// B to the right
+			a = { 0, 10 };
+			b = { 17, 10 };
+			wss.str(L"");
+			wss << a << L" CROSS " << b << L" = " << a.CrossProduct(b) << std::endl;
+			Assert::IsTrue(a.CrossProduct(b) < 0.0, wss.str().c_str());
+
+			return;
+		}
+
 		// Tests the SqrMagnitude method to work as expected with random numbers
 		TEST_METHOD(SqrMagnitude)
 		{
@@ -299,6 +379,22 @@ namespace Vectors
 				double expected = x*x + y*y;
 
 				Assert::AreEqual(expected, Vector2d(x, y).SqrMagnitude());
+			}
+
+			return;
+		}
+
+		// Checks if the int method is working
+		TEST_METHOD(SqrMagnitude_Int)
+		{
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				int x = (rng() % 6969) - 3500;
+				int y = (rng() % 6969) - 3500;
+				int expected = x*x + y*y;
+
+				Assert::AreEqual((double)expected, Vector2i(x, y).SqrMagnitude());
 			}
 
 			return;
@@ -427,7 +523,6 @@ namespace Vectors
 				std::wstringstream wss;
 				wss << vec;
 				Assert::IsTrue(Similar(vec.Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
-
 			}
 			
 			return;
@@ -459,6 +554,26 @@ namespace Vectors
 				wss.str().c_str());
 			}
 			return;
+		}
+
+		// Kinda dumb method, but ok lol
+		// DON'T NORMALIZE INT-VECTORS WHAT IS WRONG WITH YOU
+		TEST_METHOD(Normalized_Int_Vector_Is_0)
+		{
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				int x = (rng() % 6969) - 3500;
+				int y = (rng() % 6969) - 3500;
+
+				Vector2i vec(x, y);
+
+				vec.Normalize();
+
+				std::wstringstream wss;
+				wss << vec;
+				Assert::AreEqual(0.0, vec.Magnitude(), wss.str().c_str());
+			}
 		}
 
 		// Tests for operator+ to work as expected
