@@ -10,7 +10,7 @@ class PixelBuffer
 public:
 	PixelBuffer(const uint8_t* data, const Vector2i& size);
 	PixelBuffer(const Vector2i& size);
-	PixelBuffer(const PixelBuffer& other);
+	PixelBuffer(const PixelBuffer<T>& other);
 
 	~PixelBuffer();
 
@@ -71,9 +71,9 @@ PixelBuffer<T>::PixelBuffer(const Vector2i& size)
 }
 
 template<std::size_t T>
-PixelBuffer<T>::PixelBuffer(const PixelBuffer& other)
+PixelBuffer<T>::PixelBuffer(const PixelBuffer<T>& other)
 {
-	Refit(other.data, other.size);
+	Refit(other.pixelBuffer, other.size);
 	return;
 }
 
