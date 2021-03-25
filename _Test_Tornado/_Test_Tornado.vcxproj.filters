@@ -30,5 +30,11 @@
     <ClCompile Include="PixelBuffer.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

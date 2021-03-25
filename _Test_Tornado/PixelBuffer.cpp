@@ -454,6 +454,12 @@ namespace PixelBuffers
 			delete[] existingData;
 		}
 
+
+		// =========== MEMORY LEAK TESTS ===========
+		// These tests depends on debug-mode for memory insights.
+		// Thus, they only works in debug mode.
+		#ifdef _DEBUG
+
 		// Tests for the PixelBuffer not creating a memory leak when construction via the blank constructor
 		TEST_METHOD(Blank_No_Memoryleak)
 		{
@@ -512,5 +518,7 @@ namespace PixelBuffers
 
 			return;
 		}
+
+		#endif
 	};
 }
