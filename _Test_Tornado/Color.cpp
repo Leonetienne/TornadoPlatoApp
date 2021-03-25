@@ -22,7 +22,7 @@ namespace TexturingAndStuff
 		}
 
 		// Tests that a color does match the values given to the constructor
-		TEST_METHOD(Color_Does_Match_Constructor_Without_A)
+		TEST_METHOD(Color_Does_Match_Constructor_Without_Alpha)
 		{
 			// Test 100 times
 			for (std::size_t i = 0; i < 100; i++)
