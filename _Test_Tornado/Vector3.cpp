@@ -1,9 +1,9 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector3.h"
+#include "../_TestingUtilities/Similar.h"
+#include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
-#include "Similar.h"
-#include "HandyMacros.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

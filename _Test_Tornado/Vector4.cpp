@@ -1,10 +1,10 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector4.h"
 #include "../Tornado/Matrix4x4.h"
+#include "../_TestingUtilities/Similar.h"
+#include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
-#include "Similar.h"
-#include "HandyMacros.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -369,10 +369,10 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = LARGE_RAND_DOUBLE;
-				int y = LARGE_RAND_DOUBLE;
-				int z = LARGE_RAND_DOUBLE;
-				int w = LARGE_RAND_DOUBLE;
+				int x = LARGE_RAND_INT;
+				int y = LARGE_RAND_INT;
+				int z = LARGE_RAND_INT;
+				int w = LARGE_RAND_INT;
 
 				Vector4i vec(x, y, z, w);
 
