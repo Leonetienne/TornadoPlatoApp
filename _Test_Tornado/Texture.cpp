@@ -8,9 +8,6 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-// The Refit() tests cover the Refit() method, the PixelBuffer(uint8_t* existingData, Vector2i size) constructor, and the copy constructor!
-// They all use the Refit() method!
-
 namespace TexturingAndStuff
 {
 	TEST_CLASS(_Texture)

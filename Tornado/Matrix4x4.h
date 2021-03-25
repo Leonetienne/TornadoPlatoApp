@@ -1,8 +1,6 @@
 #pragma once
 #include <cstring>
 #include <array>
-#include <initializer_list>
-#include "Constants.h"
 
 /*
 * myMatrix[y][x] = 3
@@ -37,6 +35,11 @@ public:
 
 	std::array<double, 4>& operator[](std::size_t y);
 	const std::array<double, 4>& operator[](std::size_t y) const;
+
+	void operator=(const Matrix4x4& other);
+
+	bool operator==(const Matrix4x4& other);
+	bool operator!=(const Matrix4x4& other);
 
 	const Vector3d GetTranslationComponent();
 

@@ -36,5 +36,8 @@
     <ClCompile Include="Color.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectionProperties.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
