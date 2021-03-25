@@ -198,7 +198,8 @@ namespace PixelBuffers
 		{
 			PixelBuffer<4> pxb({ 100, 100 });
 
-			for (std::size_t i = 0; i < 100*100*4; i++)
+			constexpr std::size_t size = 100*100*4;
+			for (std::size_t i = 0; i < size; i++)
 				Assert::AreEqual(0, (int)pxb.GetRawData()[i]);
 
 			return;
@@ -207,17 +208,19 @@ namespace PixelBuffers
 		// Tests if the pixel buffer can copy existing data via Refit(), matching by value
 		TEST_METHOD(Refit_Can_Copy_Existing_Data_Values_Match)
 		{
+			constexpr std::size_t size = 256*256*8;
+
 			// Create random existing data
-			uint8_t* existingData = new uint8_t[256*256*8];
+			uint8_t* existingData = new uint8_t[size];
 			
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				existingData[i] = rng() % 255;
 
 			// Create pixelbuffer from it
 			PixelBuffer<8> pxb(existingData, { 256, 256 });
 
 			// Assert, that the two data segments are identical
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				Assert::AreEqual(existingData[i], pxb.GetRawData()[i]);
 
 			// Cleanup
@@ -229,19 +232,21 @@ namespace PixelBuffers
 		// Tests if the pixel buffer can copy existing data via Refit(), when the pixelbuffer is already initialized, matching by value
 		TEST_METHOD(Refit_Again_Can_Copy_Existing_Data_Values_Match)
 		{
+			constexpr std::size_t size = 256*256*8;
+
 			// Create pixel buffer of different size
 			PixelBuffer<8> pxb({ 128, 128 });
 
 			// Create random existing data
-			uint8_t* existingData = new uint8_t[256*256*8];
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			uint8_t* existingData = new uint8_t[size];
+			for (std::size_t i = 0; i < size; i++)
 				existingData[i] = rng() % 255;
 
 			// Fit buffer to new data
 			pxb.Refit(existingData, { 256, 256 });
 
 			// Assert, that the two data segments are identical
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				Assert::AreEqual(existingData[i], pxb.GetRawData()[i]);
 
 			// Cleanup
@@ -253,21 +258,23 @@ namespace PixelBuffers
 		// Tests that if copied via Refit() from an existing data segment, changing the resulting Object does not change the initial data
 		TEST_METHOD(Refit_Can_Copy_Existing_Data_Actual_Copy)
 		{
-			// Create existing data
-			uint8_t* existingData = new uint8_t[256*256*8];
+			constexpr std::size_t size = 256*256*8;
 
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			// Create existing data
+			uint8_t* existingData = new uint8_t[size];
+
+			for (std::size_t i = 0; i < size; i++)
 				existingData[i] = 0;
 
 			// Create pixelbuffer from it
 			PixelBuffer<8> pxb(existingData, { 256, 256 });
 
 			// Modify existing data, changing every single element
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				existingData[i] = rng() % 250 + 5;
 
 			// Assert, that none two data segments are identical
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				Assert::AreNotEqual(existingData[i], pxb.GetRawData()[i]);
 
 			// Cleanup
@@ -279,23 +286,25 @@ namespace PixelBuffers
 		// Tests that if copied via Refit() from an existing data segment, when the pixelbuffer is already initialized, changing the resulting Object does not change the initial data
 		TEST_METHOD(Refit_Again_Can_Copy_Existing_Data_Actual_Copy)
 		{
+			constexpr std::size_t size = 256*256*8;
+
 			// Create pixel buffer of different size
 			PixelBuffer<8> pxb({ 128, 128 });
 
 			// Create existing data
-			uint8_t* existingData = new uint8_t[256*256*8];
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			uint8_t* existingData = new uint8_t[size];
+			for (std::size_t i = 0; i < size; i++)
 				existingData[i] = 0;
 
 			// Fit buffer to new data
 			pxb.Refit(existingData, { 256, 256 });
 
 			// Modify existing data, changing every single element
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				existingData[i] = rng() % 250 + 5;
 
 			// Assert, that none two data segments are identical
-			for (std::size_t i = 0; i < 256*256*8; i++)
+			for (std::size_t i = 0; i < size; i++)
 				Assert::AreNotEqual(existingData[i], pxb.GetRawData()[i]);
 
 			// Cleanup

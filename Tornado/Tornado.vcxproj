@@ -21,6 +21,10 @@
   <ItemGroup>
     <ClInclude Include="Color.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="InterRenderTriangle.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="ProjectionProperties.h" />
+    <ClInclude Include="RenderTriangle3D.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="PixelBuffer.h" />
@@ -30,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ProjectionProperties.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Vector2.cpp" />

@@ -77,6 +77,22 @@ const std::array<double, 4>& Matrix4x4::operator[](std::size_t y) const
 	return v[y];
 }
 
+void Matrix4x4::operator=(const Matrix4x4& other)
+{
+	v = other.v;
+	return;
+}
+
+bool Matrix4x4::operator==(const Matrix4x4& other)
+{
+	return v == other.v;
+}
+
+bool Matrix4x4::operator!=(const Matrix4x4& other)
+{
+	return !operator==(other);
+}
+
 const Vector3d Matrix4x4::GetTranslationComponent()
 {
 	return Vector3d(d, h, l);
