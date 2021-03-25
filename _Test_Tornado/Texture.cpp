@@ -94,8 +94,8 @@ namespace TexturingAndStuff
 
 				// Generate texture of random size from it
 				// Don't make the textures too large, so the unit tests won't take decades to run
-				int x = rng() % 32;
-				int y = rng() % 32;
+				int x = rng() % 33 + 1;
+				int y = rng() % 33 + 1;
 				Texture txt(textureCol, { x, y });
 
 				// Check for each pixel, that it matches the generated color
