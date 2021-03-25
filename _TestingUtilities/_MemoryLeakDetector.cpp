@@ -8,6 +8,10 @@ namespace TestingUtilities
 	TEST_CLASS(_MemoryLeakDetector)
 	{
 	public:
+		// =========== MEMORY LEAK TESTS ===========
+		// These tests depends on debug-mode for memory insights.
+		// Thus, they only works in debug mode.
+		#ifdef _DEBUG
 
 		// Tests to detect no memory leak, if the test does nothing at all
 		TEST_METHOD(No_Memleak_For_Nothing)
@@ -53,6 +57,7 @@ namespace TestingUtilities
 			return;
 		}
 
+
 		// Tests to detect a memory leak when not cleaning up pointers
 		TEST_METHOD(Memleak_For_No_Pointer_Cleanup)
 		{
@@ -95,5 +100,6 @@ namespace TestingUtilities
 			Assert::IsTrue(mld.DetectLeak());
 			return;
 		}
+		#endif
 	};
 }
