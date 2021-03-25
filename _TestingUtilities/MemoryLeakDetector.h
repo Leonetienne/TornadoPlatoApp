@@ -1,6 +1,9 @@
 #pragma once
 #include <crtdbg.h>
 
+// Don't even allow compilation in release mode unless handled correctly.
+// This class ONLY WORKS IN DEBUG MODE!!!
+#ifdef _DEBUG
 class MemoryLeakDetector
 {
 public:
@@ -38,3 +41,4 @@ private:
 	_CrtMemState stateBfr;
 
 };
+#endif

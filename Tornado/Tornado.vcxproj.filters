@@ -36,6 +36,9 @@
     <ClInclude Include="PixelBuffer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -48,6 +51,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Vector4.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
