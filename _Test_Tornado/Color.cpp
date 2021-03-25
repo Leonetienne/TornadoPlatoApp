@@ -66,17 +66,17 @@ namespace TexturingAndStuff
 		// Tests that the operator equals (==) works
 		TEST_METHOD(Operator_Equals)
 		{
-			// Test 100 times
-			for (std::size_t i = 0; i < 100; i++)
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
 			{
-				const uint8_t ar = rng() % 10;
-				const uint8_t ag = rng() % 10;
-				const uint8_t ab = rng() % 10;
-				const uint8_t aa = rng() % 10;
-				const uint8_t br = rng() % 10;
-				const uint8_t bg = rng() % 10;
-				const uint8_t bb = rng() % 10;
-				const uint8_t ba = rng() % 10;
+				const uint8_t ar = rng() % 5;
+				const uint8_t ag = rng() % 5;
+				const uint8_t ab = rng() % 5;
+				const uint8_t aa = rng() % 5;
+				const uint8_t br = rng() % 5;
+				const uint8_t bg = rng() % 5;
+				const uint8_t bb = rng() % 5;
+				const uint8_t ba = rng() % 5;
 
 				const Color a(ar, ag, ab, aa);
 				const Color b(br, bg, bb, ba);
@@ -91,17 +91,17 @@ namespace TexturingAndStuff
 		// Tests that the operator not-equals (!=) works
 		TEST_METHOD(Operator_NotEquals)
 		{
-			// Test 100 times
-			for (std::size_t i = 0; i < 100; i++)
+			// Test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
 			{
-				const uint8_t ar = rng() % 10;
-				const uint8_t ag = rng() % 10;
-				const uint8_t ab = rng() % 10;
-				const uint8_t aa = rng() % 10;
-				const uint8_t br = rng() % 10;
-				const uint8_t bg = rng() % 10;
-				const uint8_t bb = rng() % 10;
-				const uint8_t ba = rng() % 10;
+				const uint8_t ar = rng() % 5;
+				const uint8_t ag = rng() % 5;
+				const uint8_t ab = rng() % 5;
+				const uint8_t aa = rng() % 5;
+				const uint8_t br = rng() % 5;
+				const uint8_t bg = rng() % 5;
+				const uint8_t bb = rng() % 5;
+				const uint8_t ba = rng() % 5;
 
 				const Color a(ar, ag, ab, aa);
 				const Color b(br, bg, bb, ba);
