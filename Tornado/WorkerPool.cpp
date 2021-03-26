@@ -16,6 +16,29 @@ WorkerPool::WorkerPool(std::size_t numWorkers)
 	return;
 }
 
+WorkerPool::~WorkerPool()
+{
+	// Stop all workers
+	for (Worker* w : workers)
+		w->Stop();
+
+	// Wait for all workers to finish
+	for (const Worker* w : workers)
+		w->ownThread->join();
+
+	// Free all workers
+	for (Worker* w : workers)
+		delete w;
+	workers.clear();
+	
+	// Free all tasks
+	for (WorkerTask* wt : taskQueue)
+		delete wt;
+	taskQueue.clear();
+
+	return;
+}
+
 void WorkerPool::QueueTask(WorkerTask* task)
 {
 	taskQueue.push_back(task);
@@ -62,13 +85,13 @@ void WorkerPool::Execute()
 					if (wt->state == WorkerTaskState::QUEUED) // And if a task is unassigned
 						w->DoTask(wt);	// Add that task
 	
-		Sleep(16); // Reduce cpu overhead
+		cpSleep(16); // Reduce cpu overhead
 	}
 	
 	// Now all tasks are assigned. Wait for them to finish
 	for (const Worker* w : workers)
 		while (!w->IsIdling())
-			Sleep(16);
+			cpSleep(16);
 	
 	// Now all tasks are finished. Let's clean up after ourselves!
 	for (WorkerTask* wt : taskQueue)
@@ -79,12 +102,6 @@ void WorkerPool::Execute()
 }
 
 ////////////////////////////////////////////////////////
-
-Worker::Worker()
-{
-	Lifecycle();
-	return;
-}
 
 Worker::~Worker()
 {
@@ -140,7 +157,7 @@ void Worker::Lifecycle()
 		// Idling
 		else
 		{
-			Sleep(16); // Reduce cpu load drastically when doing 'nothing'.
+			cpSleep(16); // Reduce cpu load drastically when doing 'nothing'.
 		}
 	}
 

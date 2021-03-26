@@ -23,7 +23,6 @@ class WorkerPool;
 class Worker
 {
 public:
-	Worker();
 	~Worker();
 
 	// Will attempt to start working on a provided task
@@ -36,11 +35,19 @@ public:
 	// Will instruct the worker to exit his THREAD!! (not the task) as soon as its current task finishes
 	void Stop();
 
+	// These are needed for unit testing (without a worker pool)
+	#ifdef _DEBUG
+	void SetThread(std::thread* thr) { ownThread = thr; };
+	std::thread* GetThread() { return ownThread; };
+	void Lifecycle();
+	#endif;
 
 private:
+	#ifndef _DEBUG
 	void Lifecycle();
+	#endif
 	
-	std::thread* ownThread;
+	std::thread* ownThread = nullptr;
 	WorkerTask* task = nullptr;
 	bool isIdling = true;
 	bool doTask = false;
@@ -53,6 +60,7 @@ class WorkerPool
 {
 public:
 	WorkerPool(std::size_t numWorkers);
+	~WorkerPool();
 
 	// Will queue a task to be done
 	void QueueTask(WorkerTask* task);
@@ -73,4 +81,3 @@ private:
 	std::vector<Worker*> workers;
 	std::vector<WorkerTask*> taskQueue;
 };
-
