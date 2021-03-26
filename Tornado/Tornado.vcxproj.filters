@@ -51,6 +51,9 @@
     <ClInclude Include="ProjectionProperties.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="WorkerPool.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -72,6 +75,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ProjectionProperties.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkerPool.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
