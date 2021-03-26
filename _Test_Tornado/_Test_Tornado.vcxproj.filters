@@ -39,5 +39,11 @@
     <ClCompile Include="ProjectionProperties.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="WorkerPool.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Worker.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

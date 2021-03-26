@@ -164,6 +164,8 @@
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
+    <ClCompile Include="Worker.cpp" />
+    <ClCompile Include="WorkerPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tornado\Tornado.vcxproj">
