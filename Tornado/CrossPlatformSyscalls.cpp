@@ -8,10 +8,10 @@
 #include <unistd.h>
 #endif
 
-inline void Sleep(std::size_t ms)
+void cpSleep(std::size_t ms)
 {
 	#ifdef WINDOWS
-		Sleep(ms);
+		Sleep((DWORD)ms);
 	#else
 		sleep(ms);
 	#endif;
