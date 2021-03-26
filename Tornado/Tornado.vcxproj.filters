@@ -54,6 +54,9 @@
     <ClInclude Include="WorkerPool.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="CrossPlatformSyscalls.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -78,6 +81,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WorkerPool.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossPlatformSyscalls.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

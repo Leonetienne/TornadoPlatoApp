@@ -7,6 +7,7 @@
 enum class WorkerTaskState
 {
 	QUEUED,
+	ASSIGNED, // This is an intermediate state that should not last longer than a few cycles
 	COMPUTING,
 	FINISHED
 };
@@ -22,6 +23,7 @@ class WorkerPool;
 class Worker
 {
 public:
+	Worker();
 	~Worker();
 
 	// Will attempt to start working on a provided task
@@ -37,8 +39,7 @@ public:
 
 private:
 	void Lifecycle();
-
-	WorkerPool* workerPool;
+	
 	std::thread* ownThread;
 	WorkerTask* task = nullptr;
 	bool isIdling = true;

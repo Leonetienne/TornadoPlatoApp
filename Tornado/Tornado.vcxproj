@@ -25,6 +25,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="ProjectionProperties.h" />
     <ClInclude Include="RenderTriangle3D.h" />
+    <ClInclude Include="CrossPlatformSyscalls.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="PixelBuffer.h" />
@@ -35,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="CrossPlatformSyscalls.cpp" />
     <ClCompile Include="ProjectionProperties.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
@@ -115,6 +117,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -149,6 +152,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
