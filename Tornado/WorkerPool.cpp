@@ -1,4 +1,5 @@
 #include "WorkerPool.h"
+#include "CrossPlatformSyscalls.h"
 
 WorkerPool::WorkerPool(std::size_t numWorkers)
 {
@@ -7,8 +8,7 @@ WorkerPool::WorkerPool(std::size_t numWorkers)
 	for (std::size_t i = 0; i < numWorkers; i++)
 	{
 		Worker* newWorker = new Worker();
-		newWorker->workerPool = this;
-		newWorker->ownThread = new std::thread(&Worker::Lifecycle, this);
+		newWorker->ownThread = new std::thread(&Worker::Lifecycle, newWorker);
 
 		workers.push_back(newWorker);
 	}
@@ -61,15 +61,15 @@ void WorkerPool::Execute()
 				for (WorkerTask* wt : taskQueue)
 					if (wt->state == WorkerTaskState::QUEUED) // And if a task is unassigned
 						w->DoTask(wt);	// Add that task
-
-		_sleep(16); // Reduce cpu overhead
+	
+		Sleep(16); // Reduce cpu overhead
 	}
-
+	
 	// Now all tasks are assigned. Wait for them to finish
 	for (const Worker* w : workers)
 		while (!w->IsIdling())
-			_sleep(16);
-
+			Sleep(16);
+	
 	// Now all tasks are finished. Let's clean up after ourselves!
 	for (WorkerTask* wt : taskQueue)
 		delete wt;
@@ -100,10 +100,11 @@ bool Worker::DoTask(WorkerTask* task)
 		return false;
 
 	this->task = task;
+	this->task->state = WorkerTaskState::ASSIGNED;
 	isIdling = false;
 	doTask = true;
 
-	return;
+	return true;
 }
 
 bool Worker::IsIdling() const
@@ -139,7 +140,7 @@ void Worker::Lifecycle()
 		// Idling
 		else
 		{
-			_sleep(16); // Reduce cpu load drastically when doing 'nothing'.
+			Sleep(16); // Reduce cpu load drastically when doing 'nothing'.
 		}
 	}
 
