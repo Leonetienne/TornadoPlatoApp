@@ -511,6 +511,33 @@ namespace Vectors
 			return;
 		}
 
+		// Tests lerp as a static function
+		TEST_METHOD(Lerp_Static)
+		{
+			Vector2d a(100, 1000);
+			Vector2d b(200, 4000);
+			Vector2d res = Vector2d::Lerp(a, b, 0.75);
+
+			std::wstringstream wss;
+			wss << res;
+			Assert::IsTrue(Vector2d(175, 3250) == res, wss.str().c_str());
+			return;
+		}
+
+		// Tests lerpself
+		TEST_METHOD(LerpSelf)
+		{
+			Vector2d a(100, 1000);
+			Vector2d b(200, 4000);
+
+			a.LerpSelf(b, 0.75);
+
+			std::wstringstream wss;
+			wss << a;
+			Assert::IsTrue(Vector2d(175, 3250) == a, wss.str().c_str());
+			return;
+		}
+
 		// Tests if an input vector of length 0 is handled correctly by the normalize method
 		TEST_METHOD(Normalize_Length_Before_Is_0)
 		{
