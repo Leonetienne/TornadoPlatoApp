@@ -111,8 +111,8 @@ const T& Vector4<T>::operator[](std::size_t idx) const
 
 
 
-template<typename T>
-void Vector4<T>::LerpSelf(const Vector4<T>& other, double t)
+// Good, optimized chad version for doubles
+void Vector4<double>::LerpSelf(const Vector4<double>& other, double t)
 {
 	double t1 = 1.0f - t;
 
@@ -120,6 +120,19 @@ void Vector4<T>::LerpSelf(const Vector4<T>& other, double t)
 	y = t1 * y + t * other.y;
 	z = t1 * z + t * other.z;
 	w = t1 * w + t * other.w;
+
+	return;
+}
+
+// Slow, lame version for intcels
+void Vector4<int>::LerpSelf(const Vector4<int>& other, double t)
+{
+	double t1 = 1.0f - t;
+
+	x = (int)(t1 * (double)x + t * (double)other.x);
+	y = (int)(t1 * (double)y + t * (double)other.y);
+	z = (int)(t1 * (double)z + t * (double)other.z);
+	w = (int)(t1 * (double)w + t * (double)other.w);
 
 	return;
 }

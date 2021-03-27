@@ -33,7 +33,7 @@ uint8_t Outcode(const Vector4d& v)
 {
 	uint8_t outcode = 0;
 
-	for (std::size_t i = 0; i < 6; i++)
+	for (uint8_t i = 0; i < 6; i++)
 	{
 		// The HomoDot() result would be most likely <-100, if failed
 		// So, allowing x >= -0.00001 to verify should be okay :3

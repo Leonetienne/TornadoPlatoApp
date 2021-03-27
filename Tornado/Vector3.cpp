@@ -144,14 +144,26 @@ const T& Vector3<T>::operator[](std::size_t idx) const
 
 
 
-template<typename T>
-void Vector3<T>::LerpSelf(const Vector3<T>& other, double t)
+// Good, optimized chad version for doubles
+void Vector3<double>::LerpSelf(const Vector3<double>& other, double t)
 {
 	double t1 = 1.0f - t;
 
 	x = t1 * x + t * other.x;
 	y = t1 * y + t * other.y;
 	z = t1 * z + t * other.z;
+
+	return;
+}
+
+// Slow, lame version for intcels
+void Vector3<int>::LerpSelf(const Vector3<int>& other, double t)
+{
+	double t1 = 1.0f - t;
+
+	x = (int)(t1 * (double)x + t * (double)other.x);
+	y = (int)(t1 * (double)y + t * (double)other.y);
+	z = (int)(t1 * (double)z + t * (double)other.z);
 
 	return;
 }

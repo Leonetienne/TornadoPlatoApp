@@ -7,7 +7,7 @@ struct InterRenderTriangle
 	InterRenderVertex a;
 	InterRenderVertex b;
 	InterRenderVertex c;
-	double ss_area;	// Area of the screen space coordinate triangle
+	double ss_area = 0;	// Area of the screen space coordinate triangle
 
-	Material* material; // Material to render with
+	Material* material = nullptr; // Material to render with
 };
