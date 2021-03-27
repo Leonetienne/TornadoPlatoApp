@@ -101,15 +101,25 @@ void Vector2<int>::Normalize()
 }
 
 
-
-template<typename T>
-void Vector2<T>::LerpSelf(const Vector2<T>& other, double t)
+// Good, optimized chad version for doubles
+void Vector2<double>::LerpSelf(const Vector2<double>& other, double t)
 {
 	double t1 = 1.0f - t;
 
 	x = t1 * x + t * other.x;
 	y = t1 * y + t * other.y;
 	
+	return;
+}
+
+// Slow, lame version for intcels
+void Vector2<int>::LerpSelf(const Vector2<int>& other, double t)
+{
+	double t1 = 1.0f - t;
+
+	x = (int)(t1 * (double)x + t * (double)other.x);
+	y = (int)(t1 * (double)y + t * (double)other.y);
+
 	return;
 }
 

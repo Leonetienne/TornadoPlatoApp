@@ -11,10 +11,10 @@ Texture::Texture(const Color& color)
 {
 	pixelBuffer = new PixelBuffer<4>({ 1,1 });
 
-	*pixelBuffer->GetPixel({ 0, 0 }, 0) = color.r;
-	*pixelBuffer->GetPixel({ 0, 0 }, 1) = color.g;
-	*pixelBuffer->GetPixel({ 0, 0 }, 2) = color.b;
-	*pixelBuffer->GetPixel({ 0, 0 }, 3) = color.a;
+	*pixelBuffer->GetPixel({ 0, 0 }, 0) = (uint8_t)color.r;
+	*pixelBuffer->GetPixel({ 0, 0 }, 1) = (uint8_t)color.g;
+	*pixelBuffer->GetPixel({ 0, 0 }, 2) = (uint8_t)color.b;
+	*pixelBuffer->GetPixel({ 0, 0 }, 3) = (uint8_t)color.a;
 
 	return;
 }
@@ -26,10 +26,10 @@ Texture::Texture(const Color& color, const Vector2i& size)
 	std::size_t cachedSize = pixelBuffer->GetSizeofBuffer();
 	for (std::size_t i = 0; i < cachedSize; i += 4)
 	{
-		pixelBuffer->GetRawData()[i+0] = color.r;
-		pixelBuffer->GetRawData()[i+1] = color.g;
-		pixelBuffer->GetRawData()[i+2] = color.b;
-		pixelBuffer->GetRawData()[i+3] = color.a;
+		pixelBuffer->GetRawData()[i+0] = (uint8_t)color.r;
+		pixelBuffer->GetRawData()[i+1] = (uint8_t)color.g;
+		pixelBuffer->GetRawData()[i+2] = (uint8_t)color.b;
+		pixelBuffer->GetRawData()[i+3] = (uint8_t)color.a;
 	}
 	return;
 }

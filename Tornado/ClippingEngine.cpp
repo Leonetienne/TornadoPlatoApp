@@ -47,9 +47,9 @@ std::vector<InterRenderTriangle> ClippingEngine::Clip(const InterRenderTriangle&
 	// 3 -> bottom
 	// 4 -> near
 	// 6 -> far
-	for (std::size_t e = 0; e < 6; e++)
+	for (uint8_t e = 0; e < 6; e++)
 	{
-		for (long t = clippingResult.size() - 1; t >= 0; t--)
+		for (long t = (long)clippingResult.size() - 1; t >= 0; t--)
 		{
 			InterRenderTriangle splitTri;
 			bool hasSplitTri;
@@ -133,31 +133,31 @@ void ClippingEngine::ClipOneIn(uint8_t edge, InterRenderTriangle& tri, bool a_in
 
 	if (a_inside)
 	{
-		const double alphaB = da / (da - db);
-		const double alphaC = da / (da - dc);
+		const double alphaB = (-da / (da - db)) + 1;
+		const double alphaC = (-da / (da - dc)) + 1;
 
-		tri.b.Interpolate(tri.a, 1.0 - alphaB);
-		tri.c.Interpolate(tri.a, 1.0 - alphaC);
+		tri.b.Interpolate(tri.a, alphaB);
+		tri.c.Interpolate(tri.a, alphaC);
 		//tri.csr_b = tri.csr_a.Lerp(tri.csr_b, alphaB);
 		//tri.csr_c = tri.csr_a.Lerp(tri.csr_c, alphaC);
 	}
 	else if (b_inside)
 	{
-		const double alphaA = db / (db - da);
-		const double alphaC = db / (db - dc);
+		const double alphaA = (-db / (db - da)) + 1;
+		const double alphaC = (-db / (db - dc)) + 1;
 
-		tri.a.Interpolate(tri.b, 1.0 - alphaA);
-		tri.c.Interpolate(tri.b, 1.0 - alphaC);
+		tri.a.Interpolate(tri.b, alphaA);
+		tri.c.Interpolate(tri.b, alphaC);
 		//tri.csr_a = tri.csr_b.Lerp(tri.csr_a, alphaA);
 		//tri.csr_c = tri.csr_b.Lerp(tri.csr_c, alphaC);
 	}
 	else if (c_inside)
 	{
-		const double alphaB = dc / (dc - db);
-		const double alphaA = dc / (dc - da);
+		const double alphaB = (-dc / (dc - db)) + 1;
+		const double alphaA = (-dc / (dc - da)) + 1;
 
-		tri.a.Interpolate(tri.c, 1.0 - alphaA);
-		tri.b.Interpolate(tri.c, 1.0 - alphaB);
+		tri.a.Interpolate(tri.c, alphaA);
+		tri.b.Interpolate(tri.c, alphaB);
 		//tri.csr_a = tri.csr_c.Lerp(tri.csr_a, alphaA);
 		//tri.csr_b = tri.csr_c.Lerp(tri.csr_b, alphaB);
 	}
@@ -245,7 +245,7 @@ uint8_t ClippingEngine::Outcode(const Vector4d& v)
 {
 	uint8_t outcode = 0;
 
-	for (std::size_t i = 0; i < 6; i++)
+	for (uint8_t i = 0; i < 6; i++)
 	{
 		if (HomoDot(i, v) <= 0)
 		{
