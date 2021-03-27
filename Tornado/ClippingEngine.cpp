@@ -14,9 +14,9 @@ std::vector<InterRenderTriangle> ClippingEngine::Clip(const InterRenderTriangle&
 	std::vector<InterRenderTriangle> clippingResult; // <-- Stores our triangles
 
 	// Calculate outcodes for original triangle vertices
-	uint8_t outcode_a = Outcode(tri.csr_a);
-	uint8_t outcode_b = Outcode(tri.csr_b);
-	uint8_t outcode_c = Outcode(tri.csr_c);
+	uint8_t outcode_a = Outcode(tri.a.pos_cs);
+	uint8_t outcode_b = Outcode(tri.b.pos_cs);
+	uint8_t outcode_c = Outcode(tri.c.pos_cs);
 
 	// Fast accept. Triangle is completely visible
 	if ((outcode_a | outcode_b | outcode_c) == 0)
@@ -34,6 +34,11 @@ std::vector<InterRenderTriangle> ClippingEngine::Clip(const InterRenderTriangle&
 	// If the triangle made it here, we actually have to clip it... *sigh*
 	clippingResult.reserve(64); // Mathematically impossible to get more triangles out of one when clipping in three dimensions (homogenous coords are technically just distorted 3d coordinates)
 	clippingResult.push_back(tri);
+
+	constexpr long long interpolationMask = IRV_LERP_POS_WS | IRV_LERP_POS_CS | IRV_LERP_POS_UV | IRV_LERP_NORMAL | IRV_LERP_VERTEX_COLOR;
+	clippingResult[0].a.SetInterpolationMask(interpolationMask);
+	clippingResult[0].b.SetInterpolationMask(interpolationMask);
+	clippingResult[0].c.SetInterpolationMask(interpolationMask);
 
 	// Iterate over edges
 	// 0 -> left
@@ -66,9 +71,9 @@ void ClippingEngine::ClipEdge(uint8_t edge, InterRenderTriangle& tri, InterRende
 	hasSplitTri = false;
 	hasDroppedTri = false;
 
-	uint8_t outcode_a = Outcode(tri.csr_a);
-	uint8_t outcode_b = Outcode(tri.csr_b);
-	uint8_t outcode_c = Outcode(tri.csr_c);
+	uint8_t outcode_a = Outcode(tri.a.pos_cs);
+	uint8_t outcode_b = Outcode(tri.b.pos_cs);
+	uint8_t outcode_c = Outcode(tri.c.pos_cs);
 
 	uint8_t numInside = 0;
 	bool a_inside = false;
@@ -122,33 +127,39 @@ void ClippingEngine::ClipEdge(uint8_t edge, InterRenderTriangle& tri, InterRende
 
 void ClippingEngine::ClipOneIn(uint8_t edge, InterRenderTriangle& tri, bool a_inside, bool b_inside, bool c_inside)
 {
-	const double da = HomoDot(edge, tri.csr_a);
-	const double db = HomoDot(edge, tri.csr_b);
-	const double dc = HomoDot(edge, tri.csr_c);
+	const double da = HomoDot(edge, tri.a.pos_cs);
+	const double db = HomoDot(edge, tri.b.pos_cs);
+	const double dc = HomoDot(edge, tri.c.pos_cs);
 
 	if (a_inside)
 	{
 		const double alphaB = da / (da - db);
 		const double alphaC = da / (da - dc);
 
-		tri.csr_b = tri.csr_a.Lerp(tri.csr_b, alphaB);
-		tri.csr_c = tri.csr_a.Lerp(tri.csr_c, alphaC);
+		tri.b.Interpolate(tri.a, 1.0 - alphaB);
+		tri.c.Interpolate(tri.a, 1.0 - alphaC);
+		//tri.csr_b = tri.csr_a.Lerp(tri.csr_b, alphaB);
+		//tri.csr_c = tri.csr_a.Lerp(tri.csr_c, alphaC);
 	}
 	else if (b_inside)
 	{
 		const double alphaA = db / (db - da);
 		const double alphaC = db / (db - dc);
 
-		tri.csr_a = tri.csr_b.Lerp(tri.csr_a, alphaA);
-		tri.csr_c = tri.csr_b.Lerp(tri.csr_c, alphaC);
+		tri.a.Interpolate(tri.b, 1.0 - alphaA);
+		tri.c.Interpolate(tri.b, 1.0 - alphaC);
+		//tri.csr_a = tri.csr_b.Lerp(tri.csr_a, alphaA);
+		//tri.csr_c = tri.csr_b.Lerp(tri.csr_c, alphaC);
 	}
 	else if (c_inside)
 	{
 		const double alphaB = dc / (dc - db);
 		const double alphaA = dc / (dc - da);
 
-		tri.csr_b = tri.csr_c.Lerp(tri.csr_b, alphaB);
-		tri.csr_a = tri.csr_c.Lerp(tri.csr_a, alphaA);
+		tri.a.Interpolate(tri.c, 1.0 - alphaA);
+		tri.b.Interpolate(tri.c, 1.0 - alphaB);
+		//tri.csr_a = tri.csr_c.Lerp(tri.csr_a, alphaA);
+		//tri.csr_b = tri.csr_c.Lerp(tri.csr_b, alphaB);
 	}
 
 	return;
@@ -156,9 +167,9 @@ void ClippingEngine::ClipOneIn(uint8_t edge, InterRenderTriangle& tri, bool a_in
 
 void ClippingEngine::ClipTwoIn(uint8_t edge, InterRenderTriangle& tri, InterRenderTriangle& split_tri, bool a_inside, bool b_inside, bool c_inside)
 {
-	const double da = HomoDot(edge, tri.csr_a);
-	const double db = HomoDot(edge, tri.csr_b);
-	const double dc = HomoDot(edge, tri.csr_c);
+	const double da = HomoDot(edge, tri.a.pos_cs);
+	const double db = HomoDot(edge, tri.b.pos_cs);
+	const double dc = HomoDot(edge, tri.c.pos_cs);
 
 	// AB inside
 	if (!c_inside)
@@ -166,16 +177,21 @@ void ClippingEngine::ClipTwoIn(uint8_t edge, InterRenderTriangle& tri, InterRend
 		const double alphaCA = da / (da - dc);
 		const double alphaCB = db / (db - dc);
 
-		const Vector4d lerpedCA = tri.csr_a.Lerp(tri.csr_c, alphaCA);
-		const Vector4d lerpedCB = tri.csr_b.Lerp(tri.csr_c, alphaCB);
+		InterRenderVertex lerpedCA = tri.a;
+		lerpedCA.Interpolate(tri.c, alphaCA);
 
-		tri.csr_a = tri.csr_a;
-		tri.csr_b = tri.csr_b;
-		tri.csr_c = lerpedCA;
+		InterRenderVertex lerpedCB = tri.b;
+		lerpedCB.Interpolate(tri.c, alphaCB);
+		//const Vector4d lerpedCA = tri.csr_a.Lerp(tri.csr_c, alphaCA);
+		//const Vector4d lerpedCB = tri.csr_b.Lerp(tri.csr_c, alphaCB);
 
-		split_tri.csr_a = tri.csr_c; // A becomes C'A
-		split_tri.csr_b = tri.csr_b; // B stays original B
-		split_tri.csr_c = lerpedCB;  // C becomes C'B
+		//tri.a = tri.a;
+		//tri.b = tri.b;
+		tri.c = lerpedCA;
+
+		split_tri.a = tri.c;    // A becomes C'A
+		split_tri.b = tri.b;    // B stays original B
+		split_tri.c = lerpedCB; // C becomes C'B
 	}
 	// CB inside
 	else if (!a_inside)
@@ -183,16 +199,21 @@ void ClippingEngine::ClipTwoIn(uint8_t edge, InterRenderTriangle& tri, InterRend
 		const double alphaAC = dc / (dc - da);
 		const double alphaAB = db / (db - da);
 
-		const Vector4d lerpedAC = tri.csr_c.Lerp(tri.csr_a, alphaAC);
-		const Vector4d lerpedAB = tri.csr_b.Lerp(tri.csr_a, alphaAB);
+		InterRenderVertex lerpedAC = tri.c;
+		lerpedAC.Interpolate(tri.a, alphaAC);
 
-		tri.csr_c = tri.csr_c;
-		tri.csr_b = tri.csr_b;
-		tri.csr_a = lerpedAB;
+		InterRenderVertex lerpedAB = tri.b;
+		lerpedAB.Interpolate(tri.a, alphaAB);
+		//const Vector4d lerpedAC = tri.csr_c.Lerp(tri.csr_a, alphaAC);
+		//const Vector4d lerpedAB = tri.csr_b.Lerp(tri.csr_a, alphaAB);
 
-		split_tri.csr_a = lerpedAC;	 // A becomes A'C 
-		split_tri.csr_b = tri.csr_a; // B becomes A'B
-		split_tri.csr_c = tri.csr_c; // C stays original C
+		//tri.c = tri.c;
+		//tri.b = tri.b;
+		tri.a = lerpedAB;
+
+		split_tri.a = lerpedAC;	// A becomes A'C 
+		split_tri.b = tri.a;    // B becomes A'B
+		split_tri.c = tri.c;    // C stays original C
 	}
 	// AC inside
 	else if (!b_inside)
@@ -200,16 +221,21 @@ void ClippingEngine::ClipTwoIn(uint8_t edge, InterRenderTriangle& tri, InterRend
 		const double alphaBC = dc / (dc - db);
 		const double alphaBA = da / (da - db);
 
-		const Vector4d lerpedBC = tri.csr_c.Lerp(tri.csr_b, alphaBC);
-		const Vector4d lerpedBA = tri.csr_a.Lerp(tri.csr_b, alphaBA);
+		InterRenderVertex lerpedBC = tri.c;
+		lerpedBC.Interpolate(tri.b, alphaBC);
 
-		tri.csr_c = tri.csr_c;
-		tri.csr_a = tri.csr_a;
-		tri.csr_b = lerpedBA;
+		InterRenderVertex lerpedBA = tri.a;
+		lerpedBA.Interpolate(tri.b, alphaBA);
+		//const Vector4d lerpedBC = tri.csr_c.Lerp(tri.csr_b, alphaBC);
+		//const Vector4d lerpedBA = tri.csr_a.Lerp(tri.csr_b, alphaBA);
 
-		split_tri.csr_a = tri.csr_b; // A becomes B'A
-		split_tri.csr_b = lerpedBC;  // B becomes B'C
-		split_tri.csr_c = tri.csr_c; // C stays original C
+		//tri.c = tri.c;
+		//tri.a = tri.a;
+		tri.b = lerpedBA;
+
+		split_tri.a = tri.b;    // A becomes B'A
+		split_tri.b = lerpedBC; // B becomes B'C
+		split_tri.c = tri.c;	// C stays original C
 	}
 
 	return;

@@ -48,5 +48,8 @@
     <ClCompile Include="ClippingEngine.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="InterRenderVertex.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
