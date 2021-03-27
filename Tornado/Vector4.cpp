@@ -276,6 +276,17 @@ void Vector4<double>::operator*=(const Matrix4x4 mat)
 	return;
 }
 
+template<typename T>
+void Vector4<T>::operator=(const Vector4<T>& other)
+{
+	x = other.x;
+	y = other.y;
+	z = other.z;
+	w = other.w;
+
+	return;
+}
+
 // Slow, lame version for intcels
 void Vector4<int>::operator*=(const Matrix4x4 mat)
 {

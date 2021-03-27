@@ -218,6 +218,15 @@ void Vector2<T>::operator/=(const T scale)
 }
 
 template<typename T>
+void Vector2<T>::operator=(const Vector2<T>& other)
+{
+	x = other.x;
+	y = other.y;
+
+	return;
+}
+
+template<typename T>
 bool Vector2<T>::operator==(const Vector2<T>& other) const
 {
 	return

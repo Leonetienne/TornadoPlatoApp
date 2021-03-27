@@ -748,7 +748,7 @@ namespace Vectors
 		}
 
 		// Tests for operator== to work as expected
-		TEST_METHOD(Operator_Equals)
+		TEST_METHOD(Operator_Compare_Equals)
 		{
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
