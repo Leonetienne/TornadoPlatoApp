@@ -103,9 +103,25 @@ void Vector2<int>::Normalize()
 
 
 template<typename T>
-Vector2<double> Vector2<T>::Lerp(const Vector2<T>& other, double t)
+void Vector2<T>::LerpSelf(const Vector2<T>& other, double t)
 {
-	return Vector2::Lerp(*this, other, t);
+	double t1 = 1.0f - t;
+
+	x = t1 * x + t * other.x;
+	y = t1 * y + t * other.y;
+	
+	return;
+}
+
+template<typename T>
+Vector2<double> Vector2<T>::Lerp(const Vector2<T>& other, double t) const
+{
+	double t1 = 1.0f - t;
+
+	return Vector2<double>(
+		t1 * x + t * other.x,
+		t1 * y + t * other.y
+	);
 }
 
 template<typename T>

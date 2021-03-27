@@ -142,10 +142,30 @@ const T& Vector3<T>::operator[](std::size_t idx) const
 	}
 }
 
+
+
 template<typename T>
-Vector3<double> Vector3<T>::Lerp(const Vector3<T>& other, double t)
+void Vector3<T>::LerpSelf(const Vector3<T>& other, double t)
 {
-	return Vector3::Lerp(*this, other, t);
+	double t1 = 1.0f - t;
+
+	x = t1 * x + t * other.x;
+	y = t1 * y + t * other.y;
+	z = t1 * z + t * other.z;
+
+	return;
+}
+
+template<typename T>
+Vector3<double> Vector3<T>::Lerp(const Vector3<T>& other, double t) const
+{
+	double t1 = 1.0 - t;
+
+	return Vector3<double>(
+		t1 * x + t * other.x,
+		t1 * y + t * other.y,
+		t1 * z + t * other.z
+	);
 }
 
 template<typename T>
@@ -159,6 +179,7 @@ Vector3<double> Vector3<T>::Lerp(const Vector3<T>& a, const Vector3<T>& b, doubl
 		t1 * a.z + t * b.z
 	);
 }
+
 
 
 template<typename T>

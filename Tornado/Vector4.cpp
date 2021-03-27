@@ -109,10 +109,32 @@ const T& Vector4<T>::operator[](std::size_t idx) const
 	}
 }
 
+
+
 template<typename T>
-Vector4<double> Vector4<T>::Lerp(const Vector4<T>& other, double t)
+void Vector4<T>::LerpSelf(const Vector4<T>& other, double t)
 {
-	return Vector4::Lerp(*this, other, t);
+	double t1 = 1.0f - t;
+
+	x = t1 * x + t * other.x;
+	y = t1 * y + t * other.y;
+	z = t1 * z + t * other.z;
+	w = t1 * w + t * other.w;
+
+	return;
+}
+
+template<typename T>
+Vector4<double> Vector4<T>::Lerp(const Vector4<T>& other, double t) const
+{
+	double t1 = 1.0 - t;
+
+	return Vector4<double>(
+		t1 * x + t * other.x,
+		t1 * y + t * other.y,
+		t1 * z + t * other.z,
+		t1 * w + t * other.w
+	);
 }
 
 template<typename T>

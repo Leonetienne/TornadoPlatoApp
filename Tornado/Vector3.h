@@ -17,7 +17,12 @@ public:
 	double SqrMagnitude();
 	double Magnitude();
 	void Normalize();
-	Vector3<double> Lerp(const Vector3<T>& other, double t);
+
+	// Will lerp itself towards other by t
+	void LerpSelf(const Vector3<T>& other, double t);
+	// Will lerp relative to this vector
+	Vector3<double> Lerp(const Vector3<T>& other, double t) const;
+	// Will lerp between a and b
 	static Vector3<double> Lerp(const Vector3<T>& a, const Vector3<T>& b, double t);
 
 	T& operator[](std::size_t idx);
