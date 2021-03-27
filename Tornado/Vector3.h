@@ -34,6 +34,8 @@ public:
 	Vector3<T> operator*(const Matrix4x4& mat) const;
 	void operator*=(const Matrix4x4& mat);
 
+	void operator=(const Vector3<T>& other);
+
 	bool operator==(const Vector3<T>& other) const;
 	bool operator!=(const Vector3<T>& other) const;
 

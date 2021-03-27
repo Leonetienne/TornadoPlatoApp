@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClippingEngine.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="InterRenderTriangle.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="WorkerPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClippingEngine.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CrossPlatformSyscalls.cpp" />
     <ClCompile Include="ProjectionProperties.cpp" />

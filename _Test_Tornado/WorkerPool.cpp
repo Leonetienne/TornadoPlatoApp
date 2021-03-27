@@ -26,6 +26,16 @@ namespace Multithreading
 			return;
 		}
 
+		// Tests if an exception is thrown if the worker count is set to be 0
+		TEST_METHOD(Exception_WorkerCount_0)
+		{
+			Assert::ExpectException<std::exception>([]() 
+				{
+					WorkerPool pool(0);
+				});
+			return;
+		}
+
 		// Tests if the method GetNumWorkers() matches the amount of workers passed to the constructor
 		TEST_METHOD(Does_WorkerCount_Match)
 		{

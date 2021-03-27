@@ -29,6 +29,8 @@ public:
 	Vector2<T> operator/(const T scale) const;
 	void operator/=(const T scale);
 	
+	void operator=(const Vector2<T>& other);
+
 	bool operator==(const Vector2<T>& other) const;
 	bool operator!=(const Vector2<T>& other) const;
 
