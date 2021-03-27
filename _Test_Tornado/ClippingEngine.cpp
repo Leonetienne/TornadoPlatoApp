@@ -90,11 +90,11 @@ namespace Engines
 
 			// This triangle looks somewhat like this in clipping space (frontal view):
 			// Notice how it does not meet the criteria for a fast-reject? Not all vertices violate a the same edge.
-			//                         A            C
+			//                         A            B
 			// 
 			//  +---------------------------+
 			//  |                           |
-			//  |                           |       B
+			//  |                           |       C
 			//  |                           |
 			//  |                           |
 			//  |                           |
@@ -128,7 +128,7 @@ namespace Engines
 			//                 +---------------------------+
 			//                 |                           |
 			//                 |                           |  
-			//  A          C   |                           |
+			//  C          A   |                           |
 			//                 |                           |
 			//                 |                           |
 			//        B        |                           |

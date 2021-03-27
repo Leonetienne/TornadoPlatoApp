@@ -18,6 +18,7 @@ mono_crash.*
 
 # Visual Paradigm Shitfiles
 *tornado.vpp.bak*
+*tornado.*lck*
 
 # Build results
 [Dd]ebug/
