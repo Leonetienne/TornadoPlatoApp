@@ -10,7 +10,7 @@ const Color Color::cyan		{   0, 255, 255, 255 };
 const Color Color::pink		{ 255,   0, 255, 255 };
 const Color Color::white	{ 255, 255, 255, 255 };
 
-Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+Color::Color(double r, double g, double b, double a)
 	:
 	r{ r },
 	g{ g },
@@ -32,4 +32,40 @@ bool Color::operator==(const Color& other) const
 bool Color::operator!=(const Color& other) const
 {
 	return !operator==(other);
+}
+
+void Color::LerpSelf(const Color& other, double t)
+{
+	double in_t = 1.0 - t;
+
+	r = in_t*r + t*other.r;
+	g = in_t*g + t*other.g;
+	b = in_t*b + t*other.b;
+	a = in_t*a + t*other.a;
+
+	return;
+}
+
+Color Color::Lerp(const Color& other, double t) const
+{
+	double in_t = 1.0 - t;
+
+	return Color(
+		in_t * r + t * other.r,
+		in_t * g + t * other.g,
+		in_t * b + t * other.b,
+		in_t * a + t * other.a
+	);
+}
+
+Color Color::Lerp(const Color& a, const Color& b, double t)
+{
+	double in_t = 1.0 - t;
+
+	return Color(
+		in_t * a.r + t * b.r,
+		in_t * a.g + t * b.g,
+		in_t * a.b + t * b.b,
+		in_t * a.a + t * b.a
+	);
 }

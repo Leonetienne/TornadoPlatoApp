@@ -1,17 +1,36 @@
 #pragma once
 #include <cstdint>
+#include <ostream>
 
 struct Color
 {
-	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	Color() : r{ 0 }, g{ 0 }, b{ 0 }, a{ 0 } {};
+	Color(double r, double g, double b, double a = 255);
 
-	uint8_t r = 0;
-	uint8_t g = 0;
-	uint8_t b = 0;
-	uint8_t a = 0;
+	double r;
+	double g;
+	double b;
+	double a;
 
 	bool operator==(const Color& other) const;
 	bool operator!=(const Color& other) const;
+
+	// Will lerp itself to other by t
+	void LerpSelf(const Color& other, double t);
+	// Will lerp between self and other
+	Color Lerp(const Color& other, double t) const;
+	// Will lerp between a and b
+	static Color Lerp(const Color& a, const Color& b, double t);
+
+	friend std::ostream& operator<< (std::ostream& os, const Color& c)
+	{
+		return os << "[r: " << c.r << ", g: " << c.g << ", b: " << c.b << ", a: " << c.a << "]";
+	}
+
+	friend std::wostream& operator<< (std::wostream& os, const Color& c)
+	{
+		return os << L"[r: " << c.r << L", g: " << c.g << L", b: " << c.b << L", a: " << c.a << L"]";
+	}
 
 	static const Color black;
 	static const Color gray;
