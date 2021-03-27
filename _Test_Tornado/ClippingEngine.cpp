@@ -36,8 +36,8 @@ uint8_t Outcode(const Vector4d& v)
 	for (std::size_t i = 0; i < 6; i++)
 	{
 		// The HomoDot() result would be most likely <-100, if failed
-		// So, allowing x >= -0.0000001 to verify should be okay :3
-		if (HomoDot(i, v) < -0.0000001)
+		// So, allowing x >= -0.00001 to verify should be okay :3
+		if (HomoDot(i, v) < -0.00001)
 		{
 			outcode |= (1 << i);
 		}
@@ -66,9 +66,9 @@ namespace Engines
 		{
 			// Create triangle that is knowingly all inside the clipping space
 			InterRenderTriangle ird;
-			ird.csr_a = { -325, 0.5, 1.1, 512 };
-			ird.csr_b = {  412, 0.5, 1.1, 927 };
-			ird.csr_c = { 0, 0.5, 1.1, 561 };
+			ird.a.pos_cs = { -325, 0.5, 1.1, 512 };
+			ird.b.pos_cs = {  412, 0.5, 1.1, 927 };
+			ird.c.pos_cs = { 0, 0.5, 1.1, 561 };
 
 			std::vector<InterRenderTriangle> ret = ClippingEngine::Clip(ird);
 
@@ -76,9 +76,9 @@ namespace Engines
 
 			InterRenderTriangle tri = ret[0];
 
-			Assert::IsTrue(tri.csr_a == ird.csr_a, L"A-Vertex failed");
-			Assert::IsTrue(tri.csr_b == ird.csr_b, L"B-Vertex failed");
-			Assert::IsTrue(tri.csr_c == ird.csr_c, L"C-Vertex failed");
+			Assert::IsTrue(tri.a.pos_cs == ird.a.pos_cs, L"A-Vertex failed");
+			Assert::IsTrue(tri.b.pos_cs == ird.b.pos_cs, L"B-Vertex failed");
+			Assert::IsTrue(tri.c.pos_cs == ird.c.pos_cs, L"C-Vertex failed");
 
 			return;
 		}
@@ -105,9 +105,9 @@ namespace Engines
 
 
 			InterRenderTriangle ird;
-			ird.csr_a = { 273.5, -820.5, 1.1, 547 };
-			ird.csr_b = { 718.5, -718.5, 3.55, 479 };
-			ird.csr_c = { 918, -459, 9.1, 612 };
+			ird.a.pos_cs = { 273.5, -820.5, 1.1, 547 };
+			ird.b.pos_cs = { 718.5, -718.5, 3.55, 479 };
+			ird.c.pos_cs = { 918, -459, 9.1, 612 };
 
 			std::vector<InterRenderTriangle> ret = ClippingEngine::Clip(ird);
 
@@ -137,9 +137,9 @@ namespace Engines
 			//                 +---------------------------+
 
 			InterRenderTriangle ird;
-			ird.csr_a = { -325, 0.5, 1.1, 2 };
-			ird.csr_b = { -412, -0.5, 1.1, 14 };
-			ird.csr_c = { -1000, 0.5, 1.1, 3 };
+			ird.a.pos_cs = { -325, 0.5, 1.1, 2 };
+			ird.b.pos_cs = { -412, -0.5, 1.1, 14 };
+			ird.c.pos_cs = { -1000, 0.5, 1.1, 3 };
 
 			std::vector<InterRenderTriangle> ret = ClippingEngine::Clip(ird);
 
@@ -156,23 +156,23 @@ namespace Engines
 			{
 				InterRenderTriangle ird;
 				#define rnddnum rng() % 1000
-				ird.csr_a = Vector4d(rnddnum - 500, rnddnum - 500, rnddnum - 500, rng() % 500 + 25.0);
-				ird.csr_b = Vector4d(rnddnum - 500, rnddnum - 500, rnddnum - 500, rng() % 500 + 25.0);
-				ird.csr_c = Vector4d(rnddnum - 500, rnddnum - 500, rnddnum - 500, rng() % 500 + 25.0);
+				ird.a.pos_cs = Vector4d(rnddnum - 500, rnddnum - 500, rnddnum - 500, rng() % 500 + 25.0);
+				ird.b.pos_cs = Vector4d(rnddnum - 500, rnddnum - 500, rnddnum - 500, rng() % 500 + 25.0);
+				ird.c.pos_cs = Vector4d(rnddnum - 500, rnddnum - 500, rnddnum - 500, rng() % 500 + 25.0);
 				#undef rnddnum
 
 				std::wstringstream wss;
 				{
 					InterRenderTriangle test = ird;
-					test.csr_a /= test.csr_a.w;
-					test.csr_b /= test.csr_b.w;
-					test.csr_c /= test.csr_c.w;
+					test.a.pos_cs /= test.a.pos_cs.w;
+					test.b.pos_cs /= test.b.pos_cs.w;
+					test.c.pos_cs /= test.c.pos_cs.w;
 
 					wss << std::endl
 						<< "Initial triangle:" << std::endl
-						<< "a: " << test.csr_a << std::endl
-						<< "b: " << test.csr_b << std::endl
-						<< "c: " << test.csr_c << std::endl
+						<< "a: " << test.a.pos_cs << std::endl
+						<< "b: " << test.b.pos_cs << std::endl
+						<< "c: " << test.c.pos_cs << std::endl
 						<< std::endl;
 				}
 
@@ -182,21 +182,21 @@ namespace Engines
 				int counter = 0;
 				for (InterRenderTriangle& ir : ret)
 				{
-					uint8_t out_a = Outcode(ir.csr_a);
-					uint8_t out_b = Outcode(ir.csr_b);
-					uint8_t out_c = Outcode(ir.csr_c);
+					uint8_t out_a = Outcode(ir.a.pos_cs);
+					uint8_t out_b = Outcode(ir.b.pos_cs);
+					uint8_t out_c = Outcode(ir.c.pos_cs);
 
 					// Do perspective divide
-					ir.csr_a /= ir.csr_a.w;
-					ir.csr_b /= ir.csr_b.w;
-					ir.csr_c /= ir.csr_c.w;
+					ir.a.pos_cs /= ir.a.pos_cs.w;
+					ir.b.pos_cs /= ir.b.pos_cs.w;
+					ir.c.pos_cs /= ir.c.pos_cs.w;
 
 					wss << std::endl
 						<< "i = " << counter << std::endl
 						<< "sz = " << ret.size() << std::endl
-						<< "a: " << ir.csr_a << std::endl
-						<< "b: " << ir.csr_b << std::endl
-						<< "c: " << ir.csr_c << std::endl
+						<< "a: " << ir.a.pos_cs << std::endl
+						<< "b: " << ir.b.pos_cs << std::endl
+						<< "c: " << ir.c.pos_cs << std::endl
 						<< std::endl;
 
 					if ((out_a | out_b | out_c) != 0)
@@ -213,21 +213,21 @@ namespace Engines
 		TEST_METHOD(Vertex_Order_Stays_Intact_1_In_A)
 		{
 			InterRenderTriangle ird;
-			ird.csr_a = { 0, 0, 4, 547 };
-			ird.csr_b = { -600, 100, 4, 479 };
-			ird.csr_c = { -600, -100, 4, 612 };
+			ird.a.pos_cs = { 0, 0, 4, 547 };
+			ird.b.pos_cs = { -600, 100, 4, 479 };
+			ird.c.pos_cs = { -600, -100, 4, 612 };
 
 			InterRenderTriangle ret = ClippingEngine::Clip(ird)[0];
 
 			std::wstringstream wss;
 			wss << std::endl
-				<< "a:" << ret.csr_a << std::endl
-				<< "b:" << ret.csr_b << std::endl
-				<< "c:" << ret.csr_c << std::endl
+				<< "a:" << ret.a.pos_cs << std::endl
+				<< "b:" << ret.b.pos_cs << std::endl
+				<< "c:" << ret.c.pos_cs << std::endl
 				<< std::endl;
 
-			Assert::IsTrue(ret.csr_a == ird.csr_a,    (wss.str() + L"A").c_str());  // a should stay untouched
-			Assert::IsTrue(ret.csr_b.y > ret.csr_c.y, (wss.str() + L"BC").c_str()); // b.y should still be above c.y
+			Assert::IsTrue(ret.a.pos_cs == ird.a.pos_cs,    (wss.str() + L"A").c_str());  // a should stay untouched
+			Assert::IsTrue(ret.b.pos_cs.y > ret.c.pos_cs.y, (wss.str() + L"BC").c_str()); // b.y should still be above c.y
 
 			return;
 		}
@@ -236,21 +236,21 @@ namespace Engines
 		TEST_METHOD(Vertex_Order_Stays_Intact_1_In_B)
 		{
 			InterRenderTriangle ird;
-			ird.csr_a = { -600, 100, 4, 479 };
-			ird.csr_b = { 0, 0, 4, 547 };
-			ird.csr_c = { -600, -100, 4, 612 };
+			ird.a.pos_cs = { -600, 100, 4, 479 };
+			ird.b.pos_cs = { 0, 0, 4, 547 };
+			ird.c.pos_cs = { -600, -100, 4, 612 };
 
 			InterRenderTriangle ret = ClippingEngine::Clip(ird)[0];
 
 			std::wstringstream wss;
 			wss << std::endl
-				<< "a:" << ret.csr_a << std::endl
-				<< "b:" << ret.csr_b << std::endl
-				<< "c:" << ret.csr_c << std::endl
+				<< "a:" << ret.a.pos_cs << std::endl
+				<< "b:" << ret.b.pos_cs << std::endl
+				<< "c:" << ret.c.pos_cs << std::endl
 				<< std::endl;
 
-			Assert::IsTrue(ret.csr_b == ird.csr_b,	  (wss.str() + L"B").c_str());  // b should stay untouched
-			Assert::IsTrue(ret.csr_a.y > ret.csr_c.y, (wss.str() + L"AC").c_str()); // a.y should still be above c.y
+			Assert::IsTrue(ret.b.pos_cs == ird.b.pos_cs,	  (wss.str() + L"B").c_str());  // b should stay untouched
+			Assert::IsTrue(ret.a.pos_cs.y > ret.c.pos_cs.y, (wss.str() + L"AC").c_str()); // a.y should still be above c.y
 
 			return;
 		}
@@ -259,21 +259,21 @@ namespace Engines
 		TEST_METHOD(Vertex_Order_Stays_Intact_1_In_C)
 		{
 			InterRenderTriangle ird;
-			ird.csr_a = { -600, 100, 4, 479 };
-			ird.csr_b = { -600, -100, 4, 612 };
-			ird.csr_c = { 0, 0, 4, 547 };
+			ird.a.pos_cs = { -600, 100, 4, 479 };
+			ird.b.pos_cs = { -600, -100, 4, 612 };
+			ird.c.pos_cs = { 0, 0, 4, 547 };
 
 			InterRenderTriangle ret = ClippingEngine::Clip(ird)[0];
 
 			std::wstringstream wss;
 			wss << std::endl
-				<< "a:" << ret.csr_a << std::endl
-				<< "b:" << ret.csr_b << std::endl
-				<< "c:" << ret.csr_c << std::endl
+				<< "a:" << ret.a.pos_cs << std::endl
+				<< "b:" << ret.b.pos_cs << std::endl
+				<< "c:" << ret.c.pos_cs << std::endl
 				<< std::endl;
 
-			Assert::IsTrue(ret.csr_c == ird.csr_c,    (wss.str() + L"C").c_str());  // c should stay untouched
-			Assert::IsTrue(ret.csr_a.y > ret.csr_b.y, (wss.str() + L"AB").c_str()); // a.y should still be above b.y
+			Assert::IsTrue(ret.c.pos_cs == ird.c.pos_cs,    (wss.str() + L"C").c_str());  // c should stay untouched
+			Assert::IsTrue(ret.a.pos_cs.y > ret.b.pos_cs.y, (wss.str() + L"AB").c_str()); // a.y should still be above b.y
 
 			return;
 		}
@@ -282,9 +282,9 @@ namespace Engines
 		TEST_METHOD(Vertex_Order_Stays_Intact_2_In_AB)
 		{
 			InterRenderTriangle ird;
-			ird.csr_a = { 0, 100, 4, 547 };
-			ird.csr_b = { 0, -100, 4, 547 };
-			ird.csr_c = { -900, 0, 4, 612 };
+			ird.a.pos_cs = { 0, 100, 4, 547 };
+			ird.b.pos_cs = { 0, -100, 4, 547 };
+			ird.c.pos_cs = { -900, 0, 4, 612 };
 
 			std::vector<InterRenderTriangle> res = ClippingEngine::Clip(ird);
 			Assert::AreEqual(2, (int)res.size(), L"Triangle return count mismatch");
@@ -293,24 +293,24 @@ namespace Engines
 
 			std::wstringstream wss;
 			wss << std::endl
-				<< "a1:" << ret1.csr_a << std::endl
-				<< "b1:" << ret1.csr_b << std::endl
-				<< "c1:" << ret1.csr_c << std::endl
+				<< "a1:" << ret1.a.pos_cs << std::endl
+				<< "b1:" << ret1.b.pos_cs << std::endl
+				<< "c1:" << ret1.c.pos_cs << std::endl
 				<< std::endl
-				<< "a2:" << ret2.csr_a << std::endl
-				<< "b2:" << ret2.csr_b << std::endl
-				<< "c2:" << ret2.csr_c << std::endl
+				<< "a2:" << ret2.a.pos_cs << std::endl
+				<< "b2:" << ret2.b.pos_cs << std::endl
+				<< "c2:" << ret2.c.pos_cs << std::endl
 				<< std::endl;
 
-			Assert::IsTrue(ret1.csr_a == ird.csr_a, (wss.str() + L"A1").c_str());    // a1 should stay untouched
-			Assert::IsTrue(ret1.csr_b == ird.csr_b, (wss.str() + L"B1").c_str());    // b1 should stay untouched
-			Assert::IsTrue(ret2.csr_b == ird.csr_b, (wss.str() + L"B2").c_str());    // b2 should stay untouched
-			Assert::IsTrue(ret1.csr_c.x < ret1.csr_a.x, (wss.str() + L"C1<B1").c_str());	 // c1.x should still be to the left of a1.x
-			Assert::IsTrue(ret2.csr_c.x < ret2.csr_b.x, (wss.str() + L"C2<B2").c_str());	 // c2.x should still be to the left of b2.x
-			Assert::IsTrue(ret1.csr_a.y > ret1.csr_c.y, (wss.str() + L"A1^C1").c_str());	 // a1.y should still be above of c1.y
-			Assert::IsTrue(ret1.csr_b.y < ret1.csr_c.y, (wss.str() + L"B1vC1").c_str());	 // b1.y should still be below of c1.y
-			Assert::IsTrue(ret2.csr_a.y > ret2.csr_c.y, (wss.str() + L"A2^C2").c_str());	 // a2.y should still be above of c2.y
-			Assert::IsTrue(ret2.csr_b.y < ret2.csr_c.y, (wss.str() + L"B2vC2").c_str());	 // b2.y should still be below of c2.y
+			Assert::IsTrue(ret1.a.pos_cs == ird.a.pos_cs, (wss.str() + L"A1").c_str());    // a1 should stay untouched
+			Assert::IsTrue(ret1.b.pos_cs == ird.b.pos_cs, (wss.str() + L"B1").c_str());    // b1 should stay untouched
+			Assert::IsTrue(ret2.b.pos_cs == ird.b.pos_cs, (wss.str() + L"B2").c_str());    // b2 should stay untouched
+			Assert::IsTrue(ret1.c.pos_cs.x < ret1.a.pos_cs.x, (wss.str() + L"C1<B1").c_str());	 // c1.x should still be to the left of a1.x
+			Assert::IsTrue(ret2.c.pos_cs.x < ret2.b.pos_cs.x, (wss.str() + L"C2<B2").c_str());	 // c2.x should still be to the left of b2.x
+			Assert::IsTrue(ret1.a.pos_cs.y > ret1.c.pos_cs.y, (wss.str() + L"A1^C1").c_str());	 // a1.y should still be above of c1.y
+			Assert::IsTrue(ret1.b.pos_cs.y < ret1.c.pos_cs.y, (wss.str() + L"B1vC1").c_str());	 // b1.y should still be below of c1.y
+			Assert::IsTrue(ret2.a.pos_cs.y > ret2.c.pos_cs.y, (wss.str() + L"A2^C2").c_str());	 // a2.y should still be above of c2.y
+			Assert::IsTrue(ret2.b.pos_cs.y < ret2.c.pos_cs.y, (wss.str() + L"B2vC2").c_str());	 // b2.y should still be below of c2.y
 
 			return;
 		}
@@ -319,9 +319,9 @@ namespace Engines
 		TEST_METHOD(Vertex_Order_Stays_Intact_2_In_BC)
 		{
 			InterRenderTriangle ird;
-			ird.csr_a = { -900, 0, 4, 612 };
-			ird.csr_b = { 0, 100, 4, 547 };
-			ird.csr_c = { 0, -100, 4, 547 };
+			ird.a.pos_cs = { -900, 0, 4, 612 };
+			ird.b.pos_cs = { 0, 100, 4, 547 };
+			ird.c.pos_cs = { 0, -100, 4, 547 };
 
 			std::vector<InterRenderTriangle> res = ClippingEngine::Clip(ird);
 			Assert::AreEqual(2, (int)res.size(), L"Triangle return count mismatch");
@@ -330,24 +330,24 @@ namespace Engines
 
 			std::wstringstream wss;
 			wss << std::endl
-				<< "a1:" << ret1.csr_a << std::endl
-				<< "b1:" << ret1.csr_b << std::endl
-				<< "c1:" << ret1.csr_c << std::endl
+				<< "a1:" << ret1.a.pos_cs << std::endl
+				<< "b1:" << ret1.b.pos_cs << std::endl
+				<< "c1:" << ret1.c.pos_cs << std::endl
 				<< std::endl
-				<< "a2:" << ret2.csr_a << std::endl
-				<< "b2:" << ret2.csr_b << std::endl
-				<< "c2:" << ret2.csr_c << std::endl
+				<< "a2:" << ret2.a.pos_cs << std::endl
+				<< "b2:" << ret2.b.pos_cs << std::endl
+				<< "c2:" << ret2.c.pos_cs << std::endl
 				<< std::endl;
 
-			Assert::IsTrue(ret1.csr_b == ird.csr_b, (wss.str() + L"B1").c_str());    // b1 should stay untouched
-			Assert::IsTrue(ret1.csr_c == ird.csr_c, (wss.str() + L"C1").c_str());    // c1 should stay untouched
-			Assert::IsTrue(ret2.csr_c == ird.csr_c, (wss.str() + L"C2").c_str());    // c2 should stay untouched
-			Assert::IsTrue(ret1.csr_a.x < ret1.csr_b.x, (wss.str() + L"A1<B1").c_str());	 // a1.x should still be to the left of b1.x
-			Assert::IsTrue(ret2.csr_a.x < ret2.csr_c.x, (wss.str() + L"A2<C2").c_str());	 // a2.x should still be to the left of c2.x
-			Assert::IsTrue(ret1.csr_b.y > ret1.csr_a.y, (wss.str() + L"B1^A1").c_str());	 // b1.y should still be above of a1.y
-			Assert::IsTrue(ret1.csr_c.y < ret1.csr_a.y, (wss.str() + L"C1vA1").c_str());	 // c1.y should still be below of a1.y
-			Assert::IsTrue(ret2.csr_b.y > ret2.csr_a.y, (wss.str() + L"B2^A2").c_str());	 // b2.y should still be above of a2.y
-			Assert::IsTrue(ret2.csr_c.y < ret2.csr_a.y, (wss.str() + L"C2vA2").c_str());	 // c2.y should still be below of a2.y
+			Assert::IsTrue(ret1.b.pos_cs == ird.b.pos_cs, (wss.str() + L"B1").c_str());    // b1 should stay untouched
+			Assert::IsTrue(ret1.c.pos_cs == ird.c.pos_cs, (wss.str() + L"C1").c_str());    // c1 should stay untouched
+			Assert::IsTrue(ret2.c.pos_cs == ird.c.pos_cs, (wss.str() + L"C2").c_str());    // c2 should stay untouched
+			Assert::IsTrue(ret1.a.pos_cs.x < ret1.b.pos_cs.x, (wss.str() + L"A1<B1").c_str());	 // a1.x should still be to the left of b1.x
+			Assert::IsTrue(ret2.a.pos_cs.x < ret2.c.pos_cs.x, (wss.str() + L"A2<C2").c_str());	 // a2.x should still be to the left of c2.x
+			Assert::IsTrue(ret1.b.pos_cs.y > ret1.a.pos_cs.y, (wss.str() + L"B1^A1").c_str());	 // b1.y should still be above of a1.y
+			Assert::IsTrue(ret1.c.pos_cs.y < ret1.a.pos_cs.y, (wss.str() + L"C1vA1").c_str());	 // c1.y should still be below of a1.y
+			Assert::IsTrue(ret2.b.pos_cs.y > ret2.a.pos_cs.y, (wss.str() + L"B2^A2").c_str());	 // b2.y should still be above of a2.y
+			Assert::IsTrue(ret2.c.pos_cs.y < ret2.a.pos_cs.y, (wss.str() + L"C2vA2").c_str());	 // c2.y should still be below of a2.y
 
 			return;
 		}
@@ -356,9 +356,9 @@ namespace Engines
 		TEST_METHOD(Vertex_Order_Stays_Intact_2_In_CA)
 		{
 			InterRenderTriangle ird;
-			ird.csr_a = { 0, 100, 4, 547 };
-			ird.csr_b = { -900, 0, 4, 612 };
-			ird.csr_c = { 0, -100, 4, 547 };
+			ird.a.pos_cs = { 0, 100, 4, 547 };
+			ird.b.pos_cs = { -900, 0, 4, 612 };
+			ird.c.pos_cs = { 0, -100, 4, 547 };
 
 			std::vector<InterRenderTriangle> res = ClippingEngine::Clip(ird);
 			Assert::AreEqual(2, (int)res.size(), L"Triangle return count mismatch");
@@ -367,24 +367,24 @@ namespace Engines
 
 			std::wstringstream wss;
 			wss << std::endl
-				<< "a1:" << ret1.csr_a << std::endl
-				<< "b1:" << ret1.csr_b << std::endl
-				<< "c1:" << ret1.csr_c << std::endl
+				<< "a1:" << ret1.a.pos_cs << std::endl
+				<< "b1:" << ret1.b.pos_cs << std::endl
+				<< "c1:" << ret1.c.pos_cs << std::endl
 				<< std::endl
-				<< "a2:" << ret2.csr_a << std::endl
-				<< "b2:" << ret2.csr_b << std::endl
-				<< "c2:" << ret2.csr_c << std::endl
+				<< "a2:" << ret2.a.pos_cs << std::endl
+				<< "b2:" << ret2.b.pos_cs << std::endl
+				<< "c2:" << ret2.c.pos_cs << std::endl
 				<< std::endl;
 
-			Assert::IsTrue(ret1.csr_a == ird.csr_a, (wss.str() + L"A1").c_str());    // a1 should stay untouched
-			Assert::IsTrue(ret1.csr_c == ird.csr_c, (wss.str() + L"C1").c_str());    // c1 should stay untouched
-			Assert::IsTrue(ret2.csr_c == ird.csr_c, (wss.str() + L"C2").c_str());    // c2 should stay untouched
-			Assert::IsTrue(ret1.csr_b.x < ret1.csr_a.x, (wss.str() + L"B1<A1").c_str());	 // b1.x should still be to the left of a1.x
-			Assert::IsTrue(ret2.csr_b.x < ret2.csr_c.x, (wss.str() + L"B2<C2").c_str());	 // b2.x should still be to the left of c2.x
-			Assert::IsTrue(ret1.csr_a.y > ret1.csr_b.y, (wss.str() + L"A1^B1").c_str());	 // a1.y should still be above of b1.y
-			Assert::IsTrue(ret1.csr_c.y < ret1.csr_b.y, (wss.str() + L"C1vB1").c_str());	 // c1.y should still be below of b1.y
-			Assert::IsTrue(ret2.csr_a.y > ret2.csr_b.y, (wss.str() + L"A2^B2").c_str());	 // a2.y should still be above of b2.y
-			Assert::IsTrue(ret2.csr_c.y < ret2.csr_b.y, (wss.str() + L"C2vB2").c_str());	 // c2.y should still be below of b2.y
+			Assert::IsTrue(ret1.a.pos_cs == ird.a.pos_cs, (wss.str() + L"A1").c_str());    // a1 should stay untouched
+			Assert::IsTrue(ret1.c.pos_cs == ird.c.pos_cs, (wss.str() + L"C1").c_str());    // c1 should stay untouched
+			Assert::IsTrue(ret2.c.pos_cs == ird.c.pos_cs, (wss.str() + L"C2").c_str());    // c2 should stay untouched
+			Assert::IsTrue(ret1.b.pos_cs.x < ret1.a.pos_cs.x, (wss.str() + L"B1<A1").c_str());	 // b1.x should still be to the left of a1.x
+			Assert::IsTrue(ret2.b.pos_cs.x < ret2.c.pos_cs.x, (wss.str() + L"B2<C2").c_str());	 // b2.x should still be to the left of c2.x
+			Assert::IsTrue(ret1.a.pos_cs.y > ret1.b.pos_cs.y, (wss.str() + L"A1^B1").c_str());	 // a1.y should still be above of b1.y
+			Assert::IsTrue(ret1.c.pos_cs.y < ret1.b.pos_cs.y, (wss.str() + L"C1vB1").c_str());	 // c1.y should still be below of b1.y
+			Assert::IsTrue(ret2.a.pos_cs.y > ret2.b.pos_cs.y, (wss.str() + L"A2^B2").c_str());	 // a2.y should still be above of b2.y
+			Assert::IsTrue(ret2.c.pos_cs.y < ret2.b.pos_cs.y, (wss.str() + L"C2vB2").c_str());	 // c2.y should still be below of b2.y
 
 			return;
 		}

@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="ClippingEngine.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="InterRenderVertex.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="PixelBuffer.cpp" />
     <ClCompile Include="ProjectionProperties.cpp" />
