@@ -14,8 +14,8 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 	double& aw3 = cache->at(3);
 	double& iaws = cache->at(4);
 
+	// This scope gets only executed once per pixel, even when interpolating multiple attributes per pixel!
 	// Array is zeroed by default. If this value is zero, we should initialize the values
-	// This scope only gets executed once per pixel, even when interpolating multiple values per pixel!
 	if (shouldInitialize == 0)
 	{
 		shouldInitialize = 1;
@@ -53,13 +53,16 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 			aw1 = a1 * tri.ss_iarea * tri.a.berp_iw;
 			aw2 = a2 * tri.ss_iarea * tri.c.berp_iw;
 			aw3 = a3 * tri.ss_iarea * tri.b.berp_iw;
-			iaws = 1.0 / (aw1 + aw2 + aw3);
+			iaws = 1.0 / (aw1 + aw2 + aw3); // Pre-calculate division
+			aw1 *= iaws; // Pre-calculate division by iaws
+			aw2 *= iaws;
+			aw3 *= iaws;
 		}
 	}
 
 	// Now calculate the interpolated value using cached values
-	const double numerator = (aw1 * val_a) + (aw2 * val_b) + (aw3 * val_c);
-	return numerator * iaws;
+	// Only this code gets called per attribute per pixel (when using cache)
+	return (aw1 * val_a) + (aw2 * val_b) + (aw3 * val_c);
 }
 
 
