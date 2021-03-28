@@ -2,47 +2,66 @@
 
 double BarycentricInterpolationEngine::PerspectiveCorrected(const InterRenderTriangle& tri, const Vector2d& pos, double val_a, double val_b, double val_c)
 {
-	// Only calculate area if it has not been done already
-	if (tri.ss_iarea == -1)
-	{
-		const double area = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, tri.c.pos_ss);
-		if (area > 0)
-			tri.ss_iarea = 1.0 / area;
-	}
-	if (tri.ss_iarea == -1)
-		return -1;
-
-	double a1 = EdgeFunction(pos, tri.b.pos_ss, tri.c.pos_ss);
-	double a2 = EdgeFunction(tri.a.pos_ss, pos, tri.c.pos_ss);
-	double a3 = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, pos);
-	
-	//// The 1 over z is NOT to convert back to clipping space (because z already is), but because
-	//// we are pre-calculating a division by it.
-	//// Technically just using tri.a.pos_ss.z should work aswell, but it causes artifacts most likely due to
-	//// floating point inaccuracies. Let's just roll with 1.0 / cs.z
-	if (tri.a.berp_iw == -1)
-		tri.a.berp_iw = 1.0 / tri.a.pos_cs.z;
-	
-	if (tri.b.berp_iw == -1)
-		tri.b.berp_iw = 1.0 / tri.b.pos_cs.z;
-	
-	if (tri.c.berp_iw == -1)
-		tri.c.berp_iw = 1.0 / tri.c.pos_cs.z;
-	
-	if ((a1 >= 0) && (a2 >= 0) && (a3 >= 0))
-	{
-		a1 *= tri.ss_iarea;
-		a2 *= tri.ss_iarea;
-		a3 *= tri.ss_iarea;
-		
-		const double numerator   = (a1*val_a*tri.a.berp_iw) +  (a2*val_b*tri.b.berp_iw) + (a3*val_c*tri.c.berp_iw);
-		const double denominator = (a1*tri.a.berp_iw) + (a2*tri.b.berp_iw) + (a3*tri.c.berp_iw);
-		
-		return numerator / denominator;
-	}
-
-	return -2;
+	std::array<double, 5> cache { 0 };
+	return PerspectiveCorrect__CachedValues(tri, pos, val_a, val_b, val_c, &cache);
 }
+
+double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const InterRenderTriangle& tri, const Vector2d& pos, double val_a, double val_b, double val_c, std::array<double, 5>* cache)
+{
+	double& shouldInitialize = cache->at(0);
+	double& aw1 = cache->at(1);
+	double& aw2 = cache->at(2);
+	double& aw3 = cache->at(3);
+	double& iaws = cache->at(4);
+
+	// Array is zeroed by default. If this value is zero, we should initialize the values
+	// This scope only gets executed once per pixel, even when interpolating multiple values per pixel!
+	if (shouldInitialize == 0)
+	{
+		shouldInitialize = 1;
+
+		// Initialize area
+		// Only calculate triangle area if it has not been done already
+		if (tri.ss_iarea == -1)
+		{
+			const double area = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, tri.c.pos_ss);
+			if (area > 0)
+				tri.ss_iarea = 1.0 / area;
+		}
+		if (tri.ss_iarea == -1)
+			return -1;
+
+		double a1 = EdgeFunction(pos, tri.b.pos_ss, tri.c.pos_ss);
+		double a2 = EdgeFunction(tri.a.pos_ss, pos, tri.c.pos_ss);
+		double a3 = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, pos);
+
+		if ((a1 >= 0) && (a2 >= 0) && (a3 >= 0))
+		{
+			// The 1 over z is NOT to convert back to clipping space (because z already is), but because
+			// we are pre-calculating a division by it.
+			// Technically just using tri.a.pos_ss.z should work aswell, but it causes artifacts most likely due to
+			// floating point inaccuracies. Let's just roll with 1.0 / cs.z
+			if (tri.a.berp_iw == -1)
+				tri.a.berp_iw = 1.0 / tri.a.pos_cs.z;
+
+			if (tri.b.berp_iw == -1)
+				tri.b.berp_iw = 1.0 / tri.b.pos_cs.z;
+
+			if (tri.c.berp_iw == -1)
+				tri.c.berp_iw = 1.0 / tri.c.pos_cs.z;
+
+			aw1 = a1 * tri.ss_iarea * tri.a.berp_iw;
+			aw2 = a2 * tri.ss_iarea * tri.c.berp_iw;
+			aw3 = a3 * tri.ss_iarea * tri.b.berp_iw;
+			iaws = 1.0 / (aw1 + aw2 + aw3);
+		}
+	}
+
+	// Now calculate the interpolated value using cached values
+	const double numerator = (aw1 * val_a) + (aw2 * val_b) + (aw3 * val_c);
+	return numerator * iaws;
+}
+
 
 double BarycentricInterpolationEngine::EdgeFunction(const Vector2d& a, const Vector2d& b, const Vector2d& c)
 {
