@@ -7,7 +7,7 @@ struct InterRenderTriangle
 	InterRenderVertex a;
 	InterRenderVertex b;
 	InterRenderVertex c;
-	double ss_area = 0;	// Area of the screen space coordinate triangle
+	mutable double ss_iarea = -1;	// Cached value. Inverted area
 
 	Material* material = nullptr; // Material to render with
 };

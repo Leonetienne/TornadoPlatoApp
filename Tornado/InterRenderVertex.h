@@ -24,6 +24,8 @@ struct InterRenderVertex
 	Vector3d normal;  // Normal
 	Color vertex_col; // Vertex color
 
+	mutable double berp_iw = -1; // 1.0 / pos_cs.z caching value. Used by the barycentric interpolation engine to only calculate it once per triangle instead of every pixel
+
 	// Determines which attributes to interpolate when calling Interpolate
 	void SetInterpolationMask(long long mask);
 	long long GetInterpolationMask() const;

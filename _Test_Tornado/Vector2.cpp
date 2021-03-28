@@ -2,6 +2,7 @@
 #include "../Tornado/Vector2.h"
 #include "../_TestingUtilities/Similar.h"
 #include "../_TestingUtilities/HandyMacros.h"
+
 #include <random>
 #include <sstream>
 
@@ -819,5 +820,6 @@ namespace Vectors
 
 			return;
 		}
+
 	};
 }

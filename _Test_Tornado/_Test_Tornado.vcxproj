@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BarycentricInterpolationEngine.cpp" />
     <ClCompile Include="ClippingEngine.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="InterRenderVertex.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
+    <ClCompile Include="VectorConversion.cpp" />
     <ClCompile Include="Worker.cpp" />
     <ClCompile Include="WorkerPool.cpp" />
   </ItemGroup>
