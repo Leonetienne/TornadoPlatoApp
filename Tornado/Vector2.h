@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <sstream>
 
+template <typename T> class Vector3;
+template <typename T> class Vector4;
+
 template <typename T>
 class Vector2
 {
@@ -33,6 +36,9 @@ public:
 	void operator*=(const T scale);
 	Vector2<T> operator/(const T scale) const;
 	void operator/=(const T scale);
+
+	operator Vector3<T>() const;
+	operator Vector4<T>() const;
 	
 	void operator=(const Vector2<T>& other);
 
