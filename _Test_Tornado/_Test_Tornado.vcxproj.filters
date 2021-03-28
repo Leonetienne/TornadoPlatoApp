@@ -51,5 +51,11 @@
     <ClCompile Include="InterRenderVertex.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="BarycentricInterpolationEngine.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorConversion.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
