@@ -5,6 +5,9 @@
 #include <sstream>
 #include "Matrix4x4.h"
 
+template <typename T> class Vector2;
+template <typename T> class Vector4;
+
 template <typename T>
 class Vector4
 {
@@ -36,6 +39,9 @@ public:
 	void operator/=(const T scale);
 	Vector4<T> operator*(const Matrix4x4 mat) const;
 	void operator*=(const Matrix4x4 mat);
+
+	operator Vector2<T>() const;
+	operator Vector3<T>() const;
 
 	void operator=(const Vector4<T>& other);
 

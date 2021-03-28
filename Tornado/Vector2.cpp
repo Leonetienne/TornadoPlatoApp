@@ -266,5 +266,20 @@ bool Vector2<T>::operator!=(const Vector2<T>& other) const
 	return !operator==(other);
 }
 
+// Don't want these includes above the other stuff
+#include "Vector3.h"
+#include "Vector4.h"
+template<typename T>
+Vector2<T>::operator Vector3<T>() const
+{
+	return Vector3<T>(x, y, 0);
+}
+
+template<typename T>
+Vector2<T>::operator Vector4<T>() const
+{
+	return Vector4<T>(x, y, 0, 0);
+}
+
 template class Vector2<int>;
 template class Vector2<double>;
