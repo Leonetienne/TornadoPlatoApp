@@ -30,7 +30,7 @@ InterRenderTriangle GetExampleTriangle()
 	return ird;
 }
 
-namespace Rendering
+namespace Engines
 {
 	TEST_CLASS(_BarycentricInterpolationEngine)
 	{

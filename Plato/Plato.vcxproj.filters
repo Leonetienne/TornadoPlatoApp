@@ -15,7 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="plato.cpp">
+    <ClInclude Include="Plato.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Plato.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

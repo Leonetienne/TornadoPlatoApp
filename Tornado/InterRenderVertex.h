@@ -5,20 +5,22 @@
 #include "Vector4.h"
 #include "Color.h"
 
-#define IRV_LERP_POS_WS 0x01
-#define IRV_LERP_POS_CS 0x02
-#define IRV_LERP_POS_NDC 0x04
-#define IRV_LERP_POS_SS 0x08
-#define IRV_LERP_POS_UV 0x10
-#define IRV_LERP_NORMAL 0x20
-#define IRV_LERP_VERTEX_COLOR 0x40
+#define IRV_LERP_POS_WS		  (1<<0)
+#define IRV_LERP_POS_WSMX     (1<<1)
+#define IRV_LERP_POS_CS       (1<<2)
+#define IRV_LERP_POS_NDC      (1<<3)
+#define IRV_LERP_POS_SS       (1<<4)
+#define IRV_LERP_POS_UV       (1<<5)
+#define IRV_LERP_NORMAL       (1<<6)
+#define IRV_LERP_VERTEX_COLOR (1<<7)
 
 struct InterRenderVertex
 {
 	Vector3d pos_ws;  // Position in world space
+	Vector3d pos_wsmx;// Position in world space after applying the world matrix
 	Vector4d pos_cs;  // Position in clipping space (before perspective divide)
 	Vector3d pos_ndc; // Position in normalized device coordinates (after perspective divide)
-	Vector2d pos_ss;  // Position in screen space (pixel space)
+	Vector3d pos_ss;  // Position in screen space (pixel space)
 	Vector2d pos_uv;  // Positionin texture space
 	
 	Vector3d normal;  // Normal

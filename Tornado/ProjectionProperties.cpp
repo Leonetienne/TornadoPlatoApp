@@ -8,8 +8,8 @@ ProjectionProperties::ProjectionProperties(const Vector2i& resolution, double fo
 	sqrFarclip { farclip * farclip },
 	resolution{ resolution }
 {
-	
-	aspectRatio = (double)resolution.x / (double)resolution.y;
+	this->halfResolution = Vector2d(resolution.x / 2.0, resolution.y / 2.0);
+	this->aspectRatio = (double)resolution.x / (double)resolution.y;
 	UpdateMatrix();
 
 	return;
@@ -70,10 +70,16 @@ const Vector2i& ProjectionProperties::GetResolution() const
 	return resolution;
 }
 
+const Vector2d& ProjectionProperties::GetHalfResolution() const
+{
+	return halfResolution;
+}
+
 void ProjectionProperties::SetResolution(const Vector2i& resolution)
 {
 	this->resolution = resolution;
 	this->aspectRatio = (double)resolution.x / (double)resolution.y;
+	this->halfResolution = Vector2d(resolution.x / 2.0, resolution.y / 2.0);
 	UpdateMatrix();
 
 	return;
