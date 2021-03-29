@@ -11,7 +11,7 @@
 */
 
 // Good, optimized chad version for doubles
-double Vector3<double>::DotProduct(const Vector3<double>& other)
+double Vector3<double>::DotProduct(const Vector3<double>& other) const
 {
 	return (x * other.x) +
 		   (y * other.y) + 
@@ -19,7 +19,7 @@ double Vector3<double>::DotProduct(const Vector3<double>& other)
 }
 
 // Slow, lame version for intcels
-double Vector3<int>::DotProduct(const Vector3<int>& other)
+double Vector3<int>::DotProduct(const Vector3<int>& other) const
 {
 	int iDot = (x * other.x) + (y * other.y) + (z * other.z);
 	return (double)iDot;
@@ -28,7 +28,7 @@ double Vector3<int>::DotProduct(const Vector3<int>& other)
 
 
 // Good, optimized chad version for doubles
-Vector3<double> Vector3<double>::CrossProduct(const Vector3<double>& other)
+Vector3<double> Vector3<double>::CrossProduct(const Vector3<double>& other) const
 {
 	Vector3<double> cp;
 	cp.x = (y * other.z) - (z * other.y);
@@ -39,7 +39,7 @@ Vector3<double> Vector3<double>::CrossProduct(const Vector3<double>& other)
 }
 
 // Slow, lame version for intcels
-Vector3<double> Vector3<int>::CrossProduct(const Vector3<int>& other)
+Vector3<double> Vector3<int>::CrossProduct(const Vector3<int>& other) const
 {
 	Vector3<double> cp;
 	cp.x = ((double)y * (double)other.z) - ((double)z * (double)other.y);
@@ -52,7 +52,7 @@ Vector3<double> Vector3<int>::CrossProduct(const Vector3<int>& other)
 
 
 // Good, optimized chad version for doubles
-double Vector3<double>::SqrMagnitude()
+double Vector3<double>::SqrMagnitude() const
 {
 	return (x * x) +
 		   (y * y) +
@@ -60,14 +60,14 @@ double Vector3<double>::SqrMagnitude()
 }
 
 // Slow, lame version for intcels
-double Vector3<int>::SqrMagnitude()
+double Vector3<int>::SqrMagnitude() const
 {
 	int iSqrMag = x*x + y*y + z*z;
 	return (double)iSqrMag;
 }
 
 template <typename T>
-double Vector3<T>::Magnitude()
+double Vector3<T>::Magnitude() const
 {
 	return sqrt(SqrMagnitude());
 }
