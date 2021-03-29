@@ -9,23 +9,27 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 void InitA(InterRenderVertex& a)
 {
 	a.pos_ws = { 0,0,0 };
+	a.pos_wsmx = { 0,0,0 };
 	a.pos_cs = { 0,0,0,0 };
 	a.pos_ndc = { 0,0,0 };
-	a.pos_ss = { 0,0 };
+	a.pos_ss = { 0,0,0 };
 	a.pos_uv = { 0,0 };
 	a.normal = { 0,0,0 };
 	a.vertex_col = { 0,0,0 };
+
 	return;
 }
 void InitB(InterRenderVertex& b)
 {
 	b.pos_ws = { 100,100,100 };
+	b.pos_wsmx = { 100,100,100 };
 	b.pos_cs = { 100,100,100,100 };
 	b.pos_ndc = { 100,100,100 };
-	b.pos_ss = { 100,100 };
+	b.pos_ss = { 100,100, 100 };
 	b.pos_uv = { 100,100 };
 	b.normal = { 100,100,100 };
 	b.vertex_col = { 100,100,100 };
+
 	return;
 }
 
@@ -76,6 +80,7 @@ namespace Rendering
 			{
 				// Decide that to interpolate
 				const bool lerp_ws = rng() % 2;
+				const bool lerp_wsmx = rng() % 2;
 				const bool lerp_cs = rng() % 2;
 				const bool lerp_nd = rng() % 2;
 				const bool lerp_ss = rng() % 2;
@@ -87,6 +92,8 @@ namespace Rendering
 				long long mask = 0;
 				if (lerp_ws)
 					mask |= IRV_LERP_POS_WS;
+				if (lerp_wsmx)
+					mask |= IRV_LERP_POS_WSMX;
 				if (lerp_cs)
 					mask |= IRV_LERP_POS_CS;
 				if (lerp_uv)
@@ -118,6 +125,11 @@ namespace Rendering
 					Assert::IsFalse(aold.pos_ws == a.pos_ws);
 				else
 					Assert::IsTrue(aold.pos_ws == a.pos_ws);
+
+				if (lerp_wsmx)
+					Assert::IsFalse(aold.pos_wsmx == a.pos_wsmx);
+				else
+					Assert::IsTrue(aold.pos_wsmx == a.pos_wsmx);
 
 				if (lerp_cs)
 					Assert::IsFalse(aold.pos_cs == a.pos_cs);

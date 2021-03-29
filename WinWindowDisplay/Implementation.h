@@ -4,6 +4,8 @@
 #include "../Tornado/Vector3.h"
 #include "../Tornado/Vector4.h"
 
+#include "../Plato/Plato.h"
+
 class AppImplementation
 {
 public:
@@ -14,5 +16,7 @@ public:
 	unsigned const char* GetBGRPixelBuffer();
 
 private:
-	unsigned char* bgrPixelBuffer; // BitBlt uses bgr.
+	uint8_t* bgrPixelBuffer; // BitBlt uses bgr.
+
+	Plato* plato;
 };

@@ -17,6 +17,10 @@ void InterRenderVertex::Interpolate(const InterRenderVertex& b, double t)
 	{
 		pos_ws.LerpSelf(b.pos_ws, t);
 	}
+	if (interpolationMask & IRV_LERP_POS_WSMX)
+	{
+		pos_wsmx.LerpSelf(b.pos_wsmx, t);
+	}
 	if (interpolationMask & IRV_LERP_POS_CS)
 	{
 		pos_cs.LerpSelf(b.pos_cs, t);

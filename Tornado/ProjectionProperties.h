@@ -21,6 +21,7 @@ public:
 	double GetAspectRatio() const;
 
 	const Vector2i& GetResolution() const;
+	const Vector2d& GetHalfResolution() const;
 	void SetResolution(const Vector2i& resolution);
 
 	const Matrix4x4& GetProjectionMatrix() const;
@@ -34,5 +35,6 @@ private:
 	long double sqrFarclip;
 	double aspectRatio;
 	Vector2i resolution;
+	Vector2d halfResolution;
 	Matrix4x4 projectionMatrix;
 };

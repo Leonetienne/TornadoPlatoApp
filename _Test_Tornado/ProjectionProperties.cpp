@@ -38,6 +38,7 @@ namespace Rendering
 			Assert::AreEqual(90.0, props.GetFov());
 			Assert::AreEqual(100.0, props.GetFarclip());
 			Assert::IsTrue(10000.0l == props.GetSqrFarclip());
+			Assert::IsTrue(Vector2d(960, 540) == props.GetHalfResolution());
 			Assert::AreEqual(2.0, props.GetNearclip());
 
 			return;
@@ -58,6 +59,7 @@ namespace Rendering
 			Assert::AreEqual(3840, props.GetResolution().x);
 			Assert::AreEqual(1440, props.GetResolution().y);
 			Assert::AreEqual(3840.0 / 1440.0, props.GetAspectRatio());
+			Assert::IsTrue(Vector2d(1920, 720) == props.GetHalfResolution());
 
 			return;
 		}
