@@ -29,6 +29,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="ProjectionEngine.h" />
     <ClInclude Include="ProjectionProperties.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="RenderTriangle3D.h" />
     <ClInclude Include="CrossPlatformSyscalls.h" />
     <ClInclude Include="Texture.h" />

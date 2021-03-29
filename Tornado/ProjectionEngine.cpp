@@ -40,9 +40,14 @@ void ProjectionEngine::Project(const ProjectionProperties& projectionProperties,
 
 void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix)
 {
+	// Perform a quick distance check, and cull the triangle if all vertices are farther away than the farclip
+	if ((tri->a.pos_worldSpace.SqrMagnitude() > projectionProperties.GetSqrFarclip()) &&
+		(tri->b.pos_worldSpace.SqrMagnitude() > projectionProperties.GetSqrFarclip()) &&
+		(tri->c.pos_worldSpace.SqrMagnitude() > projectionProperties.GetSqrFarclip()))
+		return;
+
 	// Create InterRenderTriangle
 	InterRenderTriangle ird;
-	
 
 	// Apply RenderTriangle3D values
 	ird.material = tri->material;
@@ -104,6 +109,11 @@ void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const
 		cird.c.pos_ss.x = (cird.c.pos_ndc.x * halfResX) + halfResX;
 		cird.c.pos_ss.y = (cird.c.pos_ndc.y * halfResY) + halfResY;
 		cird.c.pos_ss.z = cird.c.pos_cs.z;
+
+		// Calculate screen area (in pixels) taken up by triangle
+		// Edgefunction(a, b, c);
+		cird.ss_area = ((cird.c.pos_ss.x - cird.a.pos_ss.x) * (cird.b.pos_ss.y - cird.a.pos_ss.y) - (cird.c.pos_ss.y - cird.a.pos_ss.y) * (cird.b.pos_ss.x - cird.a.pos_ss.x));
+		cird.ss_iarea = 1.0 / cird.ss_area;
 	}
 
 	// Now that we have projected all of our triangles into device space, let's now add our results to the results vector

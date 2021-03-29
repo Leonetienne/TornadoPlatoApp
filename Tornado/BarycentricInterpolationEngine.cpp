@@ -20,17 +20,6 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 	{
 		shouldInitialize = 1;
 
-		// Initialize area
-		// Only calculate triangle area if it has not been done already
-		if (tri.ss_iarea == -1)
-		{
-			const double area = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, tri.c.pos_ss);
-			if (area > 0)
-				tri.ss_iarea = 1.0 / area;
-		}
-		if (tri.ss_iarea == -1)
-			return -1;
-
 		double a1 = EdgeFunction(pos, tri.b.pos_ss, tri.c.pos_ss);
 		double a2 = EdgeFunction(tri.a.pos_ss, pos, tri.c.pos_ss);
 		double a3 = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, pos);

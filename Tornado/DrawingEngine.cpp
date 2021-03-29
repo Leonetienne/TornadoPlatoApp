@@ -48,67 +48,141 @@ void DrawingEngine::RegisterInterRenderTriangle(const InterRenderTriangle* tri)
 
 void DrawingEngine::Draw()
 {
-	// Code for testing
-	// No multithreading yet
+	CreateTasks();
+	ComputeTasks();
+	
+	return;
+}
+
+void DrawingEngine::CreateTasks()
+{
+	// Calculate maximum screen area
+	const std::size_t totalScreenArea = (std::size_t)renderTarget->GetDimensions().x * (std::size_t)renderTarget->GetDimensions().y;
 
 	for (const InterRenderTriangle* ird : registeredTriangles)
-		for (std::size_t x = 0; x < renderTarget->GetDimensions().x; x++)
-			for (std::size_t y = 0; y < renderTarget->GetDimensions().y; y++)
-				if (ird->DoesScreenspaceContainPoint(Vector2d((double)x, (double)y)))
+	{
+		// Decide how many threads to allocate to drawing this triangle
+		const double normalizedScreenAreaPercentage = ird->ss_area / (double)totalScreenArea;
+		const double lerpedThreads = normalizedScreenAreaPercentage * (workerPool->GetNumWorkers() - 1); // f.e. 0-15
+		const std::size_t numThreadsForTriangle = (std::size_t)lerpedThreads + 1; // would now be 1-16
+		
+		// Calculate triangle bounds
+		Rect bounds; // { {posx, posy}(topleft), {width, height} }
+		bounds.pos.x = std::min(ird->a.pos_ss.x, std::min(ird->b.pos_ss.x, ird->c.pos_ss.x));
+		bounds.pos.y = std::min(ird->a.pos_ss.y, std::min(ird->b.pos_ss.y, ird->c.pos_ss.y));
+
+		bounds.size.x = std::max(ird->a.pos_ss.x, std::max(ird->b.pos_ss.x, ird->c.pos_ss.x)) - bounds.pos.x;
+		bounds.size.y = std::max(ird->a.pos_ss.y, std::max(ird->b.pos_ss.y, ird->c.pos_ss.y)) - bounds.pos.y;
+
+		// Now split this triangle into worker tasks
+		for (std::size_t i = 0; i < numThreadsForTriangle; i++)
+		{
+			// Calculate task working areas
+			const double taskSegment = bounds.size.x / numThreadsForTriangle;
+			Rect workerBounds;
+			workerBounds.pos.x = bounds.pos.x + (taskSegment * i);
+			workerBounds.pos.y = bounds.pos.y;
+			workerBounds.size.x = taskSegment;
+			workerBounds.size.y = bounds.size.y;
+
+			// Create new task 
+			WorkerTask* newTask = new WorkerTask; // Will be freed by the workerPool
+			newTask->task = std::bind(&DrawingEngine::Thread_Draw, this,
+				ird, workerBounds);
+			workerPool->QueueTask(newTask);
+		}
+	}
+
+	return;
+}
+
+void DrawingEngine::ComputeTasks()
+{
+	// Launch tasks
+	workerPool->Execute();
+	return;
+}
+
+void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& bounds)
+{
+	std::array<double, 5> berp_cache{ 0 };
+	const std::size_t maxx = (std::size_t)bounds.pos.x + (std::size_t)bounds.size.x;
+	const std::size_t maxy = (std::size_t)bounds.pos.y + (std::size_t)bounds.size.y;
+
+	for (std::size_t y = (std::size_t)bounds.pos.y; y < maxy; y++)
+	{
+		const std::size_t row = y * renderTarget->GetDimensions().x;
+		for (std::size_t x = (std::size_t)bounds.pos.x; x < maxx; x++)
+		{
+			if ((x > 0) && (y > 0) && (x < renderTarget->GetDimensions().x) && (y < renderTarget->GetDimensions().y))
+			{
+				Vector2d pixelPosition((double)x, (double)y);
+				if (ird->DoesScreenspaceContainPoint(pixelPosition))
 				{
-					uint8_t* basePixel = renderTarget->GetRawData() + renderTarget->GetChannelWidth() * (y * renderTarget->GetDimensions().x + x);
+					std::size_t pixelIndex = (row + x) * renderTarget->GetChannelWidth();
+					uint8_t* basePixel = renderTarget->GetRawData() + pixelIndex;
 
-					uint8_t& r = basePixel[0];
-					uint8_t& g = basePixel[1];
-					uint8_t& b = basePixel[2];
-					uint8_t& a = basePixel[3];
-					double& zBuf = zBuffer[x + y * renderTarget->GetDimensions().x];
-
-					std::array<double, 5> berp_cache {0};
+					berp_cache[0] = 0;
 					const double z = BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
 						*ird,
-						Vector2d((double)x, (double)y),
+						pixelPosition,
 						ird->a.pos_cs.z,
 						ird->b.pos_cs.z,
 						ird->c.pos_cs.z,
 						&berp_cache
 					);
 
-					const Color vertexColor(
-						BarycentricInterpolationEngine::PerspectiveCorrected(
-							*ird,
-							Vector2d((double)x, (double)y),
-							ird->a.vertex_col.r,
-							ird->b.vertex_col.r,
-							ird->c.vertex_col.r
-						),
-						BarycentricInterpolationEngine::PerspectiveCorrected(
-							*ird,
-							Vector2d((double)x, (double)y),
-							ird->a.vertex_col.g,
-							ird->b.vertex_col.g,
-							ird->c.vertex_col.g
-						),
-						BarycentricInterpolationEngine::PerspectiveCorrected(
-							*ird,
-							Vector2d((double)x, (double)y),
-							ird->a.vertex_col.b,
-							ird->b.vertex_col.b,
-							ird->c.vertex_col.b
-						),
-						255
-					);
-
-
+					double& zBuf = zBuffer[x + y * renderTarget->GetDimensions().x];
 					if (z < zBuf)
 					{
 						zBuf = z;
-
-						r = vertexColor.r;
-						g = vertexColor.g;
-						b = vertexColor.b;
+						Thread_PixelShader(ird, basePixel, pixelPosition, &berp_cache);
 					}
 				}
+			}
+		}
+	}
+
+	return;
+}
+
+void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache)
+{
+	// Interpolate vertex color
+	const Color vertexColor(
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.vertex_col.r,
+			ird->b.vertex_col.r,
+			ird->c.vertex_col.r,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.vertex_col.g,
+			ird->b.vertex_col.g,
+			ird->c.vertex_col.g,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.vertex_col.b,
+			ird->b.vertex_col.b,
+			ird->c.vertex_col.b,
+			berp_cache
+		)
+	);
+
+	uint8_t& r = pixelBase[0];
+	uint8_t& g = pixelBase[1];
+	uint8_t& b = pixelBase[2];
+
+	r = (uint8_t)vertexColor.r;
+	g = (uint8_t)vertexColor.g;
+	b = (uint8_t)vertexColor.b;
 
 	return;
 }

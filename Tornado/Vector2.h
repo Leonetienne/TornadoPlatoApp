@@ -12,10 +12,10 @@ public:
 	Vector2() : x{ 0 }, y{ 0 } {}
 	Vector2(T _x, T _y) : x{ _x }, y{ _y } {}
 
-	double DotProduct(const Vector2<T>& other);
-	double CrossProduct(const Vector2<T>& other);
-	double SqrMagnitude();
-	double Magnitude();
+	double DotProduct(const Vector2<T>& other) const;
+	double CrossProduct(const Vector2<T>& other) const;
+	double SqrMagnitude() const;
+	double Magnitude() const;
 	void Normalize();
 	
 	// Will lerp itself towards other by t

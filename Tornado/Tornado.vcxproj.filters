@@ -78,6 +78,9 @@
     <ClInclude Include="Tornado.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">

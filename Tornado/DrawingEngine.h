@@ -2,6 +2,7 @@
 #include "PixelBuffer.h"
 #include "WorkerPool.h"
 #include "InterRenderTriangle.h"
+#include "Rect.h"
 
 class DrawingEngine
 {
@@ -20,6 +21,18 @@ public:
 	void Draw();
 
 private:
+	// Will distribute drawing tasks based on a triangles screen size
+	void CreateTasks();
+
+	// Will execute the tasks
+	void ComputeTasks();
+
+	// Main drawing method for the tasks
+	void Thread_Draw(const InterRenderTriangle* ird, const Rect& bounds);
+
+	// Will draw a single pixel
+	void Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache);
+
 	WorkerPool* workerPool;
 	PixelBuffer<3>* renderTarget;
 

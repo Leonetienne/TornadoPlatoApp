@@ -88,13 +88,13 @@ void WorkerPool::Execute()
 					if (wt->state == WorkerTaskState::QUEUED) // And if a task is unassigned
 						w->DoTask(wt);	// Add that task
 	
-		cpSleep(16); // Reduce cpu overhead
+		cpSleep(0); // Reduce cpu overhead
 	}
 	
 	// Now all tasks are assigned. Wait for them to finish
 	for (const Worker* w : workers)
 		while (!w->IsIdling())
-			cpSleep(16);
+			cpSleep(0);
 	
 	// Now all tasks are finished. Let's clean up after ourselves!
 	for (WorkerTask* wt : taskQueue)
@@ -160,7 +160,7 @@ void Worker::Lifecycle()
 		// Idling
 		else
 		{
-			cpSleep(16); // Reduce cpu load drastically when doing 'nothing'.
+			cpSleep(0); // Reduce cpu load drastically when doing 'nothing'.
 		}
 	}
 

@@ -15,10 +15,10 @@ public:
 	Vector3() : x{ 0 }, y{ 0 }, z{ 0 } {}
 	Vector3(T _x, T _y, T _z) : x{ _x }, y{ _y }, z{ _z } {}
 
-	double DotProduct(const Vector3<T>& other);
-	Vector3<double> CrossProduct(const Vector3<T>& other);
-	double SqrMagnitude();
-	double Magnitude();
+	double DotProduct(const Vector3<T>& other) const;
+	Vector3<double> CrossProduct(const Vector3<T>& other) const;
+	double SqrMagnitude() const;
+	double Magnitude() const;
 	void Normalize();
 
 	// Will lerp itself towards other by t
