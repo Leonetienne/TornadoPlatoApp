@@ -27,8 +27,8 @@ DrawingEngine::~DrawingEngine()
 void DrawingEngine::BeginBatch(std::size_t reservesize_triangles)
 {
 	// Clear buffers
-	std::fill_n(zBuffer, numPixels, 100000000);
-	memset(renderTarget->GetRawData(), 0, renderTarget->GetSizeofBuffer());
+	std::fill_n(zBuffer, numPixels, 100000000); // Clear z-buffer
+	memset(renderTarget->GetRawData(), 0, renderTarget->GetSizeofBuffer()); // Clear render target
 
 	// Clear triangle registry
 	registeredTriangles.clear();
@@ -66,8 +66,8 @@ void DrawingEngine::CreateTasks()
 		const double lerpedThreads = normalizedScreenAreaPercentage * (workerPool->GetNumWorkers() - 1); // f.e. 0-15
 		const std::size_t numThreadsForTriangle = (std::size_t)lerpedThreads + 1; // would now be 1-16
 		
-		// Calculate triangle bounds
-		Rect bounds; // { {posx, posy}(topleft), {width, height} }
+		// Calculate triangle bounds, minmaxed within render area bounds
+		Rect bounds;
 		bounds.pos.x = std::min(ird->a.pos_ss.x, std::min(ird->b.pos_ss.x, ird->c.pos_ss.x));
 		bounds.pos.y = std::min(ird->a.pos_ss.y, std::min(ird->b.pos_ss.y, ird->c.pos_ss.y));
 
@@ -84,6 +84,11 @@ void DrawingEngine::CreateTasks()
 			workerBounds.pos.y = bounds.pos.y;
 			workerBounds.size.x = taskSegment;
 			workerBounds.size.y = bounds.size.y;
+
+			// Add one pixel of padding to the right (if it wouldn't cause out-of-range access)
+			// To correct floating-point in accuraccies (which would cause unrendered lines)
+			if (workerBounds.pos.x + workerBounds.size.x < renderTarget->GetDimensions().x)
+				workerBounds.size.x++;
 
 			// Create new task 
 			WorkerTask* newTask = new WorkerTask; // Will be freed by the workerPool

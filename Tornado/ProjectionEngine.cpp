@@ -116,7 +116,7 @@ void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const
 		cird.ss_iarea = 1.0 / cird.ss_area;
 	}
 
-	// Now that we have projected all of our triangles into device space, let's now add our results to the results vector
+	// Now that we have transformed all of our triangles into device space, let's now add our results to the results vector
 	std::lock_guard<std::mutex> guard(resultVecMutex);
 
 	for (InterRenderTriangle& cird : clippingResults)
