@@ -25,6 +25,9 @@ public:
 	// Will lerp between a and b
 	static Vector2<double> Lerp(const Vector2<T>& a, const Vector2<T>& b, double t);
 
+	// Will compare if two vectors are similar to a certain epsilon value
+	bool Similar(const Vector2<T>& other, double epsilon = 0.00001) const;
+
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;
 
@@ -45,11 +48,11 @@ public:
 	bool operator==(const Vector2<T>& other) const;
 	bool operator!=(const Vector2<T>& other) const;
 
-	friend std::ostream& operator << (std::ostream& os, const Vector2<T>& v)
+	friend std::ostream& operator<< (std::ostream& os, const Vector2<T>& v)
 	{
 		return os << "[x: " << v.x << "  y: " << v.y << "]";
 	}
-	friend std::wostream& operator << (std::wostream& os, const Vector2<T>& v)
+	friend std::wostream& operator<< (std::wostream& os, const Vector2<T>& v)
 	{
 		return os << L"[x: " << v.x << L"  y: " << v.y << L"]";
 	}

@@ -1,4 +1,5 @@
 #include "Vector2.h"
+#include "Similar.h"
 #include <iostream>
 #include <exception>
 
@@ -173,6 +174,15 @@ const T& Vector2<T>::operator[](std::size_t idx) const
 	default:
 		throw std::out_of_range("Array descriptor on Vector2<T> out of range!");
 	}
+}
+
+template<typename T>
+bool Vector2<T>::Similar(const Vector2<T>& other, double epsilon) const
+{
+	return
+		(::Similar(x, other.x, epsilon)) &&
+		(::Similar(y, other.y, epsilon))
+	;
 }
 
 template<typename T>

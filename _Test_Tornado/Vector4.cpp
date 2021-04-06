@@ -715,5 +715,24 @@ namespace Vectors
 			return;
 		}
 
+		// Tests loose comparison via Vector4d::Similar -> true
+		TEST_METHOD(Loose_Comparison_True_Vector4d)
+		{
+			Assert::IsTrue(
+				Vector4d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999, -3.3333333333333333333333333333333333333).Similar(
+					Vector4d(0, -6.666666667, 10, -3.33333333333333)
+			));
+			return;
+		}
+
+		// Tests loose comparison via Vector4d::Similar -> false
+		TEST_METHOD(Loose_Comparison_False_Vector4d)
+		{
+			Assert::IsFalse(
+				Vector4d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999, -3.3333333333333333333333333333333333333).Similar(
+					Vector4d(0.1, -6.7, 10.1, -3.333)
+			));
+			return;
+		}
 	};
 }

@@ -32,6 +32,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RenderTriangle3D.h" />
     <ClInclude Include="CrossPlatformSyscalls.h" />
+    <ClInclude Include="Similar.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="PixelBuffer.h" />
