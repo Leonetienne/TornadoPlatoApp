@@ -26,6 +26,9 @@ public:
 	// Will lerp between a and b
 	static Vector4<double> Lerp(const Vector4<T>& a, const Vector4<T>& b, double t);
 
+	// Will compare if two vectors are similar to a certain epsilon value
+	bool Similar(const Vector4<T>& other, double epsilon = 0.00001) const;
+
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;
 

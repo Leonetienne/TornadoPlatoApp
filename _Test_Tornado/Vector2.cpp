@@ -821,5 +821,24 @@ namespace Vectors
 			return;
 		}
 
+		// Tests loose comparison via Vector2d::Similar -> true
+		TEST_METHOD(Similar_True)
+		{
+			Assert::IsTrue(
+				Vector2d(0.00000000000000000000001, -6.6666666666666666666666666666).Similar(
+					Vector2d(0, -6.666666667)
+			));
+			return;
+		}
+
+		// Tests loose comparison via Vector2d::Similar -> false
+		TEST_METHOD(Similar_False)
+		{
+			Assert::IsFalse(
+				Vector2d(0.00000000000000000000001, -6.6666666666666666666666666666).Similar(
+					Vector2d(0.1, -6.7)
+			));
+			return;
+		}
 	};
 }

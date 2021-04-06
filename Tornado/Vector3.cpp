@@ -1,4 +1,5 @@
 #include "Vector3.h"
+#include "Similar.h"
 #include <iostream>
 
 /*
@@ -109,6 +110,16 @@ void Vector3<int>::Normalize()
 }
 
 
+
+template<typename T>
+bool Vector3<T>::Similar(const Vector3<T>& other, double epsilon) const
+{
+	return
+		(::Similar(x, other.x, epsilon)) &&
+		(::Similar(y, other.y, epsilon)) &&
+		(::Similar(z, other.z, epsilon))
+	;
+}
 
 template<typename T>
 T& Vector3<T>::operator[](std::size_t idx)

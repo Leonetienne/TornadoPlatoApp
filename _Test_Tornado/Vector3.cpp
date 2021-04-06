@@ -1412,5 +1412,25 @@ namespace Vectors
 
 			return;
 		}
+
+		// Tests loose comparison via Vector3d::Similar -> true
+		TEST_METHOD(Similar_True)
+		{
+			Assert::IsTrue(
+				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Similar(
+					Vector3d(0, -6.666666667, 10)
+			));
+			return;
+		}
+
+		// Tests loose comparison via Vector3d::Similar -> false
+		TEST_METHOD(Similar_False)
+		{
+			Assert::IsFalse(
+				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Similar(
+					Vector3d(0.1, -6.7, 10.1)
+			));
+			return;
+		}
 	};
 }
