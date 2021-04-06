@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Plato/Quaternion.h"
-#include "../_TestingUtilities/Similar.h"
+#include "../Tornado/Similar.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
@@ -22,11 +22,11 @@ namespace TransformRelated
 			return;
 		}
 
-		// Tests that if constructed with the default constructor, that all values are 0
+		// Tests that if constructed with the default constructor, that all values are 0 (but w should be 1)
 		TEST_METHOD(Default_Constructor_All_0)
 		{
 			Quaternion q;
-			Assert::IsTrue(Vector4d(0, 0, 0, 0) == q.GetRawValues());
+			Assert::IsTrue(Vector4d(0, 0, 0, 1) == q.GetRawValues());
 
 			return;
 		}
@@ -47,7 +47,7 @@ namespace TransformRelated
 				Quaternion q(Vector4d(0, 0, 0, 0)); // Garbage values
 				
 				q.SetRawValues(v);
-				Assert::IsTrue(Similar(v, q.GetRawValues()));
+				Assert::IsTrue(v.Similar(q.GetRawValues()));
 			}
 
 			return;
@@ -76,7 +76,7 @@ namespace TransformRelated
 					<< "Target vals: " << eul << std::endl;
 
 				// Assertion
-				Assert::IsTrue(Similar(eul, q.ToEulerAngles()), wss.str().c_str());
+				Assert::IsTrue(eul.Similar(q.ToEulerAngles()), wss.str().c_str());
 			}
 
 			return;
@@ -88,7 +88,7 @@ namespace TransformRelated
 			Quaternion a(Vector3d(0, -45, 45));
 			Quaternion b(Vector3d(0, 0, 0));
 
-			Assert::IsTrue(Similar(Vector3d(0, -45, 45), (a * b).ToEulerAngles()));
+			Assert::IsTrue(Vector3d(0, -45, 45).Similar((a * b).ToEulerAngles()));
 
 			return;
 		}
@@ -99,7 +99,7 @@ namespace TransformRelated
 			Quaternion a(Vector3d(0, -45, 45));
 			Quaternion b(Vector3d(0, 0, 0));
 
-			Assert::IsTrue(Similar(Vector3d(0, -45, 45), (a / b).ToEulerAngles()));
+			Assert::IsTrue(Vector3d(0, -45, 45).Similar((a / b).ToEulerAngles()));
 
 			return;
 		}
@@ -111,7 +111,7 @@ namespace TransformRelated
 			for (std::size_t i = 0; i < 100; i++)
 			{
 				Quaternion a(Vector3d(LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE));
-				Assert::IsTrue(Similar(Vector3d(0,0,0), (a / a).ToEulerAngles()));
+				Assert::IsTrue(Vector3d(0,0,0).Similar((a / a).ToEulerAngles()));
 			}
 
 			return;
@@ -140,7 +140,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.507538, 0, 0, 0.861629)),
+				r.GetRawValues().Similar(Vector4d(-0.507538, 0, 0, 0.861629)),
 				wss.str().c_str()
 			);
 
@@ -166,7 +166,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0, -0.688355, 0, 0.725374)),
+				r.GetRawValues().Similar(Vector4d(0, -0.688355, 0, 0.725374)),
 				wss.str().c_str()
 			);
 
@@ -192,7 +192,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0, 0, 0.48481, 0.87462)),
+				r.GetRawValues().Similar(Vector4d(0, 0, 0.48481, 0.87462)),
 				wss.str().c_str()
 			);
 
@@ -218,7 +218,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.499894, -0.226807, -0.0969482, 0.83022)),
+				r.GetRawValues().Similar(Vector4d(-0.499894, -0.226807, -0.0969482, 0.83022)),
 				wss.str().c_str()
 			);
 
@@ -244,7 +244,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.0306713, 0.197249, -0.479632, 0.854462)),
+				r.GetRawValues().Similar(Vector4d(-0.0306713, 0.197249, -0.479632, 0.854462)),
 				wss.str().c_str()
 			);
 
@@ -270,7 +270,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.0887439, 0.157186, -0.452873, 0.873111)),
+				r.GetRawValues().Similar(Vector4d(-0.0887439, 0.157186, -0.452873, 0.873111)),
 				wss.str().c_str()
 			);
 
@@ -296,7 +296,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.391902, 0.319449, -0.391018, 0.769071)),
+				r.GetRawValues().Similar(Vector4d(-0.391902, 0.319449, -0.391018, 0.769071)),
 				wss.str().c_str()
 			);
 
@@ -322,7 +322,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0.45399, 0, 0, 0.891007)),
+				r.GetRawValues().Similar(Vector4d(0.45399, 0, 0, 0.891007)),
 				wss.str().c_str()
 			);
 
@@ -348,7 +348,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0, 0.700909, 0, 0.71325)),
+				r.GetRawValues().Similar(Vector4d(0, 0.700909, 0, 0.71325)),
 				wss.str().c_str()
 			);
 
@@ -374,7 +374,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0, 0, -0.999657, 0.0261769)),
+				r.GetRawValues().Similar(Vector4d(0, 0, -0.999657, 0.0261769)),
 				wss.str().c_str()
 			);
 
@@ -400,7 +400,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0.788184, 0.203366, -0.203838, 0.543928)),
+				r.GetRawValues().Similar(Vector4d(0.788184, 0.203366, -0.203838, 0.543928)),
 				wss.str().c_str()
 			);
 
@@ -426,7 +426,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(0.0364081, 0.187303, -0.669468, 0.717917)),
+				r.GetRawValues().Similar(Vector4d(0.0364081, 0.187303, -0.669468, 0.717917)),
 				wss.str().c_str()
 			);
 
@@ -452,7 +452,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.0887439, 0.157186, -0.452873, 0.873111)),
+				r.GetRawValues().Similar(Vector4d(-0.0887439, 0.157186, -0.452873, 0.873111)),
 				wss.str().c_str()
 			);
 
@@ -478,7 +478,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(r.GetRawValues(), Vector4d(-0.855172, 0.243106, -0.414307, -0.194756)),
+				r.GetRawValues().Similar(Vector4d(-0.855172, 0.243106, -0.414307, -0.194756)),
 				wss.str().c_str()
 			);
 
@@ -504,7 +504,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(p_tr, Vector3d(4.26207, -1.51044, 4.62676), 0.001),
+				p_tr.Similar(Vector3d(4.26207, -1.51044, 4.62676), 0.001),
 				wss.str().c_str()
 			);
 
@@ -529,7 +529,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(p_tr, Vector3d(-1.96577, -3.49695, 0.661406), 0.001),
+				p_tr.Similar(Vector3d(-1.96577, -3.49695, 0.661406), 0.001),
 				wss.str().c_str()
 			);
 
@@ -554,7 +554,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(p_tr, Vector3d(-1.71259, -3.70174, -3.69733), 0.001),
+				p_tr.Similar(Vector3d(-1.71259, -3.70174, -3.69733), 0.001),
 				wss.str().c_str()
 			);
 
@@ -579,7 +579,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(p_tr, Vector3d(1.27556, 1.91689, -3.69901), 0.001),
+				p_tr.Similar(Vector3d(1.27556, 1.91689, -3.69901), 0.001),
 				wss.str().c_str()
 			);
 
@@ -605,7 +605,7 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(
-				Similar(p_tr, Vector3d(-4.35645, 4.11983, -4.12018), 0.001),
+				p_tr.Similar(Vector3d(-4.35645, 4.11983, -4.12018), 0.001),
 				wss.str().c_str()
 			);
 
@@ -686,7 +686,7 @@ namespace TransformRelated
 				a *= b;
 
 				// Verify
-				Assert::IsTrue(Similar(a.GetRawValues(), ref.GetRawValues()));
+				Assert::IsTrue(a.GetRawValues().Similar(ref.GetRawValues()));
 			}
 
 			return;
@@ -707,7 +707,133 @@ namespace TransformRelated
 				a /= b;
 
 				// Verify
-				Assert::IsTrue(Similar(a.GetRawValues(), ref.GetRawValues()));
+				Assert::IsTrue(a.GetRawValues().Similar(ref.GetRawValues()));
+			}
+
+			return;
+		}
+
+		// Tests basic equals comparison -> true
+		TEST_METHOD(Basic_EqualsComparison_True)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				Vector3d e(rng() % 360, rng() % 360, rng() % 360);
+				Quaternion a(e);
+				Quaternion b(e);
+
+				// Exercise and verify
+				Assert::IsTrue(a == b);
+			}
+
+			return;
+		}
+
+		// Tests basic equals comparison -> true
+		TEST_METHOD(Basic_EqualsComparison_False)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				Vector3d ae(rng() % 360, rng() % 360, rng() % 360);
+				Vector3d be(rng() % 360, rng() % 360, rng() % 360);
+
+				// Abort if both vectors are equal
+				if (ae == be)
+				{
+					i--;
+					continue;
+				}
+
+				Quaternion a(ae);
+				Quaternion b(be);
+
+				// Exercise and verify
+				Assert::IsFalse(a == b);
+			}
+
+			return;
+		}
+
+		// Tests that different euler angles return true, if the angle is the same.
+		// Like [30, -10, 59] == [390, 350, 419]
+		TEST_METHOD(Equals_Comparison_Same_Rotation_Different_EulerAngles)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				//    Create random rotation
+				Vector3d ae(rng() % 360, rng() % 360, rng() % 360);
+				
+				// add or subtract a random multiple of 360
+				#define keep_rot_change_values (360.0 * (double)(rng() % 20) * ((rng()%2) ? 1.0 : -1.0))
+				Vector3d be(ae.x + keep_rot_change_values, ae.y + keep_rot_change_values, ae.z + keep_rot_change_values);
+				#undef keep_rot_change_values
+
+				// Create quaternions
+				Quaternion a(ae);
+				Quaternion b(be);
+
+				// Exercise & Verify
+				//    Create debug output
+
+				std::wstringstream wss;
+				wss << "ae: " << ae << std::endl
+					<< "be: " << be << std::endl
+					<< "a: " << a << std::endl
+					<< "b: " << b << std::endl;
+
+				//    Assertion
+				Assert::IsTrue(a == b, wss.str().c_str());
+			}
+
+			return;
+		}
+
+		// Tests basic not-equals comparison -> false
+		TEST_METHOD(Basic_NotEqualsComparison_False)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				Vector3d e(rng() % 360, rng() % 360, rng() % 360);
+				Quaternion a(e);
+				Quaternion b(e);
+
+				// Exercise and verify
+				Assert::IsFalse(a != b);
+			}
+
+			return;
+		}
+
+		// Tests basic not-equals comparison -> true
+		TEST_METHOD(Basic_NotEqualsComparison_True)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				Vector3d ae(rng() % 360, rng() % 360, rng() % 360);
+				Vector3d be(rng() % 360, rng() % 360, rng() % 360);
+
+				// Abort if both vectors are equal
+				if (ae == be)
+				{
+					i--;
+					continue;
+				}
+
+				Quaternion a(ae);
+				Quaternion b(be);
+
+				// Exercise and verify
+				Assert::IsTrue(a != b);
 			}
 
 			return;

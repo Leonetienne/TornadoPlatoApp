@@ -3,6 +3,7 @@
 
 Quaternion::Quaternion()
 {
+	v = Vector4d(0, 0, 0, 1);
 	return;
 }
 
@@ -33,44 +34,6 @@ Quaternion::Quaternion(const Vector3d eulerAngles)
 	v.x = sr * cp * cy - cr * sp * sy;
 	v.y = cr * sp * cy + sr * cp * sy;
 	v.z = cr * cp * sy - sr * sp * cy;
-
-	return;
-}
-
-Quaternion::Quaternion(const Matrix4x4 rotMatrix)
-{
-	const Matrix4x4& m = rotMatrix; // easier to read;
-
-	double tr = m.a + m.f + m.k;
-
-	if (tr > 0) {
-		double S = sqrt(tr + 1.0) * 2;
-		v.w = 0.25 * S;
-		v.x = (m.j - m.g) / S;
-		v.y = (m.c - m.i) / S;
-		v.z = (m.e - m.b) / S;
-	}
-	else if ((m.a > m.f) & (m.a > m.k)) {
-		double S = sqrt(1.0 + m.a - m.f - m.k) * 2;
-		v.w = (m.j - m.g) / S;
-		v.x = 0.25 * S;
-		v.y = (m.b + m.e) / S;
-		v.z = (m.c + m.i) / S;
-	}
-	else if (m.f > m.k) {
-		double S = sqrt(1.0 + m.f - m.a - m.k) * 2;
-		v.w = (m.c - m.i) / S;
-		v.x = (m.b + m.e) / S;
-		v.y = 0.25 * S;
-		v.z = (m.g + m.j) / S;
-	}
-	else {
-		double S = sqrt(1.0 + m.k - m.a - m.f) * 2;
-		v.w = (m.e - m.b) / S;
-		v.x = (m.c + m.i) / S;
-		v.y = (m.g + m.j) / S;
-		v.z = 0.25 * S;
-	}
 
 	return;
 }
@@ -264,11 +227,6 @@ void Quaternion::SetRawValues(const Vector4d values)
 	v = values;
 
 	return;
-}
-
-Quaternion Quaternion::FromMatrix(const Matrix4x4 mat)
-{
-	return Quaternion(mat);
 }
 
 Quaternion Quaternion::FromEuler(const Vector3d euler)
