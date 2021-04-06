@@ -44,7 +44,7 @@ Quaternion::~Quaternion()
 	return;
 }
 
-Quaternion Quaternion::operator = (const Quaternion& q)
+Quaternion Quaternion::operator= (const Quaternion& q)
 {
 	InvalidateCache();
 
@@ -53,7 +53,7 @@ Quaternion Quaternion::operator = (const Quaternion& q)
 	return (*this);
 }
 
-Quaternion Quaternion::operator * (const Quaternion& q) const
+Quaternion Quaternion::operator* (const Quaternion& q) const
 {
 	return Quaternion(Vector4d(
 		v.w * q.v.x + v.x * q.v.w + v.y * q.v.z - v.z * q.v.y,
@@ -68,12 +68,12 @@ Quaternion Quaternion::operator*(const double scale) const
 	return Quaternion(v * scale);
 }
 
-Quaternion Quaternion::operator / (Quaternion& q) const
+Quaternion Quaternion::operator/ (Quaternion& q) const
 {
 	return ((*this) * (q.Inverse()));
 }
 
-Quaternion& Quaternion::operator *= (const Quaternion& q)
+Quaternion& Quaternion::operator*= (const Quaternion& q)
 {
 	InvalidateCache();
 
@@ -94,7 +94,7 @@ Quaternion& Quaternion::operator*=(const double scale)
 	return (*this);
 }
 
-Quaternion& Quaternion::operator /= (const Quaternion& q)
+Quaternion& Quaternion::operator/= (const Quaternion& q)
 {
 	InvalidateCache();
 
@@ -107,14 +107,14 @@ Vector3d Quaternion::operator*(const Vector3d& p)
 	return RotateVector(p);
 }
 
-bool Quaternion::operator == (const Quaternion& q) const
+bool Quaternion::operator== (const Quaternion& q) const
 {
-	return ((v.w == q.v.w) || (v.x == q.v.x) || (v.y == q.v.y) || (v.z == q.v.z));
+	return (v.Similar(q.v)) || (v.Similar(q.v * -1));
 }
 
-bool Quaternion::operator != (const Quaternion& q) const
+bool Quaternion::operator!= (const Quaternion& q) const
 {
-	return ((v.w != q.v.w) || (v.x != q.v.x) || (v.y != q.v.y) || (v.z != q.v.z));
+	return (!v.Similar(q.v)) && (!v.Similar(q.v * -1));
 }
 
 Quaternion Quaternion::Inverse() const
