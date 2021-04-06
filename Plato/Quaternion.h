@@ -16,9 +16,6 @@ public:
     // Creates quaternion from euler angles
     Quaternion(const Vector3d eulerAngles);
 
-    // Creates quaternion from rotation matrix
-    Quaternion(const Matrix4x4 rotMatrix);
-
     ~Quaternion();
 
     // Copies
@@ -64,7 +61,6 @@ public:
     friend std::ostream& operator<< (std::ostream& os, const Quaternion& q);
     friend std::wostream& operator<< (std::wostream& os, const Quaternion& q);
 
-    static Quaternion FromMatrix(const Matrix4x4 mat);
     static Quaternion FromEuler(const Vector3d euler);
 
 private:

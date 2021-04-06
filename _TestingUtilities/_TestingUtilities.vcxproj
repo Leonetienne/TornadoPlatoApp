@@ -156,13 +156,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Similar.cpp" />
     <ClCompile Include="_MemoryLeakDetector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HandyMacros.h" />
     <ClInclude Include="MemoryLeakDetector.h" />
-    <ClInclude Include="Similar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

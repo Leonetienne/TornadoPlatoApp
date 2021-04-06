@@ -17,17 +17,11 @@
     <ClInclude Include="HandyMacros.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Similar.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryLeakDetector.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Similar.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="_MemoryLeakDetector.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
