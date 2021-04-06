@@ -485,7 +485,7 @@ namespace TransformRelated
 			return;
 		}
 
-		// Tests translating 3d points. A few tests with different values.
+		// Tests transforming 3d points. A few tests with different values.
 		TEST_METHOD(Transform_Point_1)
 		{
 			// Setup
@@ -667,6 +667,48 @@ namespace TransformRelated
 			Assert::IsTrue(Similar(m.n, 0, 0.01));
 			Assert::IsTrue(Similar(m.o, 0, 0.01));
 			Assert::IsTrue(Similar(m.p, 0, 0.01));
+
+			return;
+		}
+
+		// Tests that a *= b will result in the exact same outcome as a = a * b
+		TEST_METHOD(MultiplyEquals_Operator_Same_Result_As_Multiply_Operator)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				Quaternion a(Vector3d(rng() % 360, rng() % 360, rng() % 360));
+				Quaternion b(Vector3d(rng() % 360, rng() % 360, rng() % 360));
+				
+				// Exercise
+				Quaternion ref = a * b;
+				a *= b;
+
+				// Verify
+				Assert::IsTrue(Similar(a.GetRawValues(), ref.GetRawValues()));
+			}
+
+			return;
+		}
+
+		// Tests that a /= b will result in the exact same outcome as a = a / b
+		TEST_METHOD(DivideEquals_Operator_Same_Result_As_Divide_Operator)
+		{
+			// Run tests 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				// Setup
+				Quaternion a(Vector3d(rng() % 360, rng() % 360, rng() % 360));
+				Quaternion b(Vector3d(rng() % 360, rng() % 360, rng() % 360));
+
+				// Exercise
+				Quaternion ref = a / b;
+				a /= b;
+
+				// Verify
+				Assert::IsTrue(Similar(a.GetRawValues(), ref.GetRawValues()));
+			}
 
 			return;
 		}
