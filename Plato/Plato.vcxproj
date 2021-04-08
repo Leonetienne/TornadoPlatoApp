@@ -158,10 +158,16 @@
   <ItemGroup>
     <ClInclude Include="Plato.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="WorldObject.h" />
+    <ClInclude Include="WorldObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Plato.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="WorldObject.cpp" />
+    <ClCompile Include="WorldObjectManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

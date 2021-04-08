@@ -1,5 +1,6 @@
 #pragma once
 #include "../Tornado/Tornado.h"
+#include "WorldObjectManager.h"
 
 class Plato
 {
