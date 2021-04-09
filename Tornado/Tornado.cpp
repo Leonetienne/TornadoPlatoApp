@@ -62,7 +62,7 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	return;
 }
 
-PixelBuffer<3>* Tornado::GetPixelBuffer() const
+const PixelBuffer<3>* Tornado::GetPixelBuffer() const
 {
 	return pixelBuffer;
 }

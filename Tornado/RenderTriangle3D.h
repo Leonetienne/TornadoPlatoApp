@@ -8,5 +8,5 @@ struct RenderTriangle3D
 	Vertex b;
 	Vertex c;
 
-	Material* material; // Material to render with
+	const Material* material; // Material to render with
 };
