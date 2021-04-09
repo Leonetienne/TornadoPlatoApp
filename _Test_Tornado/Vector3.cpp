@@ -929,7 +929,7 @@ namespace Vectors
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg yaw rotation matrix
+			// Create 90deg yaw rotation matrix (Y)
 			Matrix4x4 mat;
 			mat[0] = {  0, 0, 1, 0 };
 			mat[1] = {  0, 1, 0, 0 };
@@ -971,7 +971,7 @@ namespace Vectors
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg roll rotation matrix
+			// Create 90deg roll rotation matrix (Z)
 			Matrix4x4 mat;
 			mat[0] = { 0, -1, 0, 0 };
 			mat[1] = { 1,  0, 0, 0 };
@@ -1013,7 +1013,7 @@ namespace Vectors
 			Vector3d vec(69, 32, 16);
 			Vector3d originalVec = vec;
 
-			// Create 90deg pitch rotation matrix
+			// Create 90deg pitch rotation matrix (X)
 			Matrix4x4 mat;
 			mat[0] = { 1, 0,  0, 0 };
 			mat[1] = { 0, 0, -1, 0 };
