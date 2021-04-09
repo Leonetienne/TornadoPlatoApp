@@ -10,6 +10,7 @@ ProjectionProperties::ProjectionProperties(const Vector2i& resolution, double fo
 {
 	this->halfResolution = Vector2d(resolution.x / 2.0, resolution.y / 2.0);
 	this->aspectRatio = (double)resolution.x / (double)resolution.y;
+
 	UpdateMatrix();
 
 	return;

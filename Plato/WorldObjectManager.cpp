@@ -1,4 +1,5 @@
 #include "WorldObjectManager.h"
+#include "Component.h"
 
 WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transform* parent)
 {
@@ -16,9 +17,6 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 
 	// Put in list of objects
 	worldObjects.push_back(newWorldObject);
-
-	// Call Init hook
-	newWorldObject->Init();
 
 	return newWorldObject;
 }
@@ -64,8 +62,9 @@ void WorldObjectManager::DeleteFlaggedObjects()
 	{
 		if (worldObjects[i]->deleteMe)
 		{
-			// Call OnDelete hook
-			worldObjects[i]->OnDestroy();
+			// Call OnDestroy hooks
+			for (Component* co : worldObjects[i]->components)
+				co->OnDestroy();
 
 			// Free memory
 			FreeWorldObject(worldObjects[i]);
@@ -81,7 +80,8 @@ void WorldObjectManager::DeleteFlaggedObjects()
 void WorldObjectManager::CallHook__Update(double frametime)
 {
 	for (WorldObject* wo : worldObjects)
-		wo->Update(frametime);
+		for (Component* co : wo->components)
+			co->Update(frametime);
 
 	return;
 }
@@ -89,7 +89,8 @@ void WorldObjectManager::CallHook__Update(double frametime)
 void WorldObjectManager::CallHook__Render(double renderer)
 {
 	for (WorldObject* wo : worldObjects)
-		wo->Render(renderer);
+		for (Component* co : wo->components)
+			co->Render(renderer);
 
 	return;
 }
@@ -103,8 +104,9 @@ void WorldObjectManager::Free()
 {
 	for (WorldObject* wo : worldObjects)
 	{
-		// Call OnDelete hook
-		wo->OnDestroy();
+		// Call OnDestroy hooks
+		for (Component* co : wo->components)
+			co->OnDestroy();
 
 		FreeWorldObject(wo);
 	}

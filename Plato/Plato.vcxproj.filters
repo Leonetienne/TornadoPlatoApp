@@ -30,6 +30,12 @@
     <ClInclude Include="WorldObjectManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Plato.cpp">
@@ -45,6 +51,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WorldObjectManager.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
