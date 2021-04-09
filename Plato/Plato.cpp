@@ -4,28 +4,42 @@
 
 Plato::Plato()
 {
-	tornado = new Tornado(Vector2i(800, 600), 24);
+	renderer = new Renderer(Vector2i(800, 600));
 
-	rd.a.pos_worldSpace = Vector3d(0, -0.3, 5);
-	rd.b.pos_worldSpace = Vector3d(1, -2, 5);
-	rd.c.pos_worldSpace = Vector3d(-1, -2, 5);
-
-	rd.a.vertexColor = Color::red;
-	rd.b.vertexColor = Color::green;
-	rd.c.vertexColor = Color::blue;
-	
-	worldObject = WorldObjectManager::NewWorldObject();
+	mesh_floatingTriangle.v_vertices = {
+		Vector3d(0, -0.3, 5),
+		Vector3d(1, -2, 5),
+		Vector3d(-1, -2, 5)
+	};
+	mesh_floatingTriangle.uv_vertices = {
+		Vector2d(0,0),
+		Vector2d(0,0),
+		Vector2d(0,0)
+	};
+	mesh_floatingTriangle.normals = {
+		Vector3d(0,0,0),
+		Vector3d(0,0,0),
+		Vector3d(0,0,0)
+	};
+	mesh_floatingTriangle.tris = {
+		{0,0,0},
+		{1,0,0},
+		{2,0,0}
+	};
 
 	camera = WorldObjectManager::NewWorldObject()->CreateComponent<Camera>(Vector2i(800, 600), 90, 0.0001, 10000);
+	mr_floatingTriangle = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floatingTriangle, &mat_floatingTriangle);
+
+	renderer->SetMainCamera(camera);
 
 	return;
 }
 
 Plato::~Plato()
 {
-	delete tornado;
+	delete renderer;
 
-	tornado = nullptr;
+	renderer = nullptr;
 
 	return;
 }
@@ -59,38 +73,15 @@ void Plato::Update()
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d(0, 10,0) * 0.1 * shiftmod));
 	if (GetAsyncKeyState('X'))
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d(0, -10,0) * 0.1 * shiftmod));
-
-	RenderTriangle3D ard = rd;
-	ard.a.pos_worldSpace = rd.a.pos_worldSpace * worldObject->GetTransform()->GetLocalTransformationMatrix();
-	ard.b.pos_worldSpace = rd.b.pos_worldSpace * worldObject->GetTransform()->GetLocalTransformationMatrix();
-	ard.c.pos_worldSpace = rd.c.pos_worldSpace * worldObject->GetTransform()->GetLocalTransformationMatrix();
-
-	// Camera transformation
-	ard.a.pos_worldSpace -= camera->transform->GetPosition();
-	ard.b.pos_worldSpace -= camera->transform->GetPosition();
-	ard.c.pos_worldSpace -= camera->transform->GetPosition();
-	ard.a.pos_worldSpace *= camera->transform->GetRotation().Inverse().ToRotationMatrix();
-	ard.b.pos_worldSpace *= camera->transform->GetRotation().Inverse().ToRotationMatrix();
-	ard.c.pos_worldSpace *= camera->transform->GetRotation().Inverse().ToRotationMatrix();
-
-	ard.a.vertexColor = rd.a.vertexColor;
-	ard.b.vertexColor = rd.b.vertexColor;
-	ard.c.vertexColor = rd.c.vertexColor;
-
-	Matrix4x4 worldMatrix;
-
-	worldMatrix[0] = { 1, 0,  0, 0 };
-	worldMatrix[1] = { 0, 1,  0, 0 };
-	worldMatrix[2] = { 0, 0, -1, 0 };
-	worldMatrix[3] = { 0, 0,  0, 0 };
-	tornado->BeginFrame();
-	tornado->RegisterRender(&ard);
-	tornado->Render(camera->GetProjectionProperties(), worldMatrix);
+	
+	renderer->BeginFrame();
+	renderer->RegisterMeshRenderer(mr_floatingTriangle);
+	renderer->Render();
 
 	return;
 }
 
-PixelBuffer<3>* Plato::GetPixelBuffer() const
+const PixelBuffer<3>* Plato::GetPixelBuffer() const
 {
-	return tornado->GetPixelBuffer();
+	return renderer->GetPixelBuffer();
 }
