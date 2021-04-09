@@ -6,7 +6,7 @@
 
 class WorldObject;
 
-class Transform
+class Transform final
 {
 public:
 	~Transform();

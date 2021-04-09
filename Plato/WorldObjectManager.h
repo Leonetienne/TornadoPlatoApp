@@ -21,16 +21,23 @@ public:
 	// Will search for world objects by their associated tags.
 	static std::vector<WorldObject*> FindObjectsByTag(const std::string& tag);
 
-	// Will look for objects marked to be deleted and will delete them.
-	// Call this once at the absolute beginning of every frame
-	static void DeleteFlaggedObjects();
-
+	// Will return the number of world objects
 	static std::size_t GetNumObjects();
 
 	// Will free all world objects
 	static void Free();
 
 private:
+	// Will look for objects marked to be deleted and will delete them.
+	// Call this once at the absolute beginning of every frame
+	static void DeleteFlaggedObjects();
+
+	// Will call the hook method "Update()" on all world objects
+	static void CallHook__Update(double frametime);
+
+	// Will call the hook method "Update()" on all world objects
+	static void CallHook__Render(double renderer);
+
 	// Will call delete on a world object and its transform
 	static void FreeWorldObject(WorldObject* wo);
 

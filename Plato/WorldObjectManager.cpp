@@ -17,6 +17,9 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 	// Put in list of objects
 	worldObjects.push_back(newWorldObject);
 
+	// Call Init hook
+	newWorldObject->Init();
+
 	return newWorldObject;
 }
 
@@ -61,6 +64,9 @@ void WorldObjectManager::DeleteFlaggedObjects()
 	{
 		if (worldObjects[i]->deleteMe)
 		{
+			// Call OnDelete hook
+			worldObjects[i]->OnDestroy();
+
 			// Free memory
 			FreeWorldObject(worldObjects[i]);
 
@@ -68,6 +74,22 @@ void WorldObjectManager::DeleteFlaggedObjects()
 			worldObjects.erase(worldObjects.cbegin() + i);
 		}
 	}
+
+	return;
+}
+
+void WorldObjectManager::CallHook__Update(double frametime)
+{
+	for (WorldObject* wo : worldObjects)
+		wo->Update(frametime);
+
+	return;
+}
+
+void WorldObjectManager::CallHook__Render(double renderer)
+{
+	for (WorldObject* wo : worldObjects)
+		wo->Render(renderer);
 
 	return;
 }
@@ -81,7 +103,9 @@ void WorldObjectManager::Free()
 {
 	for (WorldObject* wo : worldObjects)
 	{
-		// The transforms get allocated here, so they'll get freed here
+		// Call OnDelete hook
+		wo->OnDestroy();
+
 		FreeWorldObject(wo);
 	}
 

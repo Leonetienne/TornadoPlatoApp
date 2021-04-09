@@ -4,7 +4,7 @@
 
 class Transform;
 
-class WorldObject
+class WorldObject final
 {
 public:
 	Transform* GetTransform();
@@ -42,6 +42,22 @@ public:
 
 	// Will clear this world object of all tag associations
 	void ClearAllTags();
+
+
+protected:
+	// ### GAME ENGINE HOOKS ### //
+	
+	// Hook function. Override this. Gets called once after the object is all set up. DONT CALL YOURSELF!
+	void Init() {};
+
+	// Hook function. Override this. Gets called every frame. DONT CALL YOURSELF!
+	void Update(double frametime) {};
+
+	// Hook function. Override this. Gets called every frame just before rendering Register your Renderables in renderer. DONT CALL YOURSELF!
+	void Render(double renderer) {};
+
+	// Hook function. Override this. Gets called just before this object gets deleted. DONT CALL YOURSELF!
+	void OnDestroy() {};
 
 private:
 	// Object identification
