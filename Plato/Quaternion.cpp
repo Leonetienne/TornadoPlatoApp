@@ -102,7 +102,7 @@ Quaternion& Quaternion::operator/= (const Quaternion& q)
 	return (*this);
 }
 
-Vector3d Quaternion::operator*(const Vector3d& p)
+Vector3d Quaternion::operator*(const Vector3d& p) const
 {
 	return RotateVector(p);
 }
@@ -132,11 +132,12 @@ Quaternion Quaternion::UnitQuaternion() const
 	return (*this) * (1.0 / v.Magnitude());
 }
 
-Vector3d Quaternion::RotateVector(const Vector3d vec) const
+Vector3d Quaternion::RotateVector(const Vector3d& vec) const
 {
 	Quaternion pure(Vector4d(vec.x, vec.y, vec.z, 0));
 
-	Quaternion f = (*this) * pure * Inverse();
+	Quaternion f = Conjugate() * pure * (*this);
+	//Quaternion f = Inverse() * (*this) * pure;
 
 	Vector3d toRet;
 	toRet.x = f.v.x;
