@@ -1,7 +1,6 @@
 #pragma once
-#include "../Tornado/Tornado.h"
 #include "WorldObjectManager.h"
-#include "Camera.h"
+#include "Renderer.h"
 
 class Plato
 {
@@ -10,12 +9,14 @@ public:
 	~Plato();
 
 	void Update();
-	PixelBuffer<3>* GetPixelBuffer() const;
+	const PixelBuffer<3>* GetPixelBuffer() const;
 
 private:
-	Tornado* tornado;
-	RenderTriangle3D rd;
-	WorldObject* worldObject;
+	Renderer* renderer;
+	
+	Mesh mesh_floatingTriangle;
+	Material mat_floatingTriangle;
+	MeshRenderer* mr_floatingTriangle;
 
 	Camera* camera;
 };
