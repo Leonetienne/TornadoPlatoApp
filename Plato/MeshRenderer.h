@@ -3,6 +3,8 @@
 #include "Mesh.h"
 #include "../Tornado/Material.h"
 
+class Renderer;
+
 class MeshRenderer : public Component
 {
 public:
@@ -11,6 +13,8 @@ public:
 
 	void SetMaterial(const Material* material);
 	const Material* GetMaterial() const;
+
+	void Render(Renderer* renderer);
 
 private:
 	MeshRenderer(WorldObject* worldObject, const Mesh* mesh, const Material* material);

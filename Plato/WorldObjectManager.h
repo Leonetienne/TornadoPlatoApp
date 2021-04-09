@@ -28,16 +28,18 @@ public:
 	// Call this once at the absolute beginning of every frame
 	static void DeleteFlaggedObjects();
 
+	// Will call the hook method "Update()" on all world objects.
+	// Only call this ONCE per frame in your main loop!!
+	static void CallHook__Update(double frametime);
+
+	// Will call the hook method "Update()" on all world objects.
+	// Only call this ONCE per frame in your main loop!!
+	static void CallHook__Render(Renderer* renderer);
+
 	// Will free all world objects
 	static void Free();
 
 private:
-
-	// Will call the hook method "Update()" on all world objects
-	static void CallHook__Update(double frametime);
-
-	// Will call the hook method "Update()" on all world objects
-	static void CallHook__Render(double renderer);
 
 	// Will call delete on a world object and its transform
 	static void FreeWorldObject(WorldObject* wo);

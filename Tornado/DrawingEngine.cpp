@@ -62,9 +62,9 @@ void DrawingEngine::CreateTasks()
 	for (const InterRenderTriangle* ird : registeredTriangles)
 	{
 		// Decide how many threads to allocate to drawing this triangle
-		const double normalizedScreenAreaPercentage = ird->ss_area / (double)totalScreenArea;
+		const double normalizedScreenAreaPercentage = abs(ird->ss_area) / (double)totalScreenArea;
 		const double lerpedThreads = normalizedScreenAreaPercentage * (workerPool->GetNumWorkers() - 1); // f.e. 0-15
-		const std::size_t numThreadsForTriangle = (std::size_t)lerpedThreads + 1; // would now be 1-16
+		const std::size_t numThreadsForTriangle = std::min<std::size_t>((std::size_t)lerpedThreads + 1, 16); // would now be 1-16
 		
 		// Calculate triangle bounds, minmaxed within render area bounds
 		Rect bounds;
@@ -87,8 +87,8 @@ void DrawingEngine::CreateTasks()
 
 			// Add one pixel of padding to the right (if it wouldn't cause out-of-range access)
 			// To correct floating-point in accuraccies (which would cause unrendered lines)
-			if (workerBounds.pos.x + workerBounds.size.x < renderTarget->GetDimensions().x)
-				workerBounds.size.x++;
+			if (workerBounds.pos.x + workerBounds.size.x < renderTarget->GetDimensions().x - std::size_t(2))
+				workerBounds.size.x += 2;
 
 			// Create new task 
 			WorkerTask* newTask = new WorkerTask; // Will be freed by the workerPool

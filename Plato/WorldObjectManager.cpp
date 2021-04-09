@@ -86,7 +86,7 @@ void WorldObjectManager::CallHook__Update(double frametime)
 	return;
 }
 
-void WorldObjectManager::CallHook__Render(double renderer)
+void WorldObjectManager::CallHook__Render(Renderer* renderer)
 {
 	for (WorldObject* wo : worldObjects)
 		for (Component* co : wo->components)

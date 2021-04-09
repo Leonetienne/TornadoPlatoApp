@@ -1,5 +1,7 @@
 #include "CppUnitTest.h"
 #include "../Plato/WorldObjectManager.h"
+#include "../Plato/Component.h"
+#include "../Plato/WorldObject.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
@@ -9,6 +11,26 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 #define SETUP_TEST WorldObjectManager::Free();
 #define CLEAN_TEST WorldObjectManager::Free();
+
+class TestComponent : public Component
+{
+public:
+	int GetI() { return  *i; }
+	std::string GetGOName() { return worldObject->GetName(); }
+
+private:
+	int* i;
+
+	TestComponent(WorldObject* worldObject, int* i)
+		:
+		Component(worldObject)
+	{
+		this->i = i;
+		return;
+	}
+
+	friend class WorldObject;
+};
 
 namespace WorldObjects
 {
@@ -283,5 +305,101 @@ namespace WorldObjects
 			CLEAN_TEST
 			return;
 		}
+
+		// Tests that adding a component works
+		TEST_METHOD(Can_Add_Component)
+		{
+			SETUP_TEST
+
+			int i = 33;
+			TestComponent* tc = WorldObjectManager::NewWorldObject("myname")->CreateComponent<TestComponent>(&i);
+			
+			Assert::IsNotNull(tc, L"TestComponent was null!");
+			Assert::AreEqual(i, tc->GetI(), L"Pointer not carried correctly");
+			Assert::AreEqual(std::string("myname"), tc->GetGOName(), L"WorldObject name does not match");
+
+			CLEAN_TEST
+			return;
+		}
+
+		// Tests that multiple objects can have components simultaniusly
+		TEST_METHOD(Can_Add_Components_to_Multiple_Objects)
+		{
+			SETUP_TEST
+
+			int i = 33;
+			
+			std::vector<TestComponent*> comps;
+
+			for (std::size_t j = 0; j < 50; j++)
+				comps.push_back(
+					WorldObjectManager::NewWorldObject("myname")->CreateComponent<TestComponent>(&i)
+				);
+
+			for (std::size_t j = 0; j < 50; j++)
+			{
+				Assert::IsNotNull(comps[j], L"TestComponent was null!");
+				Assert::AreEqual(i, comps[j]->GetI(), L"Pointer not carried correctly");
+				Assert::AreEqual(std::string("myname"), comps[i]->GetGOName(), L"WorldObject name does not match");
+			}
+
+			CLEAN_TEST
+			return;
+		}
+
+		// Tests that adding multiple components to the same object works
+		TEST_METHOD(Can_Add_Multiple_Components_To_Same_Object)
+		{
+			SETUP_TEST
+
+			int i = 33;
+			
+			std::vector<TestComponent*> comps;
+			WorldObject* wo = WorldObjectManager::NewWorldObject("myname");
+
+			for (std::size_t j = 0; j < 50; j++)
+				comps.push_back(
+					wo->CreateComponent<TestComponent>(&i)
+				);
+
+			for (std::size_t j = 0; j < 50; j++)
+			{
+				Assert::IsNotNull(comps[j], L"TestComponent was null!");
+				Assert::AreEqual(i, comps[j]->GetI(), L"Pointer not carried correctly");
+				Assert::AreEqual(std::string("myname"), comps[i]->GetGOName(), L"WorldObject name does not match");
+			}
+
+			CLEAN_TEST
+			return;
+		}
+
+		// =========== MEMORY LEAK TESTS ===========
+		// These tests depends on debug-mode for memory insights.
+		// Thus, they only works in debug mode.
+		#ifdef _DEBUG
+
+
+		// Tests that adding a component does not create a memory leak
+		TEST_METHOD(Create_Component_No_MemoryLeak)
+		{
+			SETUP_TEST
+
+			MemoryLeakDetector mld;
+			mld.Init();
+
+			{
+				int i = 33;
+				TestComponent* tc = WorldObjectManager::NewWorldObject("myname")->CreateComponent<TestComponent>(&i);
+
+				WorldObjectManager::Free();
+
+				CLEAN_TEST
+			}
+
+			Assert::IsFalse(mld.DetectLeak());
+			return;
+		}
+
+		#endif
 	};
 }

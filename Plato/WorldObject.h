@@ -2,13 +2,15 @@
 #include <string>
 #include <set>
 #include <type_traits>
+#include "Component.h"
 
 class Transform;
-class Component;
 
 class WorldObject final
 {
 public:
+	~WorldObject();
+
 	Transform* GetTransform();
 	const Transform* GetTransform() const;
 
@@ -46,7 +48,7 @@ public:
 	void ClearAllTags();
 
 	template <class T, typename ...Params>
-	T* CreateComponent(Params&&... params);
+	T* CreateComponent(Params... params);
 	
 
 	// Will return a set of all components
@@ -62,7 +64,7 @@ public:
 	const T* GetComponentOfType(T t) const;
 
 private:
-	// Object identification
+	// Object identification 
 	std::string name;
 	std::set<std::string> tags;
 	std::string id;
@@ -85,12 +87,12 @@ private:
 };
 
 template<class T, typename ...Params>
-inline T* WorldObject::CreateComponent(Params&&... params)
+inline T* WorldObject::CreateComponent(Params... params)
 {
 	T* newComponent = new T(this, std::forward<Params>(params)...);
 	Component* compPtr = dynamic_cast<Component*>(newComponent);
 	
-	// Oops! T is not a derivation if Component
+	// Oops! T is not a derivation of class Component
 	if (compPtr == nullptr)
 		throw std::exception("Template type not derivation of Component!");
 

@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "WorldObject.h"
 
 Component::Component(WorldObject* worldObject)
 	:

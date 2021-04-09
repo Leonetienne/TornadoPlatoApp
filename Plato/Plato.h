@@ -13,10 +13,13 @@ public:
 
 private:
 	Renderer* renderer;
+	Material dummyMat;
 	
 	Mesh mesh_floatingTriangle;
-	Material mat_floatingTriangle;
 	MeshRenderer* mr_floatingTriangle;
+
+	Mesh mesh_floor;
+	MeshRenderer* mr_floor;
 
 	Camera* camera;
 };

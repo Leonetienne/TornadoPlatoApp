@@ -7,6 +7,15 @@ WorldObject::WorldObject()
 	return;
 }
 
+WorldObject::~WorldObject()
+{
+	for (Component* co : components)
+		delete co;
+
+	components.clear();
+	return;
+}
+
 Transform* WorldObject::GetTransform()
 {
 	return transform;

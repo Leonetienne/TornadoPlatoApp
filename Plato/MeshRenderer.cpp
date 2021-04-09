@@ -1,4 +1,5 @@
 #include "MeshRenderer.h"
+#include "Renderer.h"
 
 MeshRenderer::MeshRenderer(WorldObject* worldObject, const Mesh* mesh, const Material* material)
 	:
@@ -30,4 +31,10 @@ void MeshRenderer::SetMaterial(const Material* material)
 const Material* MeshRenderer::GetMaterial() const
 {
 	return material;
+}
+
+void MeshRenderer::Render(Renderer* renderer)
+{
+	renderer->RegisterMeshRenderer(this);
+	return;
 }
