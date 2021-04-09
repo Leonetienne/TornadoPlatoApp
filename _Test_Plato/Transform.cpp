@@ -208,6 +208,119 @@ namespace TransformRelated
 			return;
 		}
 
+		// Tests that the local transformation matrix works with only translation
+		TEST_METHOD(Local_Transformation_Matrix_TranslationOnly)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			// Setup
+			Vector3d originalPoint(17, 33, 5);
+			Transform* a = NEW_TRANSFORM;
+			a->SetPosition(Vector3d(255, 12, -23));
+
+			// Exercise
+			Vector3d transformedPoint = originalPoint * a->GetLocalTransformationMatrix();
+
+			// Verify
+			Assert::IsTrue(transformedPoint.Similar(originalPoint + Vector3d(255, 12, -23)));
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that the local transformation matrix works with only rotation
+		TEST_METHOD(Local_Transformation_Matrix_RotationOnly)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			// Setup
+			Vector3d originalPoint(12, 314, -99);
+			Transform* a = NEW_TRANSFORM;
+			a->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 90)));
+
+			// Exercise
+			Vector3d transformedPoint = originalPoint * a->GetLocalTransformationMatrix();
+
+			// Verify
+			Vector3d targetPosition = originalPoint * a->GetRotation().ToRotationMatrix();
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << "Original position   : " << originalPoint << std::endl
+				<< "Transformed position: " << transformedPoint << std::endl
+				<< "Target position     : " << targetPosition << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(transformedPoint.Similar(targetPosition), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that the local transformation matrix works with only scale
+		TEST_METHOD(Local_Transformation_Matrix_ScalingOnly)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			// Setup
+			Vector3d originalPoint(-2, 12, 33);
+			Transform* a = NEW_TRANSFORM;
+			a->SetScale(Vector3d(-0.22, 22, 1.5));
+
+			// Exercise
+			Vector3d transformedPoint = originalPoint * a->GetLocalTransformationMatrix();
+
+			// Verify
+			Vector3d targetPosition = Vector3d(originalPoint.x * -0.22, originalPoint.y * 22, originalPoint.z * 1.5);
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << "Original position   : " << originalPoint << std::endl
+				<< "Transformed position: " << transformedPoint << std::endl
+				<< "Target position     : " << targetPosition << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(transformedPoint.Similar(targetPosition), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that the local transformation matrix works with all factors
+		TEST_METHOD(Local_Transformation_Matrix_Combined)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			// Setup
+			Vector3d originalPoint(-2, 12, 33);
+			Transform* a = NEW_TRANSFORM;
+			a->SetPosition(Vector3d(19.99, 12, -500));
+			a->SetRotation(Quaternion::FromEuler(Vector3d(19, -23, 119)));
+			a->SetScale(Vector3d(-0.22, 22, 1.5));
+
+			// Exercise
+			Vector3d transformedPoint = originalPoint * a->GetLocalTransformationMatrix();
+
+			// Verify
+			Vector3d targetPosition = Quaternion::FromEuler(Vector3d(19, -23, 119)) * Vector3d(originalPoint.x * -0.22, originalPoint.y * 22, originalPoint.z * 1.5) + Vector3d(19.99, 12, -500);
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << "Original position   : " << originalPoint << std::endl
+				<< "Transformed position: " << transformedPoint << std::endl
+				<< "Target position     : " << targetPosition << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(transformedPoint.Similar(targetPosition), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
 		// =========== MEMORY LEAK TESTS ===========
 		// These tests depends on debug-mode for memory insights.
 		// Thus, they only works in debug mode.
