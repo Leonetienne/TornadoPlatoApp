@@ -1,5 +1,6 @@
 #include "Plato.h"
 #include <Windows.h>
+#include "Camera.h"
 
 Plato::Plato()
 {
@@ -14,7 +15,8 @@ Plato::Plato()
 	rd.c.vertexColor = Color::blue;
 	
 	worldObject = WorldObjectManager::NewWorldObject();
-	camera = WorldObjectManager::NewWorldObject();
+
+	camera = WorldObjectManager::NewWorldObject()->CreateComponent<Camera>(Vector2i(800, 600), 90, 0.0001, 10000);
 
 	return;
 }
@@ -34,19 +36,19 @@ void Plato::Update()
 	const double shiftmod = GetAsyncKeyState(VK_LSHIFT) ? 5 : 1;
 
 	if (GetAsyncKeyState('A'))
-		camera->GetTransform()->Move(Vector3d(-1, 0, 0) * 0.1 * shiftmod);
+		camera->transform->Move(Vector3d(-1, 0, 0) * 0.1 * shiftmod);
 	if (GetAsyncKeyState('D'))
-		camera->GetTransform()->Move(Vector3d(1, 0, 0) * 0.1 * shiftmod);
+		camera->transform->Move(Vector3d(1, 0, 0) * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('W'))
-		camera->GetTransform()->Move(Vector3d(0, 0,  1) * 0.1 * shiftmod);
+		camera->transform->Move(Vector3d(0, 0,  1) * 0.1 * shiftmod);
 	if (GetAsyncKeyState('S'))
-		camera->GetTransform()->Move(Vector3d(0, 0, -1) * 0.1 * shiftmod);
+		camera->transform->Move(Vector3d(0, 0, -1) * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('Q'))
-		camera->GetTransform()->Move(Vector3d(0,  1, 0) * 0.1 * shiftmod);
+		camera->transform->Move(Vector3d(0,  1, 0) * 0.1 * shiftmod);
 	if (GetAsyncKeyState('E'))
-		camera->GetTransform()->Move(Vector3d(0, -1, 0) * 0.1 * shiftmod);
+		camera->transform->Move(Vector3d(0, -1, 0) * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('1'))
 		fov += 1 * shiftmod;
@@ -54,9 +56,9 @@ void Plato::Update()
 		fov -= 1 * shiftmod;
 
 	if (GetAsyncKeyState('Y'))
-		camera->GetTransform()->Rotate(Quaternion::FromEuler(Vector3d(0, 10,0) * 0.1 * shiftmod));
+		camera->transform->Rotate(Quaternion::FromEuler(Vector3d(0, 10,0) * 0.1 * shiftmod));
 	if (GetAsyncKeyState('X'))
-		camera->GetTransform()->Rotate(Quaternion::FromEuler(Vector3d(0, -10,0) * 0.1 * shiftmod));
+		camera->transform->Rotate(Quaternion::FromEuler(Vector3d(0, -10,0) * 0.1 * shiftmod));
 
 	RenderTriangle3D ard = rd;
 	ard.a.pos_worldSpace = rd.a.pos_worldSpace * worldObject->GetTransform()->GetLocalTransformationMatrix();
@@ -64,18 +66,16 @@ void Plato::Update()
 	ard.c.pos_worldSpace = rd.c.pos_worldSpace * worldObject->GetTransform()->GetLocalTransformationMatrix();
 
 	// Camera transformation
-	ard.a.pos_worldSpace -= camera->GetTransform()->GetPosition();
-	ard.b.pos_worldSpace -= camera->GetTransform()->GetPosition();
-	ard.c.pos_worldSpace -= camera->GetTransform()->GetPosition();
-	ard.a.pos_worldSpace *= camera->GetTransform()->GetRotation().Inverse().ToRotationMatrix();
-	ard.b.pos_worldSpace *= camera->GetTransform()->GetRotation().Inverse().ToRotationMatrix();
-	ard.c.pos_worldSpace *= camera->GetTransform()->GetRotation().Inverse().ToRotationMatrix();
+	ard.a.pos_worldSpace -= camera->transform->GetPosition();
+	ard.b.pos_worldSpace -= camera->transform->GetPosition();
+	ard.c.pos_worldSpace -= camera->transform->GetPosition();
+	ard.a.pos_worldSpace *= camera->transform->GetRotation().Inverse().ToRotationMatrix();
+	ard.b.pos_worldSpace *= camera->transform->GetRotation().Inverse().ToRotationMatrix();
+	ard.c.pos_worldSpace *= camera->transform->GetRotation().Inverse().ToRotationMatrix();
 
 	ard.a.vertexColor = rd.a.vertexColor;
 	ard.b.vertexColor = rd.b.vertexColor;
 	ard.c.vertexColor = rd.c.vertexColor;
-
-	ProjectionProperties prop(Vector2i(800, 600), fov, 0.001, 10000);
 
 	Matrix4x4 worldMatrix;
 
@@ -85,7 +85,7 @@ void Plato::Update()
 	worldMatrix[3] = { 0, 0,  0, 0 };
 	tornado->BeginFrame();
 	tornado->RegisterRender(&ard);
-	tornado->Render(prop, worldMatrix);
+	tornado->Render(camera->GetProjectionProperties(), worldMatrix);
 
 	return;
 }

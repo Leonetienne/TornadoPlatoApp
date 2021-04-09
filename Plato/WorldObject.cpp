@@ -86,3 +86,13 @@ void WorldObject::ClearAllTags()
 	tags.clear();
 	return;
 }
+
+const std::set<Component*>& WorldObject::GetComponents() const
+{
+	return components;
+}
+
+std::set<Component*>& WorldObject::GetComponents()
+{
+	return components;
+}

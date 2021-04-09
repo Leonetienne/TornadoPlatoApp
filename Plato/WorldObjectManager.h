@@ -24,13 +24,14 @@ public:
 	// Will return the number of world objects
 	static std::size_t GetNumObjects();
 
+	// Will look for objects marked to be deleted and will delete them.
+	// Call this once at the absolute beginning of every frame
+	static void DeleteFlaggedObjects();
+
 	// Will free all world objects
 	static void Free();
 
 private:
-	// Will look for objects marked to be deleted and will delete them.
-	// Call this once at the absolute beginning of every frame
-	static void DeleteFlaggedObjects();
 
 	// Will call the hook method "Update()" on all world objects
 	static void CallHook__Update(double frametime);

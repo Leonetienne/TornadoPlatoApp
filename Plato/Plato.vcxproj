@@ -156,6 +156,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Plato.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Transform.h" />
@@ -163,6 +165,8 @@
     <ClInclude Include="WorldObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Plato.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Transform.cpp" />
