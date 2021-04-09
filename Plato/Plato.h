@@ -14,6 +14,8 @@ public:
 private:
 	Tornado* tornado;
 	RenderTriangle3D rd;
+	WorldObject* worldObject;
 
+	WorldObject* camera;
 };
 
