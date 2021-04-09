@@ -54,6 +54,8 @@ Plato::Plato()
 
 	renderer->SetMainCamera(camera);
 
+	mr_floor->transform->SetScale({ 0.1, 0.1, 0.1 });
+
 	return;
 }
 
@@ -68,7 +70,6 @@ Plato::~Plato()
 
 void Plato::Update()
 {
-	static double fov = 90;
 	const double shiftmod = GetAsyncKeyState(VK_LSHIFT) ? 5 : 1;
 
 	WorldObjectManager::DeleteFlaggedObjects();
@@ -90,9 +91,9 @@ void Plato::Update()
 		camera->transform->Move(Vector3d(0, -1, 0) * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('1'))
-		fov += 1 * shiftmod;
+		camera->SetFov(camera->GetFov() - 1 * shiftmod);
 	if (GetAsyncKeyState('2'))
-		fov -= 1 * shiftmod;
+		camera->SetFov(camera->GetFov() + 1 * shiftmod);
 
 	if (GetAsyncKeyState('Y'))
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d(0, 10,0) * 0.1 * shiftmod));
