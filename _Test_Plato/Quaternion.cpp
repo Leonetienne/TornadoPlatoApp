@@ -117,8 +117,8 @@ namespace TransformRelated
 			return;
 		}
 
-		// Tests that rotating a vector is equal to multiplying it with the rotation matrix
-		TEST_METHOD(RotateVector_Equal_to_RotationMatrix)
+		// Tests that rotating a vector is equal to multiplying it with the inverted rotation matrix
+		TEST_METHOD(RotateVector_Equal_to_InverseRotationMatrix)
 		{
 			// Run test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
@@ -127,7 +127,7 @@ namespace TransformRelated
 
 				Vector3d point(32, 19, -14);
 
-				Assert::IsTrue((point * a.ToRotationMatrix()).Similar(a * point));
+				Assert::IsTrue((point * a.Inverse().ToRotationMatrix()).Similar(a * point));
 			}
 
 			return;

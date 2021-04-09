@@ -34,7 +34,7 @@ public:
     Quaternion& operator/= (const Quaternion& q);
 
     // Will transform a 3d point around its origin
-    Vector3d operator* (const Vector3d& p);
+    Vector3d operator* (const Vector3d& p) const;
 
     bool operator== (const Quaternion& q) const;
 
@@ -46,7 +46,7 @@ public:
 
     Quaternion UnitQuaternion() const;
 
-    Vector3d RotateVector(const Vector3d vec) const;
+    Vector3d RotateVector(const Vector3d& vec) const;
 
     Vector3d ToEulerAngles() const;
 

@@ -75,14 +75,14 @@ void Plato::Update()
 	WorldObjectManager::CallHook__Update(0);
 
 	if (GetAsyncKeyState('A'))
-		camera->transform->Move(Vector3d(-1, 0, 0) * 0.1 * shiftmod);
+		camera->transform->Move(camera->transform->GetRotation() * Vector3d(-1, 0, 0) * 0.1 * shiftmod);
 	if (GetAsyncKeyState('D'))
-		camera->transform->Move(Vector3d(1, 0, 0) * 0.1 * shiftmod);
+		camera->transform->Move(camera->transform->GetRotation() * Vector3d(1, 0, 0) * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('W'))
-		camera->transform->Move(Vector3d(0, 0,  1) * 0.1 * shiftmod);
+		camera->transform->Move(camera->transform->GetRotation() * Vector3d(0, 0,  1) * 0.1 * shiftmod);
 	if (GetAsyncKeyState('S'))
-		camera->transform->Move(Vector3d(0, 0, -1) * 0.1 * shiftmod);
+		camera->transform->Move(camera->transform->GetRotation() * Vector3d(0, 0, -1) * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('Q'))
 		camera->transform->Move(Vector3d(0,  1, 0) * 0.1 * shiftmod);
