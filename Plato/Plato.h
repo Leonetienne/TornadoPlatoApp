@@ -1,6 +1,7 @@
 #pragma once
 #include "../Tornado/Tornado.h"
 #include "WorldObjectManager.h"
+#include "Camera.h"
 
 class Plato
 {
@@ -16,6 +17,6 @@ private:
 	RenderTriangle3D rd;
 	WorldObject* worldObject;
 
-	WorldObject* camera;
+	Camera* camera;
 };
 
