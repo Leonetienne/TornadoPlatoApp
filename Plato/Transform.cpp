@@ -77,6 +77,8 @@ void Transform::Scale(const Vector3d& dScale)
 
 void Transform::Rotate(const Quaternion& dRot)
 {
+	cache__IsLocalTransformationMatrix_UpToDate = false;
+
 	rotation *= dRot;
 	return;
 }
