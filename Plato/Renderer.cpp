@@ -44,13 +44,13 @@ void Renderer::RegisterMeshRenderer(const MeshRenderer* mr)
 
 void Renderer::Render()
 {
-	ResolveRenderTriangles();
-
 	tornado.BeginFrame();
+	
+	ResolveRenderTriangles();
 	
 	for (const RenderTriangle3D& rd : renderTriangles)
 		tornado.RegisterRender(&rd);
-
+	
 	tornado.Render(mainCamera->GetProjectionProperties(), worldMatrix);
 
 	return;
@@ -61,40 +61,41 @@ void Renderer::ResolveRenderTriangles()
 	/// MULTITHREAD THIS!!
 	const Vector3d inverseCameraPosition = mainCamera->transform->GetPosition() * -1;
 	const Matrix4x4 inverseCameraRotation = mainCamera->transform->GetRotation().Inverse().ToRotationMatrix();
-
+	
 	// Convert mesh renderers to individual world space triangles
 	for (const MeshRenderer* mr : meshRenderers)
 	{
 		const Mesh* mesh = mr->GetMesh();
-
+	
 		// Number of triangle vertex indices not a multiple of 3
 		if (mesh->tris.size() % 3 != 0)
 			throw std::exception("Mesh tris.size() is broken!");
-
+	
 		for (std::size_t i = 0; i < mesh->tris.size(); i += 3)
 		{
 			// Assign local values
 			RenderTriangle3D rd;
-			rd.material = mr->GetMaterial();
-
-			rd.a.pos_worldSpace = mesh->v_vertices[mesh->tris[i].v + 0];
-			rd.b.pos_worldSpace = mesh->v_vertices[mesh->tris[i].v + 1];
-			rd.c.pos_worldSpace = mesh->v_vertices[mesh->tris[i].v + 2];
-
-			rd.a.pos_textureSpace = mesh->uv_vertices[mesh->tris[i].uv + 0];
-			rd.b.pos_textureSpace = mesh->uv_vertices[mesh->tris[i].uv + 1];
-			rd.c.pos_textureSpace = mesh->uv_vertices[mesh->tris[i].uv + 2];
-
-			rd.a.normal = mesh->normals[mesh->tris[i].vn + 0];
-			rd.b.normal = mesh->normals[mesh->tris[i].vn + 1];
-			rd.c.normal = mesh->normals[mesh->tris[i].vn + 2];
-
+			//rd.material = mr->GetMaterial();
+			rd.material = nullptr;
+	
+			rd.a.pos_worldSpace = mesh->v_vertices[mesh->tris[i + 0].v];
+			rd.b.pos_worldSpace = mesh->v_vertices[mesh->tris[i + 1].v];
+			rd.c.pos_worldSpace = mesh->v_vertices[mesh->tris[i + 2].v];
+	
+			rd.a.pos_textureSpace = mesh->uv_vertices[mesh->tris[i + 0].uv];
+			rd.b.pos_textureSpace = mesh->uv_vertices[mesh->tris[i + 1].uv];
+			rd.c.pos_textureSpace = mesh->uv_vertices[mesh->tris[i + 2].uv];
+	
+			rd.a.normal = mesh->normals[mesh->tris[i + 0].vn];
+			rd.b.normal = mesh->normals[mesh->tris[i + 1].vn];
+			rd.c.normal = mesh->normals[mesh->tris[i + 2].vn];
+	
 			// Apply world space transformation
 			const Matrix4x4& transformationMatrix = mr->transform->GetLocalTransformationMatrix();;
 			rd.a.pos_worldSpace *= transformationMatrix;
 			rd.b.pos_worldSpace *= transformationMatrix;
 			rd.c.pos_worldSpace *= transformationMatrix;
-
+	
 			// Apply camera space transformation
 			rd.a.pos_worldSpace += inverseCameraPosition;
 			rd.b.pos_worldSpace += inverseCameraPosition;
@@ -102,12 +103,12 @@ void Renderer::ResolveRenderTriangles()
 			rd.a.pos_worldSpace *= inverseCameraRotation;
 			rd.b.pos_worldSpace *= inverseCameraRotation;
 			rd.c.pos_worldSpace *= inverseCameraRotation;
-
+	
 			// Testing
 			rd.a.vertexColor = Color::red;
 			rd.b.vertexColor = Color::green;
 			rd.c.vertexColor = Color::blue;
-
+	
 			// Add RenderTriangle to vector
 			renderTriangles.push_back(rd);
 		}
