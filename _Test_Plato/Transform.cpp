@@ -320,34 +320,5 @@ namespace TransformRelated
 			WorldObjectManager::Free();
 			return;
 		}
-
-		// =========== MEMORY LEAK TESTS ===========
-		// These tests depends on debug-mode for memory insights.
-		// Thus, they only works in debug mode.
-		#ifdef _DEBUG
-
-		// Tests that simply creating a new world object / transform does not create a memory leak
-		TEST_METHOD(Creating_No_Memory_Leak)
-		{
-			// Free any rubbish previously failed tests left behind
-			WorldObjectManager::Free();
-
-			MemoryLeakDetector mld;
-			mld.Init();
-
-			{
-				WorldObject* wo = WorldObjectManager::NewWorldObject();
-
-				Assert::IsTrue(wo == wo->GetTransform()->GetWorldObject());
-				Assert::IsTrue(wo->GetTransform() == wo->GetTransform()->GetWorldObject()->GetTransform());
-
-				WorldObjectManager::Free();
-			}
-
-			Assert::IsFalse(mld.DetectLeak());
-			return;
-		}
-
-		#endif
 	};
 }
