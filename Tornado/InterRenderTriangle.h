@@ -10,7 +10,7 @@ struct InterRenderTriangle
 	mutable double ss_area = -1;	// Cached value. Area
 	mutable double ss_iarea = -1;	// Cached value. Inverted area
 
-	Material* material = nullptr; // Material to render with
+	const Material* material = nullptr; // Material to render with
 
 	bool DoesScreenspaceContainPoint(const Vector2d& p) const;
 

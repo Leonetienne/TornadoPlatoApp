@@ -19,7 +19,7 @@ public:
 	void Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix);
 
 	// Will return the pixel buffer with the rendered pixel data.
-	PixelBuffer<3>* GetPixelBuffer() const;
+	const PixelBuffer<3>* GetPixelBuffer() const;
 
 private:
 	WorkerPool* workerPool;

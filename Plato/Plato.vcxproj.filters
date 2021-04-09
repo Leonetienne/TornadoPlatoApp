@@ -36,6 +36,15 @@
     <ClInclude Include="Component.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Plato.cpp">
@@ -57,6 +66,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
