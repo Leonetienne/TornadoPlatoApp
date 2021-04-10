@@ -14,12 +14,12 @@ public:
 private:
 	Renderer* renderer;
 	Material dummyMat;
-	
-	Mesh mesh_floatingTriangle;
-	MeshRenderer* mr_floatingTriangle;
 
 	Mesh mesh_floor;
 	MeshRenderer* mr_floor;
+
+	Mesh mesh_coob;
+	MeshRenderer* mr_coob;
 
 	Camera* camera;
 };

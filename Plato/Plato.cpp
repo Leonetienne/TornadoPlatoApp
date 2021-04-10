@@ -8,23 +8,6 @@ Plato::Plato()
 {
 	renderer = new Renderer(Vector2i(800, 600));
 
-	mesh_floatingTriangle.v_vertices = {
-		Vector3d(0, 1.7, 0),
-		Vector3d(1, 0, 0),
-		Vector3d(-1, 0, 0)
-	};
-	mesh_floatingTriangle.uv_vertices = {
-		Vector2d(0,0)
-	};
-	mesh_floatingTriangle.normals = {
-		Vector3d(0,0,0)
-	};
-	mesh_floatingTriangle.tris = {
-		{0,0,0},
-		{1,0,0},
-		{2,0,0}
-	};
-
 	mesh_floor.v_vertices = {
 		Vector3d(-1, 0, 1),
 		Vector3d( 1, 0, 1),
@@ -50,43 +33,60 @@ Plato::Plato()
 		{0,0,0}
 	};
 
+	mesh_coob.v_vertices = {
+		Vector3d(-1, -1,  1),
+		Vector3d(-1,  1,  1),
+		Vector3d(-1, -1, -1),
+		Vector3d(-1,  1, -1),
+		Vector3d( 1, -1,  1),
+		Vector3d( 1,  1,  1),
+		Vector3d( 1, -1, -1),
+		Vector3d( 1,  1, -1)
+	};
+	mesh_coob.uv_vertices = {
+		Vector2d(0.625, 0.00),
+		Vector2d(0.375, 0.25),
+		Vector2d(0.375, 0.00),
+		Vector2d(0.625, 0.25),
+		Vector2d(0.375, 0.50),
+		Vector2d(0.625, 0.50),
+		Vector2d(0.375, 0.75),
+		Vector2d(0.625, 0.75),
+		Vector2d(0.375, 1.00),
+		Vector2d(0.125, 0.75),
+		Vector2d(0.125, 0.50),
+		Vector2d(0.875, 0.50),
+		Vector2d(0.625, 1.00),
+		Vector2d(0.875, 0.75)
+	};
+	mesh_coob.normals = {
+		Vector3d(-1,  0,  0),
+		Vector3d( 0,  0, -1),
+		Vector3d( 1,  0,  0),
+		Vector3d( 0,  0,  1),
+		Vector3d( 0, -1,  0),
+		Vector3d( 0,  1,  0)
+	};
+	mesh_coob.tris = {
+		{1,  0, 0}, { 2,  1, 0}, {0, 2, 0},
+		{3,  3, 1}, { 6,  4, 1}, {2, 1, 1},
+		{7,  5, 2}, { 4,  6, 2}, {6, 4, 2},
+		{5,  7, 3}, { 0,  8, 3}, {4, 6, 3},
+		{6,  4, 4}, { 0,  9, 4}, {2, 9, 4},
+		{3, 10, 5}, { 5,  7, 5}, {7, 5, 5},
+		{1,  0, 0}, { 3,  3, 0}, {2, 1, 0},
+		{3,  3, 1}, { 7,  5, 1}, {6, 4, 1},
+		{7,  5, 2}, { 5,  7, 2}, {4, 6, 2},
+		{5,  7, 3}, { 1, 11, 3}, {0, 8, 3},
+		{6,  4, 4}, { 4,  6, 4}, {0, 9, 4},
+		{3, 10, 5}, { 1, 13, 5}, {5, 7, 5}
+	};
+
 	camera = WorldObjectManager::NewWorldObject()->CreateComponent<Camera>(Vector2i(800, 600), 90, 0.0001, 10000);
-	mr_floor = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floor, &dummyMat);
-	//mr_floatingTriangle = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floatingTriangle, &dummyMat);
-
 	renderer->SetMainCamera(camera);
-
-	mr_floor->transform->SetScale(Vector3d::one * 20);
-	mr_floor->transform->SetPosition(Vector3d::down * 2);
-
-	//mr_floatingTriangle->transform->SetPosition({ 0, -2, 5 });
-
-	Transform* floor1 = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floor, &dummyMat)->transform;
-	Transform* floor2 = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floor, &dummyMat)->transform;
-	floor3 = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floor, &dummyMat)->transform;
-	Transform* floor4 = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floor, &dummyMat)->transform;
-	Transform* floor5 = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_floor, &dummyMat)->transform;
 	
-	floor5->SetParent(floor4);
-	floor4->SetParent(floor3);
-	floor3->SetParent(floor2);
-	floor2->SetParent(floor1);
-	floor1->SetParent(mr_floor->transform);
-	
-	floor1->SetPosition(Vector3d::up * 0.25 );
-	floor1->SetScale(Vector3d::one * 0.5 );
-	
-	floor2->SetPosition(Vector3d::up * 0.25);
-	floor2->SetScale(Vector3d::one * 0.5);
-	
-	floor3->SetPosition(Vector3d::up * 0.25);
-	floor3->SetScale(Vector3d::one * 0.5);
-	
-	floor4->SetPosition(Vector3d::up * 0.25);
-	floor4->SetScale(Vector3d::one * 0.5);
-	
-	floor5->SetPosition(Vector3d::up * 0.25);
-	floor5->SetScale(Vector3d::one * 0.5);
+	mr_coob = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
+	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 2);
 
 	return;
 }
@@ -127,11 +127,11 @@ void Plato::Update()
 	if (GetAsyncKeyState('2'))
 		camera->SetFov(camera->GetFov() + 1 * shiftmod);
 
-	if (GetAsyncKeyState('P'))
-		mr_floatingTriangle->transform->SetParent(mr_floor->transform);
-
-	if (GetAsyncKeyState('U'))
-		floor3->SetParent(nullptr);
+	//if (GetAsyncKeyState('P'))
+	//	mr_floatingTriangle->transform->SetParent(mr_floor->transform);
+	//
+	//if (GetAsyncKeyState('U'))
+	//	floor3->SetParent(nullptr);
 
 
 	if (GetAsyncKeyState(VK_RIGHT))

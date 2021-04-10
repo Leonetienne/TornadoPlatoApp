@@ -75,8 +75,7 @@ void Renderer::ResolveRenderTriangles()
 		{
 			// Assign local values
 			RenderTriangle3D rd;
-			//rd.material = mr->GetMaterial();
-			rd.material = nullptr;
+			rd.material = mr->GetMaterial();
 	
 			rd.a.pos_worldSpace = mesh->v_vertices[mesh->tris[i + 0].v];
 			rd.b.pos_worldSpace = mesh->v_vertices[mesh->tris[i + 1].v];
@@ -91,7 +90,7 @@ void Renderer::ResolveRenderTriangles()
 			rd.c.normal = mesh->normals[mesh->tris[i + 2].vn];
 	
 			// Apply world space transformation
-			const Matrix4x4& transformationMatrix = mr->transform->GetGlobalTransformationMatrix();;
+			const Matrix4x4& transformationMatrix = mr->transform->GetGlobalTransformationMatrix(); // <-- This caches the retval
 			rd.a.pos_worldSpace *= transformationMatrix;
 			rd.b.pos_worldSpace *= transformationMatrix;
 			rd.c.pos_worldSpace *= transformationMatrix;
