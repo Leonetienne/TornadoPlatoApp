@@ -46,7 +46,8 @@ public:
 	Transform* GetParent() const;
 
 	// Will set this transforms new parent
-	void SetParent(Transform* newParent);
+	// Set keepAbsoluteTransform to false to keep the local transformation values
+	void SetParent(Transform* newParent, bool keepAbsoluteTransform = true);
 
 	// Will set a Transform as a child. This will delete the existing parent-child relationship of the supplied transform!
 	void AddChild(Transform* child);
@@ -64,6 +65,18 @@ public:
 
 	// Will return a transformation matrix relative to this transforms origin
 	Matrix4x4 GetLocalTransformationMatrix() const;
+
+	// Will return a transformation matrix relative to the world origin
+	Matrix4x4 GetGlobalTransformationMatrix() const;
+
+	// Will return this transforms position relative to the world origin
+	Vector3d GetGlobalPosition() const;
+
+	// Will return this transforms rotation relative to the world origin
+	Quaternion GetGlobalRotation() const;
+
+	// Will return this transforms scale relative to the world origin
+	Vector3d GetGlobalScale() const;
 
 private:
 	Matrix4x4 scaleMatrix;
