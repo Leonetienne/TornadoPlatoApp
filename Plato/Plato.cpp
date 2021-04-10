@@ -86,7 +86,7 @@ Plato::Plato()
 	renderer->SetMainCamera(camera);
 	
 	mr_coob = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
-	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 2);
+	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 1.5);
 
 	return;
 }
@@ -107,6 +107,7 @@ void Plato::Update()
 	WorldObjectManager::DeleteFlaggedObjects();
 	WorldObjectManager::CallHook__Update(0);
 
+	// PLAYER CONTROL
 	if (GetAsyncKeyState('A'))
 		camera->transform->Move(camera->transform->GetRotation() * Vector3d::left * 0.1 * shiftmod);
 	if (GetAsyncKeyState('D'))
@@ -126,13 +127,6 @@ void Plato::Update()
 		camera->SetFov(camera->GetFov() - 1 * shiftmod);
 	if (GetAsyncKeyState('2'))
 		camera->SetFov(camera->GetFov() + 1 * shiftmod);
-
-	//if (GetAsyncKeyState('P'))
-	//	mr_floatingTriangle->transform->SetParent(mr_floor->transform);
-	//
-	//if (GetAsyncKeyState('U'))
-	//	floor3->SetParent(nullptr);
-
 
 	if (GetAsyncKeyState(VK_RIGHT))
 		mr_floor->transform->Rotate(Quaternion(Vector3d::up * 0.5 * shiftmod));
@@ -157,6 +151,10 @@ void Plato::Update()
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d::up * 1 * shiftmod));
 	if (GetAsyncKeyState('X'))
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d::up * -1 * shiftmod));
+
+	// MAKE CUBE SPIN
+	mr_coob->transform->Rotate(Quaternion(Vector3d(5, 10, 15) * 0.1));
+
 	
 	renderer->BeginFrame();
 	WorldObjectManager::CallHook__Render(renderer);
