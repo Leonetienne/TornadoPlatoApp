@@ -68,9 +68,9 @@ void Transform::Scale(const Vector3d& dScale)
 {
 	cache__IsLocalTransformationMatrix_UpToDate = false;
 
-	scaleMatrix.d *= dScale.x;
-	scaleMatrix.h *= dScale.y;
-	scaleMatrix.l *= dScale.z;
+	scaleMatrix.a *= dScale.x;
+	scaleMatrix.f *= dScale.y;
+	scaleMatrix.k *= dScale.z;
 
 	return;
 }
@@ -117,12 +117,33 @@ Transform* Transform::GetParent() const
 	return parent;
 }
 
-void Transform::SetParent(Transform* newParent)
+void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 {
 	// Prevent alabama tree
 	for (Transform* it = newParent; it != nullptr; it = it->GetParent())
 		if (it == this)
 			return; // Abort
+
+	if ((parent != nullptr) && (keepAbsoluteTransform))
+	{
+		// Resolve global 
+		this->Scale(Vector3d(
+			 parent->GetGlobalScale().x,
+			 parent->GetGlobalScale().y,
+			 parent->GetGlobalScale().z
+		));
+
+		Matrix4x4 parentGlobalScaleMatrix;
+		parentGlobalScaleMatrix.a = parent->GetGlobalScale().x;
+		parentGlobalScaleMatrix.f = parent->GetGlobalScale().y;
+		parentGlobalScaleMatrix.k = parent->GetGlobalScale().z;
+		this->SetPosition(this->GetPosition() * parentGlobalScaleMatrix);
+
+		this->Rotate(parent->GetGlobalRotation());
+		this->SetPosition(this->GetPosition() * parent->GetGlobalRotation().Inverse().ToRotationMatrix());
+
+		this->Move(parent->GetGlobalPosition());
+	}
 
 	// Say goodbye to current parent, if not an orphan
 	if (parent != nullptr)
@@ -131,7 +152,26 @@ void Transform::SetParent(Transform* newParent)
 	// Assign new parent, and notify it (if the parent an actual parent)
 	parent = newParent;
 	if (parent != nullptr)
+	{
 		parent->children.insert(this);
+		
+		this->Move(parent->GetGlobalPosition() * -1);
+
+		this->Rotate(parent->GetGlobalRotation().Inverse());
+		this->SetPosition(this->GetPosition() * parent->GetGlobalRotation().ToRotationMatrix());
+
+		// Resolve new local transform
+		this->Scale(Vector3d(
+			1.0 / parent->GetGlobalScale().x,
+			1.0 / parent->GetGlobalScale().y,
+			1.0 / parent->GetGlobalScale().z
+		));
+		Matrix4x4 parentGlobalInverseScaleMatrix;
+		parentGlobalInverseScaleMatrix.a = 1.0 / parent->GetGlobalScale().x;
+		parentGlobalInverseScaleMatrix.f = 1.0 / parent->GetGlobalScale().y;
+		parentGlobalInverseScaleMatrix.k = 1.0 / parent->GetGlobalScale().z;
+		this->SetPosition(this->GetPosition() * parentGlobalInverseScaleMatrix);
+	}
 
 	return;
 }
@@ -192,4 +232,57 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 	}
 
 	return cache_localTransformationMatrix;
+}
+
+Matrix4x4 Transform::GetGlobalTransformationMatrix() const
+{
+	Matrix4x4 glob = GetLocalTransformationMatrix();
+
+	// Apply global scale
+	for (const Transform* tr = this->GetParent(); tr != nullptr; tr = tr->GetParent())
+	{
+		Vector3d newPos;
+		newPos = Vector3d(glob.d, glob.h, glob.l);
+		newPos *= tr->scaleMatrix;
+		newPos *= tr->rotation.ToRotationMatrix();
+
+		glob.d = newPos.x;
+		glob.h = newPos.y;
+		glob.l = newPos.z;
+		glob *= tr->GetLocalTransformationMatrix();
+	}
+
+	return glob;
+}
+
+Vector3d Transform::GetGlobalPosition() const
+{
+	// Transform the local origin by our global transformation matrix
+	return Vector3d::zero * GetGlobalTransformationMatrix();
+}
+
+Quaternion Transform::GetGlobalRotation() const
+{
+	Quaternion rot;
+
+	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
+	{
+		rot *= tr->rotation;
+	}
+
+	return rot;
+}
+
+Vector3d Transform::GetGlobalScale() const
+{
+	Vector3d scale = Vector3d::one;
+
+	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
+	{
+		scale.x *= tr->GetScale().x;
+		scale.y *= tr->GetScale().y;
+		scale.z *= tr->GetScale().z;
+	}
+
+	return scale;
 }

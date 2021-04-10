@@ -320,5 +320,156 @@ namespace TransformRelated
 			WorldObjectManager::Free();
 			return;
 		}
+
+		// Tests that getting the global scale works
+		TEST_METHOD(Get_Global_Scale)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			Transform* a = NEW_TRANSFORM;
+			Transform* b = NEW_TRANSFORM;
+			Transform* c = NEW_TRANSFORM;
+			Transform* d = NEW_TRANSFORM;
+
+			d->SetParent(c);
+			c->SetParent(b);
+			b->SetParent(a);
+
+			a->SetScale(Vector3d(33, 10, 0.001));
+			b->SetScale(Vector3d(1, -22, 21));
+			c->SetScale(Vector3d(-19, 5, 21));
+			d->SetScale(Vector3d(-19, 13, 0.5));
+
+			Vector3d expectedScale = Vector3d(11913, -14300, 0.2205);
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Expected scale: " << expectedScale << std::endl
+				<< "Actual scale: " << d->GetGlobalScale() << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(expectedScale.Similar(d->GetGlobalScale()), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that getting the global rotation works
+		TEST_METHOD(Get_Global_Rotation)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			Transform* a = NEW_TRANSFORM;
+			Transform* b = NEW_TRANSFORM;
+			Transform* c = NEW_TRANSFORM;
+			Transform* d = NEW_TRANSFORM;
+
+			d->SetParent(c);
+			c->SetParent(b);
+			b->SetParent(a);
+
+			a->SetRotation(Quaternion(Vector3d(0, 20, 0)));
+			b->SetRotation(Quaternion(Vector3d(10, 20, 0)));
+			c->SetRotation(Quaternion(Vector3d(0, 0, 0)));
+			d->SetRotation(Quaternion(Vector3d(-5, 5, 30)));
+
+			Quaternion expectedRotation(Vector3d(5, 45, 30));
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Expected rotation: " << expectedRotation << std::endl
+				<< "Actual rotation: " << d->GetGlobalRotation() << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(expectedRotation.GetRawValues().Similar(d->GetGlobalRotation().GetRawValues(), 0.01), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that getting the global position works when no rotation or scale is applied
+		TEST_METHOD(Get_Global_Position_NoExtra)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			Transform* a = NEW_TRANSFORM;
+			Transform* b = NEW_TRANSFORM;
+			Transform* c = NEW_TRANSFORM;
+			Transform* d = NEW_TRANSFORM;
+
+			d->SetParent(c);
+			c->SetParent(b);
+			b->SetParent(a);
+
+			a->SetPosition(Vector3d(15, 0, 4));
+			b->SetPosition(Vector3d(0, 33, -30));
+			c->SetPosition(Vector3d(399, 0, -100));
+			d->SetPosition(Vector3d(-144, 43, 0));
+
+			Vector3d expectedPosition = Vector3d(270, 76, -126);
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Expected position: " << expectedPosition << std::endl
+				<< "Actual position: " << d->GetGlobalPosition() << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(expectedPosition.Similar(d->GetGlobalPosition()), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that getting the global position works when rotation and scales are applied
+		TEST_METHOD(Get_Global_Position_Full)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			Transform* a = NEW_TRANSFORM;
+			Transform* b = NEW_TRANSFORM;
+			Transform* c = NEW_TRANSFORM;
+			Transform* d = NEW_TRANSFORM;
+
+			d->SetParent(c);
+			c->SetParent(b);
+			b->SetParent(a);
+
+			a->SetPosition(Vector3d(15, 0, 4));
+			b->SetPosition(Vector3d(0, 33, -30));
+			c->SetPosition(Vector3d(399, 0, -100));
+			d->SetPosition(Vector3d(-144, 43, 0));
+
+			a->SetScale(Vector3d(33, 10, 0.001));
+			b->SetScale(Vector3d(1, -22, 21));
+			c->SetScale(Vector3d(-19, 5, 21));
+			d->SetScale(Vector3d(-19, 13, 0.5));
+
+			// Very complex rotation
+			a->SetRotation(Quaternion(Vector3d::left * 360));
+			b->SetRotation(Quaternion(Vector3d::left * 360));
+			c->SetRotation(Quaternion(Vector3d::left * 360));
+			d->SetRotation(Quaternion(Vector3d::left * 360));
+
+			Vector3d expectedPosition = Vector3d(103470, -46970, 1.87);
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Expected position: " << expectedPosition << std::endl
+				<< "Actual position: " << d->GetGlobalPosition() << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(expectedPosition.Similar(d->GetGlobalPosition()), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
 	};
 }
