@@ -24,7 +24,7 @@ Transform::~Transform()
 
 void Transform::SetPosition(const Vector3d& position)
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 
 	translationMatrix.d = position.x;
 	translationMatrix.h = position.y;
@@ -35,7 +35,7 @@ void Transform::SetPosition(const Vector3d& position)
 
 void Transform::SetScale(const Vector3d& scale)
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 
 	scaleMatrix.a = scale.x;
 	scaleMatrix.f = scale.y;
@@ -46,7 +46,7 @@ void Transform::SetScale(const Vector3d& scale)
 
 void Transform::SetRotation(const Quaternion& rot)
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 
 	rotation.SetRawValues(rot.GetRawValues());
 
@@ -55,7 +55,7 @@ void Transform::SetRotation(const Quaternion& rot)
 
 void Transform::Move(const Vector3d& dPos)
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 
 	translationMatrix.d += dPos.x;
 	translationMatrix.h += dPos.y;
@@ -66,7 +66,7 @@ void Transform::Move(const Vector3d& dPos)
 
 void Transform::Scale(const Vector3d& dScale)
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 
 	scaleMatrix.a *= dScale.x;
 	scaleMatrix.f *= dScale.y;
@@ -77,7 +77,7 @@ void Transform::Scale(const Vector3d& dScale)
 
 void Transform::Rotate(const Quaternion& dRot)
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 
 	rotation *= dRot;
 	return;
@@ -108,7 +108,7 @@ const Quaternion& Transform::GetRotation() const
 
 Quaternion& Transform::GetWriteableRotation()
 {
-	cache__IsLocalTransformationMatrix_UpToDate = false;
+	InvalidateLocalTransform();
 	return rotation;
 }
 
@@ -124,17 +124,18 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 		if (it == this)
 			return; // Abort
 
+	// Transform from parent(old)-space to global world space
 	if ((parent != nullptr) && (keepAbsoluteTransform))
 	{
 		// Resolve global 
 		this->Scale(Vector3d(
-			 parent->GetGlobalScale().x,
+			 parent->GetGlobalScale().x, // These Getters use cached values. It's okay
 			 parent->GetGlobalScale().y,
 			 parent->GetGlobalScale().z
 		));
 
 		Matrix4x4 parentGlobalScaleMatrix;
-		parentGlobalScaleMatrix.a = parent->GetGlobalScale().x;
+		parentGlobalScaleMatrix.a = parent->GetGlobalScale().x; // These Getters use cached values. It's okay
 		parentGlobalScaleMatrix.f = parent->GetGlobalScale().y;
 		parentGlobalScaleMatrix.k = parent->GetGlobalScale().z;
 		this->SetPosition(this->GetPosition() * parentGlobalScaleMatrix);
@@ -155,6 +156,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	{
 		parent->children.insert(this);
 		
+		// Transform from global world space to parent(new)-space
 		this->Move(parent->GetGlobalPosition() * -1);
 
 		this->Rotate(parent->GetGlobalRotation().Inverse());
@@ -162,12 +164,12 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 
 		// Resolve new local transform
 		this->Scale(Vector3d(
-			1.0 / parent->GetGlobalScale().x,
+			1.0 / parent->GetGlobalScale().x, // These Getters use cached values. It's okay
 			1.0 / parent->GetGlobalScale().y,
 			1.0 / parent->GetGlobalScale().z
 		));
 		Matrix4x4 parentGlobalInverseScaleMatrix;
-		parentGlobalInverseScaleMatrix.a = 1.0 / parent->GetGlobalScale().x;
+		parentGlobalInverseScaleMatrix.a = 1.0 / parent->GetGlobalScale().x; // These Getters use cached values. It's okay
 		parentGlobalInverseScaleMatrix.f = 1.0 / parent->GetGlobalScale().y;
 		parentGlobalInverseScaleMatrix.k = 1.0 / parent->GetGlobalScale().z;
 		this->SetPosition(this->GetPosition() * parentGlobalInverseScaleMatrix);
@@ -224,65 +226,118 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 	// Recalculate if cache is invalid
 	if (!cache__IsLocalTransformationMatrix_UpToDate)
 	{
-		cache_localTransformationMatrix = scaleMatrix;
-		cache_localTransformationMatrix *= rotation.ToRotationMatrix();
-		cache_localTransformationMatrix *= translationMatrix;
+		cache__localTransformationMatrix = scaleMatrix;
+		cache__localTransformationMatrix *= rotation.ToRotationMatrix();
+		cache__localTransformationMatrix *= translationMatrix;
 
 		cache__IsLocalTransformationMatrix_UpToDate = true;
 	}
 
-	return cache_localTransformationMatrix;
+	return cache__localTransformationMatrix;
 }
 
 Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 {
-	Matrix4x4 glob = GetLocalTransformationMatrix();
+	// Recalculate if cache is invalid
+	if (!cache__IsGlobalTransformationUpToDate)
+		RecalculateGlobalTransformCache();
 
-	// Apply global scale
-	for (const Transform* tr = this->GetParent(); tr != nullptr; tr = tr->GetParent())
-	{
-		Vector3d newPos;
-		newPos = Vector3d(glob.d, glob.h, glob.l);
-		newPos *= tr->scaleMatrix;
-		newPos *= tr->rotation.ToRotationMatrix();
-
-		glob.d = newPos.x;
-		glob.h = newPos.y;
-		glob.l = newPos.z;
-		glob *= tr->GetLocalTransformationMatrix();
-	}
-
-	return glob;
+	return cache__globalTransformationMatrix;
 }
 
 Vector3d Transform::GetGlobalPosition() const
 {
-	// Transform the local origin by our global transformation matrix
-	return Vector3d::zero * GetGlobalTransformationMatrix();
+	// Recalculate if cache is invalid
+	if (!cache__IsGlobalTransformationUpToDate)
+		RecalculateGlobalTransformCache();
+
+	return cache__GlobalPosition;
 }
 
 Quaternion Transform::GetGlobalRotation() const
 {
-	Quaternion rot;
+	// Recalculate if cache is invalid
+	if(!cache__IsGlobalTransformationUpToDate)
+		RecalculateGlobalTransformCache();
 
-	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
-	{
-		rot *= tr->rotation;
-	}
-
-	return rot;
+	return cache__GlobalRotation;
 }
 
 Vector3d Transform::GetGlobalScale() const
 {
-	Vector3d scale = Vector3d::one;
+	// Recalculate if cache is invalid
+	if(!cache__IsGlobalTransformationUpToDate)
+		RecalculateGlobalTransformCache();
 
-	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
+	return cache__GlobalScale;
+}
+
+
+void Transform::InvalidateLocalTransform()
+{
+	// Invalidate the local transform
+	cache__IsLocalTransformationMatrix_UpToDate = false;
+
+	// Since we changed our local transform, our global transform,
+	// and that of all children, have also become invalid.
+	InvalidateGlobalTransform();
+
+	return;
+}
+
+void Transform::InvalidateGlobalTransform()
+{
+	// Invalidate own
+	cache__IsGlobalTransformationUpToDate = false;
+
+	// Invalidate of children
+	for (Transform* tr : children)
+		tr->InvalidateGlobalTransform();
+
+	return;
+}
+
+void Transform::RecalculateGlobalTransformCache() const
+{
+	// Re-Calculate global transformation matrix
+	cache__globalTransformationMatrix = GetLocalTransformationMatrix();
+	for (const Transform* tr = this->GetParent(); tr != nullptr; tr = tr->GetParent())
 	{
-		scale.x *= tr->GetScale().x;
-		scale.y *= tr->GetScale().y;
-		scale.z *= tr->GetScale().z;
+		Vector3d newPos;
+		newPos = Vector3d(
+			cache__globalTransformationMatrix.d,
+			cache__globalTransformationMatrix.h,
+			cache__globalTransformationMatrix.l
+		);
+		newPos *= tr->scaleMatrix * tr->rotation.ToRotationMatrix();
+
+		cache__globalTransformationMatrix.d = newPos.x;
+		cache__globalTransformationMatrix.h = newPos.y;
+		cache__globalTransformationMatrix.l = newPos.z;
+		cache__globalTransformationMatrix *= tr->GetLocalTransformationMatrix();
 	}
 
-	return scale;
+	// Re-Calculate global scale
+	cache__GlobalScale = Vector3d::one;
+	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
+	{
+		cache__GlobalScale.x *= tr->GetScale().x;
+		cache__GlobalScale.y *= tr->GetScale().y;
+		cache__GlobalScale.z *= tr->GetScale().z;
+	}
+
+	// Re-Calculate global rotation
+	cache__GlobalRotation = Quaternion();
+	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
+	{
+		cache__GlobalRotation *= tr->rotation;
+	}
+
+	// Re-Calculate global position
+	cache__GlobalPosition = Vector3d::zero * cache__globalTransformationMatrix; // <-- This just got re-calculated
+
+	// Validate cache
+	cache__IsGlobalTransformationUpToDate = true;
+
+	return;
 }

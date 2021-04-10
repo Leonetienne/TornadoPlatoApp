@@ -86,13 +86,28 @@ private:
 	Transform* parent;
 	WorldObject* worldObject;
 
-	mutable Matrix4x4 cache_localTransformationMatrix;
-	mutable bool cache__IsLocalTransformationMatrix_UpToDate = false;
+	// Cache data
+	mutable Matrix4x4	cache__localTransformationMatrix;
+	mutable bool		cache__IsLocalTransformationMatrix_UpToDate = false;
+	mutable Matrix4x4	cache__globalTransformationMatrix;
+	mutable bool		cache__IsGlobalTransformationUpToDate = false;
+	mutable Vector3d	cache__GlobalPosition;
+	mutable Vector3d	cache__GlobalScale;
+	mutable Quaternion	cache__GlobalRotation;
 
 	// Stores pointers to all child transforms
 	std::set<Transform*> children;
 
 private:
+	// Will cause the local transform values to be re-calculated.
+	void InvalidateLocalTransform();
+
+	// Will cause the global transform values to be re-calculated. It also forwards this call to all children
+	void InvalidateGlobalTransform();
+
+	// Will recalculate the global transform values. You should only call this when cache__isGlobal... is false
+	void RecalculateGlobalTransformCache() const;
+
 	// No public instantiation! >:(
 	Transform();
 
