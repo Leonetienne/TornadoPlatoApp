@@ -64,6 +64,18 @@ public:
 	T y;
 	T z;
 	T w;
+
+	// Some handy predefines
+	static const Vector4<double> up;
+	static const Vector4<double> down;
+	static const Vector4<double> right;
+	static const Vector4<double> left;
+	static const Vector4<double> forward;
+	static const Vector4<double> backward;
+	static const Vector4<double> future;
+	static const Vector4<double> past;
+	static const Vector4<double> one;
+	static const Vector4<double> zero;
 };
 
 typedef Vector4<int> Vector4i;

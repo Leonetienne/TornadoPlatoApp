@@ -371,3 +371,25 @@ Vector4<T>::operator Vector3<T>() const
 
 template class Vector4<int>;
 template class Vector4<double>;
+
+// Some handy predefines
+template <typename T>
+const Vector4<double> Vector4<T>::up(0, 1, 0, 0);
+template <typename T>
+const Vector4<double> Vector4<T>::down(0, -1, 0, 0);
+template <typename T>
+const Vector4<double> Vector4<T>::right(1, 0, 0, 0);
+template <typename T>
+const Vector4<double> Vector4<T>::left(-1, 0, 0, 0);
+template <typename T>
+const Vector4<double> Vector4<T>::forward(1, 0, 0, 0);
+template <typename T>
+const Vector4<double> Vector4<T>::backward(-1, 0, 0, 0);
+template <typename T>
+const Vector4<double> Vector4<T>::future(0, 0, 0, 1);
+template <typename T>
+const Vector4<double> Vector4<T>::past(0, 0, 0, -1);
+template <typename T>
+const Vector4<double> Vector4<T>::one(1, 1, 1, 1);
+template <typename T>
+const Vector4<double> Vector4<T>::zero(0, 0, 0, 0);

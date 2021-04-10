@@ -59,6 +59,14 @@ public:
 
 	T x;
 	T y;
+
+	// Some handy predefines
+	static const Vector2<double> up;
+	static const Vector2<double> down;
+	static const Vector2<double> right;
+	static const Vector2<double> left;
+	static const Vector2<double> one;
+	static const Vector2<double> zero;
 };
 
 typedef Vector2<int> Vector2i;

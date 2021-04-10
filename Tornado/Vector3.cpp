@@ -403,3 +403,21 @@ Vector3<T>::operator Vector4<T>() const
 
 template class Vector3<int>;
 template class Vector3<double>;
+
+// Some handy predefines
+template <typename T>
+const Vector3<double> Vector3<T>::up(0, 1, 0);
+template <typename T>
+const Vector3<double> Vector3<T>::down(0, -1, 0);
+template <typename T>
+const Vector3<double> Vector3<T>::right(1, 0, 0);
+template <typename T>
+const Vector3<double> Vector3<T>::left(-1, 0, 0);
+template <typename T>
+const Vector3<double> Vector3<T>::forward(0, 0, 1);
+template <typename T>
+const Vector3<double> Vector3<T>::backward(0, 0, -1);
+template <typename T>
+const Vector3<double> Vector3<T>::one(1, 1, 1);
+template <typename T>
+const Vector3<double> Vector3<T>::zero(0, 0, 0);

@@ -65,6 +65,16 @@ public:
 	T x;
 	T y;
 	T z;
+
+	// Some handy predefines
+	static const Vector3<double> up;
+	static const Vector3<double> down;
+	static const Vector3<double> right;
+	static const Vector3<double> left;
+	static const Vector3<double> forward;
+	static const Vector3<double> backward;
+	static const Vector3<double> one;
+	static const Vector3<double> zero;
 };
 
 typedef Vector3<int> Vector3i;
