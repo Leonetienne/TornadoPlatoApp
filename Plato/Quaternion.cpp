@@ -21,7 +21,7 @@ Quaternion::Quaternion(const Quaternion& q)
 
 Quaternion::Quaternion(const Vector3d eulerAngles)
 {
-	Vector3d eulerRad = eulerAngles * Deg2Rad;
+	Vector3d eulerRad = eulerAngles * Deg2Rad * -1;
 
 	double cy = cos(eulerRad.z * 0.5);
 	double sy = sin(eulerRad.z * 0.5);
@@ -169,7 +169,7 @@ Vector3d Quaternion::ToEulerAngles() const
 		double cosy_cosp = 1.0 - 2.0 * (v.y * v.y + v.z * v.z);
 		euler.z = std::atan2(siny_cosp, cosy_cosp);
 
-		euler *= Rad2Deg;
+		euler *= Rad2Deg * -1;
 
 		eulerCache = euler;
 		isCacheUpToDate_matrix = true;

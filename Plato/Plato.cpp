@@ -88,6 +88,10 @@ Plato::Plato()
 	mr_coob = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
 	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 1.5);
 
+	mr_coob2 = WorldObjectManager::NewWorldObject("cube", mr_coob->transform)->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
+	mr_coob2->transform->SetScale(Vector3d::one * 0.5);
+	mr_coob2->transform->Move(Vector3d(1, 2, 1));
+
 	return;
 }
 
@@ -128,6 +132,12 @@ void Plato::Update()
 	if (GetAsyncKeyState('2'))
 		camera->SetFov(camera->GetFov() + 1 * shiftmod);
 
+	if (GetAsyncKeyState('P'))
+		mr_coob2->transform->SetParent(mr_coob->transform);
+
+	if (GetAsyncKeyState('U'))
+		mr_coob2->transform->SetParent(nullptr);
+
 	if (GetAsyncKeyState(VK_RIGHT))
 		mr_floor->transform->Rotate(Quaternion(Vector3d::up * 0.5 * shiftmod));
 	if (GetAsyncKeyState(VK_LEFT))
@@ -153,7 +163,8 @@ void Plato::Update()
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d::up * -1 * shiftmod));
 
 	// MAKE CUBE SPIN
-	mr_coob->transform->Rotate(Quaternion(Vector3d(5, 10, 15) * 0.1));
+	//mr_coob->transform->Rotate(Quaternion(Vector3d(5, 10, 15) * 0.1));
+	mr_coob->transform->Rotate(Quaternion(Vector3d(0, 10, 0) * 0.1));
 
 	
 	renderer->BeginFrame();

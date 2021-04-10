@@ -14,6 +14,7 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 	// Assign metadata
 	newWorldObject->SetName(name);
 	newTransform->SetParent(parent);
+	newTransform->Reset();
 
 	// Put in list of objects
 	worldObjects.push_back(newWorldObject);
