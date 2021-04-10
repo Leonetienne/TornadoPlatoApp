@@ -293,3 +293,17 @@ Vector2<T>::operator Vector4<T>() const
 
 template class Vector2<int>;
 template class Vector2<double>;
+
+// Some handy predefines
+template <typename T>
+const Vector2<double> Vector2<T>::up(0, 1);
+template <typename T>
+const Vector2<double> Vector2<T>::down(0, -1);
+template <typename T>
+const Vector2<double> Vector2<T>::right(1, 0);
+template <typename T>
+const Vector2<double> Vector2<T>::left(-1, 0);
+template <typename T>
+const Vector2<double> Vector2<T>::one(1, 1);
+template <typename T>
+const Vector2<double> Vector2<T>::zero(0, 0);
