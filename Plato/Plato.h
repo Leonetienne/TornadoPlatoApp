@@ -20,6 +20,7 @@ private:
 
 	Mesh mesh_coob;
 	MeshRenderer* mr_coob;
+	MeshRenderer* mr_coob2;
 
 	Camera* camera;
 };

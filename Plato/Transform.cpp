@@ -124,27 +124,10 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 		if (it == this)
 			return; // Abort
 
-	// Transform from parent(old)-space to global world space
-	if ((parent != nullptr) && (keepAbsoluteTransform))
-	{
-		// Resolve global 
-		this->Scale(Vector3d(
-			 parent->GetGlobalScale().x, // These Getters use cached values. It's okay
-			 parent->GetGlobalScale().y,
-			 parent->GetGlobalScale().z
-		));
-
-		Matrix4x4 parentGlobalScaleMatrix;
-		parentGlobalScaleMatrix.a = parent->GetGlobalScale().x; // These Getters use cached values. It's okay
-		parentGlobalScaleMatrix.f = parent->GetGlobalScale().y;
-		parentGlobalScaleMatrix.k = parent->GetGlobalScale().z;
-		this->SetPosition(this->GetPosition() * parentGlobalScaleMatrix);
-
-		this->Rotate(parent->GetGlobalRotation());
-		this->SetPosition(this->GetPosition() * parent->GetGlobalRotation().Inverse().ToRotationMatrix());
-
-		this->Move(parent->GetGlobalPosition());
-	}
+	// Save global transform
+	const Vector3d globalPosition = GetGlobalPosition();
+	const Vector3d globalScale = GetGlobalScale();
+	const Quaternion globalRotation = GetGlobalRotation();
 
 	// Say goodbye to current parent, if not an orphan
 	if (parent != nullptr)
@@ -155,25 +138,15 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	if (parent != nullptr)
 	{
 		parent->children.insert(this);
-		
-		// Transform from global world space to parent(new)-space
-		this->Move(parent->GetGlobalPosition() * -1);
-
-		this->Rotate(parent->GetGlobalRotation().Inverse());
-		this->SetPosition(this->GetPosition() * parent->GetGlobalRotation().ToRotationMatrix());
-
-		// Resolve new local transform
-		this->Scale(Vector3d(
-			1.0 / parent->GetGlobalScale().x, // These Getters use cached values. It's okay
-			1.0 / parent->GetGlobalScale().y,
-			1.0 / parent->GetGlobalScale().z
-		));
-		Matrix4x4 parentGlobalInverseScaleMatrix;
-		parentGlobalInverseScaleMatrix.a = 1.0 / parent->GetGlobalScale().x; // These Getters use cached values. It's okay
-		parentGlobalInverseScaleMatrix.f = 1.0 / parent->GetGlobalScale().y;
-		parentGlobalInverseScaleMatrix.k = 1.0 / parent->GetGlobalScale().z;
-		this->SetPosition(this->GetPosition() * parentGlobalInverseScaleMatrix);
 	}
+
+	// Invalidate caches
+	InvalidateLocalTransform();
+
+	// Now re-apply the global transform
+	SetGlobalPosition(globalPosition);
+	SetGlobalScale(globalScale);
+	SetGlobalRotation(globalRotation);
 
 	return;
 }
@@ -239,7 +212,7 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 {
 	// Recalculate if cache is invalid
-	if (!cache__IsGlobalTransformationUpToDate)
+	//if (!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__globalTransformationMatrix;
@@ -248,7 +221,7 @@ Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 Vector3d Transform::GetGlobalPosition() const
 {
 	// Recalculate if cache is invalid
-	if (!cache__IsGlobalTransformationUpToDate)
+	//if (!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalPosition;
@@ -257,7 +230,7 @@ Vector3d Transform::GetGlobalPosition() const
 Quaternion Transform::GetGlobalRotation() const
 {
 	// Recalculate if cache is invalid
-	if(!cache__IsGlobalTransformationUpToDate)
+	//if(!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalRotation;
@@ -266,10 +239,65 @@ Quaternion Transform::GetGlobalRotation() const
 Vector3d Transform::GetGlobalScale() const
 {
 	// Recalculate if cache is invalid
-	if(!cache__IsGlobalTransformationUpToDate)
+	//if(!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalScale;
+}
+
+void Transform::SetGlobalPosition(const Vector3d& pos)
+{
+	const Vector3d pGlobalPosition   = (parent != nullptr) ? parent->GetGlobalPosition() : Vector3d::zero;
+	const Vector3d pGlobalScale		 = (parent != nullptr) ? parent->GetGlobalScale() : Vector3d::one;
+	const Quaternion pGlobalRotation = (parent != nullptr) ? parent->GetGlobalRotation() : Quaternion();
+
+	// Init
+	SetPosition(pos - pGlobalPosition);
+
+	// Scale
+	Matrix4x4 invscale_p;
+	invscale_p.a = 1.0 / pGlobalScale.x;
+	invscale_p.f = 1.0 / pGlobalScale.y;
+	invscale_p.k = 1.0 / pGlobalScale.z;
+	SetPosition(GetPosition() * invscale_p);
+
+	// Rotate
+	SetPosition(GetPosition() * pGlobalRotation.ToRotationMatrix());
+
+	return;
+}
+
+void Transform::SetGlobalScale(const Vector3d& scale)
+{
+	// parent global scale
+	const Vector3d pGlobalScale = (parent != nullptr) ? parent->GetGlobalScale() : Vector3d::one;
+
+	SetScale(Vector3d(
+		scale.x / pGlobalScale.x,
+		scale.y / pGlobalScale.y,
+		scale.z / pGlobalScale.z
+	));
+
+	return;
+}
+
+void Transform::SetGlobalRotation(const Quaternion& rot)
+{
+	// parent global rotation
+	const Quaternion pGlobalRotation = (parent != nullptr) ? parent->GetGlobalRotation() : Quaternion();
+
+	SetRotation(rot * pGlobalRotation.Inverse());
+
+	return;
+}
+
+void Transform::Reset()
+{
+	SetPosition(Vector3d::zero);
+	SetScale(Vector3d::one);
+	SetRotation(Quaternion());
+
+	return;
 }
 
 
