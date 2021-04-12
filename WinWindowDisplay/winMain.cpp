@@ -8,11 +8,9 @@
 #include <tchar.h>
 #include "resource.h"
 #include "Implementation.h"
+#include "renderres.h"
 
 #define MAX_LOADSTRING 100
-
-#define RENDER_WIDTH  800
-#define RENDER_HEIGHT 600
 
 HINSTANCE hInst;                                // Our instance
 WCHAR szTitle[MAX_LOADSTRING];                  // Title of the main window
@@ -136,7 +134,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             memset(&bmi, 0, sizeof(bmi));
             bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
             bmi.bmiHeader.biWidth = RENDER_WIDTH;
-            bmi.bmiHeader.biHeight = 600;
+            bmi.bmiHeader.biHeight = RENDER_HEIGHT;
             bmi.bmiHeader.biPlanes = 1;
             bmi.bmiHeader.biBitCount = 24;
             bmi.bmiHeader.biCompression = BI_RGB;
