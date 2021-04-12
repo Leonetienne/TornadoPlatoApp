@@ -24,6 +24,9 @@
     <ClInclude Include="Implementation.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="renderres.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinWindowDisplay.rc">
