@@ -89,6 +89,8 @@ void DrawingEngine::CreateTasks()
 			// To correct floating-point in accuraccies (which would cause unrendered lines)
 			if (workerBounds.pos.x + workerBounds.size.x < renderTarget->GetDimensions().x - std::size_t(2))
 				workerBounds.size.x += 2;
+			if (workerBounds.pos.y + workerBounds.size.y < renderTarget->GetDimensions().y - std::size_t(2))
+				workerBounds.size.y += 2;
 
 			// Create new task 
 			WorkerTask* newTask = new WorkerTask; // Will be freed by the workerPool
@@ -181,13 +183,53 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		)
 	);
 
+	Vector2d uv_coords(
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.pos_uv.x,
+			ird->b.pos_uv.x,
+			ird->c.pos_uv.x,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.pos_uv.y,
+			ird->b.pos_uv.y,
+			ird->c.pos_uv.y,
+			berp_cache
+		)
+	);
+
 	uint8_t& r = pixelBase[0];
 	uint8_t& g = pixelBase[1];
 	uint8_t& b = pixelBase[2];
 
-	r = (uint8_t)vertexColor.r;
-	g = (uint8_t)vertexColor.g;
-	b = (uint8_t)vertexColor.b;
+	// Do we have a material?
+	if (ird->material != nullptr)
+	{
+		Vector2d text_size(
+			ird->material->texture->GetPixelBuffer().GetDimensions().x,
+			ird->material->texture->GetPixelBuffer().GetDimensions().y
+		);
+
+		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(Vector2i(
+			(1.0 - uv_coords.x) * (text_size.x - 1),
+			(1.0 - uv_coords.y) * (text_size.y - 1) // Uv-coordinates are top-left == (0,1)
+		));
+
+		r = text_pixel[0];
+		g = text_pixel[1];
+		b = text_pixel[2];
+	}
+	// If we have no material, paint it pink
+	else
+	{
+		r = 255;
+		g = 0;
+		b = 255;
+	}
 
 	return;
 }
