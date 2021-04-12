@@ -2,6 +2,41 @@
 #include <Windows.h>
 #include "Camera.h"
 
+#include "bmplib.h"
+using namespace BMPlib;
+
+class Rotator : Component
+{
+public:
+	void Update(double)
+	{
+		if (!GetAsyncKeyState(VK_SPACE))
+			transform->Rotate(Quaternion(Vector3d(
+				0.5 * speed,
+				1.0 * speed,
+				2.0 * speed
+			)));
+
+
+		if (GetAsyncKeyState('K'))
+			transform->SetRotation(Quaternion(Vector3d::zero));
+
+		return;
+	}
+
+private:
+	Rotator(WorldObject* worldObject, double speed)
+		:
+		Component(worldObject)
+	{
+		this->speed = speed;
+	}
+	double speed;
+
+	friend WorldObject;
+};
+
+
 Transform* floor3;
 
 Plato::Plato()
@@ -68,19 +103,27 @@ Plato::Plato()
 		Vector3d( 0,  1,  0)
 	};
 	mesh_coob.tris = {
-		{1,  0, 0}, { 2,  1, 0}, {0, 2, 0},
-		{3,  3, 1}, { 6,  4, 1}, {2, 1, 1},
-		{7,  5, 2}, { 4,  6, 2}, {6, 4, 2},
-		{5,  7, 3}, { 0,  8, 3}, {4, 6, 3},
-		{6,  4, 4}, { 0,  9, 4}, {2, 9, 4},
-		{3, 10, 5}, { 5,  7, 5}, {7, 5, 5},
-		{1,  0, 0}, { 3,  3, 0}, {2, 1, 0},
-		{3,  3, 1}, { 7,  5, 1}, {6, 4, 1},
-		{7,  5, 2}, { 5,  7, 2}, {4, 6, 2},
-		{5,  7, 3}, { 1, 11, 3}, {0, 8, 3},
-		{6,  4, 4}, { 4,  6, 4}, {0, 9, 4},
-		{3, 10, 5}, { 1, 13, 5}, {5, 7, 5}
+		{1,  0, 0}, { 2,  1, 0}, {0,  2, 0},
+		{3,  3, 1}, { 6,  4, 1}, {2,  1, 1},
+		{7,  5, 2}, { 4,  6, 2}, {6,  4, 2},
+		{5,  7, 3}, { 0,  8, 3}, {4,  6, 3},
+		{6,  4, 4}, { 0,  9, 4}, {2,  10, 4},
+		{3, 11, 5}, { 5,  7, 5}, {7,  5, 5},
+		{1,  0, 0}, { 3,  3, 0}, {2,  1, 0},
+		{3,  3, 1}, { 7,  5, 1}, {6,  4, 1},
+		{7,  5, 2}, { 5,  7, 2}, {4,  6, 2},
+		{5,  7, 3}, { 1, 12, 3}, {0,  8, 3},
+		{6,  4, 4}, { 4,  6, 4}, {0,  9, 4},
+		{3, 11, 5}, { 1, 13, 5}, {5,  7, 5}
 	};
+
+	// Protocode load texture from file
+	BMP bmp;
+	bmp.Read("../Plato/Cube_thielen_gitignore_.bmp");
+	bmp.ConvertTo(BMP::COLOR_MODE::RGBA);
+	Texture* tx_coob = new Texture(Vector2i(bmp.GetWidth(), bmp.GetHeight()));
+	tx_coob->GetPixelBuffer().Refit(bmp.GetPixelBuffer(), Vector2i(bmp.GetWidth(), bmp.GetHeight()));
+	dummyMat.texture = tx_coob;
 
 	camera = WorldObjectManager::NewWorldObject()->CreateComponent<Camera>(Vector2i(800, 600), 90, 0.0001, 10000);
 	renderer->SetMainCamera(camera);
@@ -91,6 +134,8 @@ Plato::Plato()
 	mr_coob2 = WorldObjectManager::NewWorldObject("cube", mr_coob->transform)->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
 	mr_coob2->transform->SetScale(Vector3d::one * 0.5);
 	mr_coob2->transform->Move(Vector3d(1, 2, 1));
+
+	mr_coob->worldObject->CreateComponent<Rotator>(1);
 
 	return;
 }
@@ -162,11 +207,6 @@ void Plato::Update()
 	if (GetAsyncKeyState('X'))
 		camera->transform->Rotate(Quaternion::FromEuler(Vector3d::up * -1 * shiftmod));
 
-	// MAKE CUBE SPIN
-	//mr_coob->transform->Rotate(Quaternion(Vector3d(5, 10, 15) * 0.1));
-	mr_coob->transform->Rotate(Quaternion(Vector3d(0, 10, 0) * 0.1));
-
-	
 	renderer->BeginFrame();
 	WorldObjectManager::CallHook__Render(renderer);
 	renderer->Render();
