@@ -56,10 +56,16 @@ std::vector<InterRenderTriangle> ClippingEngine::Clip(const InterRenderTriangle&
 			bool hasDroppedTriangle;
 			ClipEdge(e, clippingResult[t], splitTri, hasDroppedTriangle, hasSplitTri);
 
+			// Dump it
 			if (hasDroppedTriangle)
 				clippingResult.erase(clippingResult.begin() + t);
+
+			// Oh my, we got an additional triangle for that face! Let's carry over the metadata!
 			if (hasSplitTri)
+			{
+				splitTri.material = clippingResult[t].material;
 				clippingResult.push_back(splitTri);
+			}
 		}
 	}
 
