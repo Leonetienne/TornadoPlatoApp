@@ -96,7 +96,7 @@ void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const
 
 		// Transform into screen space coordinates
 		const double halfResX = projectionProperties.GetHalfResolution().x;
-		const double halfResY = projectionProperties.GetHalfResolution().x;
+		const double halfResY = projectionProperties.GetHalfResolution().y;
 
 		cird.a.pos_ss.x = (cird.a.pos_ndc.x * halfResX) + halfResX;
 		cird.a.pos_ss.y = (cird.a.pos_ndc.y * halfResY) + halfResY;
