@@ -212,7 +212,7 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 {
 	// Recalculate if cache is invalid
-	//if (!cache__IsGlobalTransformationUpToDate)
+	if (!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__globalTransformationMatrix;
@@ -221,7 +221,7 @@ Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 Vector3d Transform::GetGlobalPosition() const
 {
 	// Recalculate if cache is invalid
-	//if (!cache__IsGlobalTransformationUpToDate)
+	if (!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalPosition;
@@ -230,7 +230,7 @@ Vector3d Transform::GetGlobalPosition() const
 Quaternion Transform::GetGlobalRotation() const
 {
 	// Recalculate if cache is invalid
-	//if(!cache__IsGlobalTransformationUpToDate)
+	if(!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalRotation;
@@ -239,7 +239,7 @@ Quaternion Transform::GetGlobalRotation() const
 Vector3d Transform::GetGlobalScale() const
 {
 	// Recalculate if cache is invalid
-	//if(!cache__IsGlobalTransformationUpToDate)
+	if(!cache__IsGlobalTransformationUpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalScale;
@@ -337,6 +337,7 @@ void Transform::RecalculateGlobalTransformCache() const
 			cache__globalTransformationMatrix.h,
 			cache__globalTransformationMatrix.l
 		);
+
 		newPos *= tr->scaleMatrix * tr->rotation.ToRotationMatrix();
 
 		cache__globalTransformationMatrix.d = newPos.x;
@@ -362,7 +363,11 @@ void Transform::RecalculateGlobalTransformCache() const
 	}
 
 	// Re-Calculate global position
-	cache__GlobalPosition = Vector3d::zero * cache__globalTransformationMatrix; // <-- This just got re-calculated
+	cache__GlobalPosition = Vector3d(
+		cache__globalTransformationMatrix.d,
+		cache__globalTransformationMatrix.h,
+		cache__globalTransformationMatrix.l
+	);
 
 	// Validate cache
 	cache__IsGlobalTransformationUpToDate = true;
