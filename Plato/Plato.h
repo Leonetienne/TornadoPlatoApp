@@ -22,6 +22,7 @@ private:
 	MeshRenderer* mr_coob;
 	MeshRenderer* mr_coob2;
 
+	Transform* camera_yPivot;
 	Camera* camera;
 };
 

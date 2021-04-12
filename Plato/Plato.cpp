@@ -10,7 +10,7 @@ class Rotator : Component
 public:
 	void Update(double)
 	{
-		if (!GetAsyncKeyState(VK_SPACE))
+		if (GetAsyncKeyState(VK_SPACE))
 			transform->Rotate(Quaternion(Vector3d(
 				0.5 * speed,
 				1.0 * speed,
@@ -36,12 +36,61 @@ private:
 	friend WorldObject;
 };
 
+// Just for the testing lolz
+void CreateCubeFractal(const Mesh* mesh, const Material* material, std::size_t depth = 2)
+{
+	std::vector<WorldObject*> addTo;
+	addTo.push_back(WorldObjectManager::NewWorldObject());
+	addTo[0]->GetTransform()->Move(Vector3d(0, -0, 6));
+	addTo[0]->GetTransform()->Rotate(Vector3d(90, 0, 0)); // To make the image upside-up
+	addTo[0]->AddTag("rotating_cube");
+	addTo[0]->CreateComponent<MeshRenderer>(mesh, material);
+	addTo[0]->CreateComponent<Rotator>((((rand() % 20) / 10.0) - 1.0) * 0.5);
+
+	const std::size_t max_its = pow(6, depth) + pow(7, depth-1);
+	std::size_t its = 0;
+
+	for (std::size_t i = 0; i < addTo.size(); i++)
+	{
+		if (its > max_its)
+			return;
+
+		// Six sides + center
+		for (std::size_t f = 0; f < 6; f++)
+		{
+			WorldObject* newCube = WorldObjectManager::NewWorldObject("", addTo[i]->GetTransform());
+			newCube->AddTag("rotating_cube");
+			newCube->CreateComponent<MeshRenderer>(mesh, material);
+			newCube->CreateComponent<Rotator>((((rand() % 20) / 10.0) - 1.0) * 0.5);
+	
+			// Use these offsets for the edges
+			static const Vector3d edgePositions[76] = {
+				Vector3d( 1,  0,  0),
+				Vector3d(-1,  0,  0),
+				Vector3d( 0,  1,  0),
+				Vector3d( 0, -1,  0),
+				Vector3d( 0,  0,  1),
+				Vector3d( 0,  0, -1)
+			};
+				
+			newCube->GetTransform()->SetScale(Vector3d::one * 0.45);
+			newCube->GetTransform()->Move(edgePositions[f] * 2);
+			newCube->GetTransform()->Rotate(Vector3d(90, 0, 0)); // To make the image upside-up
+
+			addTo.push_back(newCube);
+			its++;
+		}
+	}
+
+	return;
+}
+
 
 Transform* floor3;
 
 Plato::Plato()
 {
-	renderer = new Renderer(Vector2i(800, 600));
+	renderer = new Renderer(Vector2i(800*2, 600*2));
 
 	mesh_floor.v_vertices = {
 		Vector3d(-1, 0, 1),
@@ -119,23 +168,25 @@ Plato::Plato()
 
 	// Protocode load texture from file
 	BMP bmp;
-	bmp.Read("../Plato/Cube_thielen_gitignore_.bmp");
+	bmp.Read("../Plato/Cube_furnace_gitignore_.bmp");
 	bmp.ConvertTo(BMP::COLOR_MODE::RGBA);
 	Texture* tx_coob = new Texture(Vector2i(bmp.GetWidth(), bmp.GetHeight()));
 	tx_coob->GetPixelBuffer().Refit(bmp.GetPixelBuffer(), Vector2i(bmp.GetWidth(), bmp.GetHeight()));
 	dummyMat.texture = tx_coob;
 
-	camera = WorldObjectManager::NewWorldObject()->CreateComponent<Camera>(Vector2i(800, 600), 90, 0.0001, 10000);
+	camera_yPivot = WorldObjectManager::NewWorldObject()->GetTransform();
+	camera_yPivot->GetWorldObject()->SetId("cam_y_pivot");
+	camera = WorldObjectManager::NewWorldObject("main_camera", camera_yPivot)->CreateComponent<Camera>(Vector2i(800*2, 600*2), 90, 0.0001, 10000);
 	renderer->SetMainCamera(camera);
 	
-	mr_coob = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
-	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 1.5);
+//	mr_coob = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
+//	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 1.5);
 
-	mr_coob2 = WorldObjectManager::NewWorldObject("cube", mr_coob->transform)->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
-	mr_coob2->transform->SetScale(Vector3d::one * 0.5);
-	mr_coob2->transform->Move(Vector3d(1, 2, 1));
+//	mr_coob2 = WorldObjectManager::NewWorldObject("cube", mr_coob->transform)->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
+//	mr_coob2->transform->SetScale(Vector3d::one * 0.5);
+//	mr_coob2->transform->Move(Vector3d(0, 2, 0));
 
-	mr_coob->worldObject->CreateComponent<Rotator>(1);
+	CreateCubeFractal(&mesh_coob, &dummyMat, 3);
 
 	return;
 }
@@ -158,19 +209,19 @@ void Plato::Update()
 
 	// PLAYER CONTROL
 	if (GetAsyncKeyState('A'))
-		camera->transform->Move(camera->transform->GetRotation() * Vector3d::left * 0.1 * shiftmod);
+		camera_yPivot->Move(camera_yPivot->GetRotation() * Vector3d::left * 0.1 * shiftmod);
 	if (GetAsyncKeyState('D'))
-		camera->transform->Move(camera->transform->GetRotation() * Vector3d::right * 0.1 * shiftmod);
+		camera_yPivot->Move(camera_yPivot->GetRotation() * Vector3d::right * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('W'))
-		camera->transform->Move(camera->transform->GetRotation() * Vector3d::forward * 0.1 * shiftmod);
+		camera_yPivot->Move(camera_yPivot->GetRotation() * Vector3d::forward * 0.1 * shiftmod);
 	if (GetAsyncKeyState('S'))
-		camera->transform->Move(camera->transform->GetRotation() * Vector3d::backward * 0.1 * shiftmod);
+		camera_yPivot->Move(camera_yPivot->GetRotation() * Vector3d::backward * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('Q'))
-		camera->transform->Move(Vector3d::up * 0.1 * shiftmod);
+		camera_yPivot->Move(Vector3d::up * 0.1 * shiftmod);
 	if (GetAsyncKeyState('E'))
-		camera->transform->Move(Vector3d::down * 0.1 * shiftmod);
+		camera_yPivot->Move(Vector3d::down * 0.1 * shiftmod);
 
 	if (GetAsyncKeyState('1'))
 		camera->SetFov(camera->GetFov() - 1 * shiftmod);
@@ -203,9 +254,13 @@ void Plato::Update()
 		mr_floor->transform->Move(Vector3d::right * 0.5 * shiftmod);
 
 	if (GetAsyncKeyState('Y'))
-		camera->transform->Rotate(Quaternion::FromEuler(Vector3d::up * 1 * shiftmod));
+		camera_yPivot->Rotate(Quaternion(Vector3d(0, -2, 0 ) * shiftmod));
 	if (GetAsyncKeyState('X'))
-		camera->transform->Rotate(Quaternion::FromEuler(Vector3d::up * -1 * shiftmod));
+		camera_yPivot->Rotate(Quaternion(Vector3d(0, 2, 0 ) * shiftmod));
+	if (GetAsyncKeyState('C'))
+		camera->transform->Rotate(Quaternion(Vector3d(2, 0, 0) * shiftmod));
+	if (GetAsyncKeyState('F'))
+		camera->transform->Rotate(Quaternion(Vector3d(-2, 0, 0) * shiftmod));
 
 	renderer->BeginFrame();
 	WorldObjectManager::CallHook__Render(renderer);

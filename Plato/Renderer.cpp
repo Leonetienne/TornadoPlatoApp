@@ -59,8 +59,8 @@ void Renderer::Render()
 void Renderer::ResolveRenderTriangles()
 {
 	/// MULTITHREAD THIS!!
-	const Vector3d inverseCameraPosition = mainCamera->transform->GetPosition() * -1;
-	const Matrix4x4 inverseCameraRotation = mainCamera->transform->GetRotation().Inverse().ToRotationMatrix();
+	const Vector3d inverseCameraPosition = mainCamera->transform->GetGlobalPosition() * -1;
+	const Matrix4x4 inverseCameraRotation = mainCamera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
 	
 	// Convert mesh renderers to individual world space triangles
 	for (const MeshRenderer* mr : meshRenderers)
