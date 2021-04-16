@@ -325,6 +325,7 @@ void Transform::InvalidateGlobalTransform()
 	return;
 }
 
+#include <vector>
 void Transform::RecalculateGlobalTransformCache() const
 {
 	// Re-Calculate global transformation matrix
@@ -356,12 +357,14 @@ void Transform::RecalculateGlobalTransformCache() const
 	}
 
 	// Re-Calculate global rotation
+	// If we are doing this the other way around (parent -> child, instead of child -> parent),
+	// nested rotations (like, camera_yPivot -> camera) break...
 	cache__GlobalRotation = Quaternion();
 	for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
 	{
 		cache__GlobalRotation *= tr->rotation;
 	}
-
+	
 	// Re-Calculate global position
 	cache__GlobalPosition = Vector3d(
 		cache__globalTransformationMatrix.d,
