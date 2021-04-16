@@ -6,7 +6,7 @@
 class Window
 {
 public:
-	Window(const Vector2i& resolution, const std::string& title, const std::string& className);
+	Window(const Vector2i& resolution, const std::string& title, std::string className = "");
 	~Window();
 
 	HWND GetSystemWindowHandle() const;
