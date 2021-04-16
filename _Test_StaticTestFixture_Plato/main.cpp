@@ -13,7 +13,7 @@
 	Use these to manually check if specific things are working
 */
 
-void Loop(TestFixture* tf, Renderer* renderer);
+void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 
 int main()
 {
@@ -35,19 +35,16 @@ int main()
 	if (testFixture.GetTestName().length() > 0)
 		window.SetTitle(testFixture.GetTestName());
 
-	// Poll window and test fixture
+	// Poll test fixture whilst window is open
 	while (window.GetIsOpen())
-	{
-		window.Poll();
-		Loop(&testFixture , &renderer);
-	}
+		Loop(&testFixture , &renderer, &window);
 
 	// Release memory used by world objects
 	WorldObjectManager::Free();
 	return 0;
 }
 
-void Loop(TestFixture* tf, Renderer* renderer)
+void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 {
 	WorldObjectManager::DeleteFlaggedObjects();
 
@@ -63,6 +60,9 @@ void Loop(TestFixture* tf, Renderer* renderer)
 
 	// Render frame
 	renderer->Render();
+
+	// Update render window pixel buffer
+	window->UpdateBgrPixelBuffer();
 
 	return;
 }
