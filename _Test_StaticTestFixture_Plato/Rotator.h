@@ -24,9 +24,10 @@ public:
 private:
 	Rotator(WorldObject* worldObject, double speed)
 		:
-		Component(worldObject)
+		Component(worldObject),
+		speed { speed }
 	{
-		this->speed = speed;
+		return;
 	}
 	double speed;
 

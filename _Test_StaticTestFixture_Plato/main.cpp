@@ -1,6 +1,7 @@
 #include "RenderWindow.h"
 #include "TestFixture.h"
 #include "TextureProjectionWorks.h"
+#include "CameraKeyboardControl.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 
@@ -23,10 +24,14 @@ int main()
 
 	// Create important objects, such as the Window and the Renderer including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
-	Camera* camera = WorldObjectManager::NewWorldObject()->AddComponent<Camera>(resolution, 90, 0.001, 10000);
+	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->GetTransform(); // Necessary for camera rotation
+	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 10000);
 	Renderer renderer(resolution);
 	renderer.SetMainCamera(camera);
 	window.SetPixelBuffer(renderer.GetPixelBuffer());
+
+	// Let's add a CameraKeyboardControl component to the camera by default
+	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.1, 0.4, 4);
 
 	// Create test fixture. Change that to the fixture you want to use
 	TextureProjectionWorks testFixture;
