@@ -312,7 +312,7 @@ namespace WorldObjects
 			SETUP_TEST
 
 			int i = 33;
-			TestComponent* tc = WorldObjectManager::NewWorldObject("myname")->CreateComponent<TestComponent>(&i);
+			TestComponent* tc = WorldObjectManager::NewWorldObject("myname")->AddComponent<TestComponent>(&i);
 			
 			Assert::IsNotNull(tc, L"TestComponent was null!");
 			Assert::AreEqual(i, tc->GetI(), L"Pointer not carried correctly");
@@ -333,7 +333,7 @@ namespace WorldObjects
 
 			for (std::size_t j = 0; j < 50; j++)
 				comps.push_back(
-					WorldObjectManager::NewWorldObject("myname")->CreateComponent<TestComponent>(&i)
+					WorldObjectManager::NewWorldObject("myname")->AddComponent<TestComponent>(&i)
 				);
 
 			for (std::size_t j = 0; j < 50; j++)
@@ -359,7 +359,7 @@ namespace WorldObjects
 
 			for (std::size_t j = 0; j < 50; j++)
 				comps.push_back(
-					wo->CreateComponent<TestComponent>(&i)
+					wo->AddComponent<TestComponent>(&i)
 				);
 
 			for (std::size_t j = 0; j < 50; j++)
