@@ -9,8 +9,47 @@ RenderWindow::RenderWindow(const Vector2i& resolution, const std::string& title,
 {
     // Substitute for default class name
     if (className.length() == 0)
-        className = title;
+        this->className = title;
 
+    // Create and poll Windows window in seperate thread
+    eventPoller = new std::thread(&RenderWindow::Thread__ThreadLife, this);
+
+    // Create bitblp compatible pixel buffer buffer
+    bgrPixelBuffer = new uint8_t[(std::size_t)resolution.x * (std::size_t)resolution.y * (std::size_t)3];
+
+    return;
+}
+
+RenderWindow::~RenderWindow()
+{
+    if (isOpen)
+        DestroyWindow(systemHandle);
+    
+    eventPoller->join();
+    delete eventPoller;
+    eventPoller = nullptr;
+
+    DeleteObject(systemHandle);
+
+    delete[] bgrPixelBuffer;
+    bgrPixelBuffer = nullptr;
+
+    return;
+}
+
+void RenderWindow::Thread__ThreadLife()
+{
+    // Create window
+    Thread__CreateWindow();
+
+    // Listen to window events
+    Thread__PollEvents();
+
+    return;
+}
+
+void RenderWindow::Thread__CreateWindow()
+{
     // Create window class
     WNDCLASSA windowClass = { 0 };
     windowClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -41,35 +80,19 @@ RenderWindow::RenderWindow(const Vector2i& resolution, const std::string& title,
 
     // Show window
     ShowWindow(systemHandle, SW_SHOW);
-    
+
     // Insert into cross referencing table
     windows.insert(
         std::pair<HWND, RenderWindow*>(systemHandle, this)
     );
-	
-    // Create bitblp compatible pixel buffer buffer
-    bgrPixelBuffer = new uint8_t[(std::size_t)resolution.x * (std::size_t)resolution.y * (std::size_t)3];
 
     return;
 }
 
-RenderWindow::~RenderWindow()
-{
-    if (isOpen)
-        DestroyWindow(systemHandle);
-    
-    DeleteObject(systemHandle);
-
-    delete[] bgrPixelBuffer;
-    bgrPixelBuffer = nullptr;
-
-    return;
-}
-
-void RenderWindow::Poll()
+void RenderWindow::Thread__PollEvents()
 {
     MSG messages;
-    if (PeekMessageA(&messages, NULL, 0, 0, PM_REMOVE))
+    while (GetMessageA(&messages, systemHandle, 0, 0) > 0)
     {
         TranslateMessage(&messages);
         DispatchMessageA(&messages);
@@ -123,14 +146,13 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
             HDC hDibDC = CreateCompatibleDC(hdc);
             HGDIOBJ hOldObj = SelectObject(hDibDC, hDib);
             
-            // Update the bgr pixel buffer
-            self->UpdateBgrPixelBuffer();
-
+            self->drawingMutex.lock();
             #pragma warning( push )
             #pragma warning( disable : 6386)
-            memcpy(buffer, self->bgrPixelBuffer, self->resolution.x * self->resolution.y * 3);
+            memcpy(buffer, self->bgrPixelBuffer, (std::size_t)self->resolution.x * (std::size_t)self->resolution.y * (std::size_t)3);
             #pragma warning( pop ) 
-        
+            self->drawingMutex.unlock();
+
             BitBlt(hdc, 0, 0, self->resolution.x, self->resolution.y, hDibDC, 0, 0, SRCCOPY);
         
             DeleteObject(SelectObject(hDibDC, hOldObj));
@@ -165,12 +187,16 @@ void RenderWindow::Cleanup()
 
 void RenderWindow::UpdateBgrPixelBuffer()
 {
+    drawingMutex.lock();
+
     for (std::size_t i = 0; i < pixelBuffer->GetSizeofBuffer(); i += 3)
     {
         bgrPixelBuffer[i + 0] = pixelBuffer->GetRawData()[i + 2];
         bgrPixelBuffer[i + 1] = pixelBuffer->GetRawData()[i + 1];
         bgrPixelBuffer[i + 2] = pixelBuffer->GetRawData()[i + 0];
     }
+
+    drawingMutex.unlock();
 
     return;
 }
