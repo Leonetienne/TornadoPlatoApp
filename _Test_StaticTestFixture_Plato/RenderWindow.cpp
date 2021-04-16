@@ -69,7 +69,7 @@ RenderWindow::~RenderWindow()
 void RenderWindow::Poll()
 {
     MSG messages;
-    if (GetMessageA(&messages, NULL, 0, 0) > 0)
+    if (PeekMessageA(&messages, NULL, 0, 0, PM_REMOVE))
     {
         TranslateMessage(&messages);
         DispatchMessageA(&messages);
@@ -82,6 +82,14 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
 {
     switch (message)
     {
+    case WM_CREATE:
+        SetTimer(hwnd, 1, 16, NULL);
+        break;
+
+    case WM_TIMER:
+        InvalidateRect(hwnd, NULL, false);
+        break;
+
     case WM_PAINT:
     {
         RenderWindow* self = HwndToWindow(hwnd);
@@ -114,7 +122,10 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
         
             HDC hDibDC = CreateCompatibleDC(hdc);
             HGDIOBJ hOldObj = SelectObject(hDibDC, hDib);
-        
+            
+            // Update the bgr pixel buffer
+            self->UpdateBgrPixelBuffer();
+
             #pragma warning( push )
             #pragma warning( disable : 6386)
             memcpy(buffer, self->bgrPixelBuffer, self->resolution.x * self->resolution.y * 3);

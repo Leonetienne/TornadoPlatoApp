@@ -23,7 +23,7 @@ int main()
 
 	// Create important objects, such as the Window and the Renderer including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
-	Camera* camera = WorldObjectManager::NewWorldObject()->CreateComponent<Camera>(resolution, 90, 0.001, 100000);
+	Camera* camera = WorldObjectManager::NewWorldObject()->AddComponent<Camera>(resolution, 90, 0.001, 10000);
 	Renderer renderer(resolution);
 	renderer.SetMainCamera(camera);
 	window.SetPixelBuffer(renderer.GetPixelBuffer());
@@ -42,17 +42,24 @@ int main()
 		Loop(&testFixture , &renderer);
 	}
 
+	// Release memory used by world objects
+	WorldObjectManager::Free();
 	return 0;
 }
 
 void Loop(TestFixture* tf, Renderer* renderer)
 {
-	// Clear frame
-	renderer->BeginFrame();
+	WorldObjectManager::DeleteFlaggedObjects();
 
 	// Update test fixture
 	tf->Update(1);
-	tf->Render(renderer);
+	WorldObjectManager::CallHook__Update(1);
+
+	// Clear frame
+	renderer->BeginFrame();
+
+	// Render test fixture
+	WorldObjectManager::CallHook__Render(renderer);
 
 	// Render frame
 	renderer->Render();

@@ -145,9 +145,12 @@
     <ClCompile Include="RenderWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Rotator.h" />
     <ClInclude Include="TestFixture.h" />
     <ClInclude Include="TextureProjectionWorks.h" />
     <ClInclude Include="RenderWindow.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plato\Plato.vcxproj">
