@@ -1,11 +1,15 @@
 #include "Window.h"
 #include <functional>
 
-Window::Window(const Vector2i& resolution, const std::string& title, const std::string& className)
+Window::Window(const Vector2i& resolution, const std::string& title, std::string className)
     :
     resolution { resolution },
     title { title }
 {
+    // Substitute for default class name
+    if (className.length() == 0)
+        className = title;
+
     // Create window class
     WNDCLASSA windowClass = { 0 };
     windowClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
