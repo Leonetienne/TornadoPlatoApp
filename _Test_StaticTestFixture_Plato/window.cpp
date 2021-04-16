@@ -1,4 +1,4 @@
-#include "window.h"
+#include "Window.h"
 #include <functional>
 
 Window::Window(const Vector2i& resolution, const std::string& title, const std::string& className)
@@ -136,7 +136,6 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
     return 0;
 }
 
-#include <iostream>
 void Window::Cleanup()
 {
     isOpen = false;
