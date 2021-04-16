@@ -13,17 +13,32 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\Tests">
+      <UniqueIdentifier>{38f70404-96ef-409b-9f55-dfd6c4eb5485}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="TextureProjectionWorks.cpp">
+      <Filter>Quelldateien\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="TestFixture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Window.h">
+    <ClInclude Include="TextureProjectionWorks.h">
+      <Filter>Quelldateien\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="TestFixture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
