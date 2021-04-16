@@ -48,7 +48,7 @@ public:
 	void ClearAllTags();
 
 	template <class T, typename ...Params>
-	T* CreateComponent(Params... params);
+	T* AddComponent(Params... params);
 	
 
 	// Will return a set of all components
@@ -58,10 +58,10 @@ public:
 
 	template<class T>
 	// Will return the first component of type T. Nullptr if none found
-	T* GetComponentOfType(T t);
+	T* GetComponentOfType();
 	template<class T>
 	// Will return the first component of type T. Nullptr if none found
-	const T* GetComponentOfType(T t) const;
+	const T* GetComponentOfType() const;
 
 private:
 	// Object identification 
@@ -87,7 +87,7 @@ private:
 };
 
 template<class T, typename ...Params>
-inline T* WorldObject::CreateComponent(Params... params)
+inline T* WorldObject::AddComponent(Params... params)
 {
 	T* newComponent = new T(this, std::forward<Params>(params)...);
 	Component* compPtr = dynamic_cast<Component*>(newComponent);
@@ -101,7 +101,7 @@ inline T* WorldObject::CreateComponent(Params... params)
 }
 
 template<class T>
-inline T* WorldObject::GetComponentOfType(T t)
+inline T* WorldObject::GetComponentOfType()
 {
 	for (Component* c : components)
 	{
@@ -118,7 +118,7 @@ inline T* WorldObject::GetComponentOfType(T t)
 }
 
 template<class T>
-inline const T* WorldObject::GetComponentOfType(T t) const
+inline const T* WorldObject::GetComponentOfType() const
 {
 	for (const Component* c : components)
 	{
