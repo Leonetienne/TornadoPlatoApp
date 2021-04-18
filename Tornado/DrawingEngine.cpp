@@ -215,8 +215,8 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		);
 
 		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(Vector2i(
-			(1.0 - uv_coords.x) * (text_size.x - 1),
-			(1.0 - uv_coords.y) * (text_size.y - 1) // Uv-coordinates are top-left == (0,1)
+			(int)((1.0 - uv_coords.x) * (text_size.x - 1)),
+			(int)((1.0 - uv_coords.y) * (text_size.y - 1)) // Uv-coordinates are top-left == (0,1)
 		));
 
 		r = text_pixel[0];

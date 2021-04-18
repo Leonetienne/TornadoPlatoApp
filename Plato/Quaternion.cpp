@@ -184,10 +184,14 @@ Matrix4x4 Quaternion::ToRotationMatrix() const
 	{
 		Matrix4x4 m;
 
-		double sqw = v.w * v.w;
-		double sqx = v.x * v.x;
-		double sqy = v.y * v.y;
-		double sqz = v.z * v.z;
+		const double sqx = v.x * v.x;
+		const double sqy = v.y * v.y;
+		const double sqz = v.z * v.z;
+		const double sqw = v.w * v.w;
+		const double x = v.x;
+		const double y = v.y;
+		const double z = v.z;
+		const double w = v.w;
 
 		// invs (inverse square length) is only required if quaternion is not already normalised
 		double invs = 1.0 / (sqx + sqy + sqz + sqw);
@@ -195,18 +199,18 @@ Matrix4x4 Quaternion::ToRotationMatrix() const
 		// since sqw + sqx + sqy + sqz =1/invs*invs
 
 		// yaw (y)
-		m.c = ((2 * v.x * v.z) - (2 * v.w * v.y)) * invs;
+		m.c = ((2 * x * z) - (2 * w * y)) * invs;
 		m.f = (1 - (2 * sqx) - (2 * sqz)) * invs;
-		m.i = ((2 * v.x * v.z) + (2 * v.w * v.y)) * invs;
+		m.i = ((2 * x * z) + (2 * w * y)) * invs;
 
 		// pitch (x)
 		m.a = (1 - (2 * sqy) - (2 * sqz)) * invs;
-		m.g = ((2 * v.y * v.z) + (2 * v.w * v.x)) * invs;
-		m.j = ((2 * v.y * v.z) - (2 * v.w * v.x)) * invs;
+		m.g = ((2 * y * z) + (2 * w * x)) * invs;
+		m.j = ((2 * y * z) - (2 * w * x)) * invs;
 
 		// roll (z)
-		m.b = ((2 * v.x * v.y) + (2 * v.w * v.z)) * invs;
-		m.e = ((2 * v.x * v.y) - (2 * v.w * v.z)) * invs;
+		m.b = ((2 * x * v.y) + (2 * w * z)) * invs;
+		m.e = ((2 * x * v.y) - (2 * w * z)) * invs;
 		m.k = (1 - (2 * sqx) - (2 * sqy)) * invs;
 		
 		matrixCache = m;

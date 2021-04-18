@@ -41,13 +41,13 @@ void CreateCubeFractal(const Mesh* mesh, const Material* material, std::size_t d
 {
 	std::vector<WorldObject*> addTo;
 	addTo.push_back(WorldObjectManager::NewWorldObject());
-	addTo[0]->GetTransform()->Move(Vector3d(0, -0, 6));
+	addTo[0]->GetTransform()->Move(Vector3d(4, -0, 6));
 	addTo[0]->GetTransform()->Rotate(Vector3d(90, 0, 0)); // To make the image upside-up
 	addTo[0]->AddTag("rotating_cube");
-	addTo[0]->CreateComponent<MeshRenderer>(mesh, material);
-	addTo[0]->CreateComponent<Rotator>((((rand() % 20) / 10.0) - 1.0) * 0.5);
+	addTo[0]->AddComponent<MeshRenderer>(mesh, material);
+	addTo[0]->AddComponent<Rotator>((((rand() % 20) / 10.0) - 1.0) * 0.5);
 
-	const std::size_t max_its = pow(6, depth) + pow(7, depth-1);
+	const std::size_t max_its = (std::size_t)pow(6, depth) + (std::size_t)pow(7, depth-1);
 	std::size_t its = 0;
 
 	for (std::size_t i = 0; i < addTo.size(); i++)
@@ -60,8 +60,8 @@ void CreateCubeFractal(const Mesh* mesh, const Material* material, std::size_t d
 		{
 			WorldObject* newCube = WorldObjectManager::NewWorldObject("", addTo[i]->GetTransform());
 			newCube->AddTag("rotating_cube");
-			newCube->CreateComponent<MeshRenderer>(mesh, material);
-			newCube->CreateComponent<Rotator>((((rand() % 20) / 10.0) - 1.0) * 0.5);
+			newCube->AddComponent<MeshRenderer>(mesh, material);
+			newCube->AddComponent<Rotator>((((rand() % 20) / 10.0) - 1.0) * 0.5);
 	
 			// Use these offsets for the edges
 			static const Vector3d edgePositions[76] = {
@@ -168,25 +168,27 @@ Plato::Plato()
 
 	// Protocode load texture from file
 	BMP bmp;
-	bmp.Read("../Plato/Cube_furnace_gitignore_.bmp");
+	bmp.Read("../Plato/Cube_thielen_gitignore_.bmp");
 	bmp.ConvertTo(BMP::COLOR_MODE::RGBA);
-	Texture* tx_coob = new Texture(Vector2i(bmp.GetWidth(), bmp.GetHeight()));
-	tx_coob->GetPixelBuffer().Refit(bmp.GetPixelBuffer(), Vector2i(bmp.GetWidth(), bmp.GetHeight()));
+	Texture* tx_coob = new Texture(Vector2i((int)bmp.GetWidth(), (int)bmp.GetHeight()));
+	tx_coob->GetPixelBuffer().Refit(bmp.GetPixelBuffer(), Vector2i((int)bmp.GetWidth(), (int)bmp.GetHeight()));
 	dummyMat.texture = tx_coob;
 
 	camera_yPivot = WorldObjectManager::NewWorldObject()->GetTransform();
 	camera_yPivot->GetWorldObject()->SetId("cam_y_pivot");
-	camera = WorldObjectManager::NewWorldObject("main_camera", camera_yPivot)->CreateComponent<Camera>(Vector2i(800*2, 600*2), 90, 0.0001, 10000);
+	camera = WorldObjectManager::NewWorldObject("main_camera", camera_yPivot)->AddComponent<Camera>(Vector2i(800*2, 600*2), 90, 0.0001, 10000);
 	renderer->SetMainCamera(camera);
 	
-//	mr_coob = WorldObjectManager::NewWorldObject()->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
-//	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 1.5);
+	mr_coob = WorldObjectManager::NewWorldObject()->AddComponent<MeshRenderer>(&mesh_coob, &dummyMat);
+	mr_coob->transform->Move(Vector3d::forward * 6 + Vector2d::down * 1.5);
+	mr_coob->worldObject->AddComponent<Rotator>(1);
+	
+	mr_coob2 = WorldObjectManager::NewWorldObject("cube", mr_coob->transform)->AddComponent<MeshRenderer>(&mesh_coob, &dummyMat);
+	mr_coob2->transform->SetScale(Vector3d::one * 0.5);
+	mr_coob2->transform->Move(Vector3d(0, 2, 0));
+	//mr_coob2->worldObject->CreateComponent<Rotator>(1);
 
-//	mr_coob2 = WorldObjectManager::NewWorldObject("cube", mr_coob->transform)->CreateComponent<MeshRenderer>(&mesh_coob, &dummyMat);
-//	mr_coob2->transform->SetScale(Vector3d::one * 0.5);
-//	mr_coob2->transform->Move(Vector3d(0, 2, 0));
-
-	CreateCubeFractal(&mesh_coob, &dummyMat, 3);
+	CreateCubeFractal(&mesh_coob, &dummyMat, 2);
 
 	return;
 }
@@ -223,16 +225,17 @@ void Plato::Update()
 	if (GetAsyncKeyState('E'))
 		camera_yPivot->Move(Vector3d::down * 0.1 * shiftmod);
 
-	if (GetAsyncKeyState('1'))
-		camera->SetFov(camera->GetFov() - 1 * shiftmod);
-	if (GetAsyncKeyState('2'))
-		camera->SetFov(camera->GetFov() + 1 * shiftmod);
+	
 
 	if (GetAsyncKeyState('P'))
 		mr_coob2->transform->SetParent(mr_coob->transform);
 
 	if (GetAsyncKeyState('U'))
+	{
 		mr_coob2->transform->SetParent(nullptr);
+		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("rotating_cube"))
+			wo->GetTransform()->SetParent(nullptr);
+	}
 
 	if (GetAsyncKeyState(VK_RIGHT))
 		mr_floor->transform->Rotate(Quaternion(Vector3d::up * 0.5 * shiftmod));
