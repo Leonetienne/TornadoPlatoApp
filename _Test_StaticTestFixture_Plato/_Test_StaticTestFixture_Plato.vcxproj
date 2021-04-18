@@ -143,6 +143,7 @@
     <ClCompile Include="TestFixture.cpp" />
     <ClCompile Include="TextureProjectionWorks.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
+    <ClCompile Include="TransformHierarchy__Curl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraKeyboardControl.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="TestFixture.h" />
     <ClInclude Include="TextureProjectionWorks.h" />
     <ClInclude Include="RenderWindow.h" />
+    <ClInclude Include="TransformHierarchy__Curl.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
