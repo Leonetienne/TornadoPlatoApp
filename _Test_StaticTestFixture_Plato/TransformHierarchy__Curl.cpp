@@ -25,6 +25,8 @@ Transform* TransformHierarchy__Curl::CreateLink(Transform* parent)
 	return wo->GetTransform();
 }
 
+Transform* jointRoot;
+
 TransformHierarchy__Curl::TransformHierarchy__Curl() :
 	TestFixture(__FUNCTION__), // Set the test fixtures name equal to the specialized class name (constructor function)
 	txt_coob(Color::black)
@@ -42,13 +44,12 @@ TransformHierarchy__Curl::TransformHierarchy__Curl() :
 	mat_coob.texture = &txt_coob;
 
 	// Create a root transform (for positioning and rotation)
-	Transform* jointRoot = WorldObjectManager::NewWorldObject("joint_root")->GetTransform();
+	jointRoot = WorldObjectManager::NewWorldObject("joint_root")->GetTransform();
 	jointRoot->Rotate(Quaternion::FromEuler(Vector3d::up * 180));
-	//jointRoot->Rotate(Quaternion::FromEuler(Vector3d::up * 0));
 
 	// Create five joints
 	Transform* lastParent = jointRoot;
-	for (std::size_t i = 0; i < 5; i++)
+	for (std::size_t i = 0; i < 15; i++)
 		lastParent = CreateLink(lastParent);
 
 	return;
@@ -58,7 +59,10 @@ void TransformHierarchy__Curl::Update(double frametime)
 {
 	if (GetAsyncKeyState(VK_SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
-			wo->GetTransform()->Rotate(Quaternion::FromEuler(Vector3d::right * 0.1));
+			wo->GetTransform()->Rotate(Quaternion::FromEuler(Vector3d::right * 0.07));
+
+	if (GetAsyncKeyState('U'))
+		jointRoot->Rotate(Quaternion::FromEuler(Vector3d(-2.5, -2, -8) * 0.1));
 
 	return;
 }
