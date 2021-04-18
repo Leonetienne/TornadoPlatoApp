@@ -11,7 +11,7 @@ TextureProjectionWorks::TextureProjectionWorks() :
 	txt_coob(Color::black)
 {
 	mesh_coob = Cube();
-	LoadTextureFromBmp(&txt_coob, "../Plato/Cube_thielen_gitignore_.bmp");
+	LoadTextureFromBmp(&txt_coob, "../Plato/Cube_furnace_gitignore_.bmp");
 	mat_coob.texture = &txt_coob;
 
 	wo_coob = WorldObjectManager::NewWorldObject();

@@ -1,9 +1,11 @@
 #include "RenderWindow.h"
 #include "TestFixture.h"
-#include "TextureProjectionWorks.h"
 #include "CameraKeyboardControl.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
+
+#include "TextureProjectionWorks.h"
+#include "TransformHierarchy__Curl.h"
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -22,10 +24,12 @@ int main()
 	const Vector2i resolution(800*2, 600*2);
 	
 
-	// Create important objects, such as the Window and the Renderer including Camera
+	// Create important objects, such as the Window and the Renderer, including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->GetTransform(); // Necessary for camera rotation
 	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 10000);
+	cameraYPivot->GetWorldObject()->SetId("main_camera_ypiv");
+	camera->worldObject->SetId("main_camera");
 	Renderer renderer(resolution);
 	renderer.SetMainCamera(camera);
 	window.SetPixelBuffer(renderer.GetPixelBuffer());
@@ -34,7 +38,7 @@ int main()
 	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.1, 0.4, 4);
 
 	// Create test fixture. Change that to the fixture you want to use
-	TextureProjectionWorks testFixture;
+	TransformHierarchy__Curl testFixture;
 
 	// Adjust window name to test name
 	if (testFixture.GetTestName().length() > 0)

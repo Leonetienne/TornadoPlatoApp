@@ -36,6 +36,9 @@
     <ClCompile Include="RenderWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TransformHierarchy__Curl.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestFixture.h">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="CameraKeyboardControl.h">
       <Filter>Headerdateien\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformHierarchy__Curl.h">
+      <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
