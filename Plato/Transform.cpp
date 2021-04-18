@@ -344,7 +344,7 @@ void Transform::RecalculateGlobalTransformCache() const
 		cache__globalTransformationMatrix.d = newPos.x;
 		cache__globalTransformationMatrix.h = newPos.y;
 		cache__globalTransformationMatrix.l = newPos.z;
-		cache__globalTransformationMatrix *= tr->GetLocalTransformationMatrix();
+		cache__globalTransformationMatrix = tr->GetLocalTransformationMatrix() * cache__globalTransformationMatrix;
 	}
 
 	// Re-Calculate global scale
