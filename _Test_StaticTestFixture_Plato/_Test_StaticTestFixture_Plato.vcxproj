@@ -139,20 +139,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Test__TransformHierarchy__ClearParent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestFixture.cpp" />
-    <ClCompile Include="TextureProjectionWorks.cpp" />
+    <ClCompile Include="Test__TextureProjectionWorks.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
-    <ClCompile Include="TransformHierarchy__Curl.cpp" />
+    <ClCompile Include="Test__TransformHierarchy__ChangeParent.cpp" />
+    <ClCompile Include="Test__TransformHierarchy__Curl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraKeyboardControl.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Test__TransformHierarchy__ClearParent.h" />
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="TestFixture.h" />
-    <ClInclude Include="TextureProjectionWorks.h" />
+    <ClInclude Include="Test__TextureProjectionWorks.h" />
     <ClInclude Include="RenderWindow.h" />
-    <ClInclude Include="TransformHierarchy__Curl.h" />
+    <ClInclude Include="Test__TransformHierarchy__ChangeParent.h" />
+    <ClInclude Include="Test__TransformHierarchy__Curl.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>

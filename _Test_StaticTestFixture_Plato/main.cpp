@@ -4,8 +4,12 @@
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 
-#include "TextureProjectionWorks.h"
-#include "TransformHierarchy__Curl.h"
+#include "Test__TransformHierarchy__Curl.h"
+#include "Test__TransformHierarchy__ClearParent.h"
+#include "Test__TransformHierarchy__ChangeParent.h"
+
+// Set your test-class you want to run. Must inherit from TestFixture!
+#define TEST_TO_RUN Test__TransformHierarchy__ChangeParent
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -37,8 +41,8 @@ int main()
 	// Let's add a CameraKeyboardControl component to the camera by default
 	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.1, 0.4, 4);
 
-	// Create test fixture. Change that to the fixture you want to use
-	TransformHierarchy__Curl testFixture;
+	// Create test fixture. Change that to the fixture you want to use (in the macro definition)
+	TEST_TO_RUN testFixture;
 
 	// Adjust window name to test name
 	if (testFixture.GetTestName().length() > 0)

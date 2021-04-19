@@ -3,16 +3,21 @@
 #include "../Plato/MeshRenderer.h"
 #include "../Tornado/Material.h"
 
-class TextureProjectionWorks : public TestFixture
+class Test__TransformHierarchy__ChangeParent : public TestFixture
 {
 public:
-	TextureProjectionWorks();
+	Test__TransformHierarchy__ChangeParent();
 
 	void Update(double frametime);
 
 private:
+	Transform* CreateLink(Transform* parent);
+
 	Mesh mesh_coob;
 	WorldObject* wo_coob;
 	Texture txt_coob;
 	Material mat_coob;
+
+	Transform* jointRoot;
+	Transform* newParent;
 };
