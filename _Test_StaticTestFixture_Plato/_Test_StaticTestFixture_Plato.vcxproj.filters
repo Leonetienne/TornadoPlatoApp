@@ -27,16 +27,22 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TextureProjectionWorks.cpp">
-      <Filter>Quelldateien\Tests.cpp</Filter>
-    </ClCompile>
     <ClCompile Include="TestFixture.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RenderWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TransformHierarchy__Curl.cpp">
+    <ClCompile Include="Test__TextureProjectionWorks.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Test__TransformHierarchy__Curl.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Test__TransformHierarchy__ChangeParent.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Test__TransformHierarchy__ClearParent.cpp">
       <Filter>Quelldateien\Tests.cpp</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,9 +52,6 @@
     </ClInclude>
     <ClInclude Include="RenderWindow.h">
       <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureProjectionWorks.h">
-      <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>Headerdateien</Filter>
@@ -62,7 +65,16 @@
     <ClInclude Include="CameraKeyboardControl.h">
       <Filter>Headerdateien\Components</Filter>
     </ClInclude>
-    <ClInclude Include="TransformHierarchy__Curl.h">
+    <ClInclude Include="Test__TransformHierarchy__Curl.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__TextureProjectionWorks.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__TransformHierarchy__ChangeParent.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__TransformHierarchy__ClearParent.h">
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
   </ItemGroup>

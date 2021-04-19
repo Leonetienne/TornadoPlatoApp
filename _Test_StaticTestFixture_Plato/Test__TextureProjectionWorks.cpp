@@ -1,4 +1,4 @@
-#include "TextureProjectionWorks.h"
+#include "Test__TextureProjectionWorks.h"
 #include "Cube.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
@@ -6,7 +6,7 @@
 #include "Rotator.h"
 #include "Util.h"
 
-TextureProjectionWorks::TextureProjectionWorks() :
+Test__TextureProjectionWorks::Test__TextureProjectionWorks() :
 	TestFixture(__FUNCTION__), // Set the test fixtures name equal to the specialized class name (constructor function)
 	txt_coob(Color::black)
 {
@@ -23,7 +23,7 @@ TextureProjectionWorks::TextureProjectionWorks() :
 	return;
 }
 
-void TextureProjectionWorks::Update(double frametime)
+void Test__TextureProjectionWorks::Update(double frametime)
 {
 	return;
 }
