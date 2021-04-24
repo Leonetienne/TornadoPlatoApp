@@ -212,6 +212,8 @@ Matrix4x4 Quaternion::ToRotationMatrix() const
 		m.b = ((2 * x * v.y) + (2 * w * z)) * invs;
 		m.e = ((2 * x * v.y) - (2 * w * z)) * invs;
 		m.k = (1 - (2 * sqx) - (2 * sqy)) * invs;
+
+		m.p = 1;
 		
 		matrixCache = m;
 		isCacheUpToDate_matrix = true;

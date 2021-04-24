@@ -48,18 +48,19 @@ Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent()
 	// Apply some complex transformation to that future parent
 	//newParent->SetPosition(Vector3d(-15, 33, -99));
 	newParent->Rotate(Vector3d(39, -50, 19));
-	newParent->SetScale(Vector3d(1, 1, 1.05));
+	//newParent->SetScale(Vector3d(1, 1.001, 1));
 
 	// Create a root transform (for positioning and rotation)
 	jointRoot = WorldObjectManager::NewWorldObject("joint_root")->GetTransform();
 	jointRoot->Rotate(Quaternion::FromEuler(Vector3d(60, -20, 15)));
-	//jointRoot->Scale(Vector3d::one * 1.1);
+	jointRoot->Scale(Vector3d(10,1,1));
 
 	// Create fifteen joints
 	Transform* lastParent = jointRoot;
-	for (std::size_t i = 0; i < 15; i++)
+	for (std::size_t i = 0; i < 3; i++)
 		lastParent = CreateLink(lastParent);
-
+	
+	system("cls");
 	return;
 }
 
@@ -67,12 +68,16 @@ void Test__TransformHierarchy__ChangeParent::Update(double frametime)
 {
 	if (GetAsyncKeyState('U'))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
-			wo->GetTransform()->SetParent(newParent);
+			//if (wo->GetTransform()->GetParent() != newParent)
+				wo->GetTransform()->SetParent(newParent);
 
 	// Some fun-control. Will rotate all objects (locally)
 	if (GetAsyncKeyState(VK_SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
 			wo->GetTransform()->Rotate(Quaternion::FromEuler(Vector3d::right * 0.03));
+
+	if (GetAsyncKeyState('R'))
+		jointRoot->Rotate(Vector3d(0, 0.1, 0));
 
 	return;
 }

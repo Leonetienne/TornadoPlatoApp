@@ -321,8 +321,8 @@ namespace TransformRelated
 			return;
 		}
 
-		// Tests that getting the global scale works
-		TEST_METHOD(Get_Global_Scale)
+		// Tests that getting the global scale works without rotations
+		TEST_METHOD(Get_Lossy_Scale_NoRotation)
 		{
 			// Free any rubbish previously failed tests left behind
 			WorldObjectManager::Free();
@@ -347,10 +347,49 @@ namespace TransformRelated
 			std::wstringstream wss;
 			wss << std::endl
 				<< "Expected scale: " << expectedScale << std::endl
-				<< "Actual scale: " << d->GetGlobalScale() << std::endl;
+				<< "Actual scale: " << d->GetLossyScale() << std::endl;
 
 			//    Assertion
-			Assert::IsTrue(expectedScale.Similar(d->GetGlobalScale()), wss.str().c_str());
+			Assert::IsTrue(expectedScale.Similar(d->GetLossyScale()), wss.str().c_str());
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that getting the global scale works with rotations
+		TEST_METHOD(Get_Lossy_Scale)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			//Transform* a = NEW_TRANSFORM;
+			//Transform* b = NEW_TRANSFORM;
+			Transform* c = NEW_TRANSFORM;
+			Transform* d = NEW_TRANSFORM;
+
+			d->SetParent(c);
+			//c->SetParent(b);
+			//b->SetParent(a);
+
+			//a->SetScale(Vector3d(33, 10, 0.001));
+			//b->SetScale(Vector3d(1, -22, 21));
+			c->SetScale(Vector3d(5,15,5));
+			d->SetScale(Vector3d(1,1,0.5));
+			//c->SetScale(Vector3d(-19, 5, 21));
+			//d->SetScale(Vector3d(-19, 13, 0.5));
+
+			c->SetRotation(Quaternion::FromEuler(Vector3d(60, 0, 0)));
+
+			Vector3d expectedScale = Vector3d(716, -28151.4, 4703.6);
+
+			//    Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Expected scale: " << expectedScale << std::endl
+				<< "Actual scale: " << d->GetLossyScale() << std::endl;
+
+			//    Assertion
+			Assert::IsTrue(expectedScale.Similar(d->GetLossyScale()), wss.str().c_str());
 
 			WorldObjectManager::Free();
 			return;
@@ -467,40 +506,6 @@ namespace TransformRelated
 
 			//    Assertion
 			Assert::IsTrue(expectedPosition.Similar(d->GetGlobalPosition(), 1), wss.str().c_str());
-
-			WorldObjectManager::Free();
-			return;
-		}
-
-		// Tests if SetGlobalScale works
-		TEST_METHOD(Can_Set_Global_Scale)
-		{
-			// Free any rubbish previously failed tests left behind
-			WorldObjectManager::Free();
-
-			// Run test 1000 times
-			for (std::size_t i = 0; i < 1000; i++)
-			{
-				Transform* p1 = NEW_TRANSFORM;
-				Transform* p2 = NEW_TRANSFORM;
-				Transform* a = NEW_TRANSFORM;
-				a->SetParent(p1);
-				p1->SetParent(p2);
-				a->SetScale(Vector3d(2, 2, 2));
-				p1->SetScale(Vector3d(-2, 55, 1));
-				p2->SetScale(Vector3d(-5, -22, 0.001));
-
-				Vector3d expectedGlobalScale(LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE);
-				a->SetGlobalScale(expectedGlobalScale);
-
-				//    Create debug output
-				std::wstringstream wss;
-				wss << std::endl
-					<< "Expected global scale: " << expectedGlobalScale << std::endl
-					<< "Actual global scale: " << a->GetGlobalScale() << std::endl;
-
-				Assert::IsTrue(a->GetGlobalScale().Similar(expectedGlobalScale), wss.str().c_str());
-			}
 
 			WorldObjectManager::Free();
 			return;
@@ -670,7 +675,7 @@ namespace TransformRelated
 			p2->SetRotation(Quaternion(Vector3d(-5, -22, 0.001)));
 
 			const Vector3d globalPosition = a->GetGlobalPosition();
-			const Vector3d globalScale = a->GetGlobalScale();
+			const Vector3d globalScale = a->GetLossyScale();
 			const Quaternion globalRotation = a->GetGlobalRotation();
 
 			// Now just re-apply it
@@ -686,14 +691,14 @@ namespace TransformRelated
 				<< "New  pos: " << a->GetGlobalPosition() << std::endl
 				<< "-" << std::endl
 				<< "Prev scl: " << globalScale << std::endl
-				<< "New  scl: " << a->GetGlobalScale() << std::endl
+				<< "New  scl: " << a->GetLossyScale() << std::endl
 				<< "-" << std::endl
 				<< "Prev rot: " << globalRotation << std::endl
 				<< "New  rot: " << a->GetGlobalRotation() << std::endl
 				<< "Failed at: ";
 
 			// Check that these values are still equal
-			Assert::IsTrue(globalScale.Similar(a->GetGlobalScale()), (wss.str() + L"Global scale").c_str());
+			Assert::IsTrue(globalScale.Similar(a->GetLossyScale()), (wss.str() + L"Global scale").c_str());
 			Assert::IsTrue(globalRotation.GetRawValues().Similar(a->GetGlobalRotation().GetRawValues(), 0.01), (wss.str() + L"Global rotation").c_str());
 			Assert::IsTrue(globalPosition.Similar(a->GetGlobalPosition()), (wss.str() + L"Global position").c_str());
 
@@ -726,7 +731,7 @@ namespace TransformRelated
 			//p3->SetRotation(Quaternion(Vector3d(0,90,0)));
 
 			const Vector3d globalPosition = a->GetGlobalPosition();
-			const Vector3d globalScale = a->GetGlobalScale();
+			const Vector3d globalScale = a->GetLossyScale();
 			const Quaternion globalRotation = a->GetGlobalRotation();
 
 			// Set new parent
@@ -744,14 +749,14 @@ namespace TransformRelated
 				<< "New  pos: " << a->GetGlobalPosition() << std::endl
 				<< "-" << std::endl
 				<< "Prev scl: " << globalScale << std::endl
-				<< "New  scl: " << a->GetGlobalScale() << std::endl
+				<< "New  scl: " << a->GetLossyScale() << std::endl
 				<< "-" << std::endl
 				<< "Prev rot: " << globalRotation << std::endl
 				<< "New  rot: " << a->GetGlobalRotation() << std::endl
 				<< "Failed at: ";
 
 			// Check that these values are still equal
-			Assert::IsTrue(globalScale.Similar(a->GetGlobalScale()), (wss.str() + L"Global scale").c_str());
+			Assert::IsTrue(globalScale.Similar(a->GetLossyScale()), (wss.str() + L"Global scale").c_str());
 			Assert::IsTrue(globalRotation.GetRawValues().Similar(a->GetGlobalRotation().GetRawValues(), 0.01), (wss.str() + L"Global rotation").c_str());
 			Assert::IsTrue(globalPosition.Similar(a->GetGlobalPosition()), (wss.str() + L"Global position").c_str());
 
@@ -791,7 +796,7 @@ namespace TransformRelated
 
 			// Save current global values
 			const Vector3d gpos   = toCheck->GetGlobalPosition();
-			const Vector3d gscal  = toCheck->GetGlobalScale();
+			const Vector3d gscal  = toCheck->GetLossyScale();
 			const Quaternion grot = toCheck->GetGlobalRotation();
 
 			// Clear parent
@@ -804,14 +809,14 @@ namespace TransformRelated
 				<< "New  pos: " << toCheck->GetGlobalPosition() << std::endl
 				<< "-" << std::endl
 				<< "Prev scl: " << gscal << std::endl
-				<< "New  scl: " << toCheck->GetGlobalScale() << std::endl
+				<< "New  scl: " << toCheck->GetLossyScale() << std::endl
 				<< "-" << std::endl
 				<< "Prev rot: " << grot << std::endl
 				<< "New  rot: " << toCheck->GetGlobalRotation() << std::endl
 				<< "Failed at: ";
 
 			// Check that these values are still equal
-			Assert::IsTrue(gscal.Similar(toCheck->GetGlobalScale()), (wss.str() + L"Global scale").c_str());
+			Assert::IsTrue(gscal.Similar(toCheck->GetLossyScale()), (wss.str() + L"Global scale").c_str());
 			Assert::IsTrue(grot.GetRawValues().Similar(toCheck->GetGlobalRotation().GetRawValues(), 0.01), (wss.str() + L"Global rotation").c_str());
 			Assert::IsTrue(gpos.Similar(toCheck->GetGlobalPosition()), (wss.str() + L"Global position").c_str());
 
@@ -850,7 +855,7 @@ namespace TransformRelated
 
 			// Save current global values
 			const Vector3d gpos = toCheck->GetGlobalPosition();
-			const Vector3d gscal = toCheck->GetGlobalScale();
+			const Vector3d gscal = toCheck->GetLossyScale();
 			const Quaternion grot = toCheck->GetGlobalRotation();
 
 			// Set new parent
@@ -863,14 +868,14 @@ namespace TransformRelated
 				<< "New  pos: " << toCheck->GetGlobalPosition() << std::endl
 				<< "-" << std::endl
 				<< "Prev scl: " << gscal << std::endl
-				<< "New  scl: " << toCheck->GetGlobalScale() << std::endl
+				<< "New  scl: " << toCheck->GetLossyScale() << std::endl
 				<< "-" << std::endl
 				<< "Prev rot: " << grot << std::endl
 				<< "New  rot: " << toCheck->GetGlobalRotation() << std::endl
 				<< "Failed at: ";
 
 			// Check that these values are still equal
-			Assert::IsTrue(gscal.Similar(toCheck->GetGlobalScale()), (wss.str() + L"Global scale").c_str());
+			Assert::IsTrue(gscal.Similar(toCheck->GetLossyScale()), (wss.str() + L"Global scale").c_str());
 			Assert::IsTrue(grot.GetRawValues().Similar(toCheck->GetGlobalRotation().GetRawValues(), 0.01), (wss.str() + L"Global rotation").c_str());
 			Assert::IsTrue(gpos.Similar(toCheck->GetGlobalPosition()), (wss.str() + L"Global position").c_str());
 

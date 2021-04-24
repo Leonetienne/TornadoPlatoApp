@@ -76,7 +76,7 @@ public:
 	Quaternion GetGlobalRotation() const;
 
 	// Will return this transforms scale relative to the world origin
-	Vector3d GetGlobalScale() const;
+	Vector3d GetLossyScale() const;
 
 	// Will set the global position
 	void SetGlobalPosition(const Vector3d& pos);
@@ -104,7 +104,7 @@ private:
 	mutable Matrix4x4	cache__globalTransformationMatrix;
 	mutable bool		cache__IsGlobalTransformationUpToDate = false;
 	mutable Vector3d	cache__GlobalPosition;
-	mutable Vector3d	cache__GlobalScale;
+	mutable Vector3d	cache__LossyScale;
 	mutable Quaternion	cache__GlobalRotation;
 
 	// Stores pointers to all child transforms
