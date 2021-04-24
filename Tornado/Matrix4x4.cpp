@@ -24,6 +24,7 @@ Matrix4x4::Matrix4x4(const Matrix4x4& other)
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const
 {
 	Matrix4x4 newMatrix;
+	newMatrix.p = 1;
 
 	// Rotation, Scaling
 	newMatrix[0][0] = (v[0][0] * other[0][0]) + (v[0][1] * other[1][0]) + (v[0][2] * other[2][0]);
