@@ -323,7 +323,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	inv_pNewParentGlobalTransform.d = -pNewParentGlobalTransform.d;
 	inv_pNewParentGlobalTransform.h = -pNewParentGlobalTransform.h;
 	inv_pNewParentGlobalTransform.l = -pNewParentGlobalTransform.l;
-	const Matrix4x4 localInNewParent = localInWorld * inv_pNewParentGlobalTransform;
+	const Matrix4x4 localInNewParent = inv_pNewParentGlobalTransform * localInWorld;
 	
 	Vector3d nPos = Vector3d(localInNewParent.d, localInNewParent.h, localInNewParent.l);
 	Quaternion nRot = oldRotation;
@@ -340,11 +340,16 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 
 	Quaternion r = oldRotation;
 	if (parent != nullptr)
-		r = parent->GetGlobalRotation().Inverse() * oldRotation;
+		r = oldRotation * parent->GetRotation().Inverse();
 
-	Matrix4x4 m = (r.Inverse().ToRotationMatrix()) * ((localInNewParent));
-	SetScale(Vector3d(m.a, m.f, m.k));
-	std::cout << Vector3d(m.a, m.f, m.k) << std::endl;
+	Matrix4x4 toWorld = localInNewParent;
+	//if (parent != nullptr)
+	//	toWorld = parent->GetGlobalTransformationMatrix() * localInNewParent;
+
+	Matrix4x4 m = InverseMatrix(r.ToRotationMatrix()) * (toWorld);
+	Vector3d nScl = Vector3d(m.a, m.f, m.k);
+	SetScale(nScl);
+	std::cout << nScl << std::endl;
 
 	//SetGlobalRotation(globalRotation);
 	//SetGlobalScale(globalScale);
