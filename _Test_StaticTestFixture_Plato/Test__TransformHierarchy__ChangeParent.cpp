@@ -22,7 +22,8 @@ Transform* Test__TransformHierarchy__ChangeParent::CreateLink(Transform* parent)
 
 	wo->AddTag("joint");
 	wo->GetTransform()->Move(Vector3d::up * 3);
-	//wo->GetTransform()->Rotate(Vector3d::right * 20);
+	wo->GetTransform()->Rotate(Vector3d::right * 20);
+	wo->GetTransform()->SetScale(Vector3d(1.5, 1, 1));
 
 	return wo->GetTransform();
 }
