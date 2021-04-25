@@ -228,7 +228,7 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 {
 	// Recalculate if cache is invalid
-	if (!cache__IsGlobalTransformationUpToDate)
+	if (!cache__IsGlobalTransformation_UpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__globalTransformationMatrix;
@@ -237,7 +237,7 @@ Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 Vector3d Transform::GetGlobalPosition() const
 {
 	// Recalculate if cache is invalid
-	if (!cache__IsGlobalTransformationUpToDate)
+	if (!cache__IsGlobalTransformation_UpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalPosition;
@@ -246,7 +246,7 @@ Vector3d Transform::GetGlobalPosition() const
 Quaternion Transform::GetGlobalRotation() const
 {
 	// Recalculate if cache is invalid
-	if(!cache__IsGlobalTransformationUpToDate)
+	if(!cache__IsGlobalTransformation_UpToDate)
 		RecalculateGlobalTransformCache();
 
 	return cache__GlobalRotation;
@@ -276,7 +276,7 @@ void Transform::InvalidateLocalTransform()
 void Transform::InvalidateGlobalTransform()
 {
 	// Invalidate own
-	cache__IsGlobalTransformationUpToDate = false;
+	cache__IsGlobalTransformation_UpToDate = false;
 
 	// Invalidate of children
 	for (Transform* tr : children)
@@ -313,7 +313,7 @@ void Transform::RecalculateGlobalTransformCache() const
 	cache__GlobalPosition = cache__globalTransformationMatrix.GetTranslationComponent();
 
 	// Validate cache
-	cache__IsGlobalTransformationUpToDate = true;
+	cache__IsGlobalTransformation_UpToDate = true;
 
 	return;
 }

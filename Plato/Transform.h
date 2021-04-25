@@ -91,9 +91,8 @@ private:
 	mutable Matrix4x4	cache__localTransformationMatrix;
 	mutable bool		cache__IsLocalTransformationMatrix_UpToDate = false;
 	mutable Matrix4x4	cache__globalTransformationMatrix;
-	mutable bool		cache__IsGlobalTransformationUpToDate = false;
+	mutable bool		cache__IsGlobalTransformation_UpToDate = false;
 	mutable Vector3d	cache__GlobalPosition;
-	mutable Vector3d	cache__LossyScale;
 	mutable Quaternion	cache__GlobalRotation;
 
 	// Stores pointers to all child transforms
