@@ -13,10 +13,7 @@ public:
 private:
 	Transform* CreateLink(Transform* parent);
 
-	Mesh mesh_coob;
 	WorldObject* wo_coob;
-	Texture txt_coob;
-	Material mat_coob;
 
 	Transform* jointRoot;
 	Transform* newParent;

@@ -214,6 +214,10 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			ird->material->texture->GetPixelBuffer().GetDimensions().y
 		);
 
+		// Clamp to 0 <= n <= 1 to compensate for floating point inaccuracies
+		uv_coords.x = std::max<double>(std::min<double>(uv_coords.x, 1.0), 0.0);
+		uv_coords.y = std::max<double>(std::min<double>(uv_coords.y, 1.0), 0.0);
+
 		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(Vector2i(
 			(int)((1.0 - uv_coords.x) * (text_size.x - 1)),
 			(int)((1.0 - uv_coords.y) * (text_size.y - 1)) // Uv-coordinates are top-left == (0,1)

@@ -46,7 +46,13 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="bmplib.h">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJParser.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +84,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
