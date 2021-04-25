@@ -389,7 +389,7 @@ namespace WorldObjects
 
 			{
 				int i = 33;
-				TestComponent* tc = WorldObjectManager::NewWorldObject("myname")->CreateComponent<TestComponent>(&i);
+				TestComponent* tc = WorldObjectManager::NewWorldObject("myname")->AddComponent<TestComponent>(&i);
 
 				WorldObjectManager::Free();
 

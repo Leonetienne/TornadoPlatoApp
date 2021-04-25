@@ -1,142 +1,6 @@
 #include "Transform.h"
 #include <iostream>
 
-Matrix4x4 Transpose(Matrix4x4 o)
-{
-	Matrix4x4 m;
-
-	m[1][1] = o[1][1];
-	m[1][2] = o[2][1];
-	m[1][3] = o[3][1];
-	
-	m[2][1] = o[1][2];
-	m[2][2] = o[2][2];
-	m[0][3] = o[3][2];
-	
-	m[3][1] = o[1][3];
-	m[3][2] = o[2][3];
-	m[3][3] = o[3][3];
-
-	return m;
-}
-
-Matrix4x4 Matrix4Mult(Matrix4x4 a, Matrix4x4 b)
-{
-	Matrix4x4 m;
-
-	m[0][0] = (a[0][0]*b[0][0]) + (a[0][1]*b[1][0]) + (a[0][2]*b[2][0]) + (a[0][3]*b[3][0]);
-	m[0][1] = (a[0][0]*b[0][1]) + (a[0][1]*b[1][1]) + (a[0][2]*b[2][1]) + (a[0][3]*b[3][1]);
-	m[0][2] = (a[0][0]*b[0][2]) + (a[0][1]*b[1][2]) + (a[0][2]*b[2][2]) + (a[0][3]*b[3][2]);
-	m[0][3] = (a[0][0]*b[0][3]) + (a[0][1]*b[1][3]) + (a[0][2]*b[2][3]) + (a[0][3]*b[3][3]);
-
-	m[1][0] = (a[1][0]*b[0][0]) + (a[1][1]*b[1][0]) + (a[1][2]*b[2][0]) + (a[1][3]*b[3][0]);
-	m[1][1] = (a[1][0]*b[0][1]) + (a[1][1]*b[1][1]) + (a[1][2]*b[2][1]) + (a[1][3]*b[3][1]);
-	m[1][2] = (a[1][0]*b[0][2]) + (a[1][1]*b[1][2]) + (a[1][2]*b[2][2]) + (a[1][3]*b[3][2]);
-	m[1][3] = (a[1][0]*b[0][3]) + (a[1][1]*b[1][3]) + (a[1][2]*b[2][3]) + (a[1][3]*b[3][3]);
-
-	m[2][0] = (a[2][0]*b[0][0]) + (a[2][1]*b[1][0]) + (a[2][2]*b[2][0]) + (a[2][3]*b[2][0]);
-	m[2][1] = (a[2][0]*b[0][1]) + (a[2][1]*b[1][1]) + (a[2][2]*b[2][1]) + (a[2][3]*b[2][1]);
-	m[2][2] = (a[2][0]*b[0][2]) + (a[2][1]*b[1][2]) + (a[2][2]*b[2][2]) + (a[2][3]*b[2][2]);
-	m[2][3] = (a[2][0]*b[0][3]) + (a[2][1]*b[1][3]) + (a[2][2]*b[2][3]) + (a[2][3]*b[2][3]);
-
-	m[3][0] = (a[3][0]*b[0][0]) + (a[3][1]*b[1][0]) + (a[3][2]*b[2][0]) + (a[3][3]*b[2][0]);
-	m[3][1] = (a[3][0]*b[0][1]) + (a[3][1]*b[1][1]) + (a[3][2]*b[2][1]) + (a[3][3]*b[2][1]);
-	m[3][2] = (a[3][0]*b[0][2]) + (a[3][1]*b[1][2]) + (a[3][2]*b[2][2]) + (a[3][3]*b[2][2]);
-	m[3][3] = (a[3][0]*b[0][3]) + (a[3][1]*b[1][3]) + (a[3][2]*b[2][3]) + (a[3][3]*b[2][3]);
-
-
-	return m;
-}
-
-#define MATSIZE 3
-/*
-* https://www.studypug.com/algebra-help/2-x-2-invertible-matrix#:~:text=An%20invertible%20matrix%20is%20a,the%20matrix%20is%20not%200.
-*/
-Matrix4x4 GetCofactors(Matrix4x4 o, int p, int q, int n)
-{
-	Matrix4x4 cofs;
-
-	std::size_t i = 0;
-	std::size_t j = 0;
-
-	for (std::size_t y = 0; y < n; y++)
-		for (std::size_t x = 0; x < n; x++)
-		{
-			if ((y != p) && (x != q))
-				cofs[i][j++] = o[y][x];
-
-			if (j == n-1)
-			{
-				j = 0;
-				i++;
-			}
-		}
-
-	return cofs;
-}
-
-double Determinant(Matrix4x4 o, int n)
-{
-	double d = 0;
-	double sign = 1;
-
-	if (n == 1)
-		return o[0][0];
-
-	for (std::size_t x = 0; x < n; x++)
-	{
-		Matrix4x4 cofs = GetCofactors(o, 0, x, n);
-
-		d += sign * o[0][x] * Determinant(cofs, n-1);
-		sign = -sign;
-	}
-
-	return d;
-}
-
-Matrix4x4 Adjoint(Matrix4x4 o)
-{
-	Matrix4x4 adj;
-	double sign = 1;
-	
-	for (std::size_t i = 0; i < MATSIZE; i++)
-		for (std::size_t j = 0; j < MATSIZE; j++)
-		{
-			Matrix4x4 cofs = GetCofactors(o, i, j, MATSIZE);
-
-			// sign of adj[j][i] positive if sum of row
-			// and column indexes is even.
-			sign = ((i + j) % 2 == 0) ? 1 : -1;
-
-			// Interchanging rows and columns to get the
-			// transpose of the cofactor matrix
-			adj[j][i] = sign * (Determinant(cofs, MATSIZE-1));
-		}
-
-	return adj;
-}
-
-#include <Windows.h> // beep on error
-Matrix4x4 InverseMatrix(Matrix4x4 o)
-{
-	Matrix4x4 inv;
-
-	double det = Determinant(o, MATSIZE);
-	if (det == 0.0)
-	{
-		Beep(500, 500);
-		return Matrix4x4();
-	}
-
-	Matrix4x4 adj = Adjoint(o);
-
-	for (std::size_t i = 0; i < MATSIZE; i++)
-		for (std::size_t j = 0; j < MATSIZE; j++)
-			inv[i][j] = adj[i][j] / det;
-
-	return inv;
-}
-
 Transform::Transform()
 {
 	parent = nullptr;
@@ -281,11 +145,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 		pNewParentGlobalTransform = parent->GetGlobalTransformationMatrix();
 
 	// Move our object to local space of the new parent
-	const Matrix4x4 inv_pNewParentGlobalTransform = InverseMatrix(pNewParentGlobalTransform);
-	inv_pNewParentGlobalTransform.d = -pNewParentGlobalTransform.d;
-	inv_pNewParentGlobalTransform.h = -pNewParentGlobalTransform.h;
-	inv_pNewParentGlobalTransform.l = -pNewParentGlobalTransform.l;
-	const Matrix4x4 localInNewParent = inv_pNewParentGlobalTransform * localInWorld;
+	const Matrix4x4 localInNewParent = pNewParentGlobalTransform.Inverse3x3() * localInWorld;
 	
 	Vector3d nPos = localInNewParent.GetTranslationComponent();
 	Quaternion nRot = oldRotation;
@@ -307,7 +167,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	if (parent != nullptr)
 		r = oldRotation * parent->GetRotation().Inverse();
 
-	Matrix4x4 m = InverseMatrix(r.ToRotationMatrix()) * localInNewParent;
+	Matrix4x4 m = r.ToRotationMatrix().Inverse3x3() * localInNewParent;
 	Vector3d nScl = Vector3d(m.a, m.f, m.k);
 	SetScale(nScl);
 

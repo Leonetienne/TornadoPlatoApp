@@ -13,7 +13,7 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 
 	// Assign metadata
 	newWorldObject->SetName(name);
-	newTransform->SetParent(parent);
+	newTransform->SetParent(parent, false);
 	newTransform->Reset();
 
 	// Put in list of objects
