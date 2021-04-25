@@ -1,19 +1,6 @@
 #include "Transform.h"
 #include <iostream>
 
-std::ostream& operator<<(std::ostream& os, const Matrix4x4& o)
-{
-	for (std::size_t y = 0; y < 4; y++)
-	{
-		for (std::size_t x = 0; x < 4; x++)
-			os << " | " <<o[y][x];
-
-		os << " |" << std::endl;
-	}
-
-	return os;
-}
-
 Matrix4x4 Transpose(Matrix4x4 o)
 {
 	Matrix4x4 m;
