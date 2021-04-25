@@ -44,18 +44,14 @@ const std::string& WorldObject::GetName() const
 	return name;
 }
 
-const std::set<std::string>& WorldObject::GetTags() const
+const std::unordered_set<std::string>& WorldObject::GetTags() const
 {
 	return tags;
 }
 
 bool WorldObject::HasTag(const std::string& tag) const
 {
-	for (const std::string& ctag : tags)
-		if (ctag == tag)
-			return true;
-
-	return false;
+	return tags.find(tag) != tags.end();
 }
 
 void WorldObject::SetName(const std::string& name)
@@ -98,12 +94,12 @@ void WorldObject::ClearAllTags()
 	return;
 }
 
-const std::set<Component*>& WorldObject::GetComponents() const
+const std::unordered_set<Component*>& WorldObject::GetComponents() const
 {
 	return components;
 }
 
-std::set<Component*>& WorldObject::GetComponents()
+std::unordered_set<Component*>& WorldObject::GetComponents()
 {
 	return components;
 }

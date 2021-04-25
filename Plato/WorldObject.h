@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <set>
+#include <unordered_set>
 #include <type_traits>
 #include "Component.h"
 
@@ -27,7 +27,7 @@ public:
 	const std::string& GetName() const;
 
 	// Will return all tags associated to this world object
-	const std::set<std::string>& GetTags() const;
+	const std::unordered_set<std::string>& GetTags() const;
 
 	// Will check if this world object is associated to a given tag
 	bool HasTag(const std::string& tag) const;
@@ -56,9 +56,9 @@ public:
 	
 
 	// Will return a set of all components
-	const std::set<Component*>& GetComponents() const;
+	const std::unordered_set<Component*>& GetComponents() const;
 	// Will return a set of all components
-	std::set<Component*>& GetComponents();
+	std::unordered_set<Component*>& GetComponents();
 
 	template<class T>
 	// Will return the first component of type T. Nullptr if none found
@@ -70,11 +70,11 @@ public:
 private:
 	// Object identification 
 	std::string name;
-	std::set<std::string> tags;
+	std::unordered_set<std::string> tags;
 	std::string id;
 
 	// Registered components
-	std::set<Component*> components;
+	std::unordered_set<Component*> components;
 	
 	// Private handle for this WorldObjects Transform
 	Transform* privateHandle__Transform;

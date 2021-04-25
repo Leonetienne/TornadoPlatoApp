@@ -96,7 +96,7 @@ namespace WorldObjects
 			Assert::AreEqual(std::size_t(3), foundObjects.size(), L"Size found mismatch!");
 
 			// Check that we have no duplicates
-			Assert::AreEqual((std::set<WorldObject*>(foundObjects.begin(), foundObjects.end())).size(), foundObjects.size(), L"Size found mismatch!");
+			Assert::AreEqual((std::unordered_set<WorldObject*>(foundObjects.begin(), foundObjects.end())).size(), foundObjects.size(), L"Size found mismatch!");
 
 			// Check that all objects found fall into our target set
 			for (WorldObject* wo : foundObjects)
@@ -177,7 +177,7 @@ namespace WorldObjects
 			Assert::AreEqual(std::size_t(4), foundObjects.size(), L"Size found mismatch!");
 
 			// Check that we have no duplicates
-			Assert::AreEqual((std::set<WorldObject*>(foundObjects.begin(), foundObjects.end())).size(), foundObjects.size(), L"Size found mismatch!");
+			Assert::AreEqual((std::unordered_set<WorldObject*>(foundObjects.begin(), foundObjects.end())).size(), foundObjects.size(), L"Size found mismatch!");
 
 			// Check that all objects found fall into our target set
 			for (WorldObject* wo : foundObjects)
