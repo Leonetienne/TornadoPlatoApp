@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <thread>
 #include <mutex>
-#include <map>
+#include <unordered_map>
 #include "../Tornado/Vector2.h"
 #include "../Tornado/PixelBuffer.h"
 
@@ -46,5 +46,5 @@ private:
 	std::mutex drawingMutex; // Poor man's v-sync, but between the renderer and the window
 
 	// This is to cross-reference from hwnd to window-class, like in the WndProc
-	static std::map<HWND, RenderWindow*> windows;
+	static std::unordered_map<HWND, RenderWindow*> windows;
 };

@@ -5,7 +5,8 @@ RenderWindow::RenderWindow(const Vector2i& resolution, const std::string& title,
     :
     resolution { resolution },
     title { title },
-    pixelBuffer { nullptr }
+    pixelBuffer { nullptr },
+    systemHandle { 0 }
 {
     // Substitute for default class name
     if (className.length() == 0)
@@ -228,4 +229,4 @@ void RenderWindow::SetPixelBuffer(const PixelBuffer<3>* pxb)
     return;
 }
 
-std::map<HWND, RenderWindow*> RenderWindow::windows;
+std::unordered_map<HWND, RenderWindow*> RenderWindow::windows;
