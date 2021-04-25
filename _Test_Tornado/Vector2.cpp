@@ -660,6 +660,16 @@ namespace Vectors
 			return;
 		}
 
+		// Tests for operator- (unary) to work
+		TEST_METHOD(Operator_Unary_Negative)
+		{
+			Vector2d v(29, -5);
+
+			Assert::IsTrue(Vector2d(-29, 5) == -v);
+
+			return;
+		}
+
 		// Tests for operator+ to work as expected
 		TEST_METHOD(Operator_Add)
 		{
