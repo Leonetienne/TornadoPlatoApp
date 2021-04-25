@@ -264,3 +264,28 @@ bool Matrix4x4::IsInversible4x4() const
 {
 	return (Determinant(4) != 0);
 }
+
+std::ostream& operator<<(std::ostream& os, const Matrix4x4& m)
+{
+	for (std::size_t y = 0; y < 4; y++)
+	{
+		for (std::size_t x = 0; x < 4; x++)
+			os << " | " << m[y][x];
+
+		os << " |" << std::endl;
+	}
+
+	return os;
+}
+std::wostream& operator<<(std::wostream& os, const Matrix4x4& m)
+{
+	for (std::size_t y = 0; y < 4; y++)
+	{
+		for (std::size_t x = 0; x < 4; x++)
+			os << L" | " << m[y][x];
+
+		os << L" |" << std::endl;
+	}
+
+	return os;
+}

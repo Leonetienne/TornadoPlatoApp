@@ -1,6 +1,7 @@
 #pragma once
 #include <cstring>
 #include <array>
+#include <ostream>
 
 /*
 * myMatrix[y][x] = 3
@@ -73,6 +74,9 @@ public:
 
 	// Will check if the entire matrix is inversible
 	bool IsInversible4x4() const;
+
+	friend std::ostream& operator<<(std::ostream& os, const Matrix4x4& m);
+	friend std::wostream& operator<<(std::wostream& os, const Matrix4x4& m);
 
 	// Shorthands
 	double& a = v[0][0];
