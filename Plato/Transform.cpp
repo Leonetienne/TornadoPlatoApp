@@ -152,16 +152,6 @@ Matrix4x4 InverseMatrix(Matrix4x4 o)
 
 Transform::Transform()
 {
-	scaleMatrix.a = 1;
-	scaleMatrix.f = 1;
-	scaleMatrix.k = 1;
-	scaleMatrix.p = 1;
-
-	translationMatrix.a = 1;
-	translationMatrix.f = 1;
-	translationMatrix.k = 1;
-	translationMatrix.p = 1;
-
 	parent = nullptr;
 	worldObject = nullptr; // Will get set immediately after instantiation by the WorldObjectManager
 
@@ -308,13 +298,6 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	Matrix4x4 pNewParentGlobalTransform;
 	if (parent != nullptr)
 		pNewParentGlobalTransform = parent->GetGlobalTransformationMatrix();
-	else
-	{
-		pNewParentGlobalTransform.a = 1;
-		pNewParentGlobalTransform.f = 1;
-		pNewParentGlobalTransform.k = 1;
-		pNewParentGlobalTransform.p = 1;
-	}
 
 	// Move our object to local space of the new parent
 	const Matrix4x4 inv_pNewParentGlobalTransform = InverseMatrix(pNewParentGlobalTransform);

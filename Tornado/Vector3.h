@@ -19,7 +19,11 @@ public:
 	Vector3<double> CrossProduct(const Vector3<T>& other) const;
 	double SqrMagnitude() const;
 	double Magnitude() const;
-	void Normalize();
+	[[nodiscard]] Vector3<double> Normalize() const;
+	void NormalizeSelf();
+
+	// Will scale self.n by scalar.n
+	Vector3<T> VectorScale(const Vector3<T>& scalar) const;
 
 	// Will lerp itself towards other by t
 	void LerpSelf(const Vector3<T>& other, double t);

@@ -34,9 +34,31 @@ double Vector4<T>::Magnitude() const
 }
 
 
+template<typename T>
+Vector4<T> Vector4<T>::VectorScale(const Vector4<T>& scalar) const
+{
+	return Vector4<T>
+		(
+			x * scalar.x,
+			y * scalar.y,
+			z * scalar.z,
+			w * scalar.w
+		);
+}
+
+
+
+template<typename T>
+Vector4<double> Vector4<T>::Normalize() const
+{
+	Vector4<double> norm(x, y, z, w);
+	norm.NormalizeSelf();
+
+	return norm;
+}
 
 // Method to normalize a Vector43d
-void Vector4<double>::Normalize()
+void Vector4<double>::NormalizeSelf()
 {
 	double length = Magnitude();
 
@@ -61,7 +83,7 @@ void Vector4<double>::Normalize()
 
 // You can't normalize an int vector, ffs!
 // But we need an implementation for T=int
-void Vector4<int>::Normalize()
+void Vector4<int>::NormalizeSelf()
 {
 	std::cerr << "Stop normalizing int-vectors!!" << std::endl;
 	x = 0;

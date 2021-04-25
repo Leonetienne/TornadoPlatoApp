@@ -379,11 +379,9 @@ namespace Vectors
 				if (vec.SqrMagnitude() == 0)
 					vec.x++;
 
-				vec.Normalize();
-
 				std::wstringstream wss;
 				wss << vec;
-				Assert::IsTrue(Similar(vec.Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
+				Assert::IsTrue(Similar(vec.Normalize().Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
 			}
 
 			return;
@@ -403,12 +401,60 @@ namespace Vectors
 
 				Vector4i vec(x, y, z, w);
 
-				vec.Normalize();
+				vec.NormalizeSelf();
 
 				std::wstringstream wss;
 				wss << vec;
 				Assert::AreEqual(0.0, vec.Magnitude(), wss.str().c_str());
 			}
+		}
+
+		// Tests that NormalizeSelf() results in the same as Normalize()
+		TEST_METHOD(NormalizeSelf_IsSameAs_Normalize)
+		{
+			// Run test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				Vector4d vec(LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE);
+
+				Vector4d nVec = vec.Normalize();
+				vec.NormalizeSelf();
+
+				Assert::IsTrue(nVec == vec);
+			}
+
+			return;
+		}
+
+		// Tests for the VectorScale() method to work
+		TEST_METHOD(VectorScale)
+		{
+			// Run test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				const double ax = LARGE_RAND_DOUBLE;
+				const double ay = LARGE_RAND_DOUBLE;
+				const double az = LARGE_RAND_DOUBLE;
+				const double aw = LARGE_RAND_DOUBLE;
+				const double bx = LARGE_RAND_DOUBLE;
+				const double by = LARGE_RAND_DOUBLE;
+				const double bz = LARGE_RAND_DOUBLE;
+				const double bw = LARGE_RAND_DOUBLE;
+
+				Vector4d a(ax, ay, az, aw);
+				Vector4d b(bx, by, bz, bw);
+
+				Vector4d target(
+					ax * bx,
+					ay * by,
+					az * bz,
+					aw * bw
+				);
+
+				Assert::IsTrue(a.VectorScale(b) == target);
+			}
+
+			return;
 		}
 
 		// Tests for operator+ to work as expected

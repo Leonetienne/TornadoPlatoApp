@@ -70,8 +70,28 @@ double Vector2<T>::Magnitude() const
 
 
 
+template<typename T>
+Vector2<T> Vector2<T>::VectorScale(const Vector2<T>& scalar) const
+{
+	return Vector2<T>
+		(
+			x * scalar.x,
+			y * scalar.y
+		);
+}
+
+
+template<typename T>
+Vector2<double> Vector2<T>::Normalize() const
+{
+	Vector2<double> norm(x, y);
+	norm.NormalizeSelf();
+
+	return norm;
+}
+
 // Method to normalize a Vector2d
-void Vector2<double>::Normalize()
+void Vector2<double>::NormalizeSelf()
 {
 	double length = Magnitude();
 
@@ -92,7 +112,7 @@ void Vector2<double>::Normalize()
 
 // You can't normalize an int vector, ffs!
 // But we need an implementation for T=int
-void Vector2<int>::Normalize()
+void Vector2<int>::NormalizeSelf()
 {
 	std::cerr << "Stop normalizing int-vectors!!" << std::endl;
 	x = 0;

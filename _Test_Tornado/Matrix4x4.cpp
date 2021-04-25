@@ -10,14 +10,17 @@ namespace Matrices
 	{
 	public:
 
-		// Tests if all values are 0 after initialization via default constructor
-		TEST_METHOD(New_Matrix_All_0)
+		// Tests that a freshly created matrix is an identity matrix
+		TEST_METHOD(New_Matrix_Is_Identity)
 		{
 			Matrix4x4 mat;
 
 			for (std::size_t i = 0; i < 4; i++)
 				for (std::size_t j = 0; j < 4; j++)
-					Assert::AreEqual(0.0, mat[i][j]);
+					if (i == j)
+						Assert::AreEqual(1.0, mat[i][j]);
+					else
+						Assert::AreEqual(0.0, mat[i][j]);
 
 			return;
 		}
@@ -237,14 +240,14 @@ namespace Matrices
 			mat1[0] = { 12, 33, 43, 34 };
 			mat1[1] = {  0,  4,  3, 11 };
 			mat1[2] = { 76,  5, 42,  4 };
-			mat1[3] = {  0,  0,  0,  0 };
+			mat1[3] = {  0,  0,  0,  1 };
 
 			// Populate 2
 			Matrix4x4 mat2;
 			mat2[0] = { 32, 11, 23,  6 };
 			mat2[1] = { 54, 23, 64,  9 };
 			mat2[2] = { 64, 43, 12, 16 };
-			mat2[3] = {  0,  0,  0,  0 };
+			mat2[3] = {  0,  0,  0,  1 };
 
 
 			// Multiply
@@ -255,7 +258,7 @@ namespace Matrices
 			expected[0] = { 4918.0, 2740.0, 2904.0, 40 };
 			expected[1] = {  408.0,  221.0,  292.0, 20 };
 			expected[2] = { 5390.0, 2757.0, 2572.0, 20 };
-			expected[3] = {      0,      0,      0,  0 };
+			expected[3] = {      0,      0,      0,  1 };
 
 			Assert::IsTrue(mat1.v == expected.v);
 			
@@ -270,14 +273,14 @@ namespace Matrices
 			mat1[0] = { 12, 33, 43, 34 };
 			mat1[1] = { 0,  4,  3, 11 };
 			mat1[2] = { 76,  5, 42,  4 };
-			mat1[3] = { 0,  0,  0,  0 };
+			mat1[3] = { 0,  0,  0,  1 };
 
 			// Populate 2
 			Matrix4x4 mat2;
 			mat2[0] = { 32, 11, 23,  6 };
 			mat2[1] = { 54, 23, 64,  9 };
 			mat2[2] = { 64, 43, 12, 16 };
-			mat2[3] = { 0,  0,  0,  0 };
+			mat2[3] = { 0,  0,  0,  1 };
 
 			// Multiply
 			Matrix4x4 mat3 = mat1 * mat2;
@@ -287,7 +290,7 @@ namespace Matrices
 			expected[0] = { 4918.0, 2740.0, 2904.0, 40 };
 			expected[1] = { 408.0,  221.0,  292.0, 20 };
 			expected[2] = { 5390.0, 2757.0, 2572.0, 20 };
-			expected[3] = { 0,      0,      0,  0 };
+			expected[3] = { 0,      0,      0,  1 };
 
 			Assert::IsTrue(mat3.v == expected.v);
 
