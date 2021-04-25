@@ -346,6 +346,17 @@ void Vector4<double>::operator*=(const Matrix4x4 mat)
 }
 
 template<typename T>
+Vector4<T> Vector4<T>::operator-() const
+{
+	return Vector4<T>(
+		-x,
+		-y,
+		-z,
+		-w
+	);
+}
+
+template<typename T>
 void Vector4<T>::operator=(const Vector4<T>& other)
 {
 	x = other.x;

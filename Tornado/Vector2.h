@@ -43,6 +43,7 @@ public:
 	void operator*=(const T scale);
 	Vector2<T> operator/(const T scale) const;
 	void operator/=(const T scale);
+	Vector2<T> operator-() const;
 
 	operator Vector3<T>() const;
 	operator Vector4<T>() const;

@@ -168,9 +168,7 @@ void Transform::SetPosition(const Vector3d& position)
 {
 	InvalidateLocalTransform();
 
-	translationMatrix.d = position.x;
-	translationMatrix.h = position.y;
-	translationMatrix.l = position.z;
+	translationMatrix.SetTranslationComponent(position);
 
 	return;
 }
@@ -227,11 +225,7 @@ void Transform::Rotate(const Quaternion& dRot)
 
 const Vector3d Transform::GetPosition() const
 {
-	return Vector3d(
-		translationMatrix.d,
-		translationMatrix.h,
-		translationMatrix.l
-	);
+	return translationMatrix.GetTranslationComponent();
 }
 
 const Vector3d Transform::GetScale() const
@@ -306,7 +300,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	inv_pNewParentGlobalTransform.l = -pNewParentGlobalTransform.l;
 	const Matrix4x4 localInNewParent = inv_pNewParentGlobalTransform * localInWorld;
 	
-	Vector3d nPos = Vector3d(localInNewParent.d, localInNewParent.h, localInNewParent.l);
+	Vector3d nPos = localInNewParent.GetTranslationComponent();
 	Quaternion nRot = oldRotation;
 
 	// Adjust for rotation
@@ -381,9 +375,9 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 	// Recalculate if cache is invalid
 	if (!cache__IsLocalTransformationMatrix_UpToDate)
 	{
-		cache__localTransformationMatrix = rotation.ToRotationMatrix();
+		cache__localTransformationMatrix = Matrix4x4();
+		cache__localTransformationMatrix *= rotation.ToRotationMatrix();
 		cache__localTransformationMatrix *= scaleMatrix;
-		cache__localTransformationMatrix.p = 1;
 		cache__localTransformationMatrix *= translationMatrix;
 
 		cache__IsLocalTransformationMatrix_UpToDate = true;
@@ -459,17 +453,11 @@ void Transform::RecalculateGlobalTransformCache() const
 	for (const Transform* tr = this->GetParent(); tr != nullptr; tr = tr->GetParent())
 	{
 		Vector3d newPos;
-		newPos = Vector3d(
-			cache__globalTransformationMatrix.d,
-			cache__globalTransformationMatrix.h,
-			cache__globalTransformationMatrix.l
-		);
+		newPos = cache__globalTransformationMatrix.GetTranslationComponent();
 
 		newPos *= tr->rotation.ToRotationMatrix();
 
-		cache__globalTransformationMatrix.d = newPos.x;
-		cache__globalTransformationMatrix.h = newPos.y;
-		cache__globalTransformationMatrix.l = newPos.z;
+		cache__globalTransformationMatrix.SetTranslationComponent(newPos);
 		cache__globalTransformationMatrix = tr->GetLocalTransformationMatrix() * cache__globalTransformationMatrix;
 	}
 
@@ -483,11 +471,7 @@ void Transform::RecalculateGlobalTransformCache() const
 	}
 
 	// Re-Calculate global position
-	cache__GlobalPosition = Vector3d(
-		cache__globalTransformationMatrix.d,
-		cache__globalTransformationMatrix.h,
-		cache__globalTransformationMatrix.l
-	);
+	cache__GlobalPosition = cache__globalTransformationMatrix.GetTranslationComponent();
 
 	// Validate cache
 	cache__IsGlobalTransformationUpToDate = true;
