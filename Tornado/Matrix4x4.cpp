@@ -252,7 +252,7 @@ Matrix4x4 Matrix4x4::Inverse4x4() const
 		for (std::size_t j = 0; j < 3; j++)
 			inv[i][j] = adj[i][j] / det;
 
-	return;
+	return inv;
 }
 
 bool Matrix4x4::IsInversible3x3() const
