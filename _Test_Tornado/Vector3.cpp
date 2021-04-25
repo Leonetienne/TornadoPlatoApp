@@ -749,6 +749,16 @@ namespace Vectors
 			return;
 		}
 
+		// Tests for operator- (unary) to work
+		TEST_METHOD(Operator_Unary_Negative)
+		{
+			Vector3d v(29, -5, 35);
+
+			Assert::IsTrue(Vector3d(-29, 5, -35) == -v);
+
+			return;
+		}
+
 		// Tests for operator+ to work as expected
 		TEST_METHOD(Operator_Add)
 		{

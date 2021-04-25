@@ -457,6 +457,16 @@ namespace Vectors
 			return;
 		}
 
+		// Tests for operator- (unary) to work
+		TEST_METHOD(Operator_Unary_Negative)
+		{
+			Vector4d v(29, -5, 35, -69);
+
+			Assert::IsTrue(Vector4d(-29, 5, -35, 69) == -v);
+
+			return;
+		}
+
 		// Tests for operator+ to work as expected
 		TEST_METHOD(Operator_Add)
 		{
