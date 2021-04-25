@@ -187,7 +187,8 @@ Matrix4x4 Matrix4x4::GetCofactors(std::size_t p, std::size_t q, std::size_t n) c
 }
 
 /*
-* https://www.studypug.com/algebra-help/2-x-2-invertible-matrix#:~:text=An%20invertible%20matrix%20is%20a,the%20matrix%20is%20not%200.
+* BEGIN_REF
+* https://www.geeksforgeeks.org/adjoint-inverse-matrix/
 */
 double Matrix4x4::Determinant(std::size_t n) const
 {
@@ -271,6 +272,10 @@ Matrix4x4 Matrix4x4::Inverse4x4() const
 
 	return inv;
 }
+
+/*
+* END REF
+*/
 
 bool Matrix4x4::IsInversible3x3() const
 {
