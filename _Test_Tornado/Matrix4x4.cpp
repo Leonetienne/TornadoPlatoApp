@@ -1,6 +1,8 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Matrix4x4.h"
 #include "../Tornado/Vector3.h"
+#include "../_TestingUtilities/HandyMacros.h"
+#include <random>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -8,7 +10,15 @@ namespace Matrices
 {
 	TEST_CLASS(_Matrix4x4)
 	{
+	private:
+		std::mt19937 rng;
 	public:
+		// Constructor
+		_Matrix4x4()
+		{
+			rng = std::mt19937((std::random_device())());
+			return;
+		}
 
 		// Tests that a freshly created matrix is an identity matrix
 		TEST_METHOD(New_Matrix_Is_Identity)
@@ -333,6 +343,242 @@ namespace Matrices
 			Assert::AreEqual(16.0, mat.l);
 
 			return;
+		}
+
+		// Tests that transpose3x3 works
+		TEST_METHOD(Transpose3x3)
+		{
+			Matrix4x4 m;
+			m[0] = { 0, 0, 0, 0 };
+			m[1] = { 3, 0, 4, 0 };
+			m[2] = { 0, 0, 2, 5 };
+			m[3] = { 9, 0, 6, 0 };
+
+			Matrix4x4 target;
+			target[0] = { 0, 3, 0, 0 };
+			target[1] = { 0, 0, 0, 0 };
+			target[2] = { 0, 4, 2, 5 };
+			target[3] = { 9, 0, 6, 0 };
+
+			// Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Actual: " << m.Transpose3x3() << std::endl
+				<< "Target: " << target << std::endl;
+
+			Assert::IsTrue(target == m.Transpose3x3(), wss.str().c_str());
+
+			return;
+		}
+
+		// Tests that transpose4x4 works
+		TEST_METHOD(Transpose4x4)
+		{
+			Matrix4x4 m;
+			m[0] = { 0, 0, 0, 0 };
+			m[1] = { 3, 0, 4, 0 };
+			m[2] = { 0, 0, 2, 5 };
+			m[3] = { 9, 0, 6, 0 };
+
+			Matrix4x4 target;
+			target[0] = { 0, 3, 0, 9 };
+			target[1] = { 0, 0, 0, 0 };
+			target[2] = { 0, 4, 2, 6 };
+			target[3] = { 0, 0, 5, 0 };
+
+			// Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Actual: " << m.Transpose4x4() << std::endl
+				<< "Target: " << target << std::endl;
+
+			Assert::IsTrue(target == m.Transpose4x4(), wss.str().c_str());
+
+			return;
+		}
+
+		// Tests that IsInvertible3x3 works -> true
+		TEST_METHOD(Is_Invertible_3x3_True)
+		{
+			Matrix4x4 m;
+			m[0] = { 0.56601, -0.87207, 0.52783, 488.00000 };
+			m[1] = { -0.55281, 0.41590, 0.85470, 500.00000 };
+			m[2] = { -1.09497, -0.66076, -0.15866, -155.09390 };
+			m[3] = { 0.00000, 0.00000, 0.00000, 0.00000 };
+
+			Assert::IsTrue(m.IsInversible3x3());
+
+			return;
+		}
+
+		// Tests that IsInvertible3x3 works -> false
+		TEST_METHOD(Is_Invertible_3x3_False)
+		{
+			Matrix4x4 m;
+			m[0] = { 0, 0, 1, 0 };
+			m[1] = { 0, 0, 0, 0 };
+			m[2] = { 0, 0, 0, 0 };
+			m[3] = { 0, 0, 0, 0 };
+
+			Assert::IsFalse(m.IsInversible3x3());
+
+			return;
+		}
+
+		// Tests that IsInvertible4x4 works -> true
+		TEST_METHOD(Is_Invertible_4x4_True)
+		{
+			Matrix4x4 m;
+			m[0] = { 0.56601, -0.87207, 0.52783, 488.00000 };
+			m[1] = { -0.55281, 0.41590, 0.85470, 500.00000 };
+			m[2] = { -1.09497, -0.66076, -0.15866, -155.09390 };
+			m[3] = { 0.00000, 0.00000, 0.00000, 1.00000 };
+
+			Assert::IsTrue(m.IsInversible4x4());
+
+			return;
+		}
+
+		// Tests that IsInvertible4x4 works -> false
+		TEST_METHOD(Is_Invertible_4x4_False)
+		{
+			Matrix4x4 m;
+			m[0] = { 0.56601, -0.87207, 0.52783, 488.00000 };
+			m[1] = { -0.55281, 0.41590, 0.85470, 500.00000 };
+			m[2] = { -1.09497, -0.66076, -0.15866, -155.09390 };
+			m[3] = { 0.00000, 0.00000, 0.00000, 0.00000 };
+
+			Assert::IsFalse(m.IsInversible4x4());
+
+			return;
+		}
+
+		// Tests that inverting a 3x3 matrix (scale, rotation, translation) works
+		TEST_METHOD(Inverse3x3)
+		{
+			// Invert 50 randomly generated matrices
+			for (std::size_t i = 0; i < 50;)
+			{
+				Matrix4x4 m;
+				m[0] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+				m[1] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+				m[2] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+				m[3] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+
+				if (m.IsInversible3x3())
+				{
+					Matrix4x4 inv_m = m.Inverse3x3();
+
+					// Create debug output
+					std::wstringstream wss;
+					wss << std::endl
+						<< "i: " << i << std::endl
+						<< "Actual: " << m * inv_m << std::endl
+						<< "Target: " << Matrix4x4() << std::endl;
+
+					Assert::IsTrue((m * inv_m).Similar(Matrix4x4()), wss.str().c_str()); // Default constructor is identity matrix
+					i++;
+				}
+			}
+
+			return;
+		}
+
+		// Tests that inverting a 4x4 matrix works
+		TEST_METHOD(Inverse4x4)
+		{
+			// Invert 50 randomly generated matrices
+			for (std::size_t i = 0; i < 50;)
+			{
+				Matrix4x4 m;
+				m[0] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+				m[1] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+				m[2] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+				m[3] = { LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE };
+
+				if (m.IsInversible4x4())
+				{
+					Matrix4x4 inv_m = m.Inverse4x4();
+
+					// Create debug output
+					std::wstringstream wss;
+					wss << std::endl
+						<< "i: " << i << std::endl
+						<< "Actual: " << m.Multiply4x4(inv_m) << std::endl
+						<< "Target: " << Matrix4x4() << std::endl;
+
+					Assert::IsTrue((m.Multiply4x4(inv_m)).Similar(Matrix4x4(), 0.0001), wss.str().c_str()); // Default constructor is identity matrix
+					i++;
+				}
+			}
+
+			return;
+		}
+
+		// Tests the Multiply4x4 method, which does an actual 4x4 multiplication
+		TEST_METHOD(Multiply4x4)
+		{
+			Matrix4x4 a;
+			a[0] = { 0, 1, 2, 3 };
+			a[1] = { 4, 5, 6, 7 };
+			a[2] = { 8, 9, 0, 1 };
+			a[3] = { 2, 3, 4, 5 };
+
+			Matrix4x4 b;
+			b[0] = { 9, 8, 7, 6 };
+			b[1] = { 5, 4, 3, 2 };
+			b[2] = { 1, 0, 9, 8 };
+			b[3] = { 7, 6, 5, 4 };
+
+			Matrix4x4 e; // Expected
+			e[0] = {  28,  22,  36, 30 };
+			e[1] = { 116,  94, 132, 110 };
+			e[2] = { 124, 106,  88, 70 };
+			e[3] = {  72,  58,  84, 70 };
+
+			// Create debug output
+			std::wstringstream wss;
+			wss << std::endl
+				<< "Actual: " << a.Multiply4x4(b) << std::endl
+				<< "Target: " << e << std::endl;
+			
+			Assert::IsTrue(a.Multiply4x4(b).Similar(e), wss.str().c_str());
+		}
+
+		// Tests that Similar() works -> true
+		TEST_METHOD(Similar_True)
+		{
+			Matrix4x4 a;
+			a[0] = { 1, 0, 0, 0 };
+			a[1] = { 0, 1, 0, 0 };
+			a[2] = { 0, 0, 1, 0 };
+			a[3] = { 0, 0, 0, 1 };
+
+			Matrix4x4 b;
+			b[0] = { 1, -9e-20, 2e-8, 9e-19 };
+			b[1] = { 12e-19, 1, -20e-15, -6.9e-29 };
+			b[2] = { -69e-25, 13e-23, 1, 4.301e-15 };
+			b[3] = { -23e-19, 23e-19, 25e-7, 1 };
+
+			Assert::IsTrue(a.Similar(b));
+		}
+
+		// Tests that Similar() works -> false
+		TEST_METHOD(Similar_False)
+		{
+			Matrix4x4 a;
+			a[0] = { 1, 0, 0, 0 };
+			a[1] = { 0, 1, 0, 0 };
+			a[2] = { 0, 0, 1, 0 };
+			a[3] = { 0, 0, 0, 1 };
+
+			Matrix4x4 b;
+			b[0] = { 1, -9e-20, 2e-8, 9e-19 };
+			b[1] = { 12e-19, 1, -20e-15, 0.05 }; // <--
+			b[2] = { -69e-25, 13e-23, 1, 4.301e-15 };
+			b[3] = { -23e-19, 23e-19, 25e-7, 1 };
+
+			Assert::IsFalse(a.Similar(b));
 		}
 
 		// Tests if the equal operator (==) and not-equals operator (!=) work (equal: false)

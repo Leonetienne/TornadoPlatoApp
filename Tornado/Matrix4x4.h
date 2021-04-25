@@ -50,6 +50,9 @@ public:
 	// Will return the 3x3 transpose of this matrix
 	Matrix4x4 Transpose3x3() const;
 
+	// Will return the 4x4 transpose of this matrix
+	Matrix4x4 Transpose4x4() const;
+
 	// Will return the Matrix4x4 of an actual 4x4 multiplication. operator* only does a 3x3
 	Matrix4x4 Multiply4x4(const Matrix4x4& o) const;
 
@@ -74,6 +77,9 @@ public:
 
 	// Will check if the entire matrix is inversible
 	bool IsInversible4x4() const;
+
+	// Will compare if two matrices are similar to a certain epsilon value
+	bool Similar(const Matrix4x4& other, double epsilon = 0.00001) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Matrix4x4& m);
 	friend std::wostream& operator<<(std::wostream& os, const Matrix4x4& m);

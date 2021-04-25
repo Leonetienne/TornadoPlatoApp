@@ -1,5 +1,6 @@
 #include "Matrix4x4.h"
 #include "Vector3.h"
+#include "Similar.h"
 
 Matrix4x4::Matrix4x4()
 {
@@ -111,21 +112,24 @@ void Matrix4x4::SetTranslationComponent(const Vector3d& trans)
 
 Matrix4x4 Matrix4x4::Transpose3x3() const
 {
-	Matrix4x4 m;
+	Matrix4x4 trans(*this); // Keep other cells
 
-	m[1][1] = v[1][1];
-	m[1][2] = v[2][1];
-	m[1][3] = v[3][1];
+	for (std::size_t i = 0; i < 3; i++)
+		for (std::size_t j = 0; j < 3; j++)
+			trans[j][i] = v[i][j];
 
-	m[2][1] = v[1][2];
-	m[2][2] = v[2][2];
-	m[0][3] = v[3][2];
+	return trans;
+}
 
-	m[3][1] = v[1][3];
-	m[3][2] = v[2][3];
-	m[3][3] = v[3][3];
+Matrix4x4 Matrix4x4::Transpose4x4() const
+{
+	Matrix4x4 trans;
 
-	return m;
+	for (std::size_t i = 0; i < 4; i++)
+		for (std::size_t j = 0; j < 4; j++)
+			trans[j][i] = v[i][j];
+
+	return trans;
 }
 
 Matrix4x4 Matrix4x4::Multiply4x4(const Matrix4x4& o) const
@@ -142,15 +146,15 @@ Matrix4x4 Matrix4x4::Multiply4x4(const Matrix4x4& o) const
 	m[1][2] = (v[1][0]*o[0][2]) + (v[1][1]*o[1][2]) + (v[1][2]*o[2][2]) + (v[1][3]*o[3][2]);
 	m[1][3] = (v[1][0]*o[0][3]) + (v[1][1]*o[1][3]) + (v[1][2]*o[2][3]) + (v[1][3]*o[3][3]);
 
-	m[2][0] = (v[2][0]*o[0][0]) + (v[2][1]*o[1][0]) + (v[2][2]*o[2][0]) + (v[2][3]*o[2][0]);
-	m[2][1] = (v[2][0]*o[0][1]) + (v[2][1]*o[1][1]) + (v[2][2]*o[2][1]) + (v[2][3]*o[2][1]);
-	m[2][2] = (v[2][0]*o[0][2]) + (v[2][1]*o[1][2]) + (v[2][2]*o[2][2]) + (v[2][3]*o[2][2]);
-	m[2][3] = (v[2][0]*o[0][3]) + (v[2][1]*o[1][3]) + (v[2][2]*o[2][3]) + (v[2][3]*o[2][3]);
+	m[2][0] = (v[2][0]*o[0][0]) + (v[2][1]*o[1][0]) + (v[2][2]*o[2][0]) + (v[2][3]*o[3][0]);
+	m[2][1] = (v[2][0]*o[0][1]) + (v[2][1]*o[1][1]) + (v[2][2]*o[2][1]) + (v[2][3]*o[3][1]);
+	m[2][2] = (v[2][0]*o[0][2]) + (v[2][1]*o[1][2]) + (v[2][2]*o[2][2]) + (v[2][3]*o[3][2]);
+	m[2][3] = (v[2][0]*o[0][3]) + (v[2][1]*o[1][3]) + (v[2][2]*o[2][3]) + (v[2][3]*o[3][3]);
 
-	m[3][0] = (v[3][0]*o[0][0]) + (v[3][1]*o[1][0]) + (v[3][2]*o[2][0]) + (v[3][3]*o[2][0]);
-	m[3][1] = (v[3][0]*o[0][1]) + (v[3][1]*o[1][1]) + (v[3][2]*o[2][1]) + (v[3][3]*o[2][1]);
-	m[3][2] = (v[3][0]*o[0][2]) + (v[3][1]*o[1][2]) + (v[3][2]*o[2][2]) + (v[3][3]*o[2][2]);
-	m[3][3] = (v[3][0]*o[0][3]) + (v[3][1]*o[1][3]) + (v[3][2]*o[2][3]) + (v[3][3]*o[2][3]);
+	m[3][0] = (v[3][0]*o[0][0]) + (v[3][1]*o[1][0]) + (v[3][2]*o[2][0]) + (v[3][3]*o[3][0]);
+	m[3][1] = (v[3][0]*o[0][1]) + (v[3][1]*o[1][1]) + (v[3][2]*o[2][1]) + (v[3][3]*o[3][1]);
+	m[3][2] = (v[3][0]*o[0][2]) + (v[3][1]*o[1][2]) + (v[3][2]*o[2][2]) + (v[3][3]*o[3][2]);
+	m[3][3] = (v[3][0]*o[0][3]) + (v[3][1]*o[1][3]) + (v[3][2]*o[2][3]) + (v[3][3]*o[3][3]);
 
 	return m;
 }
@@ -178,6 +182,9 @@ Matrix4x4 Matrix4x4::GetCofactors(int p, int q, int n) const
 	return cofs;
 }
 
+/*
+* https://www.studypug.com/algebra-help/2-x-2-invertible-matrix#:~:text=An%20invertible%20matrix%20is%20a,the%20matrix%20is%20not%200.
+*/
 double Matrix4x4::Determinant(int n) const
 {
 	double d = 0;
@@ -233,7 +240,7 @@ Matrix4x4 Matrix4x4::Inverse3x3() const
 		for (std::size_t j = 0; j < 3; j++)
 			inv[i][j] = adj[i][j] / det;
 
-	inv.SetTranslationComponent(-inv.GetTranslationComponent());
+	inv.SetTranslationComponent(-GetTranslationComponent());
 
 	return inv;
 }
@@ -248,8 +255,8 @@ Matrix4x4 Matrix4x4::Inverse4x4() const
 
 	Matrix4x4 adj = Adjoint(4);
 
-	for (std::size_t i = 0; i < 3; i++)
-		for (std::size_t j = 0; j < 3; j++)
+	for (std::size_t i = 0; i < 4; i++)
+		for (std::size_t j = 0; j < 4; j++)
 			inv[i][j] = adj[i][j] / det;
 
 	return inv;
@@ -265,8 +272,20 @@ bool Matrix4x4::IsInversible4x4() const
 	return (Determinant(4) != 0);
 }
 
+bool Matrix4x4::Similar(const Matrix4x4& other, double epsilon) const
+{
+	for (std::size_t i = 0; i < 4; i++)
+		for (std::size_t j = 0; j < 4; j++)
+			if (!::Similar(v[i][j], other[i][j], epsilon))
+				return false;
+
+	return true;
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix4x4& m)
 {
+	os << std::endl;
+
 	for (std::size_t y = 0; y < 4; y++)
 	{
 		for (std::size_t x = 0; x < 4; x++)
@@ -279,6 +298,8 @@ std::ostream& operator<<(std::ostream& os, const Matrix4x4& m)
 }
 std::wostream& operator<<(std::wostream& os, const Matrix4x4& m)
 {
+	os << std::endl;
+
 	for (std::size_t y = 0; y < 4; y++)
 	{
 		for (std::size_t x = 0; x < 4; x++)
