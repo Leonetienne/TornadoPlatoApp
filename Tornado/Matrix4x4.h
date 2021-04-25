@@ -57,13 +57,13 @@ public:
 	Matrix4x4 Multiply4x4(const Matrix4x4& o) const;
 
 	// Will return the cofactors of this matrix, by dimension n
-	Matrix4x4 GetCofactors(int p, int q, int n) const;
+	Matrix4x4 GetCofactors(std::size_t p, std::size_t q, std::size_t n) const;
 
 	// Will return the determinant, by dimension n
-	double Determinant(int n) const;
+	double Determinant(std::size_t n) const;
 
 	// Will return the adjoint of this matrix, by dimension n
-	Matrix4x4 Adjoint(int n) const;
+	Matrix4x4 Adjoint(std::size_t n) const;
 
 	// Will return the 3x3-inverse of this matrix.
 	// Meaning, the 3x3 component will be inverted, and the translation component will be negated

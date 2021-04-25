@@ -9,8 +9,6 @@ Matrix4x4::Matrix4x4()
 		for (std::size_t j = 0; j < 4; j++)
 			v[i][j] = double(i == j);
 
-
-
 	return;
 }
 
@@ -159,8 +157,11 @@ Matrix4x4 Matrix4x4::Multiply4x4(const Matrix4x4& o) const
 	return m;
 }
 
-Matrix4x4 Matrix4x4::GetCofactors(int p, int q, int n) const
+Matrix4x4 Matrix4x4::GetCofactors(std::size_t p, std::size_t q, std::size_t n) const
 {
+	if (n > 4)
+		throw std::exception("Dimension out of range! 0 <= n <= 4");
+
 	Matrix4x4 cofs;
 
 	std::size_t i = 0;
@@ -170,7 +171,10 @@ Matrix4x4 Matrix4x4::GetCofactors(int p, int q, int n) const
 		for (std::size_t x = 0; x < n; x++)
 		{
 			if ((y != p) && (x != q))
-				cofs[i][j++] = v[y][x];
+			{
+				cofs[i][j] = v[y][x];
+				j++;
+			}
 
 			if (j == n - 1)
 			{
@@ -185,8 +189,11 @@ Matrix4x4 Matrix4x4::GetCofactors(int p, int q, int n) const
 /*
 * https://www.studypug.com/algebra-help/2-x-2-invertible-matrix#:~:text=An%20invertible%20matrix%20is%20a,the%20matrix%20is%20not%200.
 */
-double Matrix4x4::Determinant(int n) const
+double Matrix4x4::Determinant(std::size_t n) const
 {
+	if (n > 4)
+		throw std::exception("Dimension out of range! 0 <= n <= 4");
+
 	double d = 0;
 	double sign = 1;
 
@@ -204,8 +211,11 @@ double Matrix4x4::Determinant(int n) const
 	return d;
 }
 
-Matrix4x4 Matrix4x4::Adjoint(int n) const
+Matrix4x4 Matrix4x4::Adjoint(std::size_t n) const
 {
+	if (n > 4)
+		throw std::exception("Dimension out of range! 0 <= n <= 4");
+
 	Matrix4x4 adj;
 	double sign = 1;
 
