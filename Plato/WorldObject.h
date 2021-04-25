@@ -9,6 +9,9 @@ class Transform;
 class WorldObject final
 {
 public:
+	// Public handle for this WorldObjects Transform
+	Transform* const& transform;
+
 	~WorldObject();
 
 	Transform* GetTransform();
@@ -72,8 +75,8 @@ private:
 	// Registered components
 	std::set<Component*> components;
 	
-	// The associated 3d transform
-	Transform* transform;
+	// Private handle for this WorldObjects Transform
+	Transform* privateHandle__Transform;
 
 	// If true, the WorldObjectManager will delete this object at the beginning of the next frame.
 	// This way, deleting this object will not screw over scripts mid - frame

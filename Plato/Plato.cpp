@@ -175,7 +175,7 @@ Plato::Plato()
 	dummyMat.texture = tx_coob;
 
 	camera_yPivot = WorldObjectManager::NewWorldObject()->GetTransform();
-	camera_yPivot->GetWorldObject()->SetId("cam_y_pivot");
+	camera_yPivot->worldObject->SetId("cam_y_pivot");
 	camera = WorldObjectManager::NewWorldObject("main_camera", camera_yPivot)->AddComponent<Camera>(Vector2i(800*2, 600*2), 90, 0.0001, 10000);
 	renderer->SetMainCamera(camera);
 	

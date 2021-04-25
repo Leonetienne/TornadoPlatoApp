@@ -43,8 +43,8 @@ namespace TransformRelated
 
 			WorldObject* wo = WorldObjectManager::NewWorldObject();
 
-			Assert::IsTrue(wo == wo->GetTransform()->GetWorldObject());
-			Assert::IsTrue(wo->GetTransform() == wo->GetTransform()->GetWorldObject()->GetTransform());
+			Assert::IsTrue(wo == wo->GetTransform()->worldObject);
+			Assert::IsTrue(wo->GetTransform() == wo->GetTransform()->worldObject->GetTransform());
 			
 			WorldObjectManager::Free();
 

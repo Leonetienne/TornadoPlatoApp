@@ -32,7 +32,7 @@ int main()
 	RenderWindow window(resolution, "Plato Static Test Fixture");
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->GetTransform(); // Necessary for camera rotation
 	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 10000);
-	cameraYPivot->GetWorldObject()->SetId("main_camera_ypiv");
+	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->worldObject->SetId("main_camera");
 	Renderer renderer(resolution);
 	renderer.SetMainCamera(camera);
