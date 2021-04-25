@@ -130,7 +130,7 @@ namespace Rendering
 			comparison[0] = { 0.5625, 0,            0,            0 };
 			comparison[1] = {      0, 1,            0,            0 };
 			comparison[2] = {      0, 0, -1.040816327, -4.081632653 };
-			comparison[3] = {      0, 0,           -1,            0 };
+			comparison[3] = {      0, 0,           -1,            1 };
 
 			for (std::size_t y = 0; y < 4; y++)
 				for (std::size_t x = 0; x < 4; x++)
