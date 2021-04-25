@@ -75,18 +75,6 @@ public:
 	// Will return this transforms rotation relative to the world origin
 	Quaternion GetGlobalRotation() const;
 
-	// Will return this transforms scale relative to the world origin
-	Vector3d GetLossyScale() const;
-
-	// Will set the global position
-	void SetGlobalPosition(const Vector3d& pos);
-
-	// Will set the global scale
-	void SetGlobalScale(const Vector3d& scale);
-
-	// Will set the global rotation
-	void SetGlobalRotation(const Quaternion& rot);
-
 	// Will reset this transforms local values
 	void Reset();
 

@@ -23,7 +23,7 @@ Transform* Test__TransformHierarchy__ChangeParent::CreateLink(Transform* parent)
 	wo->AddTag("joint");
 	wo->GetTransform()->Move(Vector3d::up * 3);
 	wo->GetTransform()->Rotate(Vector3d::right * 20);
-	wo->GetTransform()->SetScale(Vector3d(1.5, 1, 1));
+	wo->GetTransform()->SetScale(Vector3d(1, 1, 1));
 
 	return wo->GetTransform();
 }
@@ -58,7 +58,7 @@ Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent()
 
 	// Create fifteen joints
 	Transform* lastParent = jointRoot;
-	for (std::size_t i = 0; i < 3; i++)
+	for (std::size_t i = 0; i < 15; i++)
 		lastParent = CreateLink(lastParent);
 	
 	system("cls");

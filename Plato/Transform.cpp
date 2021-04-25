@@ -276,23 +276,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 		if (it == this)
 			return; // Abort
 
-	// Save global transform
-	//const Vector3d globalPosition = GetGlobalPosition();
-	//const Vector3d globalScale = GetLossyScale();
-	//const Quaternion globalRotation = GetGlobalRotation();
-
-	//Matrix4x4 pOldParentGlobalTransform;
-	//if (parent != nullptr)
-	//	pOldParentGlobalTransform = parent->GetGlobalTransformationMatrix();
-	//else
-	//{
-	//	pOldParentGlobalTransform.a = 1;
-	//	pOldParentGlobalTransform.f = 1;
-	//	pOldParentGlobalTransform.k = 1;
-	//	pOldParentGlobalTransform.p = 1;
-	//}
-	//const Matrix4x4 localTransform = GetLocalTransformationMatrix();
-
+	// Gather global transformation data
 	const Matrix4x4 localInWorld = GetGlobalTransformationMatrix();
 	const Quaternion oldRotation = GetGlobalRotation();
 
@@ -308,6 +292,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	// Invalidate caches
 	InvalidateLocalTransform();
 
+	// Gather global transformation matrix of new parent
 	Matrix4x4 pNewParentGlobalTransform;
 	if (parent != nullptr)
 		pNewParentGlobalTransform = parent->GetGlobalTransformationMatrix();
@@ -319,6 +304,7 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 		pNewParentGlobalTransform.p = 1;
 	}
 
+	// Move our object to local space of the new parent
 	const Matrix4x4 inv_pNewParentGlobalTransform = InverseMatrix(pNewParentGlobalTransform);
 	inv_pNewParentGlobalTransform.d = -pNewParentGlobalTransform.d;
 	inv_pNewParentGlobalTransform.h = -pNewParentGlobalTransform.h;
@@ -328,34 +314,26 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	Vector3d nPos = Vector3d(localInNewParent.d, localInNewParent.h, localInNewParent.l);
 	Quaternion nRot = oldRotation;
 
+	// Adjust for rotation
 	if (parent != nullptr)
 	{
 		nPos = parent->GetGlobalRotation().Inverse() * nPos;
-
 		nRot = oldRotation * parent->GetGlobalRotation().Inverse();
 	}
 
+	// Set position and rotation
 	SetPosition(nPos);
 	SetRotation(nRot);
 
+	// Approximate scale. This might cause shearing
+	// Mathematically impossible to solve without shearing
 	Quaternion r = oldRotation;
 	if (parent != nullptr)
 		r = oldRotation * parent->GetRotation().Inverse();
 
-	Matrix4x4 toWorld = localInNewParent;
-	//if (parent != nullptr)
-	//	toWorld = parent->GetGlobalTransformationMatrix() * localInNewParent;
-
-	Matrix4x4 m = InverseMatrix(r.ToRotationMatrix()) * (toWorld);
+	Matrix4x4 m = InverseMatrix(r.ToRotationMatrix()) * localInNewParent;
 	Vector3d nScl = Vector3d(m.a, m.f, m.k);
 	SetScale(nScl);
-	std::cout << nScl << std::endl;
-
-	//SetGlobalRotation(globalRotation);
-	//SetGlobalScale(globalScale);
-	//SetGlobalPosition(globalPosition);
-
-
 
 	return;
 }
@@ -409,8 +387,8 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 	if (!cache__IsLocalTransformationMatrix_UpToDate)
 	{
 		cache__localTransformationMatrix = rotation.ToRotationMatrix();
-		cache__localTransformationMatrix.p = 1;
 		cache__localTransformationMatrix *= scaleMatrix;
+		cache__localTransformationMatrix.p = 1;
 		cache__localTransformationMatrix *= translationMatrix;
 
 		cache__IsLocalTransformationMatrix_UpToDate = true;
@@ -446,61 +424,6 @@ Quaternion Transform::GetGlobalRotation() const
 	return cache__GlobalRotation;
 }
 
-Vector3d Transform::GetLossyScale() const
-{
-	// Recalculate if cache is invalid
-	if(!cache__IsGlobalTransformationUpToDate)
-		RecalculateGlobalTransformCache();
-
-	return cache__LossyScale;
-}
-
-void Transform::SetGlobalPosition(const Vector3d& pos)
-{
-	const Vector3d pGlobalPosition   = (parent != nullptr) ? parent->GetGlobalPosition() : Vector3d::zero;
-	const Vector3d pGlobalScale		 = (parent != nullptr) ? parent->GetLossyScale() : Vector3d::one;
-	const Quaternion pGlobalRotation = (parent != nullptr) ? parent->GetGlobalRotation() : Quaternion();
-
-	// Init
-	SetPosition(pos - pGlobalPosition);
-
-	// Scale
-	Matrix4x4 invscale_p;
-	invscale_p.a = 1.0 / pGlobalScale.x;
-	invscale_p.f = 1.0 / pGlobalScale.y;
-	invscale_p.k = 1.0 / pGlobalScale.z;
-	SetPosition(GetPosition() * invscale_p);
-
-	// Rotate
-	SetPosition(GetPosition() * pGlobalRotation.ToRotationMatrix());
-
-	return;
-}
-
-void Transform::SetGlobalScale(const Vector3d& scale)
-{
-	// parent global scale
-	const Vector3d pLossyScale = (parent != nullptr) ? GetLossyScale() : Vector3d::one;
-
-	SetScale(Vector3d(
-		scale.x / (pLossyScale.x / GetScale().x),
-		scale.y / (pLossyScale.y / GetScale().y),
-		scale.z / (pLossyScale.z / GetScale().z)
-	));
-
-	return;
-}
-
-void Transform::SetGlobalRotation(const Quaternion& rot)
-{
-	// parent global rotation
-	const Quaternion pGlobalRotation = (parent != nullptr) ? parent->GetGlobalRotation() : Quaternion();
-
-	SetRotation(rot * pGlobalRotation.Inverse());
-
-	return;
-}
-
 void Transform::Reset()
 {
 	SetPosition(Vector3d::zero);
@@ -509,7 +432,6 @@ void Transform::Reset()
 
 	return;
 }
-
 
 void Transform::InvalidateLocalTransform()
 {
@@ -556,25 +478,6 @@ void Transform::RecalculateGlobalTransformCache() const
 		cache__globalTransformationMatrix = tr->GetLocalTransformationMatrix() * cache__globalTransformationMatrix;
 	}
 
-	/*cache__globalTransformationMatrix = GetLocalTransformationMatrix();
-	for (const Transform* tr = this->GetParent(); tr != nullptr; tr = tr->GetParent())
-	{
-		Vector3d newPos;
-		newPos = Vector3d(
-			cache__globalTransformationMatrix.d,
-			cache__globalTransformationMatrix.h,
-			cache__globalTransformationMatrix.l
-		);
-
-		newPos *= tr->scaleMatrix * tr->rotation.ToRotationMatrix();
-
-		cache__globalTransformationMatrix.d = newPos.x;
-		cache__globalTransformationMatrix.h = newPos.y;
-		cache__globalTransformationMatrix.l = newPos.z;
-		cache__globalTransformationMatrix = tr->GetLocalTransformationMatrix() * cache__globalTransformationMatrix;
-	}*/
-
-
 	// Re-Calculate global rotation
 	// If we are doing this the other way around (parent -> child, instead of child -> parent),
 	// nested rotations (like, camera_yPivot -> camera) break...
@@ -584,45 +487,12 @@ void Transform::RecalculateGlobalTransformCache() const
 		cache__GlobalRotation *= tr->rotation;
 	}
 
-	//cache__LossyScale = Vector3d::one;
-	//for (const Transform* tr = this; tr != nullptr; tr = tr->GetParent())
-	//{
-	//	cache__LossyScale.x *= GetScale().x;
-	//	cache__LossyScale.y *= GetScale().y;
-	//	cache__LossyScale.z *= GetScale().z;
-	//}
-	
 	// Re-Calculate global position
 	cache__GlobalPosition = Vector3d(
 		cache__globalTransformationMatrix.d,
 		cache__globalTransformationMatrix.h,
 		cache__globalTransformationMatrix.l
 	);
-
-	// The highest object in this objects hierarchy tree, that is not nullptr
-	const Transform* lastParent = nullptr;
-	for (const Transform* tr = this->parent; tr != nullptr; tr = tr->GetParent())
-		if (tr->GetParent() == nullptr)
-			lastParent = tr;
-
-	//if (lastParent != nullptr)
-	{
-		Matrix4x4 ls_tmp;
-		ls_tmp = (cache__GlobalRotation).ToRotationMatrix();
-		ls_tmp.d = cache__GlobalPosition.x;
-		ls_tmp.h = cache__GlobalPosition.y;
-		ls_tmp.l = cache__GlobalPosition.z;
-
-		// Re-Calculate lossy scale
-		ls_tmp = InverseMatrix(ls_tmp) * cache__globalTransformationMatrix;
-		cache__LossyScale.x = ls_tmp.a;
-		cache__LossyScale.y = ls_tmp.f;
-		cache__LossyScale.z = ls_tmp.k;
-	}
-	//else
-	//{
-	//	cache__LossyScale = GetScale();
-	//}
 
 	// Validate cache
 	cache__IsGlobalTransformationUpToDate = true;
