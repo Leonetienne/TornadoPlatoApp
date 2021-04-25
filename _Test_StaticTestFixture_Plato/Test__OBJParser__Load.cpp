@@ -8,10 +8,10 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 {
 	ResourceManager::LoadMeshFromObj("cube", "cube.obj");
 	ResourceManager::LoadMeshFromObj("bottle", "bottle.obj");
-	ResourceManager::LoadMeshFromObj("spoder", "spoder.obj");
+	ResourceManager::LoadMeshFromObj("spoder", "spoder__gitignore_.obj");
 
 	ResourceManager::LoadTextureFromBmp("bottle", "bottle text.bmp");
-	ResourceManager::LoadTextureFromBmp("spoder", "spoder.bmp");
+	ResourceManager::LoadTextureFromBmp("spoder", "spoder__gitignore_.bmp");
 
 	ResourceManager::NewMaterial("bottle")->texture = ResourceManager::FindTexture("bottle");
 	ResourceManager::NewMaterial("spoder")->texture = ResourceManager::FindTexture("spoder");
@@ -26,7 +26,7 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 		);
 
 		wo_mesh->transform->SetPosition(Vector3d((3-i)*40, 0, -j*40));
-		wo_mesh->transform->Move(Vector3d(0, -10, -50));
+		wo_mesh->transform->Move(Vector3d(0, -30, -50));
 		wo_mesh->transform->Rotate(Quaternion(Vector3d(0, 90, 0)));
 	}
 
