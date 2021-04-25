@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Test__OBJParser__Load.cpp" />
     <ClCompile Include="Test__TransformHierarchy__ClearParent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestFixture.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="CameraKeyboardControl.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Test__OBJParser__Load.h" />
     <ClInclude Include="Test__TransformHierarchy__ClearParent.h" />
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="TestFixture.h" />

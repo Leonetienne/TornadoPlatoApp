@@ -9,8 +9,8 @@ Renderer::Renderer(const Vector2i& renderResolution)
 	
 	worldMatrix[0] = { 1, 0, 0, 0 };
 	worldMatrix[1] = { 0, 1, 0, 0 };
-	worldMatrix[2] = { 0, 0, -1, 0 };
-	worldMatrix[3] = { 0, 0, 0, 0 };
+	worldMatrix[2] = { 0, 0, 1, 0 };
+	worldMatrix[3] = { 0, 0, 0, 1 };
 
 	return;
 }

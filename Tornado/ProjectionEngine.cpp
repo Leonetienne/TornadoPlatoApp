@@ -112,7 +112,7 @@ void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const
 
 		// Calculate screen area (in pixels) taken up by triangle
 		// Edgefunction(a, b, c);
-		cird.ss_area = ((cird.c.pos_ss.x - cird.a.pos_ss.x) * (cird.b.pos_ss.y - cird.a.pos_ss.y) - (cird.c.pos_ss.y - cird.a.pos_ss.y) * (cird.b.pos_ss.x - cird.a.pos_ss.x));
+		cird.ss_area = abs(((cird.c.pos_ss.x - cird.a.pos_ss.x) * (cird.b.pos_ss.y - cird.a.pos_ss.y) - (cird.c.pos_ss.y - cird.a.pos_ss.y) * (cird.b.pos_ss.x - cird.a.pos_ss.x)));
 		cird.ss_iarea = 1.0 / cird.ss_area;
 	}
 

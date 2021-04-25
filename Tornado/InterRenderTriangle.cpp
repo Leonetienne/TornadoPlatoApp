@@ -2,9 +2,13 @@
 
 bool InterRenderTriangle::DoesScreenspaceContainPoint(const Vector2d& p) const
 {
-	double ef_ab = EdgeFunction2D(a.pos_ss, b.pos_ss, p);
-	double ef_ac = EdgeFunction2D(c.pos_ss, a.pos_ss, p);
-	double ef_bc = EdgeFunction2D(b.pos_ss, c.pos_ss, p);
+	//double ef_ab = EdgeFunction2D(a.pos_ss, b.pos_ss, p);
+	//double ef_ac = EdgeFunction2D(c.pos_ss, a.pos_ss, p);
+	//double ef_bc = EdgeFunction2D(b.pos_ss, c.pos_ss, p);
+
+	double ef_ab = EdgeFunction2D(b.pos_ss, a.pos_ss, p);
+	double ef_ac = EdgeFunction2D(a.pos_ss, c.pos_ss, p);
+	double ef_bc = EdgeFunction2D(c.pos_ss, b.pos_ss, p);
 
 	return ((ef_ab >= 0) && (ef_ac >= 0) && (ef_bc >= 0));
 }
