@@ -277,8 +277,13 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 			return; // Abort
 
 	// Gather global transformation data
-	const Matrix4x4 localInWorld = GetGlobalTransformationMatrix();
-	const Quaternion oldRotation = GetGlobalRotation();
+	Matrix4x4 localInWorld;
+	Quaternion oldRotation;
+	if (keepAbsoluteTransform)
+	{
+		localInWorld = GetGlobalTransformationMatrix();
+		oldRotation = GetGlobalRotation();
+	}
 
 	// Say goodbye to current parent, if not an orphan
 	if (parent != nullptr)
@@ -288,6 +293,13 @@ void Transform::SetParent(Transform* newParent, bool keepAbsoluteTransform)
 	parent = newParent;
 	if (parent != nullptr)
 		parent->children.insert(this);
+	
+	// Abort here, if we don't want to keep the absolute transform
+	if (!keepAbsoluteTransform)
+		return;
+
+	// This code will only be reached if (keepAbsoluteTransform == true)
+	// Let's restore the absolute transform as good as possible
 
 	// Invalidate caches
 	InvalidateLocalTransform();
