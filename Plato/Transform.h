@@ -1,5 +1,5 @@
 #pragma once
-#include <set>
+#include <unordered_set>
 #include "Quaternion.h"
 #include "../Tornado/Matrix4x4.h"
 #include "../Tornado/Vector3.h"
@@ -62,6 +62,11 @@ public:
 	// Will return the amount of children
 	std::size_t GetNumChildren() const;
 
+	// Will return a set of all children
+	std::unordered_set<Transform*>& GetChildren();
+	// Will return a set of all children
+	const std::unordered_set<Transform*>& GetChildren() const;
+
 	// Will return a transformation matrix relative to this transforms origin
 	Matrix4x4 GetLocalTransformationMatrix() const;
 
@@ -96,7 +101,7 @@ private:
 	mutable Quaternion	cache__GlobalRotation;
 
 	// Stores pointers to all child transforms
-	std::set<Transform*> children;
+	std::unordered_set<Transform*> children;
 
 private:
 	// Will cause the local transform values to be re-calculated.

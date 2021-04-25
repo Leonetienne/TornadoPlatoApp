@@ -187,7 +187,7 @@ const Transform* Transform::operator[](std::size_t i) const
 	if (i >= children.size())
 		throw std::out_of_range("Transform child index out of range");
 
-	std::set<Transform*>::iterator it = children.begin();
+	std::unordered_set<Transform*>::iterator it = children.begin();
 	std::advance(it, i);
 
 	return *it;
@@ -198,7 +198,7 @@ Transform* Transform::operator[](std::size_t i)
 	if (i >= children.size())
 		throw std::out_of_range("Transform child index out of range");
 
-	std::set<Transform*>::iterator it = children.begin();
+	std::unordered_set<Transform*>::iterator it = children.begin();
 	std::advance(it, i);
 
 	return *it;
@@ -207,6 +207,16 @@ Transform* Transform::operator[](std::size_t i)
 std::size_t Transform::GetNumChildren() const
 {
 	return children.size();
+}
+
+std::unordered_set<Transform*>& Transform::GetChildren()
+{
+	return children;
+}
+
+const std::unordered_set<Transform*>& Transform::GetChildren() const
+{
+	return children;
 }
 
 Matrix4x4 Transform::GetLocalTransformationMatrix() const
