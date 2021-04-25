@@ -3,6 +3,7 @@
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/bmplib.h"
+#include "../Plato/ResourceManager.h"
 #include "Rotator.h"
 #include "Util.h"
 
@@ -18,7 +19,10 @@
 Transform* Test__TransformHierarchy__ChangeParent::CreateLink(Transform* parent)
 {
 	WorldObject* wo = WorldObjectManager::NewWorldObject("joint", parent);
-	wo->AddComponent<MeshRenderer>(&mesh_coob, &mat_coob);
+		wo->AddComponent<MeshRenderer>(
+		ResourceManager::FindMesh("cube"),
+		ResourceManager::FindMaterial("cube")
+	);
 
 	wo->AddTag("joint");
 	wo->GetTransform()->Move(Vector3d::up * 3);
@@ -29,8 +33,7 @@ Transform* Test__TransformHierarchy__ChangeParent::CreateLink(Transform* parent)
 }
 
 Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent() :
-	TestFixture(__FUNCTION__), // Set the test fixtures name equal to the specialized class name (constructor function)
-	txt_coob(Color::black)
+	TestFixture(__FUNCTION__) // Set the test fixtures name equal to the specialized class name (constructor function)
 {
 	// Reposition camera to a more fitting place
 	{
@@ -39,15 +42,15 @@ Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent()
 		cam->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 0)));
 	}
 
-	// Load cube mesh and texture
-	mesh_coob = Cube();
-	LoadTextureFromBmp(&txt_coob, "../Plato/Cube_furnace_gitignore_.bmp");
-	mat_coob.texture = &txt_coob;
+	// Create and load assets
+	*ResourceManager::NewMesh("cube") = Cube();
+	ResourceManager::LoadTextureFromBmp("cube", "../Plato/Cube_furnace_gitignore_.bmp");
+	ResourceManager::NewMaterial("cube")->texture = ResourceManager::FindTexture("cube");
 
 	// Create a future parent
 	newParent = WorldObjectManager::NewWorldObject("future_parent", nullptr)->GetTransform();
 	// Apply some complex transformation to that future parent
-	//newParent->SetPosition(Vector3d(-15, 33, -99));
+	newParent->SetPosition(Vector3d(-15, 33, -99));
 	newParent->Rotate(Vector3d(39, -50, 19));
 	newParent->SetScale(Vector3d(1, 1, 1));
 

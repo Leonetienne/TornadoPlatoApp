@@ -161,9 +161,11 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="OBJParser.h" />
     <ClInclude Include="Plato.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="WorldObject.h" />
     <ClInclude Include="WorldObjectManager.h" />
@@ -173,9 +175,11 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="OBJParser.cpp" />
     <ClCompile Include="Plato.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WorldObject.cpp" />
     <ClCompile Include="WorldObjectManager.cpp" />

@@ -17,6 +17,7 @@
 #include <sstream>
 #include <fstream>
 #include <string.h>
+#include <vector>
 
 #define BMPLIB_VERSION 0.602
 

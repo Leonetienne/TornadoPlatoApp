@@ -3,6 +3,7 @@
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/bmplib.h"
+#include "../Plato/ResourceManager.h"
 #include "Rotator.h"
 #include "Util.h"
 
@@ -17,7 +18,10 @@
 Transform* Test__TransformHierarchy__ClearParent::CreateLink(Transform* parent)
 {
 	WorldObject* wo = WorldObjectManager::NewWorldObject("joint", parent);
-	wo->AddComponent<MeshRenderer>(&mesh_coob, &mat_coob);
+	wo->AddComponent<MeshRenderer>(
+		ResourceManager::FindMesh("cube"),
+		ResourceManager::FindMaterial("cube")
+	);
 
 	wo->AddTag("joint");
 	wo->GetTransform()->Move(Vector3d::up * 3);
@@ -27,8 +31,7 @@ Transform* Test__TransformHierarchy__ClearParent::CreateLink(Transform* parent)
 }
 
 Test__TransformHierarchy__ClearParent::Test__TransformHierarchy__ClearParent() :
-	TestFixture(__FUNCTION__), // Set the test fixtures name equal to the specialized class name (constructor function)
-	txt_coob(Color::black)
+	TestFixture(__FUNCTION__) // Set the test fixtures name equal to the specialized class name (constructor function)
 {
 	// Reposition camera to a more fitting place
 	{
@@ -37,10 +40,10 @@ Test__TransformHierarchy__ClearParent::Test__TransformHierarchy__ClearParent() :
 		cam->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 0)));
 	}
 
-	// Load cube mesh and texture
-	mesh_coob = Cube();
-	LoadTextureFromBmp(&txt_coob, "../Plato/Cube_furnace_gitignore_.bmp");
-	mat_coob.texture = &txt_coob;
+	// Create and load assets
+	*ResourceManager::NewMesh("cube") = Cube();
+	ResourceManager::LoadTextureFromBmp("cube", "../Plato/Cube_furnace_gitignore_.bmp");
+	ResourceManager::NewMaterial("cube")->texture = ResourceManager::FindTexture("cube");
 
 	// Create a root transform (for positioning and rotation)
 	jointRoot = WorldObjectManager::NewWorldObject("joint_root")->GetTransform();

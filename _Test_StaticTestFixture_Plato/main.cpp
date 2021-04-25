@@ -4,6 +4,7 @@
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 
+// Include test cases
 #include "Test__TransformHierarchy__Curl.h"
 #include "Test__TransformHierarchy__ClearParent.h"
 #include "Test__TransformHierarchy__ChangeParent.h"
