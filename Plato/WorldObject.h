@@ -51,6 +51,7 @@ public:
 	void ClearAllTags();
 
 	template <class T, typename ...Params>
+	// Will add a component of type T, and return a pointer to it
 	T* AddComponent(Params... params);
 	
 
