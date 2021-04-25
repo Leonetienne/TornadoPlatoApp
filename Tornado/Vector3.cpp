@@ -75,8 +75,30 @@ double Vector3<T>::Magnitude() const
 
 
 
+template<typename T>
+Vector3<T> Vector3<T>::VectorScale(const Vector3<T>& scalar) const
+{
+	return Vector3<T>
+		(
+			x * scalar.x,
+			y * scalar.y,
+			z * scalar.z
+		);
+}
+
+
+
+template<typename T>
+Vector3<double> Vector3<T>::Normalize() const
+{
+	Vector3<double> norm(x, y, z);
+	norm.NormalizeSelf();
+
+	return norm;
+}
+
 // Method to normalize a Vector3d
-void Vector3<double>::Normalize()
+void Vector3<double>::NormalizeSelf()
 {
 	double length = Magnitude();
 
@@ -99,7 +121,7 @@ void Vector3<double>::Normalize()
 
 // You can't normalize an int vector, ffs!
 // But we need an implementation for T=int
-void Vector3<int>::Normalize()
+void Vector3<int>::NormalizeSelf()
 {
 	std::cerr << "Stop normalizing int-vectors!!" << std::endl;
 	x = 0;

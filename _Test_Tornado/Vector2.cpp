@@ -543,8 +543,7 @@ namespace Vectors
 		TEST_METHOD(Normalize_Length_Before_Is_0)
 		{
 			Vector2d vec(0, 0);
-			vec.Normalize();
-			Assert::AreEqual(0.0, vec.Magnitude());
+			Assert::AreEqual(0.0, vec.Normalize().Magnitude());
 			return;
 		}
 
@@ -561,11 +560,9 @@ namespace Vectors
 
 				Vector2d vec(x, y);
 
-				vec.Normalize();
-				
 				std::wstringstream wss;
 				wss << vec;
-				Assert::IsTrue(Similar(vec.Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
+				Assert::IsTrue(Similar(vec.Normalize().Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
 			}
 			
 			return;
@@ -587,7 +584,7 @@ namespace Vectors
 					vec.x++;
 
 				Vector2d vec_n(x, y);
-				vec_n.Normalize();
+				vec_n = vec_n.Normalize();
 
 				std::wstringstream wss;
 				wss << vec << L" | " << vec_n;
@@ -613,12 +610,54 @@ namespace Vectors
 
 				Vector2i vec(x, y);
 
-				vec.Normalize();
+				vec.NormalizeSelf();
 
 				std::wstringstream wss;
 				wss << vec;
 				Assert::AreEqual(0.0, vec.Magnitude(), wss.str().c_str());
 			}
+		}
+
+		// Tests that NormalizeSelf() results in the same as Normalize()
+		TEST_METHOD(NormalizeSelf_IsSameAs_Normalize)
+		{
+			// Run test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				Vector2d vec(LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE);
+				
+				Vector2d nVec = vec.Normalize();
+				vec.NormalizeSelf();
+
+				Assert::IsTrue(nVec == vec);
+			}
+
+			return;
+		}
+
+		// Tests for the VectorScale() method to work
+		TEST_METHOD(VectorScale)
+		{
+			// Run test 1000 times
+			for (std::size_t i = 0; i < 1000; i++)
+			{
+				const double ax = LARGE_RAND_DOUBLE;
+				const double ay = LARGE_RAND_DOUBLE;
+				const double bx = LARGE_RAND_DOUBLE;
+				const double by = LARGE_RAND_DOUBLE;
+			
+				Vector2d a(ax, ay);
+				Vector2d b(bx, by);
+
+				Vector2d target(
+					ax * bx,
+					ay * by
+				);
+
+				Assert::IsTrue(a.VectorScale(b) == target);
+			}
+
+			return;
 		}
 
 		// Tests for operator+ to work as expected

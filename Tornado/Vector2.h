@@ -16,8 +16,12 @@ public:
 	double CrossProduct(const Vector2<T>& other) const;
 	double SqrMagnitude() const;
 	double Magnitude() const;
-	void Normalize();
-	
+	[[nodiscard]] Vector2<double> Normalize() const;
+	void NormalizeSelf();
+
+	// Will scale self.n by scalar.n
+	Vector2<T> VectorScale(const Vector2<T>& scalar) const;
+
 	// Will lerp itself towards other by t
 	void LerpSelf(const Vector2<T>& other, double t);
 	// Will lerp relative to this vector

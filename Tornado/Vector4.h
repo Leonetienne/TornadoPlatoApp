@@ -17,7 +17,11 @@ public:
 
 	double SqrMagnitude() const;
 	double Magnitude() const;
-	void Normalize();
+	[[nodiscard]] Vector4<double> Normalize() const;
+	void NormalizeSelf();
+
+	// Will scale self.n by scalar.n
+	Vector4<T> VectorScale(const Vector4<T>& scalar) const;
 
 	// Will lerp itself towards other by t
 	void LerpSelf(const Vector4<T>& other, double t);

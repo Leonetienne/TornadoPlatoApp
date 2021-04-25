@@ -3,10 +3,12 @@
 
 Matrix4x4::Matrix4x4()
 {
-	// Zero it all
+	// Create identity matrix
 	for (std::size_t i = 0; i < 4; i++)
 		for (std::size_t j = 0; j < 4; j++)
-			v[i][j] = 0;
+			v[i][j] = double(i == j);
+
+
 
 	return;
 }
