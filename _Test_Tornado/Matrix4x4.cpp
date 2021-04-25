@@ -306,13 +306,31 @@ namespace Matrices
 			mat.h = 32;
 			mat.l = 16;
 
-			// Get translation components
+			// Get translation component
 			Vector3d translation = mat.GetTranslationComponent();
 
 			// Check
 			Assert::AreEqual(69.0, translation.x);
 			Assert::AreEqual(32.0, translation.y);
 			Assert::AreEqual(16.0, translation.z);
+
+			return;
+		}
+
+		// Tests if SetTranslationComponent returns the correct values
+		TEST_METHOD(SetTranslationComponent)
+		{
+			// Create and populate mat
+			Vector3d translation(69, 32, 16);
+
+			// Set translation component
+			Matrix4x4 mat;
+			mat.SetTranslationComponent(translation);
+
+			// Check
+			Assert::AreEqual(69.0, mat.d);
+			Assert::AreEqual(32.0, mat.h);
+			Assert::AreEqual(16.0, mat.l);
 
 			return;
 		}

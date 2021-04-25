@@ -296,6 +296,15 @@ bool Vector2<T>::operator!=(const Vector2<T>& other) const
 	return !operator==(other);
 }
 
+template<typename T>
+Vector2<T> Vector2<T>::operator-() const
+{
+	return Vector2<T>(
+		-x,
+		-y
+	);
+}
+
 // Don't want these includes above the other stuff
 #include "Vector3.h"
 #include "Vector4.h"

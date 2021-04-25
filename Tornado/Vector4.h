@@ -46,6 +46,7 @@ public:
 	void operator/=(const T scale);
 	Vector4<T> operator*(const Matrix4x4 mat) const;
 	void operator*=(const Matrix4x4 mat);
+	Vector4<T> operator-() const;
 
 	operator Vector2<T>() const;
 	operator Vector3<T>() const;

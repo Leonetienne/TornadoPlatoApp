@@ -41,7 +41,38 @@ public:
 	bool operator==(const Matrix4x4& other);
 	bool operator!=(const Matrix4x4& other);
 
-	const Vector3d GetTranslationComponent();
+	// Will return d,h,l as a Vector3d(x,y,z)
+	const Vector3d GetTranslationComponent() const;
+	// Will set d,h,l from a Vector3d(x,y,z)
+	void SetTranslationComponent(const Vector3d& trans);
+
+	// Will return the 3x3 transpose of this matrix
+	Matrix4x4 Transpose3x3() const;
+
+	// Will return the Matrix4x4 of an actual 4x4 multiplication. operator* only does a 3x3
+	Matrix4x4 Multiply4x4(const Matrix4x4& o) const;
+
+	// Will return the cofactors of this matrix, by dimension n
+	Matrix4x4 GetCofactors(int p, int q, int n) const;
+
+	// Will return the determinant, by dimension n
+	double Determinant(int n) const;
+
+	// Will return the adjoint of this matrix, by dimension n
+	Matrix4x4 Adjoint(int n) const;
+
+	// Will return the 3x3-inverse of this matrix.
+	// Meaning, the 3x3 component will be inverted, and the translation component will be negated
+	Matrix4x4 Inverse3x3() const;
+
+	// Will return the full 4x4-inverse of this matrix
+	Matrix4x4 Inverse4x4() const;
+
+	// Will check if the 3x3-component is inversible
+	bool IsInversible3x3() const;
+
+	// Will check if the entire matrix is inversible
+	bool IsInversible4x4() const;
 
 	// Shorthands
 	double& a = v[0][0];
