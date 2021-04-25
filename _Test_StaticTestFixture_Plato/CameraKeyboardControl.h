@@ -32,9 +32,9 @@ private:
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor);
 
 		if (GetAsyncKeyState('Q'))
-			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor);
-		if (GetAsyncKeyState('E'))
 			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor);
+		if (GetAsyncKeyState('E'))
+			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor);
 
 		return;
 	}
