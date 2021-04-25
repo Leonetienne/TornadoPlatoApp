@@ -9,6 +9,9 @@ class WorldObject;
 class Transform final
 {
 public:
+	// Public handle for this Transforms WorldObject
+	WorldObject* const& worldObject;
+
 	~Transform();
 
 	// Will set the transforms local position
@@ -59,10 +62,6 @@ public:
 	// Will return the amount of children
 	std::size_t GetNumChildren() const;
 
-	// Will return the transforms corresponding world object
-	WorldObject* GetWorldObject();
-	const WorldObject* GetWorldObject() const;
-
 	// Will return a transformation matrix relative to this transforms origin
 	Matrix4x4 GetLocalTransformationMatrix() const;
 
@@ -83,8 +82,10 @@ private:
 	Matrix4x4 translationMatrix;
 	Quaternion rotation;
 
+	// Private handle for this Transforms WorldObject
+	WorldObject* privateHandle__WorldObject;
+
 	Transform* parent;
-	WorldObject* worldObject;
 
 	// Cache data
 	mutable Matrix4x4	cache__localTransformationMatrix;

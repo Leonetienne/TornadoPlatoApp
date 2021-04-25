@@ -73,7 +73,7 @@ private:
 		camera_yPivot { camera_yPivot },
 		camera { camera }
 	{
-		cameraComponent = camera->GetWorldObject()->GetComponentOfType<Camera>();
+		cameraComponent = camera->worldObject->GetComponentOfType<Camera>();
 
 		shiftFactor = 1; // Gets calculated at the beginning of Update()
 

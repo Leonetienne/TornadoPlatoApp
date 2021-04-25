@@ -2,9 +2,11 @@
 #include <iostream>
 
 Transform::Transform()
+	:
+	worldObject { privateHandle__WorldObject }
 {
 	parent = nullptr;
-	worldObject = nullptr; // Will get set immediately after instantiation by the WorldObjectManager
+	privateHandle__WorldObject = nullptr; // Will get set immediately after instantiation by the WorldObjectManager
 
 	return;
 }
@@ -205,16 +207,6 @@ Transform* Transform::operator[](std::size_t i)
 std::size_t Transform::GetNumChildren() const
 {
 	return children.size();
-}
-
-WorldObject* Transform::GetWorldObject()
-{
-	return worldObject;
-}
-
-const WorldObject* Transform::GetWorldObject() const
-{
-	return worldObject;
 }
 
 Matrix4x4 Transform::GetLocalTransformationMatrix() const

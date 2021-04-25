@@ -2,8 +2,10 @@
 #include "WorldObjectManager.h"
 
 WorldObject::WorldObject()
+	:
+	transform { privateHandle__Transform }
 {
-	transform = nullptr; // Will get set immediately after instantiation by the WorldObjectManager
+	privateHandle__Transform = nullptr; // Will get set immediately after instantiation by the WorldObjectManager
 	return;
 }
 
