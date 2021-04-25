@@ -27,9 +27,9 @@ private:
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor);
 
 		if (GetAsyncKeyState('W'))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::forward * movementSpeed * shiftFactor);
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor);
 		if (GetAsyncKeyState('S'))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::backward * movementSpeed * shiftFactor);
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor);
 
 		if (GetAsyncKeyState('Q'))
 			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor);

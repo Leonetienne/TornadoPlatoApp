@@ -45,6 +45,9 @@
     <ClCompile Include="Test__TransformHierarchy__ClearParent.cpp">
       <Filter>Quelldateien\Tests.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Test__OBJParser__Load.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestFixture.h">
@@ -75,6 +78,9 @@
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
     <ClInclude Include="Test__TransformHierarchy__ClearParent.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__OBJParser__Load.h">
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,9 +20,13 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 	{
 		shouldInitialize = 1;
 
-		double a1 = EdgeFunction(pos, tri.b.pos_ss, tri.c.pos_ss);
-		double a2 = EdgeFunction(tri.a.pos_ss, pos, tri.c.pos_ss);
-		double a3 = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, pos);
+		//double a1 = EdgeFunction(pos, tri.b.pos_ss, tri.c.pos_ss);
+		//double a2 = EdgeFunction(tri.a.pos_ss, pos, tri.c.pos_ss);
+		//double a3 = EdgeFunction(tri.a.pos_ss, tri.b.pos_ss, pos);
+
+		double a1 = EdgeFunction(pos, tri.c.pos_ss, tri.b.pos_ss);
+		double a2 = EdgeFunction(tri.c.pos_ss, pos, tri.a.pos_ss);
+		double a3 = EdgeFunction(tri.b.pos_ss, tri.a.pos_ss, pos);
 
 		if ((a1 >= 0) && (a2 >= 0) && (a3 >= 0))
 		{

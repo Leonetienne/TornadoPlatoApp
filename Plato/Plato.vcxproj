@@ -167,6 +167,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="WorldObject.h" />
     <ClInclude Include="WorldObjectManager.h" />
   </ItemGroup>

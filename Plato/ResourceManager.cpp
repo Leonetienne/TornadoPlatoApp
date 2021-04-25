@@ -79,7 +79,17 @@ Texture* ResourceManager::LoadTextureFromBmp(const std::string& name, const std:
 
 Mesh* ResourceManager::LoadMeshFromObj(const std::string& name, const std::string& filename)
 {
-	return nullptr;
+	// Name already taken!
+	if (meshes.find(name) != meshes.end())
+		throw std::exception("Name already taken!");
+
+	Mesh* mesh = new Mesh(OBJParser().ParseObj(filename));
+
+	meshes.insert(
+		std::pair<std::string, Mesh*>(name, mesh)
+	);
+
+	return mesh;
 }
 
 Material* ResourceManager::FindMaterial(const std::string& name)

@@ -21,7 +21,7 @@ Quaternion::Quaternion(const Quaternion& q)
 
 Quaternion::Quaternion(const Vector3d eulerAngles)
 {
-	Vector3d eulerRad = eulerAngles * Deg2Rad * -1;
+	Vector3d eulerRad = eulerAngles * Deg2Rad;
 
 	double cy = cos(eulerRad.z * 0.5);
 	double sy = sin(eulerRad.z * 0.5);
@@ -136,8 +136,11 @@ Vector3d Quaternion::RotateVector(const Vector3d& vec) const
 {
 	Quaternion pure(Vector4d(vec.x, vec.y, vec.z, 0));
 
-	Quaternion f = Conjugate() * pure * (*this);
-	//Quaternion f = Inverse() * (*this) * pure;
+	//Quaternion f = Conjugate() * pure * (*this);
+	//Quaternion f = Inverse().Conjugate() * pure * (this->Inverse());
+	
+	
+	Quaternion f = Inverse() * pure * (*this);
 
 	Vector3d toRet;
 	toRet.x = f.v.x;
@@ -169,7 +172,7 @@ Vector3d Quaternion::ToEulerAngles() const
 		double cosy_cosp = 1.0 - 2.0 * (v.y * v.y + v.z * v.z);
 		euler.z = std::atan2(siny_cosp, cosy_cosp);
 
-		euler *= Rad2Deg * -1;
+		euler *= Rad2Deg;
 
 		eulerCache = euler;
 		isCacheUpToDate_matrix = true;

@@ -3,14 +3,16 @@
 #include "CameraKeyboardControl.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
+#include "../Plato/ResourceManager.h"
 
 // Include test cases
 #include "Test__TransformHierarchy__Curl.h"
 #include "Test__TransformHierarchy__ClearParent.h"
 #include "Test__TransformHierarchy__ChangeParent.h"
+#include "Test__OBJParser__Load.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__TransformHierarchy__ChangeParent
+#define TEST_TO_RUN Test__OBJParser__Load
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -53,8 +55,9 @@ int main()
 	while (window.GetIsOpen())
 		Loop(&testFixture , &renderer, &window);
 
-	// Release memory used by world objects
+	// Release memory
 	WorldObjectManager::Free();
+	ResourceManager::Free();
 	return 0;
 }
 

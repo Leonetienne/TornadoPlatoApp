@@ -27,7 +27,7 @@ DrawingEngine::~DrawingEngine()
 void DrawingEngine::BeginBatch(std::size_t reservesize_triangles)
 {
 	// Clear buffers
-	std::fill_n(zBuffer, numPixels, 100000000); // Clear z-buffer
+	std::fill_n(zBuffer, numPixels, 1000000); // Clear z-buffer
 	memset(renderTarget->GetRawData(), 0, renderTarget->GetSizeofBuffer()); // Clear render target
 
 	// Clear triangle registry
@@ -219,7 +219,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		uv_coords.y = std::max<double>(std::min<double>(uv_coords.y, 1.0), 0.0);
 
 		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(Vector2i(
-			(int)((1.0 - uv_coords.x) * (text_size.x - 1)),
+			(int)((uv_coords.x) * (text_size.x - 1)),
 			(int)((1.0 - uv_coords.y) * (text_size.y - 1)) // Uv-coordinates are top-left == (0,1)
 		));
 
@@ -227,12 +227,12 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		g = text_pixel[1];
 		b = text_pixel[2];
 	}
-	// If we have no material, paint it pink
+	// If we have no material, paint vertex colors
 	else
 	{
-		r = 255;
-		g = 0;
-		b = 255;
+		r = vertexColor.r;
+		g = vertexColor.g;
+		b = vertexColor.b;
 	}
 
 	return;
