@@ -90,7 +90,7 @@ void Renderer::ResolveRenderTriangles()
 			rd.c.normal = mesh->normals[mesh->tris[i + 2].vn];
 	
 			// Apply world space transformation
-			const Matrix4x4& transformationMatrix = mr->transform->GetGlobalTransformationMatrix(); // <-- This caches the retval
+			const Matrix4x4& transformationMatrix = mr->transform->GetGlobalTransformationMatrix(); // <-- This caches its return vales
 			rd.a.pos_worldSpace *= transformationMatrix;
 			rd.b.pos_worldSpace *= transformationMatrix;
 			rd.c.pos_worldSpace *= transformationMatrix;
