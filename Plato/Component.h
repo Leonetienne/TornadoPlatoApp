@@ -10,6 +10,18 @@ public:
 	WorldObject* const worldObject;
 	Transform* const transform;
 
+	// Will set the enabled-status of this component. Disabled components receive no hook calls!
+	void SetIsEnabled(bool state);
+
+	// Will enable this component. Disabled components receive no hook calls!
+	void Enable();
+
+	// Will disable this component. Disabled components receive no hook calls!
+	void Disable();
+
+	// Will return whether or not this component is enabled
+	bool GetIsEnabled() const;
+
 protected:
 	// ### GAME ENGINE HOOKS ### //
 
@@ -29,6 +41,7 @@ protected:
 	Component(WorldObject* worldObject);
 
 private:
+	bool enabled = true;
 
 	// Allow access to call hooks
 	friend class WorldObjectManager;
