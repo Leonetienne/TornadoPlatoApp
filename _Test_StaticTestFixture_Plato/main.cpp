@@ -28,7 +28,7 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 int main()
 {
 	// Define screen resolution
-	const Vector2i resolution(800*2, 600*2);
+	const Vector2i resolution = Vector2i(800, 600);
 	
 
 	// Create important objects, such as the Window and the Renderer, including Camera
@@ -42,7 +42,7 @@ int main()
 	window.SetPixelBuffer(renderer.GetPixelBuffer());
 
 	// Let's add a CameraKeyboardControl component to the camera by default
-	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.1, 0.4, 4);
+	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.4, 0.6, 4);
 
 	// Create test fixture. Change that to the fixture you want to use (in the macro definition)
 	TEST_TO_RUN testFixture;
