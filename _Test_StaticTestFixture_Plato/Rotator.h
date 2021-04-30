@@ -5,14 +5,14 @@
 class Rotator : Component
 {
 public:
-	void Update(double)
+	void Update(double deltaTime)
 	{
 		if (!GetAsyncKeyState(VK_SPACE))
 			transform->Rotate(Quaternion(Vector3d(
-				0.5 * speed,
-				1.0 * speed,
-				2.0 * speed
-			)));
+				0.5,
+				1.0,
+				2.0
+			) * speed * deltaTime * 0.05));
 
 
 		if (GetAsyncKeyState('K'))
