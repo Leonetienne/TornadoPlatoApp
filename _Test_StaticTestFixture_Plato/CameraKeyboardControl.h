@@ -7,58 +7,60 @@
 class CameraKeyboardControl : Component
 {
 public:
-	void Update(double)
+	void Update(double deltaTime)
 	{
 		shiftFactor = GetAsyncKeyState(VK_LSHIFT) ? shiftModifier : 1;
 
-		MovementControl();
-		ViewControl();
-		AdditionalControls();
+		MovementControl(deltaTime);
+		ViewControl(deltaTime);
+		AdditionalControls(deltaTime);
 
 		return;
 	}
 
 private:
-	void MovementControl()
+	const double internalMultiplier = 0.05;
+
+	void MovementControl(double deltaTime)
 	{
 		if (GetAsyncKeyState('A'))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor);
+			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		if (GetAsyncKeyState('D'))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor);
+			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		if (GetAsyncKeyState('W'))
-			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor);
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		if (GetAsyncKeyState('S'))
-			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor);
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		if (GetAsyncKeyState('Q'))
-			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor);
+			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		if (GetAsyncKeyState('E'))
-			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor);
+			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
 	}
 
-	void ViewControl()
+	void ViewControl(double deltaTime)
 	{
 		if (GetAsyncKeyState('Y'))
-			camera_yPivot->Rotate(Quaternion(Vector3d(0, -2, 0) * lookingSpeed * shiftFactor));
+			camera_yPivot->Rotate(Quaternion(Vector3d(0, -2, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
 		if (GetAsyncKeyState('X'))
-			camera_yPivot->Rotate(Quaternion(Vector3d(0, 2, 0) * lookingSpeed * shiftFactor));
+			camera_yPivot->Rotate(Quaternion(Vector3d(0, 2, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
 		if (GetAsyncKeyState('C'))
-			camera->Rotate(Quaternion(Vector3d(2, 0, 0) * lookingSpeed * shiftFactor));
+			camera->Rotate(Quaternion(Vector3d(2, 0, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
 		if (GetAsyncKeyState('F'))
-			camera->Rotate(Quaternion(Vector3d(-2, 0, 0) * lookingSpeed * shiftFactor));
+			camera->Rotate(Quaternion(Vector3d(-2, 0, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
 
 		return;
 	}
 
-	void AdditionalControls()
+	void AdditionalControls(double deltaTime)
 	{
 		if (GetAsyncKeyState('1'))
-			cameraComponent->SetFov(cameraComponent->GetFov() - 1 * shiftFactor);
+			cameraComponent->SetFov(cameraComponent->GetFov() - 1 * shiftFactor * deltaTime * internalMultiplier);
 		if (GetAsyncKeyState('2'))
-			cameraComponent->SetFov(cameraComponent->GetFov() + 1 * shiftFactor);
+			cameraComponent->SetFov(cameraComponent->GetFov() + 1 * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
 	}

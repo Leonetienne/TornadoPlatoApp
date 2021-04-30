@@ -1,6 +1,7 @@
 #include "RenderWindow.h"
 #include "TestFixture.h"
 #include "CameraKeyboardControl.h"
+#include "../Plato/Clock.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
@@ -23,12 +24,13 @@
 	Use these to manually check if specific things are working
 */
 
+Clock frameTimeClock;
 void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 
 int main()
 {
 	// Define screen resolution
-	const Vector2i resolution = Vector2i(800, 600);
+	const Vector2i resolution = Vector2i(800, 600) * 2;
 	
 
 	// Create important objects, such as the Window and the Renderer, including Camera
@@ -63,11 +65,17 @@ int main()
 
 void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 {
+	// Get elapsed time for last frame
+	const double elapsedTime = frameTimeClock.GetElapsedTime().AsMilliseconds();
+	
+	// Reset frametime clock
+	frameTimeClock.Reset();
+
 	WorldObjectManager::DeleteFlaggedObjects();
 
 	// Update test fixture
-	tf->Update(1);
-	WorldObjectManager::CallHook__Update(1);
+	tf->Update(elapsedTime);
+	WorldObjectManager::CallHook__Update(elapsedTime);
 
 	// Clear frame
 	renderer->BeginFrame();
