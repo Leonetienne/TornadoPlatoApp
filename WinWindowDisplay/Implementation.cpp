@@ -21,7 +21,7 @@ AppImplementation::~AppImplementation()
 
 void AppImplementation::Tick()
 {
-	plato->Update();
+	/*plato->Update();
 
 	for (std::size_t x = 0; x < RENDER_WIDTH; x++)
 		for (std::size_t y = 0; y < RENDER_HEIGHT; y++)
@@ -33,7 +33,7 @@ void AppImplementation::Tick()
 			r = *plato->GetPixelBuffer()->GetPixel(Vector2i(x, y), 0);
 			g = *plato->GetPixelBuffer()->GetPixel(Vector2i(x, y), 1);
 			b = *plato->GetPixelBuffer()->GetPixel(Vector2i(x, y), 2);
-		}
+		}*/
 
 	return;
 }
