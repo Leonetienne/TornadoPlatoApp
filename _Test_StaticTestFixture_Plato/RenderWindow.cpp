@@ -40,6 +40,9 @@ RenderWindow::~RenderWindow()
 
 void RenderWindow::Thread__ThreadLife()
 {
+    // Make process use absolute pixel values
+    SetProcessDPIAware();
+
     // Create window
     Thread__CreateWindow();
 
