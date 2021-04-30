@@ -8,7 +8,7 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 	Transform* newTransform = new Transform();
 
 	// Connect pair <3
-	newWorldObject->privateHandle__Transform = newTransform;;
+	newWorldObject->privateHandle__Transform = newTransform;
 	newTransform->privateHandle__WorldObject = newWorldObject;
 
 	// Assign metadata
