@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WorldObject.cpp" />
