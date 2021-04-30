@@ -80,7 +80,7 @@ namespace Engines
 				// Check the interpolated value is the exact value at a
 				Assert::IsTrue(Similar(b, ret), L"Failed B");
 
-				// Interpolate value at position of b between a, b and c
+				// Interpolate value at position of c between a, b and c
 				ret = BarycentricInterpolationEngine::PerspectiveCorrected(
 					ird,
 					ird.c.pos_ss,
