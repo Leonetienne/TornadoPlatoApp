@@ -22,6 +22,11 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 	return newWorldObject;
 }
 
+WorldObject* WorldObjectManager::NewWorldObject(Transform* parent)
+{
+	return NewWorldObject("World Object", parent);
+}
+
 WorldObject* WorldObjectManager::FindObjectById(const std::string& id)
 {
 	// Fast-reject for bullshit parameter
@@ -128,8 +133,14 @@ void WorldObjectManager::Free()
 
 void WorldObjectManager::FreeWorldObject(WorldObject* wo)
 {
+	// Orphan the objects children
+	for (Transform* tr : wo->transform->GetChildren())
+		tr->SetParent(nullptr, false);
+	
+	// Delete transform and world object
 	delete wo->transform;
 	delete wo;
+
 	return;
 }
 
