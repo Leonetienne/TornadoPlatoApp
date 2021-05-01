@@ -9,5 +9,4 @@ public:
 	Test__OBJParser__Load();
 
 private:
-	WorldObject* wo_mesh;
 };
