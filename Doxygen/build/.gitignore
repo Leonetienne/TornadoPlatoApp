@@ -1,2 +1,5 @@
 # Ignore doxygen build results
-./*/*
+*/*
+
+# But keep .gitkeep files!
+!.gitkeep
