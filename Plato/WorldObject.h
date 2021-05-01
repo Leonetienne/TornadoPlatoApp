@@ -51,6 +51,20 @@ public:
 	// Will add a component of type T, and return a pointer to it
 	T* AddComponent(Params... params);
 	
+	// Will return whether or not this world object is locally enabled
+	bool GetIsEnabled() const;
+
+	// Will return whether or not this world object is globally enabled (respecting its parents disabled-states)
+	bool GetIsGloballyEnabled() const;
+
+	// Will locally enable or disable this world object
+	void SetIsEnabled(bool state);
+
+	// Will locally enable this world object
+	void Enable();
+
+	// Will locally disable this world object
+	void Disable();
 
 	// Will return a set of all components
 	const std::unordered_set<Component*>& GetComponents() const;
@@ -69,6 +83,7 @@ private:
 	std::string name;
 	std::unordered_set<std::string> tags;
 	std::string id;
+	bool enabled = true;
 
 	// Registered components
 	std::unordered_set<Component*> components;

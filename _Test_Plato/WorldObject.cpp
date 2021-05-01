@@ -373,6 +373,125 @@ namespace WorldObjects
 			return;
 		}
 
+		// Tests that any world object is enabled by default
+		TEST_METHOD(Enabled_By_Default)
+		{
+			SETUP_TEST
+			
+			// Setup, Exercise
+			WorldObject* wo = WorldObjectManager::NewWorldObject();
+
+			// Verify
+			Assert::IsTrue(wo->GetIsEnabled());
+
+			CLEAN_TEST
+			return;
+		}
+
+		// Tests that any world object is globally enabled by default
+		TEST_METHOD(Globally_Enabled_By_Default)
+		{
+			SETUP_TEST
+			
+			// Setup, Exercise
+			WorldObject* wo = WorldObjectManager::NewWorldObject();
+
+			// Verify
+			Assert::IsTrue(wo->GetIsGloballyEnabled());
+
+			CLEAN_TEST
+			return;
+		}
+
+		// Tests that any world object is globally disabled by default, if the parent is disabled aswell
+		TEST_METHOD(Globally_Disabled_By_Default_If_Instanciated_On_Disabled_Parent)
+		{
+			SETUP_TEST
+			
+			// Setup, Exercise
+			WorldObject* parent = WorldObjectManager::NewWorldObject();
+			parent->Disable();
+			WorldObject* wo = WorldObjectManager::NewWorldObject("Child", parent->transform);
+
+			// Verify
+			Assert::IsFalse(wo->GetIsGloballyEnabled());
+
+			CLEAN_TEST
+			return;
+		}
+
+		// Tests that any world object can be disabled
+		TEST_METHOD(Can_Disable_WorldObject)
+		{
+			SETUP_TEST;
+
+			// Setup
+			WorldObject* wo = WorldObjectManager::NewWorldObject();
+
+			// Exercise
+			wo->Disable();
+
+			// Verify
+			Assert::IsFalse(wo->GetIsEnabled());
+
+			CLEAN_TEST;
+		}
+
+		// Tests that any world object can be enabled again
+		TEST_METHOD(Can_Enable_WorldObject)
+		{
+			SETUP_TEST;
+
+			// Setup
+			WorldObject* wo = WorldObjectManager::NewWorldObject();
+
+			// Exercise
+			wo->Disable();
+			wo->Enable();
+
+			// Verify
+			Assert::IsTrue(wo->GetIsEnabled());
+
+			CLEAN_TEST;
+		}
+
+		// Tests that disabling any world object, also globally disables it
+		TEST_METHOD(Disabling_WorldObject_Causes_It_To_Be_Globally_Disabled)
+		{
+			SETUP_TEST;
+
+			// Setup
+			WorldObject* wo = WorldObjectManager::NewWorldObject();
+
+			// Exercise
+			wo->Disable();
+
+			// Verify
+			Assert::IsFalse(wo->GetIsGloballyEnabled());
+
+			CLEAN_TEST;
+			return;
+		}
+
+		// Tests that disabling any world objects parent, also globally disables itself
+		TEST_METHOD(Disabling_WorldObjects_Parent_Causes_It_To_Be_Globally_Disabled)
+		{
+			SETUP_TEST;
+
+			// Setup
+			WorldObject* parent = WorldObjectManager::NewWorldObject();
+			WorldObject* wo = WorldObjectManager::NewWorldObject("Child", parent->transform);
+
+			// Exercise
+			parent->Disable();
+
+			// Verify
+			Assert::IsFalse(wo->GetIsGloballyEnabled());
+
+			CLEAN_TEST;
+			return;
+		}
+
 		// =========== MEMORY LEAK TESTS ===========
 		// These tests depends on debug-mode for memory insights.
 		// Thus, they only works in debug mode.

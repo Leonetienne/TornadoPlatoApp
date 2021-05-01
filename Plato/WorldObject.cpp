@@ -84,6 +84,44 @@ void WorldObject::ClearAllTags()
 	return;
 }
 
+bool WorldObject::GetIsEnabled() const
+{
+	return enabled;
+}
+
+bool WorldObject::GetIsGloballyEnabled() const
+{
+	// Am i disabled myself?
+	if (!enabled)
+		return false;
+
+	// Do i have a parent?
+	if (transform->GetParent() != nullptr)
+		// Gotta ask them then!
+		return transform->GetParent()->worldObject->GetIsGloballyEnabled();
+	
+	// No parent, no worries
+	return true;
+}
+
+void WorldObject::SetIsEnabled(bool state)
+{
+	enabled = state;
+	return;
+}
+
+void WorldObject::Enable()
+{
+	SetIsEnabled(true);
+	return;
+}
+
+void WorldObject::Disable()
+{
+	SetIsEnabled(false);
+	return;
+}
+
 const std::unordered_set<Component*>& WorldObject::GetComponents() const
 {
 	return components;
