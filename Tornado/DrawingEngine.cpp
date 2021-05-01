@@ -230,9 +230,9 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 	// If we have no material, paint vertex colors
 	else
 	{
-		r = vertexColor.r;
-		g = vertexColor.g;
-		b = vertexColor.b;
+		r = (uint8_t)vertexColor.r;
+		g = (uint8_t)vertexColor.g;
+		b = (uint8_t)vertexColor.b;
 	}
 
 	return;
