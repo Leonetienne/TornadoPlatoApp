@@ -27,7 +27,7 @@ bool Component::GetIsEnabled() const
 Component::Component(WorldObject* worldObject)
 	:
 	worldObject { worldObject },
-	transform { worldObject->GetTransform() }
+	transform { worldObject->transform }
 {
 	Init();
 	return;

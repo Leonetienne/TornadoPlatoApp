@@ -124,7 +124,7 @@ void WorldObjectManager::Free()
 
 void WorldObjectManager::FreeWorldObject(WorldObject* wo)
 {
-	delete wo->GetTransform();
+	delete wo->transform;
 	delete wo;
 	return;
 }

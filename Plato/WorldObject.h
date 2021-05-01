@@ -14,9 +14,6 @@ public:
 
 	~WorldObject();
 
-	Transform* GetTransform();
-	const Transform* GetTransform() const;
-
 	// Will delete this world object at the beginning of the next frame
 	void Destroy();
 
