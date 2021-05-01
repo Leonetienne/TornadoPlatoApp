@@ -64,9 +64,10 @@ void WorldObjectManager::DeleteFlaggedObjects()
 		if (worldObjects[i]->deleteMe)
 		{
 			// Call OnDestroy hooks
-			for (Component* co : worldObjects[i]->components)
-				if (co->GetIsEnabled())
-					co->OnDestroy();
+			if (worldObjects[i]->GetIsGloballyEnabled())
+				for (Component* co : worldObjects[i]->components)
+					if (co->GetIsGloballyEnabled())
+						co->OnDestroy();
 
 			// Free memory
 			FreeWorldObject(worldObjects[i]);
@@ -82,9 +83,10 @@ void WorldObjectManager::DeleteFlaggedObjects()
 void WorldObjectManager::CallHook__Update(double frametime)
 {
 	for (WorldObject* wo : worldObjects)
-		for (Component* co : wo->components)
-			if (co->GetIsEnabled())
-				co->Update(frametime);
+		if (wo->GetIsGloballyEnabled())
+			for (Component* co : wo->components)
+				if (co->GetIsGloballyEnabled())
+					co->Update(frametime);
 
 	return;
 }
@@ -92,9 +94,10 @@ void WorldObjectManager::CallHook__Update(double frametime)
 void WorldObjectManager::CallHook__Render(Renderer* renderer)
 {
 	for (WorldObject* wo : worldObjects)
-		for (Component* co : wo->components)
-			if (co->GetIsEnabled())
-				co->Render(renderer);
+		if (wo->GetIsGloballyEnabled())
+			for (Component* co : wo->components)
+				if (co->GetIsGloballyEnabled())
+					co->Render(renderer);
 
 	return;
 }
@@ -109,9 +112,10 @@ void WorldObjectManager::Free()
 	for (WorldObject* wo : worldObjects)
 	{
 		// Call OnDestroy hooks
-		for (Component* co : wo->components)
-			if (co->GetIsEnabled())
-				co->OnDestroy();
+		if (wo->GetIsGloballyEnabled())
+			for (Component* co : wo->components)
+				if (co->GetIsGloballyEnabled())
+					co->OnDestroy();
 
 		FreeWorldObject(wo);
 	}

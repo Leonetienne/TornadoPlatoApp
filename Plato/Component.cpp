@@ -24,6 +24,16 @@ bool Component::GetIsEnabled() const
 	return enabled;
 }
 
+bool Component::GetIsGloballyEnabled() const
+{
+	// Am i disabled myself?
+	if (!enabled)
+		return false;
+	
+	// Gotta ask my parents then!
+	return worldObject->GetIsGloballyEnabled();
+}
+
 Component::Component(WorldObject* worldObject)
 	:
 	worldObject { worldObject },

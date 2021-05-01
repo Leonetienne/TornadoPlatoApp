@@ -10,17 +10,20 @@ public:
 	WorldObject* const worldObject;
 	Transform* const transform;
 
+	// Will return whether or not this component is locally enabled
+	bool GetIsEnabled() const;
+
+	// Will return whether or not this component is globally enabled (respecting its world objects and its parents disabled-states)
+	bool GetIsGloballyEnabled() const;
+
 	// Will set the enabled-status of this component. Disabled components receive no hook calls!
 	void SetIsEnabled(bool state);
 
-	// Will enable this component. Disabled components receive no hook calls!
+	// Will locally enable this component. Disabled components receive no hook calls!
 	void Enable();
 
-	// Will disable this component. Disabled components receive no hook calls!
+	// Will locally disable this component. Disabled components receive no hook calls!
 	void Disable();
-
-	// Will return whether or not this component is enabled
-	bool GetIsEnabled() const;
 
 protected:
 	// ### GAME ENGINE HOOKS ### //
