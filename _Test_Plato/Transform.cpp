@@ -18,7 +18,7 @@ Vector3d ScaleVec(Vector3d a, Vector3d b)
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // Will create a new WorldObject and fetch its transform
-#define NEW_TRANSFORM WorldObjectManager::NewWorldObject()->GetTransform()
+#define NEW_TRANSFORM WorldObjectManager::NewWorldObject()->transform
 
 namespace TransformRelated
 {
@@ -43,8 +43,8 @@ namespace TransformRelated
 
 			WorldObject* wo = WorldObjectManager::NewWorldObject();
 
-			Assert::IsTrue(wo == wo->GetTransform()->worldObject);
-			Assert::IsTrue(wo->GetTransform() == wo->GetTransform()->worldObject->GetTransform());
+			Assert::IsTrue(wo == wo->transform->worldObject);
+			Assert::IsTrue(wo->transform == wo->transform->worldObject->transform);
 			
 			WorldObjectManager::Free();
 
