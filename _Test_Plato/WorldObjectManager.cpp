@@ -254,8 +254,9 @@ namespace WorldObjects
 		// Tests th at the Free() call does not throw an exception/error when manually having deleted world objects before
 		TEST_METHOD(Can_Call_Free_After_Manually_Destroying_Objects)
 		{
-			SETUP_TEST
+			SETUP_TEST;
 
+			// Setup
 			WorldObject* wo1 = WorldObjectManager::NewWorldObject("Northern Star");
 			WorldObject* wo2 = WorldObjectManager::NewWorldObject("Burrenhow High");
 			WorldObject* goldenBucket = WorldObjectManager::NewWorldObject("Golden bucket");
@@ -263,16 +264,48 @@ namespace WorldObjects
 			WorldObject* bucket3 = WorldObjectManager::NewWorldObject("Bucket");
 			WorldObject* wo6 = WorldObjectManager::NewWorldObject("Floor");
 
+			// Exercise
 			wo2->Destroy();
 			bucket2->Destroy();
 			goldenBucket->Destroy();
-
 			WorldObjectManager::DeleteFlaggedObjects();
 
+			// Verify
 			// This is not allowed to crash the program
 			WorldObjectManager::Free();
 
 			CLEAN_TEST
+			return;
+		}
+
+		// Tests that deleting an objects parent before its children does not cause a nullpointer-dereference
+		TEST_METHOD(Deleting_Parent_Before_Children_Does_Not_Cause_NullpointerDereference)
+		{
+			// If this bug would be present, it would only occur if the contents
+			// of the WorldObjectManagers std::unordered_set would be just in the right order.
+			// To ensure this gets tested at least once, we'll run the test 100000 times
+			// Even with this many tries, it still does not occur every single time.
+
+			Logger::WriteMessage("If this test fails even once, the bug is present. It might not occur very often.");
+
+			for (std::size_t i = 0; i < 100000; i++)
+			{
+				SETUP_TEST;
+			
+				// Setup
+				WorldObject* parent = WorldObjectManager::NewWorldObject();
+				WorldObject* wo = WorldObjectManager::NewWorldObject("Child", parent->transform);
+
+				// Exercise
+				parent->Destroy();
+				WorldObjectManager::DeleteFlaggedObjects();
+
+				// Verify
+				WorldObjectManager::Free();
+
+				CLEAN_TEST;
+			}
+
 			return;
 		}
 

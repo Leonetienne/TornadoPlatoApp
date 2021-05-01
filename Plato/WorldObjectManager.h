@@ -9,7 +9,10 @@
 class WorldObjectManager
 {
 public:
-	// Will create a new world object
+	// Will create a new world object just by a parent
+	static WorldObject* NewWorldObject(Transform* parent);
+
+	// Will create a new world object by an optional name and optional parent
 	static WorldObject* NewWorldObject(const std::string& name = "World Object", Transform* parent = nullptr);
 
 	// Will return a world object that goes by this id. Nullptr if none

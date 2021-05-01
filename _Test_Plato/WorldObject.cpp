@@ -435,6 +435,7 @@ namespace WorldObjects
 			Assert::IsFalse(wo->GetIsEnabled());
 
 			CLEAN_TEST;
+			return;
 		}
 
 		// Tests that any world object can be enabled again
@@ -453,6 +454,38 @@ namespace WorldObjects
 			Assert::IsTrue(wo->GetIsEnabled());
 
 			CLEAN_TEST;
+			return;
+		}
+
+		// Tests that destroying a world object will also destroy all of its children
+		TEST_METHOD(Destroying_WorldObject_Also_Destroys_Children)
+		{
+			SETUP_TEST;
+
+			// Setup
+			WorldObject* wo00 = WorldObjectManager::NewWorldObject();
+			WorldObject* wo10 = WorldObjectManager::NewWorldObject(wo00->transform);
+			WorldObject* wo11 = WorldObjectManager::NewWorldObject(wo00->transform);
+			WorldObject* wo12 = WorldObjectManager::NewWorldObject(wo00->transform);
+			WorldObject* wo20 = WorldObjectManager::NewWorldObject(wo12->transform);
+			WorldObject* wo21 = WorldObjectManager::NewWorldObject(wo12->transform);
+			WorldObject* wo22 = WorldObjectManager::NewWorldObject(wo12->transform);
+			WorldObject* wo30 = WorldObjectManager::NewWorldObject(wo22->transform);
+			WorldObject* wo31 = WorldObjectManager::NewWorldObject(wo22->transform);
+			WorldObject* wo32 = WorldObjectManager::NewWorldObject(wo22->transform);
+
+			// Little sanity-check
+			Assert::AreEqual(std::size_t(10), WorldObjectManager::GetNumObjects(), L"Sanity check for initial number of objects failed!");
+
+			// Exercise
+			wo12->Destroy(); // <-- Has 6 total children
+			WorldObjectManager::DeleteFlaggedObjects();
+
+			// Verify
+			Assert::AreEqual(std::size_t(3), WorldObjectManager::GetNumObjects(), L"New object count does not match!");
+
+			CLEAN_TEST;
+			return;
 		}
 
 		// Tests that disabling any world object, also globally disables it

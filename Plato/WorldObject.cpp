@@ -20,7 +20,17 @@ WorldObject::~WorldObject()
 
 void WorldObject::Destroy()
 {
+	// Save computing the recursive deletion, when they're already marked to be deleted
+	if (deleteMe)
+		return;
+
+	// Delete self
 	deleteMe = true;
+
+	// Delete children
+	for (Transform* tr : transform->GetChildren())
+		tr->worldObject->Destroy();
+
 	return;
 }
 
