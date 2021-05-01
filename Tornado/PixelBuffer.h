@@ -1,7 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <exception>
+#include <vector>
 #include "Vector2.h"
+#include "Endian.h"
 
 // T = num channels
 template <std::size_t T>
@@ -40,6 +42,9 @@ public:
 
 	// Will return the size in elements of the raw pixel buffer
 	std::size_t GetSizeofBuffer() const;
+
+	// Will clear this pixel buffer to a solid color
+	void Clear(std::vector<uint8_t> color);
 
 private:
 	uint8_t* pixelBuffer;
@@ -175,4 +180,42 @@ template<std::size_t T>
 std::size_t PixelBuffer<T>::GetSizeofBuffer() const
 {
 	return (std::size_t)size.x * (std::size_t)size.y * T;
+}
+
+template<std::size_t T>
+inline void PixelBuffer<T>::Clear(std::vector<uint8_t> color)
+{
+	// Impute missing channels
+	color.resize(T, 0);
+	
+	// Case: We have only one channel
+	if (T == 1)
+	{
+		memset(pixelBuffer, color[0], GetSizeofBuffer());
+		return;
+	}
+
+	// Check if the target color is grayscale
+	bool isTargetColorGrayscale = true;
+	for (std::size_t i = 1; i < color.size(); i++) // <-- This is safe, because color.size() == 1 would have already returned
+		if (color[i - 1] != color[i])
+			isTargetColorGrayscale = false;
+
+	// Case: Color is grayscale
+	if (isTargetColorGrayscale)
+	{
+		// Since all color channels are the same, let's just set it all to the first channel
+		memset(pixelBuffer, color[0], GetSizeofBuffer());
+		return;
+	}
+
+	// Case: no good shortcut... Let's do it the slow way:
+	const std::size_t cachedBufferSize = GetSizeofBuffer();
+	for (std::size_t i = 0; i < cachedBufferSize; i += T)
+	{
+		for (std::size_t c = 0; c < T; c++)
+			pixelBuffer[i + c] = color[c];
+	}
+
+	return;
 }

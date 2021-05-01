@@ -464,6 +464,274 @@ namespace PixelBuffers
 		}
 
 
+		// We need this many tests to test Clear() because it is highly optimized for specific setups
+
+		// Tests that clearing the pixel buffer with a solid grayscale color works with 3 channels
+		TEST_METHOD(Clear_Grayscale_3chn)
+		{
+			// Setup
+			PixelBuffer<3> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 129, 129 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 2));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid grayscale color works with 4 channels
+		TEST_METHOD(Clear_Grayscale_4chn)
+		{
+			// Setup
+			PixelBuffer<4> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 129, 129, 129 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 3));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid color works with 1 channel
+		TEST_METHOD(Clear_1chn)
+		{
+			// Setup
+			PixelBuffer<1> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid Rg color works with 4 channels
+		TEST_METHOD(Clear_Rg_2chn)
+		{
+			// Setup
+			PixelBuffer<2> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 72 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					// Generate debug outout
+					std::wstringstream wss;
+					wss << std::endl
+						<< "x: " << x << std::endl
+						<< "y: " << y << std::endl
+						<< "chn0: " << *pxb.GetPixel({ x, y }, 0) << std::endl
+						<< "chn1: " << *pxb.GetPixel({ x, y }, 1) << std::endl
+						<< std::endl;
+
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0), wss.str().c_str());
+					Assert::AreEqual(uint8_t(72), *pxb.GetPixel({ x, y }, 1), wss.str().c_str());
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid rgb color works with 3 channels
+		TEST_METHOD(Clear_Rgb_3chn)
+		{
+			// Setup
+			PixelBuffer<3> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 72, 69 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(72), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(69), *pxb.GetPixel({ x, y }, 2));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid rgba color works with 4 channels
+		TEST_METHOD(Clear_Rgba_4chn)
+		{
+			// Setup
+			PixelBuffer<4> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 72, 69, 89 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(72), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(69), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(89), *pxb.GetPixel({ x, y }, 3));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid rgbax color works with 5 channels
+		TEST_METHOD(Clear_Rgbax_5chn)
+		{
+			// Setup
+			PixelBuffer<5> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 72, 69, 89, 32 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(72), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(69), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(89), *pxb.GetPixel({ x, y }, 3));
+					Assert::AreEqual(uint8_t(32), *pxb.GetPixel({ x, y }, 4));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid rgbaxxxx color works with 8 channels
+		TEST_METHOD(Clear_Rgbaxxxx_8chn)
+		{
+			// Setup
+			PixelBuffer<8> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 72, 69, 89, 32, 19, 15, 3 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(72), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(69), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(89), *pxb.GetPixel({ x, y }, 3));
+					Assert::AreEqual(uint8_t(32), *pxb.GetPixel({ x, y }, 4));
+					Assert::AreEqual(uint8_t(19), *pxb.GetPixel({ x, y }, 5));
+					Assert::AreEqual(uint8_t(15), *pxb.GetPixel({ x, y }, 6));
+					Assert::AreEqual(uint8_t(3), *pxb.GetPixel({ x, y }, 7));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid grayscale color works with 8 channels
+		TEST_METHOD(Clear_Grayscale_8chn)
+		{
+			// Setup
+			PixelBuffer<8> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 129, 129, 129, 129, 129, 129, 129 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 3));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 4));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 5));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 6));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 7));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid rgbaxxxxxx color works with 10 channels
+		TEST_METHOD(Clear_Rgbaxxxxxx_10chn)
+		{
+			// Setup
+			PixelBuffer<10> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 72, 69, 89, 32, 19, 15, 3, 5, 95 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(72), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(69), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(89), *pxb.GetPixel({ x, y }, 3));
+					Assert::AreEqual(uint8_t(32), *pxb.GetPixel({ x, y }, 4));
+					Assert::AreEqual(uint8_t(19), *pxb.GetPixel({ x, y }, 5));
+					Assert::AreEqual(uint8_t(15), *pxb.GetPixel({ x, y }, 6));
+					Assert::AreEqual(uint8_t(3), *pxb.GetPixel({ x, y }, 7));
+					Assert::AreEqual(uint8_t(5), *pxb.GetPixel({ x, y }, 8));
+					Assert::AreEqual(uint8_t(95), *pxb.GetPixel({ x, y }, 9));
+				}
+
+			return;
+		}
+
+		// Tests that clearing the pixel buffer with a solid grayscale color works with 10 channels
+		TEST_METHOD(Clear_Grayscale_10chn)
+		{
+			// Setup
+			PixelBuffer<10> pxb({ 69, 69 });
+
+			// Exercise
+			pxb.Clear({ 129, 129, 129, 129, 129, 129, 129, 129, 129, 129 });
+
+			// Verify
+			for (int x = 0; x < pxb.GetDimensions().x; x++)
+				for (int y = 0; y < pxb.GetDimensions().y; y++)
+				{
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 0));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 1));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 2));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 3));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 4));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 5));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 6));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 7));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 8));
+					Assert::AreEqual(uint8_t(129), *pxb.GetPixel({ x, y }, 9));
+				}
+
+			return;
+		}
+
+
 		// =========== MEMORY LEAK TESTS ===========
 		// These tests depends on debug-mode for memory insights.
 		// Thus, they only works in debug mode.
