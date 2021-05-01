@@ -11,7 +11,7 @@
 */
 
 Test__OBJParser__LoadMultimesh::Test__OBJParser__LoadMultimesh() :
-	TestFixture(__FUNCTION__) // Set the test fixtures name e
+	TestFixture(__FUNCTION__) // Set the test fixtures name
 {
 	// Load mesh files
 	ResourceManager::LoadMeshFromObj("monke", "monke.obj");
