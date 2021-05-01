@@ -24,27 +24,28 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 	ResourceManager::NewMaterial("skybox")->texture = ResourceManager::FindTexture("skybox");
 
 	// Create spider
-	wo_mesh = WorldObjectManager::NewWorldObject("spoder");
-	wo_mesh->AddComponent<MeshRenderer>(
+	WorldObject* spider = WorldObjectManager::NewWorldObject("spoder");
+	spider->AddComponent<MeshRenderer>(
 		ResourceManager::FindMesh("spoder"),
 		ResourceManager::FindMaterial("spoder")
 	);
-	wo_mesh->transform->Move(Vector3d(0, -15, -50));
-	wo_mesh->transform->Rotate(Quaternion(Vector3d(0, 90, 0)));
+	spider->transform->Move(Vector3d(0, -15, -50));
+	spider->transform->Rotate(Quaternion(Vector3d(0, 90, 0)));
 
-	wo_mesh = WorldObjectManager::NewWorldObject("character", wo_mesh->transform);
-	wo_mesh->AddComponent<MeshRenderer>(
+	WorldObject* character = WorldObjectManager::NewWorldObject("character", spider->transform);
+	character->AddComponent<MeshRenderer>(
 		ResourceManager::FindMesh("character"),
 		ResourceManager::FindMaterial("character")
 		);
+	character->Disable();
 
 	// Create skybox
-	Transform* skybox = WorldObjectManager::NewWorldObject("skybox")->transform;
-	skybox->worldObject->AddComponent<MeshRenderer>(
+	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
+	skybox->AddComponent<MeshRenderer>(
 		ResourceManager::FindMesh("skybox"),
 		ResourceManager::FindMaterial("skybox")
 	);
-	skybox->Scale(Vector3d::one * 50);
+	skybox->transform->Scale(Vector3d::one * 50);
 
 	return;
 }
