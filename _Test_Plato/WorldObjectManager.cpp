@@ -25,6 +25,16 @@ namespace WorldObjects
 			return;
 		}
 
+		// Tests that the initial number/count of world objects is 0
+		TEST_METHOD(Initial_Number_Of_WorldObjects_Is_0)
+		{
+			SETUP_TEST;
+
+			Assert::AreEqual(std::size_t(0), WorldObjectManager::GetNumObjects());
+
+			CLEAN_TEST;
+		}
+
 		// Tests if a new object can be created
 		TEST_METHOD(Can_Create_New_Object)
 		{
@@ -306,6 +316,40 @@ namespace WorldObjects
 				CLEAN_TEST;
 			}
 
+			return;
+		}
+
+		// Tests that creating a new object will increase the object count
+		TEST_METHOD(Creating_Object_Increases_Object_Count)
+		{
+			SETUP_TEST;
+
+			// Setup, Exercise
+			WorldObjectManager::NewWorldObject();
+
+			// Verify
+			Assert::AreEqual(std::size_t(1), WorldObjectManager::GetNumObjects());
+
+			CLEAN_TEST;
+			return;
+		}
+
+		// Tests that destroying an object will decrease the object count
+		TEST_METHOD(Destroying_Object_Increases_Object_Count)
+		{
+			SETUP_TEST;
+
+			// Setup
+			WorldObject* wo = WorldObjectManager::NewWorldObject();
+
+			// Exercise
+			wo->Destroy();
+			WorldObjectManager::DeleteFlaggedObjects();
+
+			// Verify
+			Assert::AreEqual(std::size_t(0), WorldObjectManager::GetNumObjects());
+
+			CLEAN_TEST;
 			return;
 		}
 
