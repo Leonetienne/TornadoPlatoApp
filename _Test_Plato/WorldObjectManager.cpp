@@ -65,13 +65,13 @@ namespace WorldObjects
 			Assert::AreEqual(std::string("Parent"), parent->GetName());
 
 			// Create child object, with a name and parent transform supplied
-			WorldObject* child = WorldObjectManager::NewWorldObject("Child", parent->GetTransform());
+			WorldObject* child = WorldObjectManager::NewWorldObject("Child", parent->transform);
 
 			// Check that the name got applied
 			Assert::AreEqual(std::string("Child"), child->GetName());
 
 			// Check that the child-parent relationship got set up
-			Assert::IsTrue(parent->GetTransform() == child->GetTransform()->GetParent(), L"Child-Parent relationship not set");
+			Assert::IsTrue(parent->transform == child->transform->GetParent(), L"Child-Parent relationship not set");
 
 			CLEAN_TEST
 			return;
