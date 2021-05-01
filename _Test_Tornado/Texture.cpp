@@ -66,10 +66,10 @@ namespace TexturingAndStuff
 		TEST_METHOD(Color_Size_Matches_Size)
 		{
 			// Test 10 times
-			for (std::size_t i = 0; i < 10; i++)
+			for (std::size_t i = 0; i < 1000; i++)
 			{
-				int x = LARGE_RAND_POSITIVE_INT;
-				int y = LARGE_RAND_POSITIVE_INT;
+				int x = LARGE_RAND_POSITIVE_INT + 1; // Pls no texture of size 0
+				int y = LARGE_RAND_POSITIVE_INT + 1;
 
 				Texture txt(Color::green, { x, y });
 				Assert::AreEqual(x, (int)txt.GetPixelBuffer().GetDimensions().x);
