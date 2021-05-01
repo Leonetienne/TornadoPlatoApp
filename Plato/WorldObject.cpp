@@ -18,16 +18,6 @@ WorldObject::~WorldObject()
 	return;
 }
 
-Transform* WorldObject::GetTransform()
-{
-	return transform;
-}
-
-const Transform* WorldObject::GetTransform() const
-{
-	return transform;
-}
-
 void WorldObject::Destroy()
 {
 	deleteMe = true;

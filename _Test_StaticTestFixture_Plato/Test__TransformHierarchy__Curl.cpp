@@ -26,9 +26,9 @@ Transform* Test__TransformHierarchy__Curl::CreateLink(Transform* parent)
 	);
 	
 	wo->AddTag("joint");
-	wo->GetTransform()->Move(Vector3d::up * 3);
+	wo->transform->Move(Vector3d::up * 3);
 
-	return wo->GetTransform();
+	return wo->transform;
 }
 
 Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
@@ -36,7 +36,7 @@ Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
 {
 	// Reposition camera to a more fitting place
 	{
-		Transform* cam = WorldObjectManager::FindObjectById("main_camera_ypiv")->GetTransform();
+		Transform* cam = WorldObjectManager::FindObjectById("main_camera_ypiv")->transform;
 		cam->SetPosition(Vector3d(20, 3, 0));
 		cam->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 0)));
 	}
@@ -47,7 +47,7 @@ Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
 	ResourceManager::NewMaterial("cube")->texture = ResourceManager::FindTexture("cube");
 
 	// Create a root transform (for positioning and rotation)
-	jointRoot = WorldObjectManager::NewWorldObject("joint_root")->GetTransform();
+	jointRoot = WorldObjectManager::NewWorldObject("joint_root")->transform;
 	jointRoot->Rotate(Quaternion::FromEuler(Vector3d(49, -20, 39)));
 	jointRoot->Scale(Vector3d::one * 0.8);
 
@@ -63,7 +63,7 @@ void Test__TransformHierarchy__Curl::Update(double frametime)
 {
 	if (GetAsyncKeyState(VK_SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
-			wo->GetTransform()->Rotate(Quaternion::FromEuler(Vector3d::right * 0.07));
+			wo->transform->Rotate(Quaternion::FromEuler(Vector3d::right * 0.07));
 
 	if (GetAsyncKeyState('U'))
 		jointRoot->Rotate(Quaternion::FromEuler(Vector3d(-2.5, -2, -8) * 0.1));

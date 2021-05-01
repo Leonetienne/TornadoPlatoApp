@@ -18,7 +18,7 @@ Test__TextureProjectionWorks::Test__TextureProjectionWorks() :
 	wo_coob->AddComponent<MeshRenderer>(&mesh_coob, &mat_coob);
 	wo_coob->AddComponent<Rotator>(0.1);
 
-	wo_coob->GetTransform()->Move(Vector3d(0, 0, 5));
+	wo_coob->transform->Move(Vector3d(0, 0, 5));
 
 	return;
 }
