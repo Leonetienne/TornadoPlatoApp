@@ -5,6 +5,7 @@
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
+#include <iostream>
 
 // Include test cases
 #include "Test__TransformHierarchy__Curl.h"
@@ -35,7 +36,7 @@ int main()
 
 	// Create important objects, such as the Window and the Renderer, including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
-	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->GetTransform(); // Necessary for camera rotation
+	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
 	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 10000);
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->worldObject->SetId("main_camera");
@@ -88,6 +89,11 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 
 	// Update render window pixel buffer
 	window->UpdateBgrPixelBuffer();
+
+	// Add fps to title
+	std::stringstream ss;
+	ss << tf->GetTestName() << " - FPS: " << (int)(1000.0 / elapsedTime);
+	window->SetTitle(ss.str());
 
 	return;
 }
