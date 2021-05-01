@@ -84,6 +84,9 @@
     <ClInclude Include="Similar.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Endian.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">

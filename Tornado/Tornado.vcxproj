@@ -24,6 +24,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DrawingEngine.h" />
+    <ClInclude Include="Endian.h" />
     <ClInclude Include="InterRenderTriangle.h" />
     <ClInclude Include="InterRenderVertex.h" />
     <ClInclude Include="Material.h" />
