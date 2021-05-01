@@ -28,7 +28,7 @@ void DrawingEngine::BeginBatch(std::size_t reservesize_triangles)
 {
 	// Clear buffers
 	std::fill_n(zBuffer, numPixels, 1000000); // Clear z-buffer
-	memset(renderTarget->GetRawData(), 0, renderTarget->GetSizeofBuffer()); // Clear render target
+	renderTarget->Clear({0}); // Clear pixel buffer black
 
 	// Clear triangle registry
 	registeredTriangles.clear();
