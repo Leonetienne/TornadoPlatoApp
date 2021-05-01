@@ -12,9 +12,10 @@
 #include "Test__TransformHierarchy__ClearParent.h"
 #include "Test__TransformHierarchy__ChangeParent.h"
 #include "Test__OBJParser__Load.h"
+#include "Test__OBJParser__LoadMultimesh.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__OBJParser__Load
+#define TEST_TO_RUN Test__OBJParser__LoadMultimesh
 
 /*
 	This project is another testing project for the GameEngine Plato.

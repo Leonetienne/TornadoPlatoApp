@@ -4,6 +4,10 @@
 #include "Rotator.h"
 #include <iostream>
 
+/*
+	Expected behaviour: The objects load
+*/
+
 Test__OBJParser__Load::Test__OBJParser__Load() :
 	TestFixture(__FUNCTION__) // Set the test fixtures name e
 {
