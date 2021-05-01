@@ -7,17 +7,20 @@
 Test__OBJParser__Load::Test__OBJParser__Load() :
 	TestFixture(__FUNCTION__) // Set the test fixtures name e
 {
+	// Load mesh files
 	ResourceManager::LoadMeshFromObj("cube", "cube.obj");
 	ResourceManager::LoadMeshFromObj("bottle", "bottle.obj");
 	ResourceManager::LoadMeshFromObj("spoder", "spoder__gitignore_.obj");
 	ResourceManager::LoadMeshFromObj("character", "character__gitignore_.obj");
 	ResourceManager::LoadMeshFromObj("skybox", "skybox.obj");
 
+	// Load texture files
 	ResourceManager::LoadTextureFromBmp("bottle", "bottle text.bmp");
 	ResourceManager::LoadTextureFromBmp("spoder", "spoder__gitignore_.bmp");
 	ResourceManager::LoadTextureFromBmp("character", "character__gitignore_.bmp");
 	ResourceManager::LoadTextureFromBmp("skybox", "example_skybox.bmp");
 
+	// Create materials
 	ResourceManager::NewMaterial("bottle")->texture = ResourceManager::FindTexture("bottle");
 	ResourceManager::NewMaterial("spoder")->texture = ResourceManager::FindTexture("spoder");
 	ResourceManager::NewMaterial("character")->texture = ResourceManager::FindTexture("character");
