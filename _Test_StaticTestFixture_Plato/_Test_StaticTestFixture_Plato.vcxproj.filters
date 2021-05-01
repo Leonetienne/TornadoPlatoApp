@@ -48,6 +48,9 @@
     <ClCompile Include="Test__OBJParser__Load.cpp">
       <Filter>Quelldateien\Tests.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Test__OBJParser__LoadMultimesh.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestFixture.h">
@@ -81,6 +84,9 @@
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
     <ClInclude Include="Test__OBJParser__Load.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__OBJParser__LoadMultimesh.h">
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
   </ItemGroup>

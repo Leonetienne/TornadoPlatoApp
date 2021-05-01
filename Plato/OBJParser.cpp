@@ -10,9 +10,7 @@ Mesh OBJParser::ParseObj(const std::string& filepath)
 
 	std::string line;
 	while (std::getline(ss, line))
-	{
 		InterpretLine(line);
-	}
 
 	Mesh mesh = AssembleSubmeshes();
 	Reset();
@@ -264,6 +262,7 @@ void OBJParser::CleanSubmesh()
 {
 	// This is just to prevent vector-subscript-out-of-ranges
 
+	return;
 	if (curSubmesh.normals.size() == 0)
 		curSubmesh.normals.push_back(Vector3d::one);
 
@@ -288,8 +287,77 @@ void OBJParser::NextSubmesh()
 
 Mesh OBJParser::AssembleSubmeshes()
 {
+	// Insert the last worked on submesh into the submesh vector
 	NextSubmesh();
-	return submeshes[1];
+
+	// Common-case shortcut: File contains only one mesh
+	//if (submeshes.size() == 2)
+	//	return submeshes[1];
+
+	// Else: Merge all submeshes into one single mesh
+
+	Mesh toRet;
+
+	// Reserve memory in new mesh
+	{
+		// Initialize counters
+		std::size_t numTotal_v = 0;
+		std::size_t numTotal_uv = 0;
+		std::size_t numTotal_vn = 0;
+		std::size_t numTotal_tris = 0;
+
+		// Count how much we need
+		for (const Mesh& submesh : submeshes)
+		{
+			numTotal_v += submesh.v_vertices.size();
+			numTotal_uv += submesh.uv_vertices.size();
+			numTotal_vn += submesh.normals.size();
+			numTotal_tris += submesh.tris.size();
+		}
+
+		// Reserve it
+		toRet.v_vertices.reserve(numTotal_v);
+		toRet.uv_vertices.reserve(numTotal_uv);
+		toRet.normals.reserve(numTotal_vn);
+		toRet.tris.reserve(numTotal_tris);
+	}
+
+	for (const Mesh& submesh : submeshes)
+	{
+		if (submesh.tris.size() == 0)
+			continue;
+
+		// Merge submesh vertex vectors into main mesh vectors
+		toRet.v_vertices.insert(
+			toRet.v_vertices.end(),
+			submesh.v_vertices.begin(),
+			submesh.v_vertices.end()
+		);
+
+		toRet.uv_vertices.insert(
+			toRet.uv_vertices.end(),
+			submesh.uv_vertices.begin(),
+			submesh.uv_vertices.end()
+		);
+
+		toRet.normals.insert(
+			toRet.normals.end(),
+			submesh.normals.begin(),
+			submesh.normals.end()
+		);
+
+		// Merge offset-adjusted tris indices into main mesh tris vector
+		for (const MeshVertexIndices& mvi : submesh.tris)
+			toRet.tris.push_back(
+				{
+					mvi.v,
+					mvi.uv,
+					mvi.vn,
+				}
+			);
+	}
+	
+	return toRet;
 }
 
 void OBJParser::Reset()
