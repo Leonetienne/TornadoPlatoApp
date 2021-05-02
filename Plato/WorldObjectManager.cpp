@@ -1,25 +1,40 @@
 #include "WorldObjectManager.h"
 #include "Component.h"
 
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transform* parent)
 {
 	// Create new pair
-	WorldObject* newWorldObject = new WorldObject();
-	Transform* newTransform = new Transform();
+	try
+	{
+		WorldObject* newWorldObject = new WorldObject();
+		Transform* newTransform = new Transform();
+	
+		// Connect pair <3
+		newWorldObject->privateHandle__Transform = newTransform;
+		newTransform->privateHandle__WorldObject = newWorldObject;
 
-	// Connect pair <3
-	newWorldObject->privateHandle__Transform = newTransform;
-	newTransform->privateHandle__WorldObject = newWorldObject;
+		// Assign metadata
+		newWorldObject->SetName(name);
+		newTransform->SetParent(parent, false);
+		newTransform->Reset();
 
-	// Assign metadata
-	newWorldObject->SetName(name);
-	newTransform->SetParent(parent, false);
-	newTransform->Reset();
+		// Put in list of objects
+		worldObjects.push_back(newWorldObject);
 
-	// Put in list of objects
-	worldObjects.push_back(newWorldObject);
+		return newWorldObject;
 
-	return newWorldObject;
+	}
+	catch (std::bad_alloc& bac)
+	{
+		#ifdef _DEBUG
+		std::cerr << "Bad alloc!: " << bac.what() << std::endl;
+		#endif
+	}
+	return nullptr;
 }
 
 WorldObject* WorldObjectManager::NewWorldObject(Transform* parent)
@@ -134,7 +149,12 @@ void WorldObjectManager::Free()
 void WorldObjectManager::FreeWorldObject(WorldObject* wo)
 {
 	// Orphan the objects children
-	for (Transform* tr : wo->transform->GetChildren())
+
+	// Cache the child-set because SetParent() will modify the set behind GetChildren()!
+	std::unordered_set<Transform*> cachedChildren = wo->transform->GetChildren();
+
+	// Do the orphaning fest
+	for (Transform* tr : cachedChildren)
 		tr->SetParent(nullptr, false);
 	
 	// Delete transform and world object
