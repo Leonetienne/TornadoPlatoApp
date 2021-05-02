@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <vector>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 
 enum class WorkerTaskState
 {
@@ -23,6 +25,7 @@ class WorkerPool;
 class Worker
 {
 public:
+	Worker(WorkerPool* pool);
 	~Worker();
 
 	// Will attempt to start working on a provided task
@@ -49,11 +52,12 @@ private:
 	
 	std::thread* ownThread = nullptr;
 	WorkerTask* task = nullptr;
+	WorkerPool* pool;
 	bool isIdling = true;
 	bool doTask = false;
 	bool doStop = false;
 
-	friend WorkerPool;
+	friend class WorkerPool;
 };
 
 class WorkerPool
@@ -80,4 +84,9 @@ public:
 private:
 	std::vector<Worker*> workers;
 	std::vector<WorkerTask*> taskQueue;
+
+	std::mutex mutex;
+	std::condition_variable conditional_lock;
+
+	friend class Worker;
 };
