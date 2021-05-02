@@ -60,7 +60,7 @@ std::size_t WorkerPool::GetQueueLength() const
 	std::size_t count = 0;
 
 	for (const WorkerTask* wt : taskQueue)
-		if (wt->state == WorkerTaskState::QUEUED)
+		if (wt->state == WorkerTask::State::QUEUED)
 			count++;
 
 	return count;
@@ -92,7 +92,7 @@ void WorkerPool::Execute()
 		for (Worker* w : workers)
 			if (w->IsIdling()) // And if a worker is not working
 				for (WorkerTask* wt : taskQueue)
-					if (wt->state == WorkerTaskState::QUEUED) // And if a task is unassigned
+					if (wt->state == WorkerTask::State::QUEUED) // And if a task is unassigned
 					{
 						w->DoTask(wt);	// Add that task
 						didQueueAnything = true;
@@ -145,7 +145,7 @@ bool Worker::DoTask(WorkerTask* task)
 		return false;
 
 	this->task = task;
-	this->task->state = WorkerTaskState::ASSIGNED;
+	this->task->state = WorkerTask::State::ASSIGNED;
 	isIdling = false;
 	doTask = true;
 
@@ -186,14 +186,14 @@ void Worker::Lifecycle()
 			// Set flags for working
 			doTask = false;
 			isIdling = false;
-			task->state = WorkerTaskState::COMPUTING;
+			task->state = WorkerTask::State::COMPUTING;
 
 			// Run task
 			task->task();
 
 			// Set flags for idling
 			isIdling = true;
-			task->state = WorkerTaskState::FINISHED;
+			task->state = WorkerTask::State::FINISHED;
 		}
 	}
 

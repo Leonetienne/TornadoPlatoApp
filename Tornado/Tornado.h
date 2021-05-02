@@ -3,22 +3,25 @@
 #include "ProjectionEngine.h"
 #include "DrawingEngine.h"
 
+/** The main class to interface with the rendering engine.
+* You basically don't have to interact with anything else but a few data structures to get things going!
+*/
 class Tornado
 {
 public:
 	Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads);
 	~Tornado();
 
-	// Will initialize the rendering of a new frame.
+	//! Will initialize the rendering of a new frame.
 	void BeginFrame();
 
-	// Will register a RenderTriangle3D to be rendered.
+	//! Will register a RenderTriangle3D to be rendered.
 	void RegisterRender(const RenderTriangle3D* tri);
 
-	// Will execute the render
+	//! Will execute the render
 	void Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix);
 
-	// Will return the pixel buffer with the rendered pixel data.
+	//! Will return the pixel buffer with the rendered pixel data.
 	const PixelBuffer<3>* GetPixelBuffer() const;
 
 private:
