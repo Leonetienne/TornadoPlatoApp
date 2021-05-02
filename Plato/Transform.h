@@ -50,6 +50,9 @@ public:
 
 	// Will set this transforms new parent
 	// Set keepAbsoluteTransform to false to keep the local transformation values
+	// !!! BEWARE !!! THIS METHOD WILL MODIFY ITS PARENTS children CONTAINER!!!
+	// !!! THIS WILL CAUSE HARD-TO-DEBUG EXCEPTIONS WHEN CALLING THIS WHILST ITERATING OVER GetChildren() !!!
+	// If you want to use this method whilst iterating over GetChildren(), copy the return value beforehand!
 	void SetParent(Transform* newParent, bool keepAbsoluteTransform = true);
 
 	// Will set a Transform as a child. This will delete the existing parent-child relationship of the supplied transform!

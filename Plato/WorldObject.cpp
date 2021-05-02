@@ -15,6 +15,7 @@ WorldObject::~WorldObject()
 		delete co;
 
 	components.clear();
+
 	return;
 }
 
