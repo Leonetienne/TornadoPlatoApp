@@ -48,16 +48,16 @@ public:
 
 	// These are needed for unit testing (without a worker pool)
 	#ifdef _DEBUG
+	Worker(WorkerPool* pool);
 	void SetThread(std::thread* thr) { ownThread = thr; };
 	std::thread* GetThread() { return ownThread; };
 	void Lifecycle();
 	#endif;
 
 private:
+	#ifndef _DEBUG
 	// Disallow public instanciation
 	Worker(WorkerPool* pool);
-
-	#ifndef _DEBUG
 	void Lifecycle();
 	#endif
 	
