@@ -2,6 +2,10 @@
 #include <cstdint>
 #include <ostream>
 
+/** Fluent floating-point color representation.
+* Color ranges from 0-255. Support for linear interpolation, and comparison.  
+* Also contains a few pre-defined colors.
+*/
 struct Color
 {
 	Color() : r{ 0 }, g{ 0 }, b{ 0 }, a{ 0 } {};
@@ -15,11 +19,11 @@ struct Color
 	bool operator==(const Color& other) const;
 	bool operator!=(const Color& other) const;
 
-	// Will lerp itself to other by t
+	//! Will lerp itself to other by t
 	void LerpSelf(const Color& other, double t);
-	// Will lerp between self and other
+	//! Will lerp between self and other
 	Color Lerp(const Color& other, double t) const;
-	// Will lerp between a and b
+	//! Will lerp between a and b
 	static Color Lerp(const Color& a, const Color& b, double t);
 
 	friend std::ostream& operator<< (std::ostream& os, const Color& c)

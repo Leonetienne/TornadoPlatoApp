@@ -2,6 +2,8 @@
 #include "PixelBuffer.h"
 #include "Color.h"
 
+/** An RGBA texture
+*/
 class Texture
 {
 public:
@@ -11,8 +13,12 @@ public:
 	Texture(const Texture& other);
 	~Texture();
 
+	//! Will set a new pixel buffer as the content
 	void SetPixelBuffer(const PixelBuffer<4>& newPxb);
+
+	//! Will return the current pixel buffer
 	PixelBuffer<4>& GetPixelBuffer();
+	//! Will return the current pixel buffer
 	const PixelBuffer<4>& GetPixelBuffer() const;
 
 private:

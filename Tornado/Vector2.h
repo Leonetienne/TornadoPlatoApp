@@ -5,6 +5,9 @@
 template <typename T> class Vector3;
 template <typename T> class Vector4;
 
+/** Representation of a 2d vector.
+* Contains a lot of utility methods.
+*/
 template <typename T>
 class Vector2
 {
@@ -12,24 +15,37 @@ public:
 	Vector2() : x{ 0 }, y{ 0 } {}
 	Vector2(T _x, T _y) : x{ _x }, y{ _y } {}
 
+	//! Will compute the dot product to another Vector2
 	double DotProduct(const Vector2<T>& other) const;
+
+	//! Will compute the cross product to another Vector2
 	double CrossProduct(const Vector2<T>& other) const;
+
+	//! Will compute the square magnitude
 	double SqrMagnitude() const;
+
+	//! Will compute the magnitude
 	double Magnitude() const;
+
+	//! Will return the normalization of this vector
 	[[nodiscard]] Vector2<double> Normalize() const;
+
+	//! Will normalize this vector
 	void NormalizeSelf();
 
-	// Will scale self.n by scalar.n
+	//! Will scale self.n by scalar.n
 	Vector2<T> VectorScale(const Vector2<T>& scalar) const;
 
-	// Will lerp itself towards other by t
+	//! Will lerp itself towards other by t
 	void LerpSelf(const Vector2<T>& other, double t);
-	// Will lerp relative to this vector
+
+	//! Will return a lerp result between this and another vector
 	Vector2<double> Lerp(const Vector2<T>& other, double t) const;
-	// Will lerp between a and b
+
+	//! Will lerp between a and b by t
 	static Vector2<double> Lerp(const Vector2<T>& a, const Vector2<T>& b, double t);
 
-	// Will compare if two vectors are similar to a certain epsilon value
+	//! Will compare if two vectors are similar to a certain epsilon value
 	bool Similar(const Vector2<T>& other, double epsilon = 0.00001) const;
 
 	T& operator[](std::size_t idx);
@@ -45,8 +61,8 @@ public:
 	void operator/=(const T scale);
 	Vector2<T> operator-() const;
 
-	operator Vector3<T>() const;
-	operator Vector4<T>() const;
+	operator Vector3<T>() const; //! Conversion method
+	operator Vector4<T>() const; //! Conversion method
 	
 	void operator=(const Vector2<T>& other);
 
