@@ -10,7 +10,7 @@ WorkerPool::WorkerPool(std::size_t numWorkers)
 
 	for (std::size_t i = 0; i < numWorkers; i++)
 	{
-		Worker* newWorker = new Worker();
+		Worker* newWorker = new Worker(this);
 		newWorker->ownThread = new std::thread(&Worker::Lifecycle, newWorker);
 
 		workers.push_back(newWorker);
@@ -24,6 +24,12 @@ WorkerPool::~WorkerPool()
 	// Stop all workers
 	for (Worker* w : workers)
 		w->Stop();
+
+	// Wake up the workers for them to notice the stop signal
+	{
+		std::unique_lock<std::mutex> lck(mutex);
+		conditional_lock.notify_all();
+	}
 
 	// Wait for all workers to finish
 	for (const Worker* w : workers)
@@ -57,7 +63,6 @@ std::size_t WorkerPool::GetQueueLength() const
 		if (wt->state == WorkerTaskState::QUEUED)
 			count++;
 
-
 	return count;
 }
 
@@ -82,13 +87,26 @@ void WorkerPool::Execute()
 	// As long as we still have unassigned tasks to do
 	while (GetQueueLength() > 0)
 	{
+		bool didQueueAnything = false;
+
 		for (Worker* w : workers)
 			if (w->IsIdling()) // And if a worker is not working
 				for (WorkerTask* wt : taskQueue)
 					if (wt->state == WorkerTaskState::QUEUED) // And if a task is unassigned
+					{
 						w->DoTask(wt);	// Add that task
-	
-		cpSleep(0); // Reduce cpu overhead
+						didQueueAnything = true;
+						
+					}
+
+		// If we queued a new task, we should notify the threads about it
+		if (didQueueAnything)
+		{
+			std::unique_lock<std::mutex> lck(mutex);
+			conditional_lock.notify_all();
+		}
+
+		//cpSleep(0); // Reduce cpu overhead
 	}
 	
 	// Now all tasks are assigned. Wait for them to finish
@@ -105,6 +123,13 @@ void WorkerPool::Execute()
 }
 
 ////////////////////////////////////////////////////////
+
+Worker::Worker(WorkerPool* pool)
+	:
+	pool {pool}
+{
+	return;
+}
 
 Worker::~Worker()
 {
@@ -142,8 +167,21 @@ void Worker::Lifecycle()
 {
 	while (!doStop)
 	{
-		// Begin working on new task
-		if ((doTask) && (task != nullptr))
+		// Idle whilst waiting for either a stop, or a go signal
+		while ((!doTask) && (!doStop))
+		{
+			std::unique_lock<std::mutex> lck(pool->mutex);
+			pool->conditional_lock.wait(lck, [this] { return (doTask || doStop); });
+			//cpSleep(0);
+		}
+		
+		// Something happened!
+		// Was it a stop signal?
+		if (doStop)
+			break;
+
+		// Or should we continue?
+		if (task != nullptr)
 		{
 			// Set flags for working
 			doTask = false;
@@ -156,11 +194,6 @@ void Worker::Lifecycle()
 			// Set flags for idling
 			isIdling = true;
 			task->state = WorkerTaskState::FINISHED;
-		}
-		// Idling
-		else
-		{
-			cpSleep(0); // Reduce cpu load drastically when doing 'nothing'.
 		}
 	}
 
