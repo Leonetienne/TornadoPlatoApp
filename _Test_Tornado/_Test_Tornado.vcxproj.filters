@@ -42,9 +42,6 @@
     <ClCompile Include="WorkerPool.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Worker.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="ClippingEngine.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
