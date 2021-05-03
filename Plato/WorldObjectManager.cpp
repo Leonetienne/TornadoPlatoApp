@@ -156,6 +156,9 @@ void WorldObjectManager::FreeWorldObject(WorldObject* wo)
 	// Do the orphaning fest
 	for (Transform* tr : cachedChildren)
 		tr->SetParent(nullptr, false);
+
+	// Clear own parent relationship
+	wo->transform->SetParent(nullptr, false);
 	
 	// Delete transform and world object
 	delete wo->transform;
