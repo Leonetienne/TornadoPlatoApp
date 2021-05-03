@@ -303,7 +303,7 @@ namespace WorldObjects
 				SETUP_TEST;
 			
 				// Setup
-				WorldObject* parent = WorldObjectManager::NewWorldObject();
+				WorldObject* parent = WorldObjectManager::NewWorldObject("Parent");
 				WorldObject* wo = WorldObjectManager::NewWorldObject("Child", parent->transform);
 
 				// Exercise
