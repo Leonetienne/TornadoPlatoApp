@@ -169,7 +169,6 @@
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="VectorConversion.cpp" />
-    <ClCompile Include="Worker.cpp" />
     <ClCompile Include="WorkerPool.cpp" />
   </ItemGroup>
   <ItemGroup>
