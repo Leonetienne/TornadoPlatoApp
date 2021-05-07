@@ -21,9 +21,12 @@ Test__OBJParser__LoadMultimesh::Test__OBJParser__LoadMultimesh() :
 	ResourceManager::LoadTextureFromBmp("monke", "monke.bmp");
 	ResourceManager::LoadTextureFromBmp("skybox", "example_skybox.bmp");
 
+
 	// Create materials
 	ResourceManager::NewMaterial("monke")->texture = ResourceManager::FindTexture("monke");
-	ResourceManager::NewMaterial("skybox")->texture = ResourceManager::FindTexture("skybox");
+	Material* matSkybox = ResourceManager::NewMaterial("skybox");
+	matSkybox->texture = ResourceManager::FindTexture("skybox");
+	matSkybox->noShading = true;
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
@@ -32,6 +35,8 @@ Test__OBJParser__LoadMultimesh::Test__OBJParser__LoadMultimesh() :
 		ResourceManager::FindMaterial("monke")
 	);
 	monke->transform->Move(Vector3d::backward * 5);
+
+	//monke->AddComponent<Rotator>(Vector3d(0.5, 1, 1.5));
 
 	// Create skybox
 	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
