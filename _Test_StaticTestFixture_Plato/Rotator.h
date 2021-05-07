@@ -8,11 +8,7 @@ public:
 	void Update(double deltaTime)
 	{
 		if (!GetAsyncKeyState(VK_SPACE))
-			transform->Rotate(Quaternion(Vector3d(
-				0.5,
-				1.0,
-				2.0
-			) * speed * deltaTime * 0.05));
+			transform->Rotate(Quaternion(speed * deltaTime * 0.05));
 
 
 		if (GetAsyncKeyState('K'))
@@ -22,14 +18,23 @@ public:
 	}
 
 private:
-	Rotator(WorldObject* worldObject, double speed)
+	Rotator(WorldObject* worldObject, const Vector3d& speed)
 		:
 		Component(worldObject),
 		speed { speed }
 	{
 		return;
 	}
-	double speed;
+
+	Rotator(WorldObject* worldObject, double speed)
+		:
+		Component(worldObject),
+		speed { Vector3d(speed * 0.5, speed * 1.0, speed * 2.0) }
+	{
+		return;
+	}
+
+	Vector3d speed;
 
 	friend WorldObject;
 };
