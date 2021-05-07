@@ -5,5 +5,9 @@
 */
 struct Material
 {
-	Texture* texture;
+	Material();
+	Material(Texture* texture);
+
+	Texture* texture = nullptr;
+	bool noShading = false;
 };
