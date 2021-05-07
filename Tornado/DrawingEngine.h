@@ -24,6 +24,10 @@ public:
 	void Draw();
 
 private:
+	//! Will calculate cached values that only need to be calculated once ber InterRenderTriangle.
+	//! Call before running its compute task!!
+	void CalculateRenderingRelatedCaches_IRD(const InterRenderTriangle* ird);
+	
 	//! Will distribute drawing tasks based on a triangles screen size
 	void CreateTasks();
 
