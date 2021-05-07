@@ -42,6 +42,10 @@ void DrawingEngine::BeginBatch(std::size_t reservesize_triangles)
 
 void DrawingEngine::RegisterInterRenderTriangle(const InterRenderTriangle* tri)
 {
+	// Calculate cache values
+	CalculateRenderingRelatedCaches_IRD(tri);
+
+	// Queue
 	registeredTriangles.push_back(tri);
 	return;
 }
@@ -51,6 +55,12 @@ void DrawingEngine::Draw()
 	CreateTasks();
 	ComputeTasks();
 	
+	return;
+}
+
+void DrawingEngine::CalculateRenderingRelatedCaches_IRD(const InterRenderTriangle* ird)
+{
+	ird->meanNormal = (ird->a.normal + ird->b.normal + ird->c.normal) / 3.0;
 	return;
 }
 
@@ -153,6 +163,7 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 	return;
 }
 
+#include <iostream>
 void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache)
 {
 	// Interpolate vertex color
@@ -206,6 +217,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 	uint8_t& g = pixelBase[1];
 	uint8_t& b = pixelBase[2];
 
+
 	// Do we have a material?
 	if (ird->material != nullptr)
 	{
@@ -222,10 +234,28 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			(int)((uv_coords.x) * (text_size.x - 1)),
 			(int)((1.0 - uv_coords.y) * (text_size.y - 1)) // Uv-coordinates are top-left == (0,1)
 		));
+		
+		// Set global illumination (minimum brightness)
+		constexpr double globalIllu = 0.3;
 
-		r = text_pixel[0];
-		g = text_pixel[1];
-		b = text_pixel[2];
+		// Calculate brightness (if we should shade)
+		double brightness = 1;
+		if (!ird->material->noShading)
+		{
+			// This is just super simple vertex shading, relative to an arbitrary fixed point.
+			double dot = ird->meanNormal.DotProduct(Vector3d::up + Vector3d::forward + Vector3d::right);
+			dot = std::max(std::min(dot, 1.0), 0.0);
+			brightness = std::max(dot, globalIllu);
+		}
+
+		r = text_pixel[0] * brightness;
+		g = text_pixel[1] * brightness;
+		b = text_pixel[2] * brightness;
+
+		// Render normals
+		//r = 255 * (ird->meanNormal.x + 1) * 0.5;
+		//g = 255 * (ird->meanNormal.y + 1) * 0.5;
+		//b = 255 * (ird->meanNormal.z + 1) * 0.5;
 	}
 	// If we have no material, paint vertex colors
 	else
