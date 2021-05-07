@@ -14,6 +14,7 @@ struct InterRenderTriangle
 	InterRenderVertex c;
 	mutable double ss_area = -1;	//! Cached value. Area
 	mutable double ss_iarea = -1;	//! Cached value. Inverted area
+	mutable Vector3d meanNormal = Vector3d::zero; //! Cached value. Mean normal of the three vertices
 
 	const Material* material = nullptr; //! Material to render with
 
