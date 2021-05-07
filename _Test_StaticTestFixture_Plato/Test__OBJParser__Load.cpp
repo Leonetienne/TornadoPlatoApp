@@ -28,7 +28,9 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 	ResourceManager::NewMaterial("bottle")->texture = ResourceManager::FindTexture("bottle");
 	ResourceManager::NewMaterial("spoder")->texture = ResourceManager::FindTexture("spoder");
 	ResourceManager::NewMaterial("character")->texture = ResourceManager::FindTexture("character");
-	ResourceManager::NewMaterial("skybox")->texture = ResourceManager::FindTexture("skybox");
+	Material* matSkybox = ResourceManager::NewMaterial("skybox");
+	matSkybox->texture = ResourceManager::FindTexture("skybox");
+	matSkybox->noShading = true;
 
 	// Create spider
 	WorldObject* spider = WorldObjectManager::NewWorldObject("spoder");
@@ -44,7 +46,6 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 		ResourceManager::FindMesh("character"),
 		ResourceManager::FindMaterial("character")
 		);
-	character->Disable();
 
 	// Create skybox
 	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
