@@ -102,6 +102,12 @@ void Renderer::ResolveRenderTriangles()
 			rd.a.pos_worldSpace *= inverseCameraRotation;
 			rd.b.pos_worldSpace *= inverseCameraRotation;
 			rd.c.pos_worldSpace *= inverseCameraRotation;
+
+			// Apply object rotation to the vertex normals
+			const Matrix4x4 objectRotation = mr->transform->GetGlobalRotation().ToRotationMatrix();
+			rd.a.normal *= objectRotation;
+			rd.b.normal *= objectRotation;
+			rd.c.normal *= objectRotation;
 	
 			// Testing
 			rd.a.vertexColor = Color::red;
