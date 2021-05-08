@@ -2,7 +2,7 @@
 
 void EventManager::Init()
 {
-	InitializeCharacterMapping();
+	InitializeKeys();
 
 	return;
 }
@@ -89,7 +89,7 @@ void EventManager::Digest()
 	return;
 }
 
-KEY_STATE EventManager::GetKeyState(KEY_CODE key) const
+KEY_STATE EventManager::GetKeyState(KEY_CODE key)
 {
 	// Key not found
 	if (keyStates.find(key) == keyStates.end())
@@ -99,22 +99,22 @@ KEY_STATE EventManager::GetKeyState(KEY_CODE key) const
 	return keyStates[key];
 }
 
-double EventManager::GetMousewheelDelta() const
+double EventManager::GetMousewheelDelta()
 {
 	return mousewheelDelta;
 }
 
-Vector2i EventManager::GetLocalMousePosition() const
+Vector2i EventManager::GetLocalMousePosition()
 {
 	return localMousePosition;
 }
 
-Vector2i EventManager::GetGlobalMousePosition() const
+Vector2i EventManager::GetGlobalMousePosition()
 {
 	return globalMousePosition;
 }
 
-Rect EventManager::GetWindowRect() const
+Rect EventManager::GetWindowRect()
 {
 	return windowRect;
 }
@@ -133,11 +133,129 @@ void EventManager::Tick()
 			ks.second = KEY_STATE::RELEASED;
 	}
 
+	// Clear mouse wheel data
+	mousewheelDelta = 0.0;
+
 	return;
 }
 
-void EventManager::InitializeCharacterMapping()
+void EventManager::InitializeKeys()
 {
+	// Initialize key states
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MOUSE_L, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MOUSE_R, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MOUSE_M, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MOUSE_X1, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MOUSE_X2, KEY_STATE::RELEASED));
+
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::A, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::B, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::C, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::D, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::E, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::G, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::H, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::I, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::J, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::K, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::L, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::M, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::N, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::O, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::P, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::Q, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::R, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::S, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::T, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::U, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::V, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::W, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::X, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::Y, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::Z, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_0, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_1, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_2, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_3, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_4, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_5, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_6, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_7, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_8, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUM_9, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_0, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_1, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_2, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_3, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_4, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_5, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_6, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_7, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_8, KEY_STATE::RELEASED));
+
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::NUMPAD_NLOCK, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::DIVIDE, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MULTIPLY, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::SUBTRACT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ADD, KEY_STATE::RELEASED));
+
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::PERIOD, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::MINUS, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::COMMA, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::PLUS, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::SPACE, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::CIRCUMFLEX, KEY_STATE::RELEASED));
+
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ARROW_UP, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ARROW_DOWN, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ARROW_LEFT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ARROW_RIGHT, KEY_STATE::RELEASED));
+
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F1, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F2, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F3, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F4, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F5, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F6, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F7, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F8, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F9, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F10, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F11, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F12, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F13, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F14, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F15, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F16, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F17, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F18, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F19, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F20, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F21, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F22, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F23, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::F24, KEY_STATE::RELEASED));
+
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ESCAPE, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::BACK, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::TAB, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::LSHIFT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::RSHIFT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::LCONTROL, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::RCONTROL, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ALT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::CAPSLOCK, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::INSERT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::DEL, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::PRINT, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::PAUSE, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::SCROLL_LOCK, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::PAGE_UP, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::PAGE_DOWN, KEY_STATE::RELEASED));
+	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::END, KEY_STATE::RELEASED));
+
+	// Initialize key mappings
 	RegisterCharacterMapping('a', KEY_CODE::A);
 	RegisterCharacterMapping('b', KEY_CODE::B);
 	RegisterCharacterMapping('c', KEY_CODE::C);
