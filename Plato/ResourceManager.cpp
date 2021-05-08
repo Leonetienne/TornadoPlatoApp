@@ -65,8 +65,8 @@ Texture* ResourceManager::LoadTextureFromBmp(const std::string& name, const std:
 	Texture* text = new Texture(Color::black);
 	text->GetPixelBuffer().Refit(bmp.GetPixelBuffer(),
 		Vector2i(
-			bmp.GetWidth(),
-			bmp.GetHeight()
+			(int)bmp.GetWidth(),
+			(int)bmp.GetHeight()
 		)
 	);
 

@@ -17,7 +17,7 @@ double Clock::Duration::AsMicroseconds() const
 
 double Clock::Duration::AsNanoseconds() const
 {
-	return std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
+	return (double)std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
 }
 
 Clock::Duration::Duration(const std::chrono::duration<double>& tp)
