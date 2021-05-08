@@ -247,9 +247,9 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			brightness = std::max(dot, globalIllu);
 		}
 
-		r = text_pixel[0] * brightness;
-		g = text_pixel[1] * brightness;
-		b = text_pixel[2] * brightness;
+		r = uint8_t(text_pixel[0] * brightness);
+		g = uint8_t(text_pixel[1] * brightness);
+		b = uint8_t(text_pixel[2] * brightness);
 
 		// Render normals
 		//r = 255 * (ird->meanNormal.x + 1) * 0.5;
