@@ -160,6 +160,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="KeyState.h" />
     <ClInclude Include="Mesh.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="OBJParser.cpp" />

@@ -64,12 +64,11 @@ enum class KEY_CODE
 	NUMPAD_8 = 0x68,
 	NUMPAD_9 = 0x69,
 	
-	// Numpad methods
 	NUMPAD_NLOCK = 0x90,
-	NUMPAD_DIVIDE = 0x6f,
-	NUMPAD_MULTIPLY = 0x6a,
-	NUMPAD_SUBTRACT = 0x6d,
-	NUMPAD_ADD = 0x6b,
+	DIVIDE = 0x6f,
+	MULTIPLY = 0x6a,
+	SUBTRACT = 0x6d,
+	ADD = 0x6b,
 
 	// Symbols
 	PERIOD = 0xbe,
