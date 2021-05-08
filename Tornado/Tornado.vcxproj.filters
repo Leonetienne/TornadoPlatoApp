@@ -137,5 +137,8 @@
     <ClCompile Include="Tornado.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
