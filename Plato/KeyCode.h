@@ -1,6 +1,7 @@
 #pragma once
 
 /** Key representations.
+* Yes, these are mirrors of microsoft's virtual key codes
 */
 enum class KEY_CODE
 {
