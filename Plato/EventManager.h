@@ -39,19 +39,19 @@ public:
 	static void Digest();
 
 	//! Will return the state of a given key
-	KEY_STATE GetKeyState(KEY_CODE key) const;
+	static KEY_STATE GetKeyState(KEY_CODE key);
 
 	//! Will return the delta-movement of the mouse wheel
-	double GetMousewheelDelta() const;
+	static double GetMousewheelDelta();
 
 	//! Will return the mouse position relative to the window rect
-	Vector2i GetLocalMousePosition() const;
+	static Vector2i GetLocalMousePosition();
 	
 	//! Will return the absolute mouse position
-	Vector2i GetGlobalMousePosition() const;
+	static Vector2i GetGlobalMousePosition();
 
 	//! Will return the window rectangle
-	Rect GetWindowRect() const;
+	static Rect GetWindowRect();
 
 private:
 	// Does iterative work, like switching the state of just-down keys to the held-state
@@ -60,7 +60,7 @@ private:
 	// Store events in this, to digest at the end of the frame
 	static std::vector<std::function<void()>> eventQueue;
 
-	static void InitializeCharacterMapping();
+	static void InitializeKeys();
 	static void RegisterCharacterMapping(char ch, KEY_CODE key);
 
 	static Vector2i localMousePosition;

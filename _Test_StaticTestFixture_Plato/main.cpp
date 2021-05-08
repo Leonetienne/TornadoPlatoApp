@@ -5,6 +5,7 @@
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
+#include "../Plato/EventManager.h"
 #include <iostream>
 
 // Include test cases
@@ -31,6 +32,9 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 
 int main()
 {
+	// Initialize event manager
+	EventManager::Init();
+
 	// Define screen resolution
 	const Vector2i resolution = Vector2i(800, 600) * 2;
 	
@@ -90,6 +94,9 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 
 	// Update render window pixel buffer
 	window->UpdateBgrPixelBuffer();
+
+	// Digest events
+	EventManager::Digest();
 
 	// Add fps to title
 	std::stringstream ss;

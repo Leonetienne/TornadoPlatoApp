@@ -1,5 +1,7 @@
 #include "RenderWindow.h"
+#include "../Plato/EventManager.h"
 #include <functional>
+#include <windowsx.h>
 
 RenderWindow::RenderWindow(const Vector2i& resolution, const std::string& title, std::string className)
     :
@@ -166,6 +168,10 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
     }
     break;
 
+    // Prevent flickering
+    case WM_ERASEBKGND:
+        return 1;
+
     case WM_DESTROY:
         HwndToWindow(hwnd)->Cleanup();
        break;
@@ -174,10 +180,130 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
         DestroyWindow(hwnd);
         break;
 
+    // More events
+    case WM_KEYDOWN:
+        EventManager::RegisterEventKeyDown((KEY_CODE)wparam);
+        break;
+    
+    case WM_KEYUP:
+        EventManager::RegisterEventKeyUp((KEY_CODE)wparam);
+        break;
+
+    case WM_MOUSEMOVE:
+    {
+        Vector2i globalMousePos;
+        Vector2i localMousePos;
+
+        POINT gMpos;
+        GetCursorPos(&gMpos);
+        globalMousePos.x = gMpos.x;
+        globalMousePos.y = gMpos.y;
+
+        localMousePos.x = GET_X_LPARAM(lparam);
+        localMousePos.y = GET_Y_LPARAM(lparam);
+
+        EventManager::RegisterEventMousePosition(globalMousePos, localMousePos);
+    }
+    break;
+
+    // Mouse buttons
+    case WM_LBUTTONDOWN:
+        EventManager::RegisterEventKeyDown(KEY_CODE::MOUSE_L);
+        break;
+    case WM_LBUTTONUP:
+        EventManager::RegisterEventKeyUp(KEY_CODE::MOUSE_L);
+        break;
+    case WM_RBUTTONDOWN:
+        EventManager::RegisterEventKeyDown(KEY_CODE::MOUSE_R);
+        break;
+    case WM_RBUTTONUP:
+        EventManager::RegisterEventKeyUp(KEY_CODE::MOUSE_R);
+        break;
+    case WM_MBUTTONDOWN:
+        EventManager::RegisterEventKeyDown(KEY_CODE::MOUSE_M);
+        break;
+    case WM_MBUTTONUP:
+        EventManager::RegisterEventKeyUp(KEY_CODE::MOUSE_M);
+        break;
+
+    // Mouse x-buttons
+    case WM_XBUTTONDOWN:
+    {
+        KEY_CODE mouseButtonPressed = KEY_CODE::NONE;
+        switch (GET_XBUTTON_WPARAM(wparam))
+        {
+        case 1:
+            mouseButtonPressed = KEY_CODE::MOUSE_X1;
+            break;
+
+        case 2:
+            mouseButtonPressed = KEY_CODE::MOUSE_X2;
+            break;
+        }
+        EventManager::RegisterEventKeyDown(mouseButtonPressed);
+    }
+    break;
+
+    case WM_XBUTTONUP:
+    {
+        KEY_CODE mouseButtonPressed = KEY_CODE::NONE;
+        switch (GET_XBUTTON_WPARAM(wparam))
+        {
+        case 1:
+            mouseButtonPressed = KEY_CODE::MOUSE_X1;
+            break;
+
+        case 2:
+            mouseButtonPressed = KEY_CODE::MOUSE_X2;
+            break;
+        }
+        EventManager::RegisterEventKeyUp(mouseButtonPressed);;
+    }
+    break;
+
+    // Mouse wheel
+    case WM_MOUSEWHEEL:
+    {
+        EventManager::RegisterEventMousewheelDelta(GET_WHEEL_DELTA_WPARAM(wparam));
+    }
+    break;
+
+    // Window resized
+    case WM_SIZE:
+    {   
+        Vector2d newSize;
+        newSize.x = LOWORD(lparam);
+        newSize.y = HIWORD(lparam);
+
+        EventManager::RegisterEventNewWindowRect(
+            Rect{
+                EventManager::GetWindowRect().pos,
+                newSize
+            }
+        );
+    }
+    break;
+
+    // Window moved
+    case WM_MOVE:
+    {
+        Vector2d newPos;
+        newPos.x = LOWORD(lparam);
+        newPos.y = HIWORD(lparam);
+
+        EventManager::RegisterEventNewWindowRect(
+            Rect{
+                newPos,
+                EventManager::GetWindowRect().size
+            }
+        );
+    }
+    break;
+
     default:
         return DefWindowProcA(hwnd, message, wparam, lparam);
     }
-    
+
     return 0;
 }
 
