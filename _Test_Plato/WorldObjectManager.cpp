@@ -53,7 +53,12 @@ namespace WorldObjects
 			SETUP_TEST
 
 			// Tries to create a million objects. None is allowed to be nullptr
+			// Different value for debug mode, because it takes FAAAAAR too long
+			#ifndef _DEBUG
 			for (std::size_t i = 0; i < 1000000; i++)
+			#else
+			for (std::size_t i = 0; i < 10000; i++)
+			#endif
 			{
 				WorldObject* wo = WorldObjectManager::NewWorldObject();
 				Assert::IsNotNull(wo);
