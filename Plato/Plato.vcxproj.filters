@@ -60,6 +60,12 @@
     <ClInclude Include="Clock.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="KeyState.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCode.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Plato.cpp">
