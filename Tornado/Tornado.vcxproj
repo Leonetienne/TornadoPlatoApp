@@ -52,6 +52,7 @@
     <ClCompile Include="DrawingEngine.cpp" />
     <ClCompile Include="InterRenderTriangle.cpp" />
     <ClCompile Include="InterRenderVertex.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="ProjectionEngine.cpp" />
     <ClCompile Include="ProjectionProperties.cpp" />
     <ClCompile Include="Texture.cpp" />
