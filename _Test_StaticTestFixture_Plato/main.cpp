@@ -131,8 +131,8 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 		Input::REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
 		[](const std::vector<double>& params)
 		{
-			const int x = params[0];
-			const int y = params[1];
+			const int x = (int)params[0];
+			const int y = (int)params[1];
 			SetCursorPos(x, y);
 			return;
 		}
@@ -144,8 +144,8 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 		[window](const std::vector<double>& params)
 		{
 			POINT p;
-			p.x = params[0];
-			p.y = params[1];
+			p.x = (LONG)params[0];
+			p.y = (LONG)params[1];
 
 			// Translate relative position to global position
 			ClientToScreen(window->GetSystemWindowHandle(), &p);
