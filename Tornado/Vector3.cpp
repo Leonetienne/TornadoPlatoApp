@@ -1,7 +1,10 @@
 #include "Vector3.h"
 #include "Similar.h"
 #include <iostream>
+
+#ifndef _TORNADO_NO_INTRINSICS_
 #include <immintrin.h>
+#endif
 
 /*
 	NOTE:
@@ -323,6 +326,7 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 {
 	Vector3<double> newVec;
 
+	#ifndef _TORNADO_NO_INTRINSICS_
 	// Store x, y, and z values
 	__m256d __vecx = _mm256_set1_pd(x);
 	__m256d __vecy = _mm256_set1_pd(y);
@@ -355,15 +359,17 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 	newVec.y = dfinal[2];
 	newVec.z = dfinal[1];
 
+	#else
 	// Rotation, Scaling
-	//newVec.x = (mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z);
-	//newVec.y = (mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z);
-	//newVec.z = (mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z);
+	newVec.x = (mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z);
+	newVec.y = (mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z);
+	newVec.z = (mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z);
 
 	// Translation
-	//newVec.x += mat[0][3];
-	//newVec.y += mat[1][3];
-	//newVec.z += mat[2][3];
+	newVec.x += mat[0][3];
+	newVec.y += mat[1][3];
+	newVec.z += mat[2][3];
+	#endif
 
 	return newVec;
 }
@@ -395,6 +401,7 @@ Vector3<int> Vector3<int>::operator*(const Matrix4x4& mat) const
 // Good, optimized chad version for doubles
 void Vector3<double>::operator*=(const Matrix4x4& mat)
 {
+	#ifndef _TORNADO_NO_INTRINSICS_
 	// Store x, y, and z values
 	__m256d __vecx = _mm256_set1_pd(x);
 	__m256d __vecy = _mm256_set1_pd(y);
@@ -427,16 +434,17 @@ void Vector3<double>::operator*=(const Matrix4x4& mat)
 	y = dfinal[2];
 	z = dfinal[1];
 
-
-	//Vector3<double> buffer = *this;
-	//x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z);
-	//y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z);
-	//z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z);
-	//
-	////// Translation
-	//x += mat[0][3];
-	//y += mat[1][3];
-	//z += mat[2][3];
+	#else
+	Vector3<double> buffer = *this;
+	x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z);
+	y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z);
+	z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z);
+	
+	// Translation
+	x += mat[0][3];
+	y += mat[1][3];
+	z += mat[2][3];
+	#endif
 
 	return;
 }
