@@ -45,10 +45,10 @@ public:
 	//! Will compare if two vectors are similar to a certain epsilon value
 	bool Similar(const Vector4<T>& other, double epsilon = 0.00001) const;
 
-	//! Will convert this vector to a Vector3i
+	//! Will convert this vector to a Vector4i
 	Vector4<int> ToInt() const;
 
-	//! Will convert this vector to a Vector3d
+	//! Will convert this vector to a Vector4d
 	Vector4<double> ToDouble() const;
 
 	T& operator[](std::size_t idx);
