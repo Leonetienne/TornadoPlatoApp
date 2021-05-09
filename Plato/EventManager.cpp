@@ -74,6 +74,15 @@ void EventManager::RegisterEventNewWindowRect(const Rect& windowRect)
 	return;
 }
 
+void EventManager::RegisterReverseEventCallback(REVERSE_EVENT_CALLBACK evnt, std::function<void(std::vector<double>)> callback)
+{
+	reverseEventCallbacks.insert(
+		std::pair<REVERSE_EVENT_CALLBACK, std::function<void(std::vector<double>)>>(evnt, callback)
+	);
+
+	return;
+}
+
 void EventManager::Digest()
 {
 	// Execute tick
@@ -117,6 +126,54 @@ Vector2i EventManager::GetGlobalMousePosition()
 Rect EventManager::GetWindowRect()
 {
 	return windowRect;
+}
+
+bool EventManager::SetGlobalMousePosition(const Vector2i& newMousePosition)
+{
+	// Does event-callback exist?
+	if (reverseEventCallbacks.find(REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION) == reverseEventCallbacks.end())
+		return false;
+
+	// Call reverse-event ballback
+	reverseEventCallbacks[REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION](
+		std::vector<double>(
+			newMousePosition.x,
+			newMousePosition.y
+		)
+	);
+
+	return true;
+}
+
+bool EventManager::SetLocalMousePosition(const Vector2i& newMousePosition)
+{
+	// Does event-callback exist?
+	if (reverseEventCallbacks.find(REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION) == reverseEventCallbacks.end())
+		return false;
+
+	// Call reverse-event ballback
+	reverseEventCallbacks[REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION](
+		std::vector<double>(
+			newMousePosition.x,
+			newMousePosition.y
+		)
+	);
+
+	return true;
+}
+
+bool EventManager::ExitApplication()
+{
+	// Does event-callback exist?
+	if (reverseEventCallbacks.find(REVERSE_EVENT_CALLBACK::EXIT) == reverseEventCallbacks.end())
+		return false;
+
+	// Call reverse-event ballback
+	reverseEventCallbacks[REVERSE_EVENT_CALLBACK::EXIT](
+		std::vector<double>()
+	);
+
+	return true;
 }
 
 void EventManager::Tick()
@@ -319,3 +376,4 @@ Vector2i EventManager::localMousePosition;
 Vector2i EventManager::globalMousePosition;
 Rect EventManager::windowRect;
 double EventManager::mousewheelDelta;
+std::unordered_map<REVERSE_EVENT_CALLBACK, std::function<void(std::vector<double>)>> EventManager::reverseEventCallbacks;
