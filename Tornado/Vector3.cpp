@@ -144,6 +144,18 @@ bool Vector3<T>::Similar(const Vector3<T>& other, double epsilon) const
 }
 
 template<typename T>
+Vector3<int> Vector3<T>::ToInt() const
+{
+	return Vector3<int>((int)x, (int)y, (int)z);
+}
+
+template<typename T>
+Vector3<double> Vector3<T>::ToDouble() const
+{
+	return Vector3<double>((double)x, (double)y, (double)z);
+}
+
+template<typename T>
 T& Vector3<T>::operator[](std::size_t idx)
 {
 	switch (idx)
