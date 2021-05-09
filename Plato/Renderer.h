@@ -28,7 +28,15 @@ private:
 	void ResolveRenderTriangles();
 
 	// Will resolve a single render triangle from a single mesh renderer
-	void Thread__ResolveMeshRenderer_RenderTriangle(const Vector3d inverseCameraPosition, const Matrix4x4 inverseCameraRotation, const MeshRenderer* mr, const MeshVertexIndices* idx, std::size_t numTris);
+	void Thread__ResolveMeshRenderer_RenderTriangle(
+		const Vector3d inverseCameraPosition,
+		const Matrix4x4 inverseCameraRotation,
+		const Matrix4x4 objectTransformationMatrix,
+		const Matrix4x4 objectRotationMatrix,
+		const MeshRenderer* mr,
+		const MeshVertexIndices* idx,
+		std::size_t numTris
+	);
 
 	WorkerPool workerPool;
 

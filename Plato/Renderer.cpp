@@ -91,6 +91,8 @@ void Renderer::ResolveRenderTriangles()
 			task->task = std::bind(&Renderer::Thread__ResolveMeshRenderer_RenderTriangle, this,
 				inverseCameraPosition,
 				inverseCameraRotation,
+				mr->transform->GetGlobalTransformationMatrix(),
+				mr->transform->GetRotation().ToRotationMatrix(),
 				mr,
 				&mesh->tris[i],
 				numTrianglesForThisTask
@@ -113,6 +115,8 @@ void Renderer::ResolveRenderTriangles()
 void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 	const Vector3d inverseCameraPosition,
 	const Matrix4x4 inverseCameraRotation,
+	const Matrix4x4 objectTransformationMatrix,
+	const Matrix4x4 objectRotationMatrix,
 	const MeshRenderer* mr,
 	const MeshVertexIndices* idx,
 	std::size_t numTris
@@ -144,10 +148,9 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		rd.c.normal = mesh->normals[idx[i*3 + 2].vn];
 
 		// Apply world space transformation
-		const Matrix4x4& transformationMatrix = mr->transform->GetGlobalTransformationMatrix(); // <-- This caches its return vales
-		rd.a.pos_worldSpace *= transformationMatrix;
-		rd.b.pos_worldSpace *= transformationMatrix;
-		rd.c.pos_worldSpace *= transformationMatrix;
+		rd.a.pos_worldSpace *= objectTransformationMatrix;
+		rd.b.pos_worldSpace *= objectTransformationMatrix;
+		rd.c.pos_worldSpace *= objectTransformationMatrix;
 
 		// Apply camera space transformation
 		rd.a.pos_worldSpace += inverseCameraPosition;
@@ -158,10 +161,9 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		rd.c.pos_worldSpace *= inverseCameraRotation;
 
 		// Apply object rotation to the vertex normals
-		const Matrix4x4 objectRotation = mr->transform->GetGlobalRotation().ToRotationMatrix();
-		rd.a.normal *= objectRotation;
-		rd.b.normal *= objectRotation;
-		rd.c.normal *= objectRotation;
+		rd.a.normal *= objectRotationMatrix;
+		rd.b.normal *= objectRotationMatrix;
+		rd.c.normal *= objectRotationMatrix;
 
 		// Testing
 		rd.a.vertexColor = Color::red;
