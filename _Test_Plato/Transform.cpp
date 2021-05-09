@@ -248,7 +248,7 @@ namespace TransformRelated
 			// Setup
 			Vector3d originalPoint(12, 314, -99);
 			Transform* a = NEW_TRANSFORM;
-			a->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 90)));
+			a->SetRotation(Quaternion(Vector3d(0, -90, 90)));
 
 			// Exercise
 			Vector3d transformedPoint = originalPoint * a->GetLocalTransformationMatrix();

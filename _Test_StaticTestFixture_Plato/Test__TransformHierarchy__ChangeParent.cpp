@@ -39,7 +39,7 @@ Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent()
 	{
 		Transform* cam = WorldObjectManager::FindObjectById("main_camera_ypiv")->transform;
 		cam->SetPosition(Vector3d(20, -3, 0));
-		cam->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 0)));
+		cam->SetRotation(Quaternion(Vector3d(0, -90, 0)));
 	}
 
 	// Create and load assets
@@ -78,7 +78,7 @@ void Test__TransformHierarchy__ChangeParent::Update(double frametime)
 	// Some fun-control. Will rotate all objects (locally)
 	if (GetAsyncKeyState(VK_SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
-			wo->transform->Rotate(Quaternion::FromEuler(Vector3d::right * 0.03));
+			wo->transform->Rotate(Quaternion(Vector3d::right * 0.03));
 
 	if (GetAsyncKeyState('R'))
 		jointRoot->Rotate(Vector3d(0, 0.1, 0));
