@@ -3,8 +3,6 @@
 #include <functional>
 #include <windowsx.h>
 
-#include <iostream>
-
 using Input::EventManager;
 using Input::KEY_CODE;
 
