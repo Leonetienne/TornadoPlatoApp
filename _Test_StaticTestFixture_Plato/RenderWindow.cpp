@@ -91,6 +91,9 @@ void RenderWindow::Thread__CreateWindow()
     // Show window
     ShowWindow(systemHandle, SW_SHOW);
 
+    // Hide cursor
+    ShowCursor(false);
+
     // Insert into cross referencing table
     windows.insert(
         std::pair<HWND, RenderWindow*>(systemHandle, this)
