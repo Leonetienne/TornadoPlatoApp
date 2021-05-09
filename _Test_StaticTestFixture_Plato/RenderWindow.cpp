@@ -3,6 +3,11 @@
 #include <functional>
 #include <windowsx.h>
 
+#include <iostream>
+
+using Input::EventManager;
+using Input::KEY_CODE;
+
 RenderWindow::RenderWindow(const Vector2i& resolution, const std::string& title, std::string className)
     :
     resolution { resolution },
@@ -183,7 +188,9 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
 
     // More events
     case WM_KEYDOWN:
-        EventManager::RegisterEventKeyDown((KEY_CODE)wparam);
+        // We don't want any repeated keys
+        if ((lparam & (1 << 30)) == 0)
+            EventManager::RegisterEventKeyDown((KEY_CODE)wparam);
         break;
     
     case WM_KEYUP:

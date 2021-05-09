@@ -1,5 +1,7 @@
 #include "EventManager.h"
 
+using namespace Input;
+
 void EventManager::Init()
 {
 	InitializeKeys();
@@ -113,66 +115,29 @@ double EventManager::GetMousewheelDelta()
 	return mousewheelDelta;
 }
 
-Vector2i EventManager::GetLocalMousePosition()
+const Vector2i& EventManager::GetLocalMousePosition()
 {
 	return localMousePosition;
 }
 
-Vector2i EventManager::GetGlobalMousePosition()
+const Vector2i& EventManager::GetGlobalMousePosition()
 {
 	return globalMousePosition;
 }
 
-Rect EventManager::GetWindowRect()
+const Rect& EventManager::GetWindowRect()
 {
 	return windowRect;
 }
 
-bool EventManager::SetGlobalMousePosition(const Vector2i& newMousePosition)
+bool EventManager::ExecuteReverseEventCallback(REVERSE_EVENT_CALLBACK evnt, const std::vector<double>& params)
 {
-	// Does event-callback exist?
-	if (reverseEventCallbacks.find(REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION) == reverseEventCallbacks.end())
+	// Is this event-callback implemented?
+	if (reverseEventCallbacks.find(evnt) == reverseEventCallbacks.end())
 		return false;
 
-	// Call reverse-event ballback
-	reverseEventCallbacks[REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION](
-		std::vector<double>(
-			newMousePosition.x,
-			newMousePosition.y
-		)
-	);
-
-	return true;
-}
-
-bool EventManager::SetLocalMousePosition(const Vector2i& newMousePosition)
-{
-	// Does event-callback exist?
-	if (reverseEventCallbacks.find(REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION) == reverseEventCallbacks.end())
-		return false;
-
-	// Call reverse-event ballback
-	reverseEventCallbacks[REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION](
-		std::vector<double>(
-			newMousePosition.x,
-			newMousePosition.y
-		)
-	);
-
-	return true;
-}
-
-bool EventManager::ExitApplication()
-{
-	// Does event-callback exist?
-	if (reverseEventCallbacks.find(REVERSE_EVENT_CALLBACK::EXIT) == reverseEventCallbacks.end())
-		return false;
-
-	// Call reverse-event ballback
-	reverseEventCallbacks[REVERSE_EVENT_CALLBACK::EXIT](
-		std::vector<double>()
-	);
-
+	// Call reverse-event callback
+	reverseEventCallbacks[evnt](params);
 	return true;
 }
 

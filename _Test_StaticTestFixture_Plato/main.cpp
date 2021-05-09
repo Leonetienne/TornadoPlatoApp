@@ -27,6 +27,9 @@
 	Use these to manually check if specific things are working
 */
 
+using Input::EventManager;
+using Input::REVERSE_EVENT_CALLBACK;
+
 Clock frameTimeClock;
 void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 
@@ -101,7 +104,7 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	window->UpdateBgrPixelBuffer();
 
 	// Digest events
-	EventManager::Digest();
+	Input::EventManager::Digest();
 
 	// Add fps to title
 	std::stringstream ss;
@@ -124,8 +127,8 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 	);
 
 	// Callback to set global mouse position
-	EventManager::RegisterReverseEventCallback(
-		REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
+	Input::EventManager::RegisterReverseEventCallback(
+		Input::REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
 		[](std::vector<double> params)
 		{
 			const int x = params[0];

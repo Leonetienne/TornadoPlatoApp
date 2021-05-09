@@ -1,12 +1,15 @@
 #pragma once
 
-/** Describes the state of a key
-*/
-enum class KEY_STATE
+namespace Input
 {
-	NONE,
-	HELD,
-	RELEASED,
-	DOWN,
-	UP
-};
+	/** Describes the state of a key
+	*/
+	enum class KEY_STATE
+	{
+		NONE,
+		HELD,
+		RELEASED,
+		DOWN,
+		UP
+	};
+}
