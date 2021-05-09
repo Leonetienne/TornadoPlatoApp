@@ -1,11 +1,11 @@
 #pragma once
-#include <Windows.h>
 #include "../Plato/Component.h"
 #include "../Plato/Camera.h"
 #include "../Plato/WorldObject.h"
 #include "../Plato/Application.h"
 #include "../Plato/Keyboard.h"
 #include "../Plato/Mouse.h"
+#include <algorithm>
 
 class CameraKeyboardControl : Component
 {
@@ -77,22 +77,43 @@ private:
 
 	void ViewControl(double deltaTime)
 	{
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::Y))
-			camera_yPivot->Rotate(Quaternion(Vector3d(0, -2, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::X))
-			camera_yPivot->Rotate(Quaternion(Vector3d(0, 2, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::C))
-			camera->Rotate(Quaternion(Vector3d(2, 0, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::F))
-			camera->Rotate(Quaternion(Vector3d(-2, 0, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
+		// Initialize delta mouse position
+		const Vector2d halfWinSize = Input::Application::GetWindowRect().size / 2.0;
+		static Vector2d lastMousePos = Input::Mouse::GetLocalMousePosition().ToDouble();
+		const Vector2d deltaMouse = Input::Mouse::GetLocalMousePosition().ToDouble() - halfWinSize.ToInt().ToDouble();
+
+		// Handle y rotation
+		const double mx = (deltaMouse.x / 100.0) * lookingSpeed;
+		camera_yPivot->Rotate(Quaternion(Vector3d(0, mx * deltaTime, 0)));
+
+		// Handle x rotation
+		const double my = (deltaMouse.y / 100.0) * lookingSpeed;
+		static double totalXRot = 0;
+		totalXRot += my * deltaTime;
+		
+		// now clamp xrot to -89.5 to 89.5
+		totalXRot = std::max<double>(std::min<double>(totalXRot, 89.5), -89.5);
+
+		// Now hard-set this x rot
+		camera->SetRotation(Quaternion(Vector3d(totalXRot, 0, 0)));
+
+		// Lock mouse at center
+		Input::Mouse::SetLocalMousePosition(
+			halfWinSize.ToInt()
+		);
+		lastMousePos = Input::Mouse::GetLocalMousePosition().ToDouble();
 
 		return;
 	}
 
 	void AdditionalControls(double deltaTime)
 	{
-		const double mouseDelta = Input::Mouse::GetMousewheelDelta();
+		// Esc to exit
+		if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::ESCAPE))
+			Input::Application::Exit();
 
+		// Fov by mousewheel
+		const double mouseDelta = Input::Mouse::GetMousewheelDelta();
 		if (mouseDelta != 0)
 			cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * mouseDelta * shiftFactor * deltaTime * internalMultiplier);
 
