@@ -206,6 +206,19 @@ bool Vector2<T>::Similar(const Vector2<T>& other, double epsilon) const
 }
 
 template<typename T>
+Vector2<int> Vector2<T>::ToInt() const
+{
+	return Vector2<int>((int)x, (int)y);
+}
+
+template<typename T>
+Vector2<double> Vector2<T>::ToDouble() const
+{
+	return Vector2<double>((double)x, (double)y);
+}
+
+
+template<typename T>
 Vector2<T> Vector2<T>::operator+(const Vector2<T>& other) const
 {
 	return Vector2<T>(

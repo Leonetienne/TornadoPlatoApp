@@ -125,5 +125,95 @@ namespace Vectors
 		
 			return;
 		}
+
+		// Tests Vector2i -> Vector2d
+		TEST_METHOD(Convert_Vector2i_To_Vector2d)
+		{
+			// Setup
+			Vector2i vi(69, 70);
+
+			// Exercise
+			Vector2d vd = vi.ToDouble();
+
+			// Verify
+			Assert::IsTrue(Vector2d(69, 70) == vd);
+
+			return;
+		}
+
+		// Tests Vector2d -> Vector2i
+		TEST_METHOD(Convert_Vector2d_To_Vector2i)
+		{
+			// Setup
+			Vector2d vd(69.2, 70.8);
+
+			// Exercise
+			Vector2i vi = vd.ToInt();
+
+			// Verify
+			Assert::IsTrue(Vector2i(69, 70) == vi);
+
+			return;
+		}
+
+		// Tests Vector3i -> Vector3d
+		TEST_METHOD(Convert_Vector3i_To_Vector3d)
+		{
+			// Setup
+			Vector3i vi(69, 70, 122);
+
+			// Exercise
+			Vector3d vd = vi.ToDouble();
+
+			// Verify
+			Assert::IsTrue(Vector3d(69, 70, 122) == vd);
+
+			return;
+		}
+
+		// Tests Vector3d -> Vector3i
+		TEST_METHOD(Convert_Vector3d_To_Vector3i)
+		{
+			// Setup
+			Vector3d vd(69.2, 70.8, 122);
+
+			// Exercise
+			Vector3i vi = vd.ToInt();
+
+			// Verify
+			Assert::IsTrue(Vector3i(69, 70, 122) == vi);
+
+			return;
+		}
+
+		// Tests Vector4i -> Vector4d
+		TEST_METHOD(Convert_Vector4i_To_Vector4d)
+		{
+			// Setup
+			Vector4i vi(69, 70, 122, 199);
+
+			// Exercise
+			Vector4d vd = vi.ToDouble();
+
+			// Verify
+			Assert::IsTrue(Vector4d(69, 70, 122, 199) == vd);
+
+			return;
+		}
+
+		// Tests Vector4d -> Vector4i
+		TEST_METHOD(Convert_Vector4d_To_Vector4i)
+		{
+			// Setup
+			Vector4d vd(69.2, 70.8, 122, 199.501);
+
+			// Exercise
+			Vector4i vi = vd.ToInt();
+
+			// Verify
+			Assert::IsTrue(Vector4i(69, 70, 122, 199) == vi);
+
+			return;
+		}
 	};
 }
