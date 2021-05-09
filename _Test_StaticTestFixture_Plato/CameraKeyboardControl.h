@@ -3,14 +3,16 @@
 #include "../Plato/Component.h"
 #include "../Plato/Camera.h"
 #include "../Plato/WorldObject.h"
-#include "../Plato/EventManager.h"
+#include "../Plato/Application.h"
+#include "../Plato/Keyboard.h"
+#include "../Plato/Mouse.h"
 
 class CameraKeyboardControl : Component
 {
 public:
 	void Update(double deltaTime)
 	{
-		shiftFactor = GetAsyncKeyState(VK_LSHIFT) ? shiftModifier : 1;
+		shiftFactor = Input::Keyboard::GetKey(Input::KEY_CODE::LSHIFT) ? shiftModifier : 1;
 
 		MovementControl(deltaTime);
 		ViewControl(deltaTime);
@@ -24,46 +26,50 @@ private:
 
 	void MovementControl(double deltaTime)
 	{
-		static Vector2d lastPos = EventManager::GetWindowRect().pos;
-		static bool skipFirst = false;
-
-		Vector2d dPos = EventManager::GetWindowRect().pos - lastPos;
-	
-		if (skipFirst)
+		// This is just experimental code.
+		// Moves the viewport as the window moves.
 		{
-			camera_yPivot->Move(camera->GetGlobalRotation() *
-				(
+			static Vector2d lastPos = Input::Application::GetWindowRect().pos;
+			static bool skipFirst = false;
+
+			Vector2d dPos = Input::Application::GetWindowRect().pos - lastPos;
+
+			if (skipFirst)
+			{
+				camera_yPivot->Move(camera->GetGlobalRotation() *
 					(
-						Vector3d::left *
-						movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.x * -0.05
-					)
-					+
-					(
-						Vector3d::up *
-						movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.y * -0.05
-					)
-				)
-			);
+						(
+							Vector3d::left *
+							movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.x * -0.05
+							)
+						+
+						(
+							Vector3d::up *
+							movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.y * -0.05
+							)
+						)
+				);
+			}
+
+			if (dPos.SqrMagnitude() > 0)
+				skipFirst = true;
+
+			lastPos = Input::Application::GetWindowRect().pos;
 		}
 
-		if (dPos.SqrMagnitude() > 0)
-			skipFirst = true;
-
-		lastPos = EventManager::GetWindowRect().pos;
-
-		if (GetAsyncKeyState('A'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::A))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
-		if (GetAsyncKeyState('D'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::D))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-		if (GetAsyncKeyState('W'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::W))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
-		if (GetAsyncKeyState('S'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::S))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-		if (GetAsyncKeyState('Q'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::Q))
 			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
-		if (GetAsyncKeyState('E'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::E))
 			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
@@ -71,13 +77,13 @@ private:
 
 	void ViewControl(double deltaTime)
 	{
-		if (GetAsyncKeyState('Y'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::Y))
 			camera_yPivot->Rotate(Quaternion(Vector3d(0, -2, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
-		if (GetAsyncKeyState('X'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::X))
 			camera_yPivot->Rotate(Quaternion(Vector3d(0, 2, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
-		if (GetAsyncKeyState('C'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::C))
 			camera->Rotate(Quaternion(Vector3d(2, 0, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
-		if (GetAsyncKeyState('F'))
+		if (Input::Keyboard::GetKey(Input::KEY_CODE::F))
 			camera->Rotate(Quaternion(Vector3d(-2, 0, 0) * lookingSpeed * shiftFactor * deltaTime * internalMultiplier));
 
 		return;
@@ -85,10 +91,10 @@ private:
 
 	void AdditionalControls(double deltaTime)
 	{
-		if (GetAsyncKeyState('1'))
-			cameraComponent->SetFov(cameraComponent->GetFov() - 1 * shiftFactor * deltaTime * internalMultiplier);
-		if (GetAsyncKeyState('2'))
-			cameraComponent->SetFov(cameraComponent->GetFov() + 1 * shiftFactor * deltaTime * internalMultiplier);
+		const double mouseDelta = Input::Mouse::GetMousewheelDelta();
+
+		if (mouseDelta != 0)
+			cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * mouseDelta * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
 	}
