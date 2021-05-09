@@ -119,7 +119,7 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 	// Callback to exit application
 	EventManager::RegisterReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::EXIT,
-		[window](std::vector<double> params)
+		[window](const std::vector<double>& params)
 		{
 			window->Close();
 			return;
@@ -129,7 +129,7 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 	// Callback to set global mouse position
 	Input::EventManager::RegisterReverseEventCallback(
 		Input::REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
-		[](std::vector<double> params)
+		[](const std::vector<double>& params)
 		{
 			const int x = params[0];
 			const int y = params[1];
@@ -141,7 +141,7 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 	// Callback to set local mouse position
 	EventManager::RegisterReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION,
-		[window](std::vector<double> params)
+		[window](const std::vector<double>& params)
 		{
 			POINT p;
 			p.x = params[0];
