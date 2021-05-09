@@ -244,11 +244,6 @@ void Quaternion::SetRawValues(const Vector4d values)
 	return;
 }
 
-Quaternion Quaternion::FromEuler(const Vector3d euler)
-{
-	return Quaternion(euler);
-}
-
 void Quaternion::InvalidateCache()
 {
 	isCacheUpToDate_euler = false;

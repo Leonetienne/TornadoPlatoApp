@@ -3,6 +3,10 @@
 #include "Camera.h"
 #include "MeshRenderer.h"
 
+/** Responsible to resolve renderables to RenderTriangle3D's.
+* This class is responsible for taking all renderable components, resolving meshes to absolute vertex coordinates,
+* putting it all in RenerTriangle3D's, and forwarding these to Tornado.
+*/
 class Renderer
 {
 public:

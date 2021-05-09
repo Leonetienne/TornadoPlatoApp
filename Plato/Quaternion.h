@@ -3,37 +3,40 @@
 #include "../Tornado/Vector4.h"
 #include "../Tornado/Matrix4x4.h"
 
+/** 3D rotation representation
+*/
 class Quaternion
 {
 public:
     Quaternion();
 
-    // Constructs after these values
+    //! Constructs by these raw values
     Quaternion(const Vector4d values);
 
+    //! Copies this existing Quaternion
     Quaternion(const Quaternion& q);
 
-    // Creates quaternion from euler angles
+    //! Creates an quaternion from euler angles
     Quaternion(const Vector3d eulerAngles);
 
     ~Quaternion();
 
-    // Copies
+    //! Copies
     Quaternion operator= (const Quaternion& q);
 
-    // Multiplies (applies)
+    //! Multiplies (applies)
     Quaternion operator* (const Quaternion& q) const;
 
-    // Divides (applies)
+    //! Divides (applies)
     Quaternion operator/ (Quaternion& q) const;
 
-    // Also multiplies
+    //! Also multiplies
     Quaternion& operator*= (const Quaternion& q);
 
-    // Also divides
+    //! Also divides
     Quaternion& operator/= (const Quaternion& q);
 
-    // Will transform a 3d point around its origin
+    //! Will transform a 3d point around its origin
     Vector3d operator* (const Vector3d& p) const;
 
     bool operator== (const Quaternion& q) const;
@@ -46,32 +49,36 @@ public:
 
     Quaternion UnitQuaternion() const;
 
+    //! Will rotate a vector by this quaternion
     Vector3d RotateVector(const Vector3d& vec) const;
 
+    //! Will return euler angles representing this Quaternion's rotation
     Vector3d ToEulerAngles() const;
 
+    //! Will return a rotation matrix representing this Quaternions rotation
     Matrix4x4 ToRotationMatrix() const;
 
+    //! Will return the raw four-dimensional values
     Vector4d GetRawValues() const;
 
+    //! Will return the value between two Quaternion's as another Quaternion
     Quaternion AngleBetween(const Quaternion& other) const;
 
+    //! Will set the raw four-dimensional values
     void SetRawValues(const Vector4d values);
 
     friend std::ostream& operator<< (std::ostream& os, const Quaternion& q);
     friend std::wostream& operator<< (std::wostream& os, const Quaternion& q);
 
-    static Quaternion FromEuler(const Vector3d euler);
-
 private:
-    // Scales
+    //! Scales
     Quaternion operator* (const double scale) const;
     Quaternion& operator*= (const double scale);
 
-    // Quaternion values
+    //! Quaternion values
     Vector4d v;
 
-    // Will force a regenartion of the euler and matrix caches on further converter calls
+    //! Will force a regenartion of the euler and matrix caches on further converter calls
     void InvalidateCache();
 
     // Caches for conversions

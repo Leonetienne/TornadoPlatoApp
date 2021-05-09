@@ -6,83 +6,87 @@
 
 class WorldObject;
 
+/** Representation of a three-dimensional transformation.
+* Contains the location, rotation, and scaling.  
+* Also contains references to children and the parent (nullptr if none)
+*/
 class Transform final
 {
 public:
-	// Public handle for this Transforms WorldObject
+	//! Public handle for this Transforms WorldObject
 	WorldObject* const& worldObject;
 
 	~Transform();
 
-	// Will set the transforms local position
+	//! Will set the transforms local position
 	void SetPosition(const Vector3d& position);
 
-	// Will set the transforms local scale
+	//! Will set the transforms local scale
 	void SetScale(const Vector3d& scale);
 
-	// Will set the transforms local rotation
+	//! Will set the transforms local rotation
 	void SetRotation(const Quaternion& rot);
 
-	// Will add a vector to the local position
+	//! Will add a vector to the local position
 	void Move(const Vector3d& dPos);
 
-	// Will scale the local scale by the supplied values
+	//! Will scale the local scale by the supplied values
 	void Scale(const Vector3d& dScale);
 
-	// Will rotate the object locally by dRot
+	//! Will rotate the object locally by dRot
 	void Rotate(const Quaternion& dRot);
 
-	// Will return the transforms local position
+	//! Will return the transforms local position
 	const Vector3d GetPosition() const;
 
-	// Will return the transforms local scale
+	//! Will return the transforms local scale
 	const Vector3d GetScale() const;
 
-	// Will return the transforms local rotation
+	//! Will return the transforms local rotation
 	const Quaternion& GetRotation() const;
 
-	// This will return a writeable reference of the rotation representation.
-	// Don't use this for reading only, because calling this will invalidate the transformation matrix cache!!
+	//! This will return a writeable reference of the rotation representation.  
+	//! Don't use this for reading only, because calling this will invalidate the transformation matrix cache!!
 	Quaternion& GetWriteableRotation();
 
-	// Will return the transforms parent
+	//! Will return the transforms parent
 	Transform* GetParent() const;
 
-	// Will set this transforms new parent
-	// Set keepAbsoluteTransform to false to keep the local transformation values
-	// !!! BEWARE !!! THIS METHOD WILL MODIFY ITS PARENTS children CONTAINER!!!
-	// !!! THIS WILL CAUSE HARD-TO-DEBUG EXCEPTIONS WHEN CALLING THIS WHILST ITERATING OVER GetChildren() !!!
-	// If you want to use this method whilst iterating over GetChildren(), copy the return value beforehand!
+	//! Will set this transforms new parent  
+	//! Set keepAbsoluteTransform to false to keep the local transformation values  
+	//! !!! BEWARE !!! THIS METHOD WILL MODIFY ITS PARENTS children CONTAINER!!!  
+	//! !!! THIS WILL CAUSE HARD-TO-DEBUG EXCEPTIONS WHEN CALLING THIS WHILST ITERATING OVER GetChildren() !!!  
+	//! If you want to use this method whilst iterating over GetChildren(), copy the return value beforehand!
 	void SetParent(Transform* newParent, bool keepAbsoluteTransform = true);
 
-	// Will set a Transform as a child. This will delete the existing parent-child relationship of the supplied transform!
+	//! Will set a Transform as a child. This will delete the existing parent-child relationship of the supplied transform!
 	void AddChild(Transform* child);
 
-	// Will reference a child at index i
+	//! Will reference a child at index i
 	const Transform* operator[](std::size_t i) const;
 	Transform* operator[](std::size_t i);
 	
-	// Will return the amount of children
+	//! Will return the amount of children
 	std::size_t GetNumChildren() const;
 
-	// Will return a set of all children
+	//! Will return a set of all children
 	std::unordered_set<Transform*>& GetChildren();
-	// Will return a set of all children
+	//! Will return a set of all children
 	const std::unordered_set<Transform*>& GetChildren() const;
 
-	// Will return a transformation matrix relative to this transforms origin
+	//! Will return a transformation matrix relative to this transforms origin
 	Matrix4x4 GetLocalTransformationMatrix() const;
 
-	// Will return a transformation matrix relative to the world origin
+	//! Will return a transformation matrix relative to the world origin
 	Matrix4x4 GetGlobalTransformationMatrix() const;
 
-	// Will return this transforms position relative to the world origin
+	//! Will return this transforms position relative to the world origin
 	Vector3d GetGlobalPosition() const;
 
-	// Will return this transforms rotation relative to the world origin
+	//! Will return this transforms rotation relative to the world origin
 	Quaternion GetGlobalRotation() const;
 
-	// Will reset this transforms local values
+	//! Will reset this transforms local values
 	void Reset();
 
 private:

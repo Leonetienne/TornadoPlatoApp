@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 
+//! Will read a file to a string
 inline std::string ReadFile(const std::string& filepath)
 {
     std::ifstream ifs;

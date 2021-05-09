@@ -5,6 +5,9 @@
 
 class Renderer;
 
+/** Component to render meshes. 
+* This component will take a reference to a mesh and a material, and will automatically render it at the end of each frame.
+*/
 class MeshRenderer : public Component
 {
 public:
