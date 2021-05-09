@@ -156,16 +156,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="bmplib.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Event_ReverseEventCallback.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="KeyState.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="OBJParser.h" />
     <ClInclude Include="Plato.h" />
     <ClInclude Include="Quaternion.h" />
@@ -177,12 +180,15 @@
     <ClInclude Include="WorldObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="OBJParser.cpp" />
     <ClCompile Include="Plato.cpp" />
     <ClCompile Include="Quaternion.cpp" />
