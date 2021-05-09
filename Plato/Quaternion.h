@@ -67,6 +67,9 @@ public:
     //! Will set the raw four-dimensional values
     void SetRawValues(const Vector4d values);
 
+    //! Will return the lerp result between two quaternions
+    Quaternion Lerp(const Quaternion& other, double t) const;
+
     friend std::ostream& operator<< (std::ostream& os, const Quaternion& q);
     friend std::wostream& operator<< (std::wostream& os, const Quaternion& q);
 

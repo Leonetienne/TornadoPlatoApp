@@ -244,6 +244,11 @@ void Quaternion::SetRawValues(const Vector4d values)
 	return;
 }
 
+Quaternion Quaternion::Lerp(const Quaternion& other, double t) const
+{
+	return Quaternion(v.Lerp(other.v, t));
+}
+
 void Quaternion::InvalidateCache()
 {
 	isCacheUpToDate_euler = false;
