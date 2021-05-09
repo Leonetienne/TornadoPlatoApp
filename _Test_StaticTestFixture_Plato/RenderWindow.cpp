@@ -96,6 +96,17 @@ void RenderWindow::Thread__CreateWindow()
         std::pair<HWND, RenderWindow*>(systemHandle, this)
     );
 
+    // Update size in event manager
+    {
+        RECT clientRect;
+        GetClientRect(systemHandle, &clientRect);
+
+        EventManager::RegisterEventNewWindowRect(Rect{
+            Vector2d(clientRect.left, clientRect.top),
+            Vector2d((double)clientRect.right - (double)clientRect.left, (double)clientRect.bottom - (double)clientRect.top),
+        });
+    }
+
     return;
 }
 
