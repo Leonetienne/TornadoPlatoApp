@@ -1313,13 +1313,18 @@ namespace Vectors
 			vec = vec * mat;
 
 			// Did we succeed?
+			Vector3d expected(
+				5.1 * 3.8 - 5.1,
+				6.4 * -1.5 + 15.2,
+				7.99 * 3.01 + 19.9
+			);
+
 			std::wstringstream wss;
-			wss << vec;
-			Assert::IsTrue(Vector3d(
-				5.1*3.8 - 5.1,
-				6.4*-1.5 + 15.2,
-				7.99*3.01 + 19.9
-			) == vec, wss.str().c_str());
+			wss << std::endl;
+			wss << "Expected: " << expected << std::endl;
+			wss << "Actual: " << vec;
+
+			Assert::IsTrue(expected == vec, wss.str().c_str());
 
 			return;
 		}

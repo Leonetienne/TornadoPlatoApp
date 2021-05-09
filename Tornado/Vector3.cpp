@@ -1,6 +1,7 @@
 #include "Vector3.h"
 #include "Similar.h"
 #include <iostream>
+#include <immintrin.h>
 
 /*
 	NOTE:
@@ -322,15 +323,47 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 {
 	Vector3<double> newVec;
 
+	// Store x, y, and z values
+	__m256d __vecx = _mm256_set1_pd(x);
+	__m256d __vecy = _mm256_set1_pd(y);
+	__m256d __vecz = _mm256_set1_pd(z);
+
+	// Store matrix values
+	__m256d __mat_row0 = _mm256_set_pd(mat[0][0], mat[1][0], mat[2][0], 0);
+	__m256d __mat_row1 = _mm256_set_pd(mat[0][1], mat[1][1], mat[2][1], 0);
+	__m256d __mat_row2 = _mm256_set_pd(mat[0][2], mat[1][2], mat[2][2], 0);
+
+	// Multiply x, y, z and matrix values
+	__m256d __mul_vecx_row0 = _mm256_mul_pd(__vecx, __mat_row0);
+	__m256d __mul_vecy_row1 = _mm256_mul_pd(__vecy, __mat_row1);
+	__m256d __mul_vecz_row2 = _mm256_mul_pd(__vecz, __mat_row2);
+
+	// Sum up the products
+	__m256d __sum = _mm256_add_pd(__mul_vecx_row0, _mm256_add_pd(__mul_vecy_row1, __mul_vecz_row2));
+
+	// Store translation values
+	__m256d __translation = _mm256_set_pd(mat[0][3], mat[1][3], mat[2][3], 0);
+
+	// Add the translation values
+	__m256d __final = _mm256_add_pd(__sum, __translation);
+
+	double dfinal[4];
+
+	_mm256_storeu_pd(dfinal, __final);
+
+	newVec.x = dfinal[3];
+	newVec.y = dfinal[2];
+	newVec.z = dfinal[1];
+
 	// Rotation, Scaling
-	newVec.x = (mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z);
-	newVec.y = (mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z);
-	newVec.z = (mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z);
+	//newVec.x = (mat[0][0] * x) + (mat[1][0] * y) + (mat[2][0] * z);
+	//newVec.y = (mat[0][1] * x) + (mat[1][1] * y) + (mat[2][1] * z);
+	//newVec.z = (mat[0][2] * x) + (mat[1][2] * y) + (mat[2][2] * z);
 
 	// Translation
-	newVec.x += mat[0][3];
-	newVec.y += mat[1][3];
-	newVec.z += mat[2][3];
+	//newVec.x += mat[0][3];
+	//newVec.y += mat[1][3];
+	//newVec.z += mat[2][3];
 
 	return newVec;
 }
@@ -362,16 +395,48 @@ Vector3<int> Vector3<int>::operator*(const Matrix4x4& mat) const
 // Good, optimized chad version for doubles
 void Vector3<double>::operator*=(const Matrix4x4& mat)
 {
-	Vector3<double> buffer = *this;
+	// Store x, y, and z values
+	__m256d __vecx = _mm256_set1_pd(x);
+	__m256d __vecy = _mm256_set1_pd(y);
+	__m256d __vecz = _mm256_set1_pd(z);
 
-	x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z);
-	y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z);
-	z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z);
+	// Store matrix values
+	__m256d __mat_row0 = _mm256_set_pd(mat[0][0], mat[1][0], mat[2][0], 0);
+	__m256d __mat_row1 = _mm256_set_pd(mat[0][1], mat[1][1], mat[2][1], 0);
+	__m256d __mat_row2 = _mm256_set_pd(mat[0][2], mat[1][2], mat[2][2], 0);
 
-	// Translation
-	x += mat[0][3];
-	y += mat[1][3];
-	z += mat[2][3];
+	// Multiply x, y, z and matrix values
+	__m256d __mul_vecx_row0 = _mm256_mul_pd(__vecx, __mat_row0);
+	__m256d __mul_vecy_row1 = _mm256_mul_pd(__vecy, __mat_row1);
+	__m256d __mul_vecz_row2 = _mm256_mul_pd(__vecz, __mat_row2);
+
+	// Sum up the products
+	__m256d __sum = _mm256_add_pd(__mul_vecx_row0, _mm256_add_pd(__mul_vecy_row1, __mul_vecz_row2));
+
+	// Store translation values
+	__m256d __translation = _mm256_set_pd(mat[0][3], mat[1][3], mat[2][3], 0);
+
+	// Add the translation values
+	__m256d __final = _mm256_add_pd(__sum, __translation);
+
+	double dfinal[4];
+
+	_mm256_storeu_pd(dfinal, __final);
+
+	x = dfinal[3];
+	y = dfinal[2];
+	z = dfinal[1];
+
+
+	//Vector3<double> buffer = *this;
+	//x = (mat[0][0] * buffer.x) + (mat[0][1] * buffer.y) + (mat[0][2] * buffer.z);
+	//y = (mat[1][0] * buffer.x) + (mat[1][1] * buffer.y) + (mat[1][2] * buffer.z);
+	//z = (mat[2][0] * buffer.x) + (mat[2][1] * buffer.y) + (mat[2][2] * buffer.z);
+	//
+	////// Translation
+	//x += mat[0][3];
+	//y += mat[1][3];
+	//z += mat[2][3];
 
 	return;
 }
