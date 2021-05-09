@@ -1,6 +1,7 @@
 #pragma once
 #include "KeyState.h"
 #include "KeyCode.h"
+#include "Event_ReverseEventCallback.h"
 #include "../Tornado/Vector2.h"
 #include "../Tornado/Rect.h"
 #include <unordered_map>
@@ -34,6 +35,10 @@ public:
 	//! Will register any change in the window rect, such as a window movement or resizing.
 	static void RegisterEventNewWindowRect(const Rect& windowRect);
 
+	//! Will register a reverse event callback.  
+	//! This provides the game engine with functionality, such as setting the cursor position.
+	static void RegisterReverseEventCallback(REVERSE_EVENT_CALLBACK event, std::function<void(std::vector<double>)> callback);
+
 	//! Will digest all events registered since the last call of Digest().  
 	//! Call at the end of each frame.
 	static void Digest();
@@ -53,6 +58,18 @@ public:
 	//! Will return the window rectangle
 	static Rect GetWindowRect();
 
+	//! Will attempt to set the global mouse cursor position, as long as an according reverse event callback is implemented.  
+	//! Returns false, if no such callback is implemented
+	static bool SetGlobalMousePosition(const Vector2i& newMousePosition);
+
+	//! Will attempt to set the local (relative to window) mouse cursor position, as long as an according reverse event callback is implemented.  
+	//! Returns false, if no such callback is implemented
+	static bool SetLocalMousePosition(const Vector2i& newMousePosition);
+
+	//! Will attempt to exit the application, as long as an according reverse event callback is implemented.  
+	//! Returns false, if no such callback is implemented
+	static bool ExitApplication();
+
 private:
 	// Does iterative work, like switching the state of just-down keys to the held-state
 	static void Tick();
@@ -71,6 +88,8 @@ private:
 	static std::unordered_map<KEY_CODE, KEY_STATE> keyStates;
 	static std::unordered_map<KEY_CODE, char> keycode_char_mapping;
 	static std::unordered_map<char, KEY_CODE> char_keycode_mapping;
+
+	static std::unordered_map<REVERSE_EVENT_CALLBACK, std::function<void(std::vector<double>)>> reverseEventCallbacks;
 
 	// No instanciating!
 	EventManager();

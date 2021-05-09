@@ -25,13 +25,14 @@ RenderWindow::RenderWindow(const Vector2i& resolution, const std::string& title,
 
 RenderWindow::~RenderWindow()
 {
-    if (isOpen)
-        DestroyWindow(systemHandle);
-    
+    isOpen = false;
+    DestroyWindow(systemHandle);
     eventPoller->join();
+
     delete eventPoller;
     eventPoller = nullptr;
 
+    windows.erase(systemHandle);
     DeleteObject(systemHandle);
 
     delete[] bgrPixelBuffer;
@@ -98,7 +99,7 @@ void RenderWindow::Thread__CreateWindow()
 void RenderWindow::Thread__PollEvents()
 {
     MSG messages;
-    while (GetMessageA(&messages, systemHandle, 0, 0) > 0)
+    while ((GetMessageA(&messages, systemHandle, 0, 0) > 0) && (isOpen))
     {
         TranslateMessage(&messages);
         DispatchMessageA(&messages);
@@ -310,7 +311,6 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
 void RenderWindow::Cleanup()
 {
     isOpen = false;
-    windows.erase(systemHandle);
 
     return;
 }
@@ -339,6 +339,14 @@ HWND RenderWindow::GetSystemWindowHandle() const
 bool RenderWindow::GetIsOpen() const
 {
     return isOpen;
+}
+
+void RenderWindow::Close()
+{
+    if (isOpen)
+      Cleanup();
+
+    return;
 }
 
 RenderWindow* RenderWindow::HwndToWindow(HWND hwnd)

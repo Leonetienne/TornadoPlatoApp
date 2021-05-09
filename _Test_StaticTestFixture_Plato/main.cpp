@@ -30,6 +30,8 @@
 Clock frameTimeClock;
 void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 
+void RegisterReverseEventCallbacks(RenderWindow* window);
+
 int main()
 {
 	// Initialize event manager
@@ -48,6 +50,9 @@ int main()
 	Renderer renderer(resolution);
 	renderer.SetMainCamera(camera);
 	window.SetPixelBuffer(renderer.GetPixelBuffer());
+
+	// Register reverse-event callbacks
+	RegisterReverseEventCallbacks(&window);
 
 	// Let's add a CameraKeyboardControl component to the camera by default
 	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.4, 0.6, 4);
@@ -102,6 +107,52 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	std::stringstream ss;
 	ss << tf->GetTestName() << " - FPS: " << (int)(1000.0 / elapsedTime);
 	window->SetTitle(ss.str());
+
+	return;
+}
+
+void RegisterReverseEventCallbacks(RenderWindow* window)
+{
+	// Callback to exit application
+	EventManager::RegisterReverseEventCallback(
+		REVERSE_EVENT_CALLBACK::EXIT,
+		[window](std::vector<double> params)
+		{
+			window->Close();
+			return;
+		}
+	);
+
+	// Callback to set global mouse position
+	EventManager::RegisterReverseEventCallback(
+		REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
+		[](std::vector<double> params)
+		{
+			const int x = params[0];
+			const int y = params[1];
+			SetCursorPos(x, y);
+			return;
+		}
+	);
+
+	// Callback to set local mouse position
+	EventManager::RegisterReverseEventCallback(
+		REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION,
+		[window](std::vector<double> params)
+		{
+			POINT p;
+			p.x = params[0];
+			p.y = params[1];
+
+			// Translate relative position to global position
+			ClientToScreen(window->GetSystemWindowHandle(), &p);
+
+			// Set global position
+			SetCursorPos(p.x, p.y);
+
+			return;
+		}
+	);
 
 	return;
 }

@@ -3,6 +3,7 @@
 #include "../Plato/Component.h"
 #include "../Plato/Camera.h"
 #include "../Plato/WorldObject.h"
+#include "../Plato/EventManager.h"
 
 class CameraKeyboardControl : Component
 {
@@ -23,6 +24,33 @@ private:
 
 	void MovementControl(double deltaTime)
 	{
+		static Vector2d lastPos = EventManager::GetWindowRect().pos;
+		static bool skipFirst = false;
+
+		Vector2d dPos = EventManager::GetWindowRect().pos - lastPos;
+	
+		if (skipFirst)
+		{
+			camera_yPivot->Move(camera->GetGlobalRotation() *
+				(
+					(
+						Vector3d::left *
+						movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.x * -0.05
+					)
+					+
+					(
+						Vector3d::up *
+						movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.y * -0.05
+					)
+				)
+			);
+		}
+
+		if (dPos.SqrMagnitude() > 0)
+			skipFirst = true;
+
+		lastPos = EventManager::GetWindowRect().pos;
+
 		if (GetAsyncKeyState('A'))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		if (GetAsyncKeyState('D'))

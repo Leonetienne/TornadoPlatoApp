@@ -15,6 +15,7 @@ public:
 	HWND GetSystemWindowHandle() const;
 
 	bool GetIsOpen() const;
+	void Close();
 
 	static RenderWindow* HwndToWindow(HWND hwnd);
 
