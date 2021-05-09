@@ -20,10 +20,10 @@ bool Input::Mouse::SetGlobalMousePosition(const Vector2i& newPos)
 {
 	return EventManager::ExecuteReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
-		std::vector<double>(
-			newPos.x,
-			newPos.y
-		)
+		std::vector<double>({
+			(double)newPos.x,
+			(double)newPos.y
+		})
 	);
 }
 
@@ -31,9 +31,9 @@ bool Input::Mouse::SetLocalMousePosition(const Vector2i& newPos)
 {
 	return EventManager::ExecuteReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION,
-		std::vector<double>(
-			newPos.x,
-			newPos.y
-		)
+		std::vector<double>({
+			(double)newPos.x,
+			(double)newPos.y
+		})
 	);
 }
