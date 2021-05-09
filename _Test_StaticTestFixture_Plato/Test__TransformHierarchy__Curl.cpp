@@ -38,7 +38,7 @@ Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
 	{
 		Transform* cam = WorldObjectManager::FindObjectById("main_camera_ypiv")->transform;
 		cam->SetPosition(Vector3d(20, 3, 0));
-		cam->SetRotation(Quaternion::FromEuler(Vector3d(0, -90, 0)));
+		cam->SetRotation(Quaternion(Vector3d(0, -90, 0)));
 	}
 
 	// Create and load assets
@@ -48,7 +48,7 @@ Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
 
 	// Create a root transform (for positioning and rotation)
 	jointRoot = WorldObjectManager::NewWorldObject("joint_root")->transform;
-	jointRoot->Rotate(Quaternion::FromEuler(Vector3d(49, -20, 39)));
+	jointRoot->Rotate(Quaternion(Vector3d(49, -20, 39)));
 	jointRoot->Scale(Vector3d::one * 0.8);
 
 	// Create fifteen joints
@@ -63,10 +63,10 @@ void Test__TransformHierarchy__Curl::Update(double frametime)
 {
 	if (GetAsyncKeyState(VK_SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
-			wo->transform->Rotate(Quaternion::FromEuler(Vector3d::right * 0.07));
+			wo->transform->Rotate(Quaternion(Vector3d::right * 0.07));
 
 	if (GetAsyncKeyState('U'))
-		jointRoot->Rotate(Quaternion::FromEuler(Vector3d(-2.5, -2, -8) * 0.1));
+		jointRoot->Rotate(Quaternion(Vector3d(-2.5, -2, -8) * 0.1));
 
 	return;
 }
