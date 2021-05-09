@@ -59,16 +59,19 @@ private:
 
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::A))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+		
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::D))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::W))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+		
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::S))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::Q))
 			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+		
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::E))
 			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
