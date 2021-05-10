@@ -14,9 +14,10 @@
 #include "Test__TransformHierarchy__ChangeParent.h"
 #include "Test__OBJParser__Load.h"
 #include "Test__OBJParser__LoadMultimesh.h"
+#include "Test__FPS.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__OBJParser__LoadMultimesh
+#define TEST_TO_RUN Test__FPS
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -41,7 +42,7 @@ int main()
 	EventManager::Init();
 
 	// Define screen resolution
-	const Vector2i resolution = Vector2i(800, 600) * 2;
+	const Vector2i resolution = Vector2i(800, 600) * 3;
 	
 
 	// Create important objects, such as the Window and the Renderer, including Camera
