@@ -42,7 +42,7 @@ int main()
 	EventManager::Init();
 
 	// Define screen resolution
-	const Vector2i resolution = Vector2i(800, 600) * 3;
+	const Vector2i resolution = (Vector2d(800, 600) * 0.75).ToInt();
 	
 
 	// Create important objects, such as the Window and the Renderer, including Camera
