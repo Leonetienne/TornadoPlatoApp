@@ -78,7 +78,7 @@ void Renderer::ResolveRenderTriangles()
 			WorkerTask* task = new WorkerTask(); // Will be freed by the workerPool
 
 			// Compute how many triangles to compute per task (mutex lock overhead)
-			const std::size_t optimalNumTrianglesForThisTask = 125;
+			const std::size_t optimalNumTrianglesForThisTask = 16;
 
 			// Either optimalNumTrianglesForThisTask, or what's left to not go out_of_range
 			const std::size_t numTrianglesForThisTask = 
