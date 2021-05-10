@@ -51,6 +51,9 @@
     <ClCompile Include="Test__OBJParser__LoadMultimesh.cpp">
       <Filter>Quelldateien\Tests.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Test__FPS.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestFixture.h">
@@ -87,6 +90,9 @@
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
     <ClInclude Include="Test__OBJParser__LoadMultimesh.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__FPS.h">
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
   </ItemGroup>
