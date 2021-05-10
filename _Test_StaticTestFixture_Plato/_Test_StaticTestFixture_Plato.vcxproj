@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Test__FPS.cpp" />
     <ClCompile Include="Test__OBJParser__Load.cpp" />
     <ClCompile Include="Test__OBJParser__LoadMultimesh.cpp" />
     <ClCompile Include="Test__TransformHierarchy__ClearParent.cpp" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="CameraKeyboardControl.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Test__FPS.h" />
     <ClInclude Include="Test__OBJParser__Load.h" />
     <ClInclude Include="Test__OBJParser__LoadMultimesh.h" />
     <ClInclude Include="Test__TransformHierarchy__ClearParent.h" />
