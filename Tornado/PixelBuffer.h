@@ -23,6 +23,8 @@ public:
 
 	//! Will return the raw pixel buffer
 	uint8_t* GetRawData();
+
+	//! Will return the raw pixel buffer
 	const uint8_t* GetRawData() const;
 
 	//! Will copy an existing raw pixel buffer, and adjust size, if needed.  
@@ -50,6 +52,9 @@ public:
 
 	//! Will clear this pixel buffer to a solid color
 	void Clear(std::vector<uint8_t> color);
+
+	//! Same as copy-constructor
+	void operator=(const PixelBuffer<T>& other);
 
 private:
 	uint8_t* pixelBuffer;
@@ -222,5 +227,12 @@ inline void PixelBuffer<T>::Clear(std::vector<uint8_t> color)
 			pixelBuffer[i + c] = color[c];
 	}
 
+	return;
+}
+
+template<std::size_t T>
+void PixelBuffer<T>::operator=(const PixelBuffer<T>& other)
+{
+	Refit(other.GetRawData(), other.GetDimensions());
 	return;
 }
