@@ -42,7 +42,7 @@ int main()
 	EventManager::Init();
 
 	// Define screen resolution
-	const Vector2i resolution = (Vector2d(800, 600) * 0.75).ToInt();
+	const Vector2i resolution = (Vector2d(800, 600) * 2).ToInt();
 	
 
 	// Create important objects, such as the Window and the Renderer, including Camera
@@ -111,6 +111,11 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	std::stringstream ss;
 	ss << tf->GetTestName() << " - FPS: " << (int)(1000.0 / elapsedTime);
 	window->SetTitle(ss.str());
+
+	// Limit fps to 60
+	std::this_thread::sleep_for(std::chrono::milliseconds((long long)
+		std::max<double>(((1000.0/60) - frameTimeClock.GetElapsedTime().AsMilliseconds()), 0)
+	));
 
 	return;
 }
