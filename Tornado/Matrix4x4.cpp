@@ -160,7 +160,7 @@ Matrix4x4 Matrix4x4::Multiply4x4(const Matrix4x4& o) const
 Matrix4x4 Matrix4x4::GetCofactors(std::size_t p, std::size_t q, std::size_t n) const
 {
 	if (n > 4)
-		throw std::exception("Dimension out of range! 0 <= n <= 4");
+		throw std::runtime_error("Dimension out of range! 0 <= n <= 4");
 
 	Matrix4x4 cofs;
 
@@ -193,7 +193,7 @@ Matrix4x4 Matrix4x4::GetCofactors(std::size_t p, std::size_t q, std::size_t n) c
 double Matrix4x4::Determinant(std::size_t n) const
 {
 	if (n > 4)
-		throw std::exception("Dimension out of range! 0 <= n <= 4");
+		throw std::runtime_error("Dimension out of range! 0 <= n <= 4");
 
 	double d = 0;
 	double sign = 1;
@@ -215,7 +215,7 @@ double Matrix4x4::Determinant(std::size_t n) const
 Matrix4x4 Matrix4x4::Adjoint(std::size_t n) const
 {
 	if (n > 4)
-		throw std::exception("Dimension out of range! 0 <= n <= 4");
+		throw std::runtime_error("Dimension out of range! 0 <= n <= 4");
 
 	Matrix4x4 adj;
 	double sign = 1;
@@ -243,7 +243,7 @@ Matrix4x4 Matrix4x4::Inverse3x3() const
 
 	double det = Determinant(3);
 	if (det == 0.0)
-		throw std::exception("Matrix3x3 not inversible!");
+		throw std::runtime_error("Matrix3x3 not inversible!");
 
 	Matrix4x4 adj = Adjoint(3);
 
@@ -262,7 +262,7 @@ Matrix4x4 Matrix4x4::Inverse4x4() const
 
 	double det = Determinant(4);
 	if (det == 0.0)
-		throw std::exception("Matrix4x4 not inversible!");
+		throw std::runtime_error("Matrix4x4 not inversible!");
 
 	Matrix4x4 adj = Adjoint(4);
 

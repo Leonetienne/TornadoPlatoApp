@@ -6,7 +6,7 @@ Material* ResourceManager::NewMaterial(const std::string& name)
 {
 	// Name already taken!
 	if (materials.find(name) != materials.end())
-		throw std::exception("Name already taken!");
+		throw std::runtime_error("Name already taken!");
 
 	Material* mat = new Material();
 
@@ -21,7 +21,7 @@ Texture* ResourceManager::NewTexture(const std::string& name, const Vector2i& si
 {
 	// Name already taken!
 	if (textures.find(name) != textures.end())
-		throw std::exception("Name already taken!");
+		throw std::runtime_error("Name already taken!");
 
 
 	Texture* text = new Texture(Color::black, size);
@@ -37,7 +37,7 @@ Mesh* ResourceManager::NewMesh(const std::string& name)
 {
 	// Name already taken!
 	if (meshes.find(name) != meshes.end())
-		throw std::exception("Name already taken!");
+		throw std::runtime_error("Name already taken!");
 
 
 	Mesh* mesh = new Mesh();
@@ -53,12 +53,12 @@ Texture* ResourceManager::LoadTextureFromBmp(const std::string& name, const std:
 {
 	// Name already taken!
 	if (textures.find(name) != textures.end())
-		throw std::exception("Name already taken!");
+		throw std::runtime_error("Name already taken!");
 
 	BMP bmp;
 
 	if (!bmp.Read(filename))
-		throw std::exception("Cannot open filestream!");
+		throw std::runtime_error("Cannot open filestream!");
 
 	bmp.ConvertTo(BMP::COLOR_MODE::RGBA);
 
@@ -81,7 +81,7 @@ Mesh* ResourceManager::LoadMeshFromObj(const std::string& name, const std::strin
 {
 	// Name already taken!
 	if (meshes.find(name) != meshes.end())
-		throw std::exception("Name already taken!");
+		throw std::runtime_error("Name already taken!");
 
 	Mesh* mesh = new Mesh(OBJParser().ParseObj(filename));
 

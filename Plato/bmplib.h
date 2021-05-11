@@ -10,7 +10,7 @@
     Please read the full license: https://github.com/Leonetienne/BMPlib/blob/master/license.txt
 
     #define BMPLIB_SILENT
-    if you want bmplib to stop writing exceptions to stderr
+    if you want bmplib to stop writing runtime_errors to stderr
 */
 
 #pragma once
@@ -620,7 +620,7 @@ namespace BMPlib
         {
             #ifndef BMPLIB_SILENT
             #ifdef _IOSTREAM_
-            std::cerr << "BMPlib exception: " << msg << std::endl;
+            std::cerr << "BMPlib runtime_error: " << msg << std::endl;
             #endif
             #endif
             throw msg;

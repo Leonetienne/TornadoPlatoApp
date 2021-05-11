@@ -68,7 +68,7 @@ namespace Misc
 			ResourceManager::NewMaterial("new material 1");
 
 			// Verify
-			Assert::ExpectException<std::exception>([]()
+			Assert::ExpectException<std::runtime_error>([]()
 			{
 				ResourceManager::NewMaterial("new material 1");
 			});
@@ -77,7 +77,7 @@ namespace Misc
 			return;
 		}
 
-		// Tests that trying to find a non-existent material throws an exception
+		// Tests that trying to find a non-existent material throws a runtime_error
 		TEST_METHOD(Unknown_Material_Nullptr)
 		{
 			SETUP_TEST;
@@ -165,7 +165,7 @@ namespace Misc
 			ResourceManager::NewTexture("new texture 1", { 1,1 });
 
 			// Verify
-			Assert::ExpectException<std::exception>([]()
+			Assert::ExpectException<std::runtime_error>([]()
 				{
 					ResourceManager::NewTexture("new texture 1", {1,1});
 				});
@@ -174,7 +174,7 @@ namespace Misc
 			return;
 		}
 
-		// Tests that trying to find a non-existent texture throws an exception
+		// Tests that trying to find a non-existent texture throws a runtime_error
 		TEST_METHOD(Unknown_Texture_Nullptr)
 		{
 			SETUP_TEST;
@@ -264,7 +264,7 @@ namespace Misc
 			ResourceManager::NewMesh("new mesh 1");
 
 			// Verify
-			Assert::ExpectException<std::exception>([]()
+			Assert::ExpectException<std::runtime_error>([]()
 				{
 					ResourceManager::NewMesh("new mesh 1");
 				});
@@ -273,7 +273,7 @@ namespace Misc
 			return;
 		}
 
-		// Tests that trying to find a non-existent mesh throws an exception
+		// Tests that trying to find a non-existent mesh throws a runtime_error
 		TEST_METHOD(Unknown_Mesh_Nullptr)
 		{
 			SETUP_TEST;

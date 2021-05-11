@@ -8,10 +8,10 @@ Renderer::Renderer(const Vector2i& renderResolution)
 	workerPool(24)
 {
 	
-	worldMatrix[0] = { 1, 0, 0, 0 };
-	worldMatrix[1] = { 0, 1, 0, 0 };
-	worldMatrix[2] = { 0, 0, 1, 0 };
-	worldMatrix[3] = { 0, 0, 0, 1 };
+	worldMatrix[0] = { 10,  0,  0, 0 };
+	worldMatrix[1] = {  0, 10,  0, 0 };
+	worldMatrix[2] = {  0,  0, 10, 0 };
+	worldMatrix[3] = {  0,  0,  0, 1 };
 
 	return;
 }
@@ -71,7 +71,7 @@ void Renderer::ResolveRenderTriangles()
 
 		// Number of triangle vertex indices not a multiple of 3
 		if (mesh->tris.size() % 3 != 0)
-			throw std::exception("Mesh tris.size() is broken!");
+			throw std::runtime_error("Mesh tris.size() is broken!");
 	
 		for (std::size_t i = 0; i < mesh->tris.size();)
 		{

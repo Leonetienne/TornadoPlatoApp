@@ -10,7 +10,7 @@ inline std::string ReadFile(const std::string& filepath)
     ifs.open(filepath);
     if (!ifs.good())
     {
-        throw std::exception("No such file");
+        throw std::runtime_error("No such file");
         std::terminate();
     }
     std::string buf;

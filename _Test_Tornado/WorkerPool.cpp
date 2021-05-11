@@ -26,10 +26,10 @@ namespace Multithreading
 			return;
 		}
 
-		// Tests if an exception is thrown if the worker count is set to be 0
+		// Tests if a runtime_error is thrown if the worker count is set to be 0
 		TEST_METHOD(Exception_WorkerCount_0)
 		{
-			Assert::ExpectException<std::exception>([]() 
+			Assert::ExpectException<std::runtime_error>([]() 
 				{
 					WorkerPool pool(0);
 				});
