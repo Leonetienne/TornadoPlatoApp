@@ -1,7 +1,6 @@
 #include "Vector2.h"
 #include "Similar.h"
 #include <iostream>
-#include <exception>
 
 /*
 	NOTE:

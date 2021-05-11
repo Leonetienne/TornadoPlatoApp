@@ -4,7 +4,7 @@
 WorkerPool::WorkerPool(std::size_t numWorkers)
 {
 	if (numWorkers == 0)
-		throw std::exception("Bad amount of workers for worker pool! Must satisfy 'n > 0'!");
+		throw std::runtime_error("Bad amount of workers for worker pool! Must satisfy 'n > 0'!");
 
 	workers.reserve(numWorkers);
 

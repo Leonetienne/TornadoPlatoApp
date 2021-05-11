@@ -266,7 +266,7 @@ namespace WorldObjects
 			return;
 		}
 
-		// Tests th at the Free() call does not throw an exception/error when manually having deleted world objects before
+		// Tests th at the Free() call does not throw a runtime_error/error when manually having deleted world objects before
 		TEST_METHOD(Can_Call_Free_After_Manually_Destroying_Objects)
 		{
 			SETUP_TEST;

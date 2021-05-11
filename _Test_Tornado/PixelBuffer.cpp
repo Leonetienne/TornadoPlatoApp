@@ -52,53 +52,53 @@ namespace PixelBuffers
 			return;
 		}
 
-		// Tests if an exception is thrown if an invalid size is supplied
+		// Tests if a runtime_error is thrown if an invalid size is supplied
 		TEST_METHOD(Expect_Exception_Invalid_Size)
 		{
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<4> pxb({ 0, 0 });
-				}, L"No exception thrown for <4> (0, 0)!");
+				}, L"No runtime_error thrown for <4> (0, 0)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<4> pxb({ 199, 0 });
-				}, L"No exception thrown for <4> (199, 0)!");
+				}, L"No runtime_error thrown for <4> (199, 0)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<4> pxb({ 0, 199 });
-				}, L"No exception thrown for <4> (0, 199)!");
+				}, L"No runtime_error thrown for <4> (0, 199)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<0> pxb({ 199, 199 });
-				}, L"No exception thrown for <0> (199, 199)!");
+				}, L"No runtime_error thrown for <0> (199, 199)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<0> pxb({ 0, 199 });
-				}, L"No exception thrown for <0> (0, 199)!");
+				}, L"No runtime_error thrown for <0> (0, 199)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<0> pxb({ 0, 0 });
-				}, L"No exception thrown for <0> (0, 0)!");
+				}, L"No runtime_error thrown for <0> (0, 0)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<4> pxb({ -199, 199 });
-				}, L"No exception thrown for <4> (-199, 199)!");
+				}, L"No runtime_error thrown for <4> (-199, 199)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<4> pxb({ 199, -199 });
-				}, L"No exception thrown for <4> (199, -199)!");
+				}, L"No runtime_error thrown for <4> (199, -199)!");
 
-			Assert::ExpectException<std::exception&>([]()
+			Assert::ExpectException<std::runtime_error&>([]()
 				{
 					PixelBuffer<4> pxb({ -199, -199 });
-				}, L"No exception thrown for <4> (-199, -199)!");
+				}, L"No runtime_error thrown for <4> (-199, -199)!");
 
 			return;
 		}

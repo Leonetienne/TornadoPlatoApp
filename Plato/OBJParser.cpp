@@ -85,7 +85,7 @@ void OBJParser::Interpret_v(const std::string& line)
 
 	// Check argument count
 	if (params.size() != 3)
-		throw std::exception("Wavefront file syntax error! v argument-count mismatch!");
+		throw std::runtime_error("Wavefront file syntax error! v argument-count mismatch!");
 
 	// Convert arguments to double
 	Vector3d v;
@@ -96,9 +96,9 @@ void OBJParser::Interpret_v(const std::string& line)
 			std::stod(params[2])
 		);
 	}
-	catch (std::exception)
+	catch (std::runtime_error)
 	{
-		throw std::exception("Wavefront file syntax error! std::stod failure in v");
+		throw std::runtime_error("Wavefront file syntax error! std::stod failure in v");
 	}
 
 	// Save arguments
@@ -121,7 +121,7 @@ void OBJParser::Interpret_vt(const std::string& line)
 
 	// Check argument count
 	if (params.size() != 2)
-		throw std::exception("Wavefront file syntax error! vt argument-count mismatch!");
+		throw std::runtime_error("Wavefront file syntax error! vt argument-count mismatch!");
 
 	// Convert arguments to double
 	Vector2d v;
@@ -131,9 +131,9 @@ void OBJParser::Interpret_vt(const std::string& line)
 			std::stod(params[1])
 		);
 	}
-	catch (std::exception)
+	catch (std::logic_error)
 	{
-		throw std::exception("Wavefront file syntax error! std::stod failure in vt");
+		throw std::runtime_error("Wavefront file syntax error! std::stod failure in vt");
 	}
 
 	// Save arguments
@@ -156,7 +156,7 @@ void OBJParser::Interpret_vn(const std::string& line)
 
 	// Check argument count
 	if (params.size() != 3)
-		throw std::exception("Wavefront file syntax error! vn argument-count mismatch!");
+		throw std::runtime_error("Wavefront file syntax error! vn argument-count mismatch!");
 
 	// Convert arguments to double
 	Vector3d v;
@@ -168,9 +168,9 @@ void OBJParser::Interpret_vn(const std::string& line)
 			std::stod(params[2])
 		);
 	}
-	catch (std::invalid_argument)
+	catch (std::logic_error)
 	{
-		throw std::exception("Wavefront file syntax error! std::stod failure in vn");
+		throw std::runtime_error("Wavefront file syntax error! std::stod failure in vn");
 	}
 
 	// Save arguments
@@ -197,7 +197,7 @@ void OBJParser::Interpret_f(const std::string& line)
 
 	// Check argument count
 	if (params.size() != 3)
-		throw std::exception("Wavefront file syntax error! f argument-count mismatch!");
+		throw std::runtime_error("Wavefront file syntax error! f argument-count mismatch!");
 
 	// Parse arguments
 	for (const std::string& fParam : params)
@@ -237,14 +237,14 @@ void OBJParser::Interpret_f(const std::string& line)
 							newVertexIndices.vn = std::stoul(ss.str()) - 1;
 							break;
 						default:
-							throw std::exception("Wavefront file syntax error! f-segment argument-count mismatch!");
+							throw std::runtime_error("Wavefront file syntax error! f-segment argument-count mismatch!");
 						}
 						ss.str("");
 					}
-					catch (std::invalid_argument)
+					catch (std::logic_error)
 					{
 						std::cerr << "Exception details: " << ss.str() << std::endl;
-						throw std::exception("Wavefront file syntax error! std::stoul failure in f");
+						throw std::runtime_error("Wavefront file syntax error! std::stoul failure in f");
 					}
 
 				slash_count++;

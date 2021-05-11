@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include <exception>
+#include <stdexcept>
 #include <vector>
 #include "Vector2.h"
 #include "Endian.h"
@@ -74,7 +74,7 @@ template<std::size_t T>
 PixelBuffer<T>::PixelBuffer(const Vector2i& size)
 {
 	if ((size.x < 1) || (size.y < 1) || (T < 1))
-		throw std::exception("Can't create a pixel buffer of area <= 0!");
+		throw std::runtime_error("Can't create a pixel buffer of area <= 0!");
 
 	this->size = size;
 	std::size_t cachedBufferSize = GetSizeofBuffer();
@@ -117,7 +117,7 @@ template<std::size_t T>
 void PixelBuffer<T>::Refit(const uint8_t* data, const Vector2i& size)
 {
 	if ((size.x < 1) || (size.y < 1) || (T < 1))
-		throw std::exception("Can't create a pixel buffer of area <= 0!");
+		throw std::runtime_error("Can't create a pixel buffer of area <= 0!");
 
 
 	// Resize buffer size, if needed

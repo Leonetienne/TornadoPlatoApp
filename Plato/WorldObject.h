@@ -112,7 +112,7 @@ inline T* WorldObject::AddComponent(Params... params)
 	
 	// Oops! T is not a derivation of class Component
 	if (compPtr == nullptr)
-		throw std::exception("Template type not derivation of Component!");
+		throw std::runtime_error("Template type not derivation of Component!");
 
 	components.insert(compPtr);
 	return newComponent;
