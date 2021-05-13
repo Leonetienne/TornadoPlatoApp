@@ -97,15 +97,46 @@ double Vector3<T>::Magnitude() const
 
 
 
-template<typename T>
-Vector3<T> Vector3<T>::VectorScale(const Vector3<T>& scalar) const
+Vector3<double> Vector3<double>::VectorScale(const Vector3<double>& scalar) const
 {
-	return Vector3<T>
-		(
+	#ifndef _TORNADO_NO_INTRINSICS_
+	
+	// Load vectors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __vector_scalar = _mm256_set_pd(0, scalar.z, scalar.y, scalar.x);
+
+	// Multiply them
+	__m256d __product = _mm256_mul_pd(__vector_self, __vector_scalar);
+
+	// Retrieve result
+	double result[4];
+	_mm256_storeu_pd(result, __product);
+
+	// Return value
+	return Vector3<double>(
+			result[0],
+			result[1],
+			result[2]
+		);
+
+	#else
+
+	return Vector3<double>(
 			x * scalar.x,
 			y * scalar.y,
 			z * scalar.z
 		);
+
+	#endif
+}
+
+Vector3<int> Vector3<int>::VectorScale(const Vector3<int>& scalar) const
+{
+	return Vector3<int>(
+			x * scalar.x,
+			y * scalar.y,
+			z * scalar.z
+	);
 }
 
 

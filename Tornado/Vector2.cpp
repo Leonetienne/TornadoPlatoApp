@@ -2,6 +2,7 @@
 #include "Similar.h"
 #include <iostream>
 
+//#define _TORNADO_NO_INTRINSICS_
 #ifndef _TORNADO_NO_INTRINSICS_
 #include <immintrin.h>
 #endif
@@ -91,14 +92,42 @@ double Vector2<T>::Magnitude() const
 
 
 
-template<typename T>
-Vector2<T> Vector2<T>::VectorScale(const Vector2<T>& scalar) const
+Vector2<double> Vector2<double>::VectorScale(const Vector2<double>& scalar) const
 {
-	return Vector2<T>
-		(
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Load vectors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __vector_scalar = _mm256_set_pd(0, 0, scalar.y, scalar.x);
+
+	// Multiply them
+	__m256d __product = _mm256_mul_pd(__vector_self, __vector_scalar);
+
+	// Retrieve result
+	double result[4];
+	_mm256_storeu_pd(result, __product);
+
+	// Return value
+	return Vector2<double>(
+			result[0],
+			result[1]
+		);
+
+	#else
+
+	return Vector2<double>(
 			x * scalar.x,
 			y * scalar.y
 		);
+	#endif
+}
+
+Vector2<int> Vector2<int>::VectorScale(const Vector2<int>& scalar) const
+{
+	return Vector2<int>(
+			x * scalar.x,
+			y * scalar.y
+	);
 }
 
 
