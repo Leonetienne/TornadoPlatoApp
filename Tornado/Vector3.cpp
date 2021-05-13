@@ -153,7 +153,7 @@ Vector3<double> Vector3<T>::Normalize() const
 // Method to normalize a Vector3d
 void Vector3<double>::NormalizeSelf()
 {
-	double length = Magnitude();
+	const double length = Magnitude();
 
 	// Prevent division by 0
 	if (length == 0)
@@ -164,9 +164,30 @@ void Vector3<double>::NormalizeSelf()
 	}
 	else
 	{
+		#ifndef _TORNADO_NO_INTRINSICS_
+
+		// Load vector and length into registers
+		__m256d __vec = _mm256_set_pd(0, z, y, x);
+		__m256d __len = _mm256_set1_pd(length);
+
+		// Divide
+		__m256d __prod = _mm256_div_pd(__vec, __len);
+
+		// Extract and set values
+		double prod[4];
+		_mm256_storeu_pd(prod, __prod);
+
+		x = prod[0];
+		y = prod[1];
+		z = prod[2];
+		
+		#else
+		
 		x /= length;
 		y /= length;
 		z /= length;
+		
+		#endif
 	}
 
 	return;
