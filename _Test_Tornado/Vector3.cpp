@@ -459,12 +459,12 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = LARGE_RAND_DOUBLE;
-				double y = LARGE_RAND_DOUBLE;
-				double z = LARGE_RAND_DOUBLE;
+				double x = (double)(rng() % 1000) - 500.0; // Too large numbers would get unaccurate decimals when using intrinsics.
+				double y = (double)(rng() % 1000) - 500.0;
+				double z = (double)(rng() % 1000) - 500.0;
 				double expected = x*x + y*y + z*z;
 
-				Assert::AreEqual(expected, Vector3d(x, y, z).SqrMagnitude());
+				Assert::IsTrue(Similar(expected, Vector3d(x, y, z).SqrMagnitude()));
 			}
 
 			return;
@@ -500,9 +500,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = LARGE_RAND_DOUBLE;
+				double x = (double)(rng() % 1000) - 500.0; // Too large numbers would get unaccurate decimals when using intrinsics.
 				Vector3d vec(x, 0, 0);
-				Assert::AreEqual(abs(x), vec.Magnitude());
+
+				std::wstringstream wss;
+				wss << std::endl << std::setprecision(20)
+					<< "Actual: " << vec.Magnitude() << std::endl
+					<< "Expected: " << x << std::endl;
+				Assert::IsTrue(Similar(abs(x), vec.Magnitude()), wss.str().c_str());
 			}
 
 			return;
@@ -514,9 +519,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double y = LARGE_RAND_DOUBLE;
+				double y = (double)(rng() % 1000) - 500.0; // Too large numbers would get unaccurate decimals when using intrinsics.
 				Vector3d vec(0, y, 0);
-				Assert::AreEqual(abs(y), vec.Magnitude());
+
+				std::wstringstream wss;
+				wss << std::endl << std::setprecision(20)
+					<< "Actual: " << vec.Magnitude() << std::endl
+					<< "Expected: " << y << std::endl;
+				Assert::IsTrue(Similar(abs(y), vec.Magnitude()), wss.str().c_str());
 			}
 
 			return;
@@ -528,9 +538,14 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double z = LARGE_RAND_DOUBLE;
+				double z = (double)(rng() % 1000) - 500.0; // Too large numbers would get unaccurate decimals when using intrinsics.
 				Vector3d vec(0, 0, z);
-				Assert::AreEqual(abs(z), vec.Magnitude());
+
+				std::wstringstream wss;
+				wss << std::endl << std::setprecision(20)
+					<< "Actual: " << vec.Magnitude() << std::endl
+					<< "Expected: " << z << std::endl;
+				Assert::IsTrue(Similar(abs(z), vec.Magnitude()), wss.str().c_str());
 			}
 
 			return;
