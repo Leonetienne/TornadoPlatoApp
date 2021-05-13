@@ -22,8 +22,8 @@ double Vector3<double>::DotProduct(const Vector3<double>& other) const
 	#ifndef _TORNADO_NO_INTRINSICS_
 
 	// Move vector components into registers
-	__m256 __vector_self  = _mm256_set_ps(0,0,0,0,0, z, y, x);
-	__m256 __vector_other = _mm256_set_ps(0,0,0,0,0, other.z, other.y, other.x);
+	__m256 __vector_self  = _mm256_set_ps(0,0,0,0,0, (float)z, (float)y, (float)x);
+	__m256 __vector_other = _mm256_set_ps(0,0,0,0,0, (float)other.z, (float)other.y, (float)other.x);
 
 	// Define bitmask, and execute computation
 	const int mask = 0x71; // -> 0111 1000 -> use positions 0111 (last 3) of the vectors supplied, and place them in 1000 (first only) element of __dot
@@ -266,11 +266,39 @@ const T& Vector3<T>::operator[](std::size_t idx) const
 // Good, optimized chad version for doubles
 void Vector3<double>::LerpSelf(const Vector3<double>& other, double t)
 {
-	double t1 = 1.0f - t;
+	const double it = 1.0 - t; // Inverse t
 
-	x = t1 * x + t * other.x;
-	y = t1 * y + t * other.y;
-	z = t1 * z + t * other.z;
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, other.z, other.y, other.x);
+	__m256d __t = _mm256_set1_pd(t);
+	__m256d __it = _mm256_set1_pd(it); // Inverse t
+
+	// Procedure:
+	// (__vector_self * __it) + (__vector_other * __t)
+
+	__m256d __sum = _mm256_set1_pd(0); // this will hold the sum of the two multiplications
+
+	__sum = _mm256_fmadd_pd(__vector_self, __it, __sum);
+	__sum = _mm256_fmadd_pd(__vector_other, __t, __sum);
+
+	// Retrieve result, and apply it
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	x = sum[0];
+	y = sum[1];
+	z = sum[2];
+
+	#else
+
+	x = it*x + t*other.x;
+	y = it*y + t*other.y;
+	z = it*z + t*other.z;
+
+	#endif
 
 	return;
 }
@@ -278,25 +306,29 @@ void Vector3<double>::LerpSelf(const Vector3<double>& other, double t)
 // Slow, lame version for intcels
 void Vector3<int>::LerpSelf(const Vector3<int>& other, double t)
 {
-	double t1 = 1.0f - t;
+	const double it = 1.0 - t; // Inverse t
 
-	x = (int)(t1 * (double)x + t * (double)other.x);
-	y = (int)(t1 * (double)y + t * (double)other.y);
-	z = (int)(t1 * (double)z + t * (double)other.z);
+	x = (int)(it * (double)x + t * (double)other.x);
+	y = (int)(it * (double)y + t * (double)other.y);
+	z = (int)(it * (double)z + t * (double)other.z);
 
 	return;
 }
 
-template<typename T>
-Vector3<double> Vector3<T>::Lerp(const Vector3<T>& other, double t) const
+Vector3<double> Vector3<double>::Lerp(const Vector3<double>& other, double t) const
 {
-	double t1 = 1.0 - t;
+	Vector3d copy(*this);
+	copy.LerpSelf(other, t);
 
-	return Vector3<double>(
-		t1 * x + t * other.x,
-		t1 * y + t * other.y,
-		t1 * z + t * other.z
-	);
+	return copy;
+}
+
+Vector3<double> Vector3<int>::Lerp(const Vector3<int>& other, double t) const
+{
+	Vector3d copy(this->ToDouble());
+	copy.LerpSelf(other.ToDouble(), t);
+
+	return copy;
 }
 
 template<typename T>

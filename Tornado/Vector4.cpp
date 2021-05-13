@@ -220,12 +220,41 @@ const T& Vector4<T>::operator[](std::size_t idx) const
 // Good, optimized chad version for doubles
 void Vector4<double>::LerpSelf(const Vector4<double>& other, double t)
 {
-	double t1 = 1.0f - t;
+	const double it = 1.0 - t; // Inverse t
 
-	x = t1 * x + t * other.x;
-	y = t1 * y + t * other.y;
-	z = t1 * z + t * other.z;
-	w = t1 * w + t * other.w;
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
+	__m256d __vector_other = _mm256_set_pd(other.w, other.z, other.y, other.x);
+	__m256d __t = _mm256_set1_pd(t);
+	__m256d __it = _mm256_set1_pd(it); // Inverse t
+
+	// Procedure:
+	// (__vector_self * __it) + (__vector_other * __t)
+
+	__m256d __sum = _mm256_set1_pd(0); // this will hold the sum of the two multiplications
+
+	__sum = _mm256_fmadd_pd(__vector_self, __it, __sum);
+	__sum = _mm256_fmadd_pd(__vector_other, __t, __sum);
+
+	// Retrieve result, and apply it
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	x = sum[0];
+	y = sum[1];
+	z = sum[2];
+	w = sum[3];
+
+	#else
+
+	x = it * x + t * other.x;
+	y = it * y + t * other.y;
+	z = it * z + t * other.z;
+	w = it * w + t * other.w;
+
+	#endif
 
 	return;
 }
@@ -233,27 +262,30 @@ void Vector4<double>::LerpSelf(const Vector4<double>& other, double t)
 // Slow, lame version for intcels
 void Vector4<int>::LerpSelf(const Vector4<int>& other, double t)
 {
-	double t1 = 1.0f - t;
+	const double it = 1.0 - t;
 
-	x = (int)(t1 * (double)x + t * (double)other.x);
-	y = (int)(t1 * (double)y + t * (double)other.y);
-	z = (int)(t1 * (double)z + t * (double)other.z);
-	w = (int)(t1 * (double)w + t * (double)other.w);
+	x = (int)(it * (double)x + t * (double)other.x);
+	y = (int)(it * (double)y + t * (double)other.y);
+	z = (int)(it * (double)z + t * (double)other.z);
+	w = (int)(it * (double)w + t * (double)other.w);
 
 	return;
 }
 
-template<typename T>
-Vector4<double> Vector4<T>::Lerp(const Vector4<T>& other, double t) const
+Vector4<double> Vector4<double>::Lerp(const Vector4<double>& other, double t) const
 {
-	double t1 = 1.0 - t;
+	Vector4d copy(*this);
+	copy.LerpSelf(other, t);
 
-	return Vector4<double>(
-		t1 * x + t * other.x,
-		t1 * y + t * other.y,
-		t1 * z + t * other.z,
-		t1 * w + t * other.w
-	);
+	return copy;
+}
+
+Vector4<double> Vector4<int>::Lerp(const Vector4<int>& other, double t) const
+{
+	Vector4d copy(this->ToDouble());
+	copy.LerpSelf(other.ToDouble(), t);
+
+	return copy;
 }
 
 template<typename T>

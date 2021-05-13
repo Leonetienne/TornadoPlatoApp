@@ -195,10 +195,37 @@ void Vector2<int>::NormalizeSelf()
 // Good, optimized chad version for doubles
 void Vector2<double>::LerpSelf(const Vector2<double>& other, double t)
 {
-	double t1 = 1.0f - t;
+	const double it = 1.0 - t; // Inverse t
 
-	x = t1 * x + t * other.x;
-	y = t1 * y + t * other.y;
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, 0, other.y, other.x);
+	__m256d __t = _mm256_set1_pd(t);
+	__m256d __it = _mm256_set1_pd(it); // Inverse t
+
+	// Procedure:
+	// (__vector_self * __it) + (__vector_other * __t)
+
+	__m256d __sum = _mm256_set1_pd(0); // this will hold the sum of the two multiplications
+
+	__sum = _mm256_fmadd_pd(__vector_self, __it, __sum);
+	__sum = _mm256_fmadd_pd(__vector_other, __t, __sum);
+
+	// Retrieve result, and apply it
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	x = sum[0];
+	y = sum[1];
+	
+	#else
+
+	x = it * x + t * other.x;
+	y = it * y + t * other.y;
+
+	#endif
 	
 	return;
 }
@@ -206,23 +233,28 @@ void Vector2<double>::LerpSelf(const Vector2<double>& other, double t)
 // Slow, lame version for intcels
 void Vector2<int>::LerpSelf(const Vector2<int>& other, double t)
 {
-	double t1 = 1.0f - t;
+	const double it = 1.0 - t; // Inverse t
 
-	x = (int)(t1 * (double)x + t * (double)other.x);
-	y = (int)(t1 * (double)y + t * (double)other.y);
+	x = (int)(it * (double)x + t * (double)other.x);
+	y = (int)(it * (double)y + t * (double)other.y);
 
 	return;
 }
 
-template<typename T>
-Vector2<double> Vector2<T>::Lerp(const Vector2<T>& other, double t) const
+Vector2<double> Vector2<double>::Lerp(const Vector2<double>& other, double t) const
 {
-	double t1 = 1.0f - t;
+	Vector2d copy(*this);
+	copy.LerpSelf(other, t);
 
-	return Vector2<double>(
-		t1 * x + t * other.x,
-		t1 * y + t * other.y
-	);
+	return copy;
+}
+
+Vector2<double> Vector2<int>::Lerp(const Vector2<int>& other, double t) const
+{
+	Vector2d copy(this->ToDouble());
+	copy.LerpSelf(other.ToDouble(), t);
+
+	return copy;
 }
 
 template<typename T>
@@ -233,7 +265,7 @@ Vector2<double> Vector2<T>::Lerp(const Vector2<T>& a, const Vector2<T>& b, doubl
 	return Vector2<double>(
 		t1 * a.x + t * b.x,
 		t1 * a.y + t * b.y
-	);
+		);
 }
 
 
