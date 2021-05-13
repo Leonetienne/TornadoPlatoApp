@@ -387,6 +387,20 @@ namespace Vectors
 			return;
 		}
 
+		// Tests the normalize method with known values
+		TEST_METHOD(Normalize_Oracle)
+		{
+			// Setup
+			Vector4d v(3.2, -5.3, 9.88, 69.420);
+
+			// Exercise
+			v.NormalizeSelf();
+
+			// Verify
+			Vector4d expected(0.0454594951, -0.07529228877, 0.14035619114, 0.98618692201);
+			Assert::IsTrue(v.Similar(expected));
+		}
+
 		// Kinda dumb method, but ok lol
 		// DON'T NORMALIZE INT-VECTORS WHAT IS WRONG WITH YOU
 		TEST_METHOD(Normalized_Int_Vector_Is_0)

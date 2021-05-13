@@ -684,6 +684,20 @@ namespace Vectors
 			return;
 		}
 
+		// Tests the normalize method with known values
+		TEST_METHOD(Normalize_Oracle)
+		{
+			// Setup
+			Vector3d v(3.2, -5.3, 9.88);
+
+			// Exercise
+			v.NormalizeSelf();
+
+			// Verify
+			Vector3d expected(0.27445384355, -0.45456417839, 0.84737624198);
+			Assert::IsTrue(v.Similar(expected));
+		}
+
 		// Tests for a normalized vector to still point in the exact same direction
 		TEST_METHOD(Normalize_Direction_Stays_Unaffected)
 		{
