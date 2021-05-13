@@ -20,12 +20,15 @@ double Vector2<double>::DotProduct(const Vector2<double>& other) const
 {
 	#ifndef _TORNADO_NO_INTRINSICS_
 
+	// Move vector components into registers
 	__m256 __vector_self = _mm256_set_ps(0,0,0,0,0,0, y, x);
 	__m256 __vector_other = _mm256_set_ps(0,0,0,0,0,0, other.y, other.x);
 
+	// Define bitmask, and execute computation
 	const int mask = 0x31; // -> 0011 1000 -> use positions 0011 (last 2) of the vectors supplied, and place them in 1000 (first only) element of __dot
 	__m256 __dot = _mm256_dp_ps(__vector_self, __vector_other, mask);
 
+	// Retrieve result, and return it
 	float result[8];
 	_mm256_storeu_ps(result, __dot);
 
