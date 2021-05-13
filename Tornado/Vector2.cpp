@@ -153,8 +153,28 @@ void Vector2<double>::NormalizeSelf()
 	}
 	else
 	{
+		#ifndef _TORNADO_NO_INTRINSICS_
+
+		// Load vector and length into registers
+		__m256d __vec = _mm256_set_pd(0, 0, y, x);
+		__m256d __len = _mm256_set1_pd(length);
+
+		// Divide
+		__m256d __prod = _mm256_div_pd(__vec, __len);
+
+		// Extract and set values
+		double prod[4];
+		_mm256_storeu_pd(prod, __prod);
+
+		x = prod[0];
+		y = prod[1];
+
+		#else
+
 		x /= length;
 		y /= length;
+
+		#endif
 	}
 
 	return;
