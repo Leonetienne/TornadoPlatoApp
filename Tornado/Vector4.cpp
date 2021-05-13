@@ -2,6 +2,11 @@
 #include "Similar.h"
 #include <iostream>
 
+//#define _TORNADO_NO_INTRINSICS_
+#ifndef _TORNADO_NO_INTRINSICS_
+#include <immintrin.h>
+#endif
+
 /*
 	NOTE:
 	Here you will find bad, unoptimized methods for T=int.
@@ -34,11 +39,44 @@ double Vector4<T>::Magnitude() const
 }
 
 
-template<typename T>
-Vector4<T> Vector4<T>::VectorScale(const Vector4<T>& scalar) const
+Vector4<double> Vector4<double>::VectorScale(const Vector4<double>& scalar) const
 {
-	return Vector4<T>
-		(
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Load vectors into registers
+	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
+	__m256d __vector_scalar = _mm256_set_pd(scalar.w, scalar.z, scalar.y, scalar.x);
+
+	// Multiply them
+	__m256d __product = _mm256_mul_pd(__vector_self, __vector_scalar);
+
+	// Retrieve result
+	double result[4];
+	_mm256_storeu_pd(result, __product);
+
+	// Return value
+	return Vector4<double>(
+		result[0],
+		result[1],
+		result[2],
+		result[3]
+		);
+
+	#else
+
+	return Vector4<double>(
+			x * scalar.x,
+			y * scalar.y,
+			z * scalar.z,
+			w * scalar.w
+		);
+	#endif
+}
+
+
+Vector4<int> Vector4<int>::VectorScale(const Vector4<int>& scalar) const
+{
+	return Vector4<int>(
 			x * scalar.x,
 			y * scalar.y,
 			z * scalar.z,
