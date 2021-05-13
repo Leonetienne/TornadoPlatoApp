@@ -2,6 +2,7 @@
 #include "Similar.h"
 #include <iostream>
 
+//#define _TORNADO_NO_INTRINSICS_
 #ifndef _TORNADO_NO_INTRINSICS_
 #include <immintrin.h>
 #endif
@@ -18,9 +19,24 @@
 // Good, optimized chad version for doubles
 double Vector3<double>::DotProduct(const Vector3<double>& other) const
 {
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	__m256 __vector_self  = _mm256_set_ps(0,0,0,0,0, z, y, x);
+	__m256 __vector_other = _mm256_set_ps(0,0,0,0,0, other.z, other.y, other.x);
+
+	const int mask = 0x71; // -> 0111 1000 -> use positions 0111 (last 3) of the vectors supplied, and place them in 1000 (first only) element of __dot
+	__m256 __dot = _mm256_dp_ps(__vector_self, __vector_other, mask);
+
+	float result[8];
+	_mm256_storeu_ps(result, __dot);
+
+	return result[0];
+
+	#else
 	return (x * other.x) +
-		   (y * other.y) + 
+		   (y * other.y) +
 		   (z * other.z);
+	#endif
 }
 
 // Slow, lame version for intcels
