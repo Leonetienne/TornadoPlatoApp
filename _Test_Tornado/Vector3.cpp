@@ -256,6 +256,22 @@ namespace Vectors
 			return;
 		}
 
+		// Tests that the dot product is correct for a known value
+		TEST_METHOD(DotProduct_Oracle)
+		{
+			// Setup
+			Vector3d a(-99, 199, -32);
+			Vector3d b(18, -1, -21);
+
+			// Exercise
+			const double dot = a.DotProduct(b);
+
+			// Verify
+			Assert::AreEqual(-1309.0, dot);
+
+			return;
+		}
+
 		// Quick and dirty check if the useless int-method is working
 		TEST_METHOD(DotProduct_Dirty_Int)
 		{
