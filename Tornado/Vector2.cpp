@@ -72,8 +72,8 @@ double Vector2<int>::CrossProduct(const Vector2<int>& other) const
 // Good, optimized chad version for doubles
 double Vector2<double>::SqrMagnitude() const
 {
-	return (x * x) +
-		   (y * y);
+	// x.DotProduct(x) == x.SqrMagnitude()
+	return DotProduct(*this);
 }
 
 // Slow, lame version for intcels
