@@ -394,8 +394,8 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = LARGE_RAND_DOUBLE;
-				double y = LARGE_RAND_DOUBLE;
+				double x = (double)(rng() % 1000) - 500.0;
+				double y = (double)(rng() % 1000) - 500.0;
 				double expected = x*x + y*y;
 
 				Assert::AreEqual(expected, Vector2d(x, y).SqrMagnitude());
@@ -414,7 +414,7 @@ namespace Vectors
 				int y = LARGE_RAND_INT;
 				int expected = x*x + y*y;
 
-				Assert::AreEqual((double)expected, Vector2i(x, y).SqrMagnitude());
+				Assert::IsTrue(Similar((double)expected, Vector2i(x, y).SqrMagnitude()));
 			}
 
 			return;
@@ -433,9 +433,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double x = LARGE_RAND_DOUBLE;
+				double x = (double)(rng() % 1000) - 500.0;
 				Vector2d vec(x, 0);
-				Assert::AreEqual(abs(x), vec.Magnitude());
+				Assert::IsTrue(Similar(abs(x), vec.Magnitude()));
 			}
 
 			return;
@@ -447,9 +447,9 @@ namespace Vectors
 			// Test 1000 times
 			for (std::size_t i = 0; i < 1000; i++)
 			{
-				double y = LARGE_RAND_DOUBLE;
+				double y = (double)(rng() % 1000) - 500.0;
 				Vector2d vec(0, y);
-				Assert::AreEqual(abs(y), vec.Magnitude());
+				Assert::IsTrue(Similar(abs(y), vec.Magnitude()));
 			}
 
 			return;
