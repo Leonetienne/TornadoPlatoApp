@@ -3,6 +3,7 @@
 #include "WorkerPool.h"
 #include "InterRenderTriangle.h"
 #include "Rect.h"
+#include "LightingEngine.h"
 
 /** Engine to draw InterRenderTriangle's to the screen.
 * These IRDs have to be completely processed (e.g. projected and clipped)
