@@ -32,8 +32,8 @@ using Input::EventManager;
 using Input::REVERSE_EVENT_CALLBACK;
 
 Clock frameTimeClock;
-void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 
+void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
 void RegisterReverseEventCallbacks(RenderWindow* window);
 
 int main()
