@@ -23,7 +23,7 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 		newTransform->Reset();
 
 		// Put in list of objects
-		worldObjects.push_back(newWorldObject);
+		worldObjects.insert(newWorldObject);
 
 		return newWorldObject;
 
@@ -57,47 +57,61 @@ WorldObject* WorldObjectManager::FindObjectById(const std::string& id)
 	return nullptr;
 }
 
-std::vector<WorldObject*> WorldObjectManager::FindObjectsByName(const std::string& name)
+std::unordered_set<WorldObject*> WorldObjectManager::FindObjectsByName(const std::string& name)
 {
-	std::vector<WorldObject*> results;
+	std::unordered_set<WorldObject*> results;
 
 	for (WorldObject* wo : worldObjects)
 		if (wo->GetName() == name)
-			results.push_back(wo);
+			results.insert(wo);
 
 	return results;
 }
 
-std::vector<WorldObject*> WorldObjectManager::FindObjectsByTag(const std::string& tag)
+std::unordered_set<WorldObject*> WorldObjectManager::FindObjectsByTag(const std::string& tag)
 {
-	std::vector<WorldObject*> results;
+	std::unordered_set<WorldObject*> results;
 
 	for (WorldObject* wo : worldObjects)
 		if (wo->HasTag(tag))
-			results.push_back(wo);
+			results.insert(wo);
 
 	return results;
+}
+
+void WorldObjectManager::RegisterWorldObjectForDeletion(WorldObject* wo)
+{
+	// Add wo to delete list
+	objectsFlaggedForDeletion.insert(wo);
+
+	// Recursively add all children to delete list
+	for (Transform* tr : wo->transform->GetChildren())
+		RegisterWorldObjectForDeletion(tr->worldObject);
+
+	return;
 }
 
 void WorldObjectManager::DeleteFlaggedObjects()
 {
-	for (long long int i = worldObjects.size() - 1; i >= 0; i--)
-	{
-		if (worldObjects[i]->deleteMe)
+	// For each object that should be deleted
+	if (objectsFlaggedForDeletion.size() > 0)
+		for (WorldObject* wo : objectsFlaggedForDeletion)
 		{
 			// Call OnDestroy hooks
-			if (worldObjects[i]->GetIsGloballyEnabled())
-				for (Component* co : worldObjects[i]->components)
+			if (wo->GetIsGloballyEnabled())
+				for (Component* co : wo->GetComponents())
 					if (co->GetIsGloballyEnabled())
 						co->OnDestroy();
 
-			// Free memory
-			FreeWorldObject(worldObjects[i]);
+			// Remove world object from main set
+			worldObjects.erase(wo);
 
-			// Remove "corpse" from vector
-			worldObjects.erase(worldObjects.cbegin() + i);
+			// Free memory
+			FreeWorldObject(wo);
 		}
-	}
+
+	// Clear set of objects that should be deleted
+	objectsFlaggedForDeletion.clear();
 
 	return;
 }
@@ -154,7 +168,6 @@ void WorldObjectManager::Free()
 	}
 
 	worldObjects.clear();
-	worldObjects.shrink_to_fit();
 
 	return;
 }
@@ -180,4 +193,5 @@ void WorldObjectManager::FreeWorldObject(WorldObject* wo)
 	return;
 }
 
-std::vector<WorldObject*> WorldObjectManager::worldObjects;
+std::unordered_set<WorldObject*> WorldObjectManager::worldObjects;
+std::unordered_set<WorldObject*> WorldObjectManager::objectsFlaggedForDeletion;

@@ -93,10 +93,6 @@ private:
 	//! Private handle for this WorldObjects Transform
 	Transform* privateHandle__Transform;
 
-	//! If true, the WorldObjectManager will delete this object at the beginning of the next frame.
-	// This way, deleting this object will not screw over scripts mid - frame
-	bool deleteMe = false;
-
 	//! Allow intimate access
 	friend class WorldObjectManager;
 	

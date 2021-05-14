@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <unordered_set>
 #include "WorldObject.h"
 #include "Transform.h"
 
@@ -33,10 +33,13 @@ public:
 	static WorldObject* FindObjectById(const std::string& id);
 
 	//! Will search for world objects by their name. Only returns absolute matches.
-	static std::vector<WorldObject*> FindObjectsByName(const std::string& name);
+	static std::unordered_set<WorldObject*> FindObjectsByName(const std::string& name);
 
 	//! Will search for world objects by their associated tags.
-	static std::vector<WorldObject*> FindObjectsByTag(const std::string& tag);
+	static std::unordered_set<WorldObject*> FindObjectsByTag(const std::string& tag);
+
+	//! Will register this WorldObject (and all its children) to be deleted with the next call of DeleteFlaggedObjects(), which is most likely at the end of the current frame
+	static void RegisterWorldObjectForDeletion(WorldObject* wo);
 
 	//! Will return the number of world objects
 	static std::size_t GetNumObjects();
@@ -65,7 +68,8 @@ private:
 	// Will call delete on a world object and its transform
 	static void FreeWorldObject(WorldObject* wo);
 
-	static std::vector<WorldObject*> worldObjects;
+	static std::unordered_set<WorldObject*> worldObjects;
+	static std::unordered_set<WorldObject*> objectsFlaggedForDeletion;
 
 	// No instantation! >:(
 	WorldObjectManager();
