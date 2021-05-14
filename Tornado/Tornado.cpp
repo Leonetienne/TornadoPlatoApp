@@ -42,7 +42,7 @@ void Tornado::RegisterRender(const RenderTriangle3D* tri)
 void Tornado::Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix)
 {
 	// Project triangles
-	projectionEngine->BeginBatch();
+	projectionEngine->BeginBatch(registeredTriangles.size());
 
 	for (const RenderTriangle3D* tri : registeredTriangles)
 		projectionEngine->RegisterRenderTriangle(tri);
@@ -52,7 +52,6 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	std::vector<InterRenderTriangle> projectedTriangles = projectionEngine->Finish();
 
 	// Draw triangles
-	
 	drawingEngine->BeginBatch(projectedTriangles.size());
 	for (const InterRenderTriangle& tri : projectedTriangles)
 		drawingEngine->RegisterInterRenderTriangle(&tri);
