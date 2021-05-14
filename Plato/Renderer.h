@@ -3,6 +3,7 @@
 #include "../Tornado/WorkerPool.h"
 #include "Camera.h"
 #include "MeshRenderer.h"
+#include "LightSource.h"
 #include <mutex>
 
 /** Responsible to resolve renderables to RenderTriangle3D's.
@@ -18,12 +19,17 @@ public:
 	const Camera* GetMainCamera() const;
 
 	void BeginFrame();
+	void RegisterLightSource(const LightSource* lr);
 	void RegisterMeshRenderer(const MeshRenderer* mr);
 	void Render();
 
 	const PixelBuffer<3>* GetPixelBuffer() const;
 
 private:
+
+	// Will translate plato light sources to tornado light sources
+	void ResolveLightSources();
+
 	// Will translate meshes (and their transforms) to camera-space render triangles
 	void ResolveRenderTriangles();
 
@@ -42,7 +48,9 @@ private:
 
 	Tornado tornado;
 	std::vector<const MeshRenderer*> meshRenderers;
+	std::vector<const LightSource*> lightSourceComponents;
 	std::vector<RenderTriangle3D> renderTriangles;
+	std::vector<RenderLightSource*> tornadoLightSources;
 	Matrix4x4 worldMatrix;
 	const Vector2i& renderResolution;
 	const Camera* mainCamera;
