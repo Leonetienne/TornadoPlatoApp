@@ -23,6 +23,7 @@
     <ClInclude Include="ClippingEngine.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="BackfaceCullingEngine.h" />
     <ClInclude Include="DrawingEngine.h" />
     <ClInclude Include="Endian.h" />
     <ClInclude Include="InterRenderTriangle.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="ClippingEngine.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CrossPlatformSyscalls.cpp" />
+    <ClCompile Include="BackfaceCullingEngine.cpp" />
     <ClCompile Include="DrawingEngine.cpp" />
     <ClCompile Include="InterRenderTriangle.cpp" />
     <ClCompile Include="InterRenderVertex.cpp" />

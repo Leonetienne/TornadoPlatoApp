@@ -1,5 +1,6 @@
 #pragma once
 #include "WorkerPool.h"
+#include "BackfaceCullingEngine.h"
 #include "ProjectionEngine.h"
 #include "DrawingEngine.h"
 
@@ -26,6 +27,7 @@ public:
 
 private:
 	WorkerPool* workerPool;
+	BackfaceCullingEngine* backfaceCullingEngine;
 	ProjectionEngine* projectionEngine;
 	DrawingEngine* drawingEngine;
 	PixelBuffer<3>* pixelBuffer;

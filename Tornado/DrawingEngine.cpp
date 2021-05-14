@@ -46,7 +46,7 @@ void DrawingEngine::RegisterInterRenderTriangle(const InterRenderTriangle* tri)
 	CalculateRenderingRelatedCaches_IRD(tri);
 
 	// Queue
-	registeredTriangles.push_back(tri);
+	registeredTriangles.emplace_back(tri);
 	return;
 }
 

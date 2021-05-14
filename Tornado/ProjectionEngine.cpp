@@ -21,7 +21,7 @@ void ProjectionEngine::BeginBatch(std::size_t reserve_triangles)
 
 void ProjectionEngine::RegisterRenderTriangle(const RenderTriangle3D* triangle)
 {
-	registeredTriangles.push_back(triangle);
+	registeredTriangles.emplace_back(triangle);
 	return;
 }
 

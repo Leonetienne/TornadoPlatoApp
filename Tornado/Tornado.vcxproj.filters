@@ -87,6 +87,9 @@
     <ClInclude Include="Endian.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="BackfaceCullingEngine.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -138,6 +141,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="BackfaceCullingEngine.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
