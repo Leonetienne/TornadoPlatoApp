@@ -22,8 +22,8 @@ double Vector2<double>::DotProduct(const Vector2<double>& other) const
 	#ifndef _TORNADO_NO_INTRINSICS_
 
 	// Move vector components into registers
-	__m256 __vector_self = _mm256_set_ps(0,0,0,0,0,0, y, x);
-	__m256 __vector_other = _mm256_set_ps(0,0,0,0,0,0, other.y, other.x);
+	__m256 __vector_self = _mm256_set_ps(0,0,0,0,0,0, (float)y, (float)x);
+	__m256 __vector_other = _mm256_set_ps(0,0,0,0,0,0, (float)other.y, (float)other.x);
 
 	// Define bitmask, and execute computation
 	const int mask = 0x31; // -> 0011 1000 -> use positions 0011 (last 2) of the vectors supplied, and place them in 1000 (first only) element of __dot
@@ -320,21 +320,111 @@ Vector2<double> Vector2<T>::ToDouble() const
 }
 
 
+Vector2<double> Vector2<double>::operator+(const Vector2<double>& other) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, 0, other.y, other.x);
+
+	// Add the components
+	__m256d __sum = _mm256_add_pd(__vector_self, __vector_other);
+
+	// Retrieve and return these values
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	return Vector2<double>(
+			sum[0],
+			sum[1]
+		);
+
+	#else
+
+	return Vector2<double>(
+		x + other.x,
+		y + other.y
+	);
+	#endif
+}
+
 template<typename T>
 Vector2<T> Vector2<T>::operator+(const Vector2<T>& other) const
 {
 	return Vector2<T>(
-		x + other.x,
-		y + other.y
-	);
+			x + other.x,
+			y + other.y
+		);
+}
+
+
+
+void Vector2<double>::operator+=(const Vector2<double>& other)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, 0, other.y, other.x);
+
+	// Add the components
+	__m256d __sum = _mm256_add_pd(__vector_self, __vector_other);
+
+	// Retrieve and apply these values
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	x = sum[0];
+	y = sum[1];
+
+	#else
+
+	x += other.x;
+	y += other.y;
+
+	#endif
+
+	return;
 }
 
 template<typename T>
-void  Vector2<T>::operator+=(const Vector2<T>& other)
+void Vector2<T>::operator+=(const Vector2<T>& other)
 {
 	x += other.x;
 	y += other.y;
 	return;
+}
+
+
+
+Vector2<double> Vector2<double>::operator-(const Vector2<double>& other) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, 0, other.y, other.x);
+
+	// Subtract the components
+	__m256d __diff = _mm256_sub_pd(__vector_self, __vector_other);
+
+	// Retrieve and return these values
+	double diff[4];
+	_mm256_storeu_pd(diff, __diff);
+
+	return Vector2<double>(
+			diff[0],
+			diff[1]
+		);
+
+	#else
+
+	return Vector2<double>(
+			x - other.x,
+			y - other.y
+		);
+	#endif
 }
 
 template<typename T>
@@ -346,12 +436,74 @@ Vector2<T> Vector2<T>::operator-(const Vector2<T>& other) const
 	);
 }
 
+
+
+void Vector2<double>::operator-=(const Vector2<double>& other)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, 0, other.y, other.x);
+
+	// Subtract the components
+	__m256d __diff = _mm256_sub_pd(__vector_self, __vector_other);
+
+	// Retrieve and apply these values
+	double diff[4];
+	_mm256_storeu_pd(diff, __diff);
+
+	x = diff[0];
+	y = diff[1];
+
+	#else
+
+	x -= other.x;
+	y -= other.y;
+
+	#endif
+
+	return;
+}
+
 template<typename T>
 void Vector2<T>::operator-=(const Vector2<T>& other)
 {
 	x -= other.x;
 	y -= other.y;
 	return;
+}
+
+
+
+Vector2<double> Vector2<double>::operator*(const double scale) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Multiply the components
+	__m256d __prod = _mm256_mul_pd(__vector_self, __scalar);
+
+	// Retrieve and return these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	return Vector2<double>(
+			prod[0],
+			prod[1]
+		);
+
+	#else
+
+	return Vector2<double>(
+			x * scale,
+			y * scale
+		);
+
+	#endif
 }
 
 template<typename T>
@@ -363,6 +515,36 @@ Vector2<T> Vector2<T>::operator*(const T scale) const
 	);
 }
 
+
+
+void Vector2<double>::operator*=(const double scale)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Multiply the components
+	__m256d __prod = _mm256_mul_pd(__vector_self, __scalar);
+
+	// Retrieve and apply these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	x = prod[0];
+	y = prod[1];
+
+	#else
+
+	x *= scale;
+	y *= scale;
+
+	#endif
+
+	return;
+}
+
 template<typename T>
 void Vector2<T>::operator*=(const T scale)
 {
@@ -371,13 +553,74 @@ void Vector2<T>::operator*=(const T scale)
 	return;
 }
 
+
+
+Vector2<double> Vector2<double>::operator/(const double scale) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Divide the components
+	__m256d __prod = _mm256_div_pd(__vector_self, __scalar);
+
+	// Retrieve and return these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	return Vector2<double>(
+		prod[0],
+		prod[1]
+	);
+
+	#else
+
+	return Vector2<double>(
+			x / scale,
+			y / scale
+		);
+
+	#endif
+}
+
 template<typename T>
 Vector2<T> Vector2<T>::operator/(const T scale) const
 {
 	return Vector2<T>(
-		x / scale,
-		y / scale
-	);
+			x / scale,
+			y / scale
+		);
+}
+
+
+
+void Vector2<double>::operator/=(const double scale)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, 0, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Divide the components
+	__m256d __prod = _mm256_div_pd(__vector_self, __scalar);
+
+	// Retrieve and apply these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	x = prod[0];
+	y = prod[1];
+
+	#else
+
+	x /= scale;
+	y /= scale;
+
+	#endif
+	return;
 }
 
 template<typename T>
@@ -387,6 +630,8 @@ void Vector2<T>::operator/=(const T scale)
 	y /= scale;
 	return;
 }
+
+
 
 template<typename T>
 void Vector2<T>::operator=(const Vector2<T>& other)
