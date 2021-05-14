@@ -624,19 +624,6 @@ namespace Vectors
 			return;
 		}
 
-		// Tests lerp as a static function
-		TEST_METHOD(Lerp_Static)
-		{
-			Vector3d a(100, 1000, 10);
-			Vector3d b(200, 4000, 100);
-			Vector3d res = Vector3d::Lerp(a, b, 0.75);
-
-			std::wstringstream wss;
-			wss << res;
-			Assert::IsTrue(Vector3d(175, 3250, 77.5) == res, wss.str().c_str());
-			return;
-		}
-
 		// Tests lerpself
 		TEST_METHOD(LerpSelf)
 		{
