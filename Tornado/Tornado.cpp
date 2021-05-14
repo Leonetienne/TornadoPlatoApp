@@ -1,4 +1,5 @@
 #include "Tornado.h"
+#include "RenderPointLight.h"
 
 Tornado::Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads)
 {
@@ -44,6 +45,17 @@ void Tornado::RegisterRender(const RenderTriangle3D* tri)
 
 void Tornado::Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix)
 {
+	LightingEngine::BeginBatch(1);
+
+	RenderPointLight pl;
+	pl.position = Vector3d(0,0,0);
+	pl.color = Color(255,255,255);
+	pl.intensity = 1000;
+
+	LightingEngine::RegisterLightSource(&pl);
+
+
+
 	// Project triangles
 	projectionEngine->BeginBatch(registeredTriangles.size());
 

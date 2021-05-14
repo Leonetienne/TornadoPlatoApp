@@ -3,6 +3,7 @@
 #include "BackfaceCullingEngine.h"
 #include "ProjectionEngine.h"
 #include "DrawingEngine.h"
+#include "LightingEngine.h"
 
 /** The main class to interface with the rendering engine.
 * You basically don't have to interact with anything else but a few data structures to get things going!

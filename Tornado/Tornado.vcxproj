@@ -28,7 +28,10 @@
     <ClInclude Include="Endian.h" />
     <ClInclude Include="InterRenderTriangle.h" />
     <ClInclude Include="InterRenderVertex.h" />
+    <ClInclude Include="LightingEngine.h" />
+    <ClInclude Include="RenderLightSource.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="RenderPointLight.h" />
     <ClInclude Include="ProjectionEngine.h" />
     <ClInclude Include="ProjectionProperties.h" />
     <ClInclude Include="Rect.h" />
@@ -54,7 +57,10 @@
     <ClCompile Include="DrawingEngine.cpp" />
     <ClCompile Include="InterRenderTriangle.cpp" />
     <ClCompile Include="InterRenderVertex.cpp" />
+    <ClCompile Include="LightingEngine.cpp" />
+    <ClCompile Include="RenderLightSource.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="RenderPointLight.cpp" />
     <ClCompile Include="ProjectionEngine.cpp" />
     <ClCompile Include="ProjectionProperties.cpp" />
     <ClCompile Include="Texture.cpp" />

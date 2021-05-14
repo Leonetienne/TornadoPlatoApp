@@ -216,6 +216,33 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		)
 	);
 
+	Vector3d ws_coords(
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.pos_ws.x,
+			ird->b.pos_ws.x,
+			ird->c.pos_ws.x,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.pos_ws.y,
+			ird->b.pos_ws.y,
+			ird->c.pos_ws.y,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.pos_ws.z,
+			ird->b.pos_ws.z,
+			ird->c.pos_ws.z,
+			berp_cache
+		)
+	);
+
 	uint8_t& r = pixelBase[0];
 	uint8_t& g = pixelBase[1];
 	uint8_t& b = pixelBase[2];
@@ -239,16 +266,17 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.3;
+		constexpr double globalIllu = 0.0;
 
 		// Calculate brightness (if we should shade)
 		double brightness = 1;
 		if (!ird->material->noShading)
 		{
-			// This is just super simple vertex shading, relative to an arbitrary fixed point.
-			double dot = ird->meanVertexNormal.DotProduct(Vector3d::up + Vector3d::forward + Vector3d::right);
-			dot = std::max(std::min(dot, 1.0), 0.0);
-			brightness = std::max(dot, globalIllu);
+			double lightingFac = 
+				LightingEngine::GetColorIntensityFactors(ird, ws_coords).r / 255.0;
+
+			lightingFac = std::max(std::min(lightingFac, 1.0), 0.0);
+			brightness = std::max(lightingFac, globalIllu);
 		}
 
 		r = uint8_t(text_pixel[0] * brightness);

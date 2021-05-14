@@ -90,6 +90,15 @@
     <ClInclude Include="BackfaceCullingEngine.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="LightingEngine.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderLightSource.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPointLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -144,6 +153,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="BackfaceCullingEngine.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="LightingEngine.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderLightSource.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPointLight.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
