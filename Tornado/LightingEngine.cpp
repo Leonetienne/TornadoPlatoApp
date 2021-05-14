@@ -16,6 +16,9 @@ void LightingEngine::RegisterLightSource(const RenderLightSource* lightSource)
 
 Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point)
 {
+	// Calculate caches
+	CalculateLightingRelatedCaches_IRD(ird);
+
 	Color totalIntensity(0,0,0);
 
 	for (const RenderLightSource* ls : lightSources)
@@ -28,6 +31,21 @@ Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, c
 	}
 
 	return totalIntensity;
+}
+
+void LightingEngine::CalculateLightingRelatedCaches_IRD(const InterRenderTriangle* ird)
+{
+	// Calculate surface normal for world space
+	ird->surfaceNormalWs =
+		(
+			(
+				ird->b.pos_ws - ird->a.pos_ws
+			).CrossProduct(
+				ird->c.pos_ws - ird->a.pos_ws
+			)
+		).Normalize();
+
+	return;
 }
 
 std::unordered_set<const RenderLightSource*> LightingEngine::lightSources;

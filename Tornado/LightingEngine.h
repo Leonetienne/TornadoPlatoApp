@@ -11,7 +11,10 @@ public:
 
 	static Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point);
 
+
 private:
+	static void CalculateLightingRelatedCaches_IRD(const InterRenderTriangle* ird);
+
 	static std::unordered_set<const RenderLightSource*> lightSources;
 };
 

@@ -15,7 +15,9 @@ struct InterRenderTriangle
 
 	mutable double ss_area = -1;	//! Cached value. Area
 	mutable double ss_iarea = -1;	//! Cached value. Inverted area
+	
 	mutable Vector3d surfaceNormalNdc = Vector3d::zero; //! Cached value. Surface normal (relative to normalized device coordinate space). Calculated in BackfaceCullingEngine::Cull()
+	mutable Vector3d surfaceNormalWs = Vector3d::zero; //! Cached value.  Surface normal (relative to world space). Calculated in LightingEngine::CalculateLightingRelatedCaches_IRD()
 	mutable Vector3d meanVertexNormal = Vector3d::zero; //! Cached value. Mean vertex normal according to mesh data. Calculated in DrawingEngine::CalculateRenderingRelatedCaches_IRD()
 
 	const Material* material = nullptr; //! Material to render with
