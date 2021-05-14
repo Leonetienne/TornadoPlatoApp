@@ -39,9 +39,9 @@ namespace Engines
 			tris.push_back(rd);
 
 			cullingEngine.BeginBatch();
-			cullingEngine.RegisterTriangle(&tris[0]);
+			cullingEngine.RegisterRenderTriangle(&tris[0]);
 			cullingEngine.Cull();
-			std::vector<RenderTriangle3D*> ret = cullingEngine.Finish();
+			std::vector<const RenderTriangle3D*> ret = cullingEngine.Finish();
 
 			// Verify
 			Assert::AreEqual(std::size_t(1), ret.size());
@@ -65,12 +65,12 @@ namespace Engines
 			tris.push_back(rd);
 
 			cullingEngine.BeginBatch();
-			cullingEngine.RegisterTriangle(&tris[0]);
+			cullingEngine.RegisterRenderTriangle(&tris[0]);
 			cullingEngine.Cull();
-			std::vector<RenderTriangle3D*> ret = cullingEngine.Finish();
+			std::vector<const RenderTriangle3D*> ret = cullingEngine.Finish();
 
 			// Verify
-			Assert::AreEqual(std::size_t(1), ret.size());
+			Assert::AreEqual(std::size_t(0), ret.size());
 
 			return;
 		}
