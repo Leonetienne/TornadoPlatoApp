@@ -357,7 +357,7 @@ namespace Vectors
 		TEST_METHOD(Normalize_Length_Before_Is_0)
 		{
 			Vector4d vec(0, 0, 0, 0);
-			vec.Normalize();
+			vec.NormalizeSelf();
 			Assert::AreEqual(0.0, vec.Magnitude());
 			return;
 		}
