@@ -54,16 +54,16 @@ public:
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;
 
-	Vector4<T> operator+(const Vector4<T> other) const;
-	void operator+=(const Vector4<T> other);
-	Vector4<T> operator-(const Vector4<T> other) const;
-	void operator-=(const Vector4<T> other);
+	Vector4<T> operator+(const Vector4<T>& other) const;
+	void operator+=(const Vector4<T>& other);
+	Vector4<T> operator-(const Vector4<T>& other) const;
+	void operator-=(const Vector4<T>& other);
 	Vector4<T> operator*(const T scale) const;
 	void operator*=(const T scale);
 	Vector4<T> operator/(const T scale) const;
 	void operator/=(const T scale);
-	Vector4<T> operator*(const Matrix4x4 mat) const;
-	void operator*=(const Matrix4x4 mat);
+	Vector4<T> operator*(const Matrix4x4& mat) const;
+	void operator*=(const Matrix4x4& mat);
 	Vector4<T> operator-() const;
 
 	operator Vector2<T>() const; //! Conversion method
