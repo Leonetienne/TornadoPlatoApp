@@ -54,6 +54,9 @@
     <ClCompile Include="Test__FPS.cpp">
       <Filter>Quelldateien\Tests.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Test__Lighting__PointLight.cpp">
+      <Filter>Quelldateien\Tests.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestFixture.h">
@@ -93,6 +96,9 @@
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
     <ClInclude Include="Test__FPS.h">
+      <Filter>Headerdateien\Tests.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Test__Lighting__PointLight.h">
       <Filter>Headerdateien\Tests.h</Filter>
     </ClInclude>
   </ItemGroup>
