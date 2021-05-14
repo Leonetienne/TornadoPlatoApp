@@ -5,7 +5,7 @@ Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird,
 	const double sqrDistance = (position - point).SqrMagnitude();
 
 	// Too far away.
-	if (intensity < sqrDistance)
+	if (intensity*13 < sqrDistance)
 		return Color(0, 0, 0, 0);
 
 	// Point is in range

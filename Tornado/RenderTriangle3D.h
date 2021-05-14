@@ -10,5 +10,5 @@ struct RenderTriangle3D
 	Vertex b;
 	Vertex c;
 
-	const Material* material; //! Material to render with
+	const Material* material = nullptr; //! Material to render with
 };
