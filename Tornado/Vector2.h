@@ -40,19 +40,16 @@ public:
 	void LerpSelf(const Vector2<T>& other, double t);
 
 	//! Will return a lerp result between this and another vector
-	Vector2<double> Lerp(const Vector2<T>& other, double t) const;
-
-	//! Will lerp between a and b by t
-	static Vector2<double> Lerp(const Vector2<T>& a, const Vector2<T>& b, double t);
+	[[nodiscard]] Vector2<double> Lerp(const Vector2<T>& other, double t) const;
 
 	//! Will compare if two vectors are similar to a certain epsilon value
-	bool Similar(const Vector2<T>& other, double epsilon = 0.00001) const;
+	[[nodiscard]] bool Similar(const Vector2<T>& other, double epsilon = 0.00001) const;
 
 	//! Will convert this vector to a Vector2i
-	Vector2<int> ToInt() const;
+	[[nodiscard]] Vector2<int> ToInt() const;
 
 	//! Will convert this vector to a Vector2d
-	Vector2<double> ToDouble() const;
+	[[nodiscard]] Vector2<double> ToDouble() const;
 
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;
