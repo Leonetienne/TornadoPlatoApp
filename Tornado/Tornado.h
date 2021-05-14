@@ -20,6 +20,9 @@ public:
 	//! Will register a RenderTriangle3D to be rendered.
 	void RegisterRender(const RenderTriangle3D* tri);
 
+	//! Will register a RenderLightSource to be rendered
+	void RegisterRender(const RenderLightSource* lightSource);
+
 	//! Will execute the render
 	void Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix);
 
