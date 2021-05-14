@@ -2,6 +2,11 @@
 #include "Vector3.h"
 #include "Similar.h"
 
+//#define _TORNADO_NO_INTRINSICS_
+#ifndef _TORNADO_NO_INTRINSICS_
+#include <immintrin.h>
+#endif
+
 Matrix4x4::Matrix4x4()
 {
 	// Create identity matrix
@@ -27,44 +32,117 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const
 	Matrix4x4 newMatrix;
 	newMatrix.p = 1;
 
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+
+	/*     <=  Matrix3x3 multiplication =>     */
+
+	// Load matrix components
+	__m256d __va1 = _mm256_set_pd(v[0][0], v[0][0], v[0][0], v[1][0]);
+	__m256d __va2 = _mm256_set_pd(v[1][0], v[1][0], v[2][0], v[2][0]);
+
+	__m256d __oa1 = _mm256_set_pd(other[0][0], other[0][1], other[0][2], other[0][0]);
+	__m256d __oa2 = _mm256_set_pd(other[0][1], other[0][2], other[0][0], other[0][1]);
+
+	__m256d __vb1 = _mm256_set_pd(v[0][1], v[0][1], v[0][1], v[1][1]);
+	__m256d __vb2 = _mm256_set_pd(v[1][1], v[1][1], v[2][1], v[2][1]);
+
+	__m256d __ob1 = _mm256_set_pd(other[1][0], other[1][1], other[1][2], other[1][0]);
+	__m256d __ob2 = _mm256_set_pd(other[1][1], other[1][2], other[1][0], other[1][1]);
+
+	__m256d __vc1 = _mm256_set_pd(v[0][2], v[0][2], v[0][2], v[1][2]);
+	__m256d __vc2 = _mm256_set_pd(v[1][2], v[1][2], v[2][2], v[2][2]);
+
+	__m256d __oc1 = _mm256_set_pd(other[2][0], other[2][1], other[2][2], other[2][0]);
+	__m256d __oc2 = _mm256_set_pd(other[2][1], other[2][2], other[2][0], other[2][1]);
+
+	// Initialize sums
+	__m256d __sum1 = _mm256_set1_pd(0);
+	__m256d __sum2 = _mm256_set1_pd(0);
+
+	// Let's multiply-add them together
+	// First, the first block
+	__sum1 = _mm256_fmadd_pd(__va1, __oa1, __sum1);
+	__sum1 = _mm256_fmadd_pd(__vb1, __ob1, __sum1);
+	__sum1 = _mm256_fmadd_pd(__vc1, __oc1, __sum1);
+
+	// Then the second block
+	__sum2 = _mm256_fmadd_pd(__va2, __oa2, __sum2);
+	__sum2 = _mm256_fmadd_pd(__vb2, __ob2, __sum2);
+	__sum2 = _mm256_fmadd_pd(__vc2, __oc2, __sum2);
+
+	// Retrieve results
+	double sum1[4];
+	double sum2[4];
+	
+	_mm256_storeu_pd(sum1, __sum1);
+	_mm256_storeu_pd(sum2, __sum2);
+
+	// Apply results
+	// Block 1
+	newMatrix[0][0] = sum1[3];
+	newMatrix[0][1] = sum1[2];
+	newMatrix[0][2] = sum1[1];
+	newMatrix[1][0] = sum1[0];
+	
+	// Block 2
+	newMatrix[1][1] = sum2[3];
+	newMatrix[1][2] = sum2[2];
+	newMatrix[2][0] = sum2[1];
+	newMatrix[2][1] = sum2[0];
+
+	// Does not fit in the intrinsic calculation. Might just calculate 'by hand'.
+	newMatrix[2][2] = (v[2][0] * other[0][2]) + (v[2][1] * other[1][2]) + (v[2][2] * other[2][2]);
+
+
+	/*     <=  Translation component =>     */
+
+	// Load translation components into registers
+	__m256d __transSelf = _mm256_set_pd(0, l, h, d);
+	__m256d __transOther = _mm256_set_pd(0, other.l, other.h, other.d);
+
+	// Let's add them
+	__m256d __sum = _mm256_add_pd(__transSelf, __transOther);
+
+	// Retrieve results
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	// Apply them
+	newMatrix.d = sum[0];
+	newMatrix.h = sum[1];
+	newMatrix.l = sum[2];
+
+	#else
+
+
 	// Rotation, Scaling
 	newMatrix[0][0] = (v[0][0] * other[0][0]) + (v[0][1] * other[1][0]) + (v[0][2] * other[2][0]);
 	newMatrix[0][1] = (v[0][0] * other[0][1]) + (v[0][1] * other[1][1]) + (v[0][2] * other[2][1]);
 	newMatrix[0][2] = (v[0][0] * other[0][2]) + (v[0][1] * other[1][2]) + (v[0][2] * other[2][2]);
+	
 	newMatrix[1][0] = (v[1][0] * other[0][0]) + (v[1][1] * other[1][0]) + (v[1][2] * other[2][0]);
 	newMatrix[1][1] = (v[1][0] * other[0][1]) + (v[1][1] * other[1][1]) + (v[1][2] * other[2][1]);
 	newMatrix[1][2] = (v[1][0] * other[0][2]) + (v[1][1] * other[1][2]) + (v[1][2] * other[2][2]);
+	
 	newMatrix[2][0] = (v[2][0] * other[0][0]) + (v[2][1] * other[1][0]) + (v[2][2] * other[2][0]);
 	newMatrix[2][1] = (v[2][0] * other[0][1]) + (v[2][1] * other[1][1]) + (v[2][2] * other[2][1]);
 	newMatrix[2][2] = (v[2][0] * other[0][2]) + (v[2][1] * other[1][2]) + (v[2][2] * other[2][2]);
+	
 
 	// Translation
 	newMatrix[0][3] = v[0][3] + other[0][3];
 	newMatrix[1][3] = v[1][3] + other[1][3];
 	newMatrix[2][3] = v[2][3] + other[2][3];
 
+	#endif
+
 	return newMatrix;
 }
 
 void Matrix4x4::operator*=(const Matrix4x4& other)
 {
-	Matrix4x4 buffer = *this;
-
-	// Rotation
-	v[0][0] = (buffer[0][0] * other[0][0]) + (buffer[0][1] * other[1][0]) + (buffer[0][2] * other[2][0]);
-	v[0][1] = (buffer[0][0] * other[0][1]) + (buffer[0][1] * other[1][1]) + (buffer[0][2] * other[2][1]);
-	v[0][2] = (buffer[0][0] * other[0][2]) + (buffer[0][1] * other[1][2]) + (buffer[0][2] * other[2][2]);
-	v[1][0] = (buffer[1][0] * other[0][0]) + (buffer[1][1] * other[1][0]) + (buffer[1][2] * other[2][0]);
-	v[1][1] = (buffer[1][0] * other[0][1]) + (buffer[1][1] * other[1][1]) + (buffer[1][2] * other[2][1]);
-	v[1][2] = (buffer[1][0] * other[0][2]) + (buffer[1][1] * other[1][2]) + (buffer[1][2] * other[2][2]);
-	v[2][0] = (buffer[2][0] * other[0][0]) + (buffer[2][1] * other[1][0]) + (buffer[2][2] * other[2][0]);
-	v[2][1] = (buffer[2][0] * other[0][1]) + (buffer[2][1] * other[1][1]) + (buffer[2][2] * other[2][1]);
-	v[2][2] = (buffer[2][0] * other[0][2]) + (buffer[2][1] * other[1][2]) + (buffer[2][2] * other[2][2]);
-
-	// Translation
-	v[0][3] = buffer[0][3] + other[0][3];
-	v[1][3] = buffer[1][3] + other[1][3];
-	v[2][3] = buffer[2][3] + other[2][3];
+	*this = *this * other;
 
 	return;
 }
