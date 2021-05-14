@@ -1,5 +1,6 @@
 #include "DrawingEngine.h"
 #include "BarycentricInterpolationEngine.h"
+#include "Math.h"
 #include <cstddef>
 
 DrawingEngine::DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool)
@@ -82,11 +83,11 @@ void DrawingEngine::CreateTasks()
 		
 		// Calculate triangle bounds, minmaxed within render area bounds
 		Rect bounds;
-		bounds.pos.x = std::min(ird->a.pos_ss.x, std::min(ird->b.pos_ss.x, ird->c.pos_ss.x));
-		bounds.pos.y = std::min(ird->a.pos_ss.y, std::min(ird->b.pos_ss.y, ird->c.pos_ss.y));
+		bounds.pos.x = Math::Min(ird->a.pos_ss.x, Math::Min(ird->b.pos_ss.x, ird->c.pos_ss.x));
+		bounds.pos.y = Math::Min(ird->a.pos_ss.y, Math::Min(ird->b.pos_ss.y, ird->c.pos_ss.y));
 
-		bounds.size.x = std::max(ird->a.pos_ss.x, std::max(ird->b.pos_ss.x, ird->c.pos_ss.x)) - bounds.pos.x;
-		bounds.size.y = std::max(ird->a.pos_ss.y, std::max(ird->b.pos_ss.y, ird->c.pos_ss.y)) - bounds.pos.y;
+		bounds.size.x = Math::Max(ird->a.pos_ss.x,Math::Max(ird->b.pos_ss.x, ird->c.pos_ss.x)) - bounds.pos.x;
+		bounds.size.y = Math::Max(ird->a.pos_ss.y,Math::Max(ird->b.pos_ss.y, ird->c.pos_ss.y)) - bounds.pos.y;
 
 		// Now split this triangle into worker tasks
 		for (std::size_t i = 0; i < numThreadsForTriangle; i++)
@@ -257,8 +258,8 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		);
 
 		// Clamp to 0 <= n <= 1 to compensate for floating point inaccuracies
-		uv_coords.x = std::max<double>(std::min<double>(uv_coords.x, 1.0), 0.0);
-		uv_coords.y = std::max<double>(std::min<double>(uv_coords.y, 1.0), 0.0);
+		uv_coords.x = Math::Clamp(uv_coords.x, 0.0, 1.0);
+		uv_coords.y = Math::Clamp(uv_coords.y, 0.0, 1.0);
 
 		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(Vector2i(
 			(int)((uv_coords.x) * (text_size.x - 1)),
@@ -266,22 +267,28 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.0;
+		constexpr double globalIllu = 0.05;
 
 		// Calculate brightness (if we should shade)
-		double brightness = 1;
+		Color brightness = Color(1,1,1);
 		if (!ird->material->noShading)
 		{
-			double lightingFac = 
-				LightingEngine::GetColorIntensityFactors(ird, ws_coords).r / 255.0;
-
-			lightingFac = std::max(std::min(lightingFac, 1.0), 0.0);
-			brightness = std::max(lightingFac, globalIllu);
+			// Apply lighting
+			const Color lightingIntensity = LightingEngine::GetColorIntensityFactors(ird, ws_coords);
+			brightness.r = lightingIntensity.r / 255.0;
+			brightness.g = lightingIntensity.g / 255.0;
+			brightness.b = lightingIntensity.b / 255.0;
+		
+			// Apply global illumination
+			brightness.r += globalIllu;
+			brightness.g += globalIllu;
+			brightness.b += globalIllu;
 		}
 
-		r = uint8_t(text_pixel[0] * brightness);
-		g = uint8_t(text_pixel[1] * brightness);
-		b = uint8_t(text_pixel[2] * brightness);
+		r = uint8_t(Math::Clamp((double)text_pixel[0] * brightness.r, 0, 255));
+		g = uint8_t(Math::Clamp((double)text_pixel[1] * brightness.g, 0, 255));
+		b = uint8_t(Math::Clamp((double)text_pixel[2] * brightness.b, 0, 255));
+
 
 		// Render normals
 		//r = 255 * (ird->meanNormal.x + 1) * 0.5;

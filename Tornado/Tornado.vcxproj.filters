@@ -99,6 +99,9 @@
     <ClInclude Include="RenderPointLight.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -162,6 +165,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RenderPointLight.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
