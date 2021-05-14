@@ -16,7 +16,7 @@ public:
 
 	//! Will initialize this batch (frame) of processing by clearing buffers, lists, etc...
 	//! Call each frame before starting rendering
-	void BeginBatch();
+	void BeginBatch(std::size_t reserve_triangles = 0);
 
 	//! Will register a RenderTriangle3D to be projected.
 	void RegisterRenderTriangle(const RenderTriangle3D* triangle);

@@ -8,10 +8,13 @@ ProjectionEngine::ProjectionEngine(WorkerPool* workerPool)
 	return;
 }
 
-void ProjectionEngine::BeginBatch()
+void ProjectionEngine::BeginBatch(std::size_t reserve_triangles)
 {
 	registeredTriangles.clear();
 	projectedTriangles.clear();
+
+	registeredTriangles.reserve(reserve_triangles);
+	projectedTriangles.reserve(reserve_triangles);
 
 	return;
 }
