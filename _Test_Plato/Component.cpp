@@ -16,7 +16,7 @@ class TestComponent_ : public Component
 {
 public:
 
-	void Update(double)
+	void Update(double) override
 	{
 		if (failAtHookCall)
 			Assert::Fail(L"Update-hook got called!");
@@ -24,7 +24,15 @@ public:
 		return;
 	}
 
-	void Render(Renderer*)
+	void LateUpdate(double) override
+	{
+		if (failAtHookCall)
+			Assert::Fail(L"LateUpdate-hook got called!");
+
+		return;
+	}
+
+	void Render(Renderer*) override
 	{
 		if (failAtHookCall)
 			Assert::Fail(L"Render-hook got called!");
@@ -32,7 +40,7 @@ public:
 		return;
 	}
 
-	void OnDestroy()
+	void OnDestroy() override
 	{
 		if (failAtHookCall)
 			Assert::Fail(L"OnDestroy-hook got called!");
@@ -197,6 +205,7 @@ namespace WorldObjects
 
 			comp->worldObject->Destroy(); // This will cause the WOM to delete it, calling OnDestroy
 			WorldObjectManager::CallHook__Update(1);
+			WorldObjectManager::CallHook__LateUpdate(1);
 			WorldObjectManager::CallHook__Render(nullptr);
 			WorldObjectManager::DeleteFlaggedObjects();
 
@@ -219,6 +228,7 @@ namespace WorldObjects
 
 			comp->worldObject->Destroy(); // This will cause the WOM to delete it, calling OnDestroy
 			WorldObjectManager::CallHook__Update(1);
+			WorldObjectManager::CallHook__LateUpdate(1);
 			WorldObjectManager::CallHook__Render(nullptr);
 			WorldObjectManager::DeleteFlaggedObjects();
 
