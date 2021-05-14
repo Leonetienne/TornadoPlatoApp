@@ -345,23 +345,119 @@ Vector3<double> Vector3<T>::Lerp(const Vector3<T>& a, const Vector3<T>& b, doubl
 
 
 
-template<typename T>
-Vector3<T> Vector3<T>::operator+(const Vector3<T>& other) const
+Vector3<double> Vector3<double>::operator+(const Vector3<double>& other) const
 {
-	return Vector3<T>(
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, other.z, other.y, other.x);
+
+	// Add the components
+	__m256d __sum = _mm256_add_pd(__vector_self, __vector_other);
+
+	// Retrieve and return these values
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	return Vector3<double>(
+			sum[0],
+			sum[1],
+			sum[2]
+		);
+
+	#else
+
+	return Vector3<double>(
 		x + other.x,
 		y + other.y,
 		z + other.z
 	);
+	#endif
 }
 
 template<typename T>
-void  Vector3<T>::operator+=(const Vector3<T>& other)
+Vector3<T> Vector3<T>::operator+(const Vector3<T>& other) const
+{
+	return Vector3<T>(
+			x + other.x,
+			y + other.y,
+			z + other.z
+		);
+}
+
+
+
+void Vector3<double>::operator+=(const Vector3<double>& other)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, other.z, other.y, other.x);
+
+	// Add the components
+	__m256d __sum = _mm256_add_pd(__vector_self, __vector_other);
+
+	// Retrieve and apply these values
+	double sum[4];
+	_mm256_storeu_pd(sum, __sum);
+
+	x = sum[0];
+	y = sum[1];
+	z = sum[2];
+
+	#else
+
+	x += other.x;
+	y += other.y;
+	z += other.z;
+
+	#endif
+
+	return;
+}
+
+template<typename T>
+void Vector3<T>::operator+=(const Vector3<T>& other)
 {
 	x += other.x;
 	y += other.y;
 	z += other.z;
 	return;
+}
+
+
+
+Vector3<double> Vector3<double>::operator-(const Vector3<double>& other) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, other.z, other.y, other.x);
+
+	// Subtract the components
+	__m256d __diff = _mm256_sub_pd(__vector_self, __vector_other);
+
+	// Retrieve and return these values
+	double diff[4];
+	_mm256_storeu_pd(diff, __diff);
+
+	return Vector3<double>(
+			diff[0],
+			diff[1],
+			diff[2]
+		);
+
+	#else
+
+	return Vector3<double>(
+			x - other.x,
+			y - other.y,
+			z - other.z
+		);
+	#endif
 }
 
 template<typename T>
@@ -374,6 +470,38 @@ Vector3<T> Vector3<T>::operator-(const Vector3<T>& other) const
 	);
 }
 
+
+
+void Vector3<double>::operator-=(const Vector3<double>& other)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __vector_other = _mm256_set_pd(0, other.z, other.y, other.x);
+
+	// Subtract the components
+	__m256d __diff = _mm256_sub_pd(__vector_self, __vector_other);
+
+	// Retrieve and apply these values
+	double diff[4];
+	_mm256_storeu_pd(diff, __diff);
+
+	x = diff[0];
+	y = diff[1];
+	z = diff[2];
+
+	#else
+
+	x -= other.x;
+	y -= other.y;
+	z -= other.z;
+
+	#endif
+
+	return;
+}
+
 template<typename T>
 void Vector3<T>::operator-=(const Vector3<T>& other)
 {
@@ -381,6 +509,40 @@ void Vector3<T>::operator-=(const Vector3<T>& other)
 	y -= other.y;
 	z -= other.z;
 	return;
+}
+
+
+
+Vector3<double> Vector3<double>::operator*(const double scale) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Multiply the components
+	__m256d __prod = _mm256_mul_pd(__vector_self, __scalar);
+
+	// Retrieve and return these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	return Vector3<double>(
+			prod[0],
+			prod[1],
+			prod[2]
+		);
+
+	#else
+
+	return Vector3<double>(
+			x * scale,
+			y * scale,
+			z * scale
+		);
+
+	#endif
 }
 
 template<typename T>
@@ -393,6 +555,38 @@ Vector3<T> Vector3<T>::operator*(const T scale) const
 	);
 }
 
+
+
+void Vector3<double>::operator*=(const double scale)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Multiply the components
+	__m256d __prod = _mm256_mul_pd(__vector_self, __scalar);
+
+	// Retrieve and apply these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	x = prod[0];
+	y = prod[1];
+	z = prod[2];
+
+	#else
+
+	x *= scale;
+	y *= scale;
+	z *= scale;
+
+	#endif
+
+	return;
+}
+
 template<typename T>
 void Vector3<T>::operator*=(const T scale)
 {
@@ -400,6 +594,40 @@ void Vector3<T>::operator*=(const T scale)
 	y *= scale;
 	z *= scale;
 	return;
+}
+
+
+
+Vector3<double> Vector3<double>::operator/(const double scale) const
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Divide the components
+	__m256d __prod = _mm256_div_pd(__vector_self, __scalar);
+
+	// Retrieve and return these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	return Vector3<double>(
+		prod[0],
+		prod[1],
+		prod[2]
+	);
+
+	#else
+
+	return Vector3<double>(
+			x / scale,
+			y / scale,
+			z / scale
+		);
+
+	#endif
 }
 
 template<typename T>
@@ -410,6 +638,37 @@ Vector3<T> Vector3<T>::operator/(const T scale) const
 		y / scale,
 		z / scale
 	);
+}
+
+
+
+void Vector3<double>::operator/=(const double scale)
+{
+	#ifndef _TORNADO_NO_INTRINSICS_
+
+	// Move vector components and factors into registers
+	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
+	__m256d __scalar = _mm256_set1_pd(scale);
+
+	// Divide the components
+	__m256d __prod = _mm256_div_pd(__vector_self, __scalar);
+
+	// Retrieve and apply these values
+	double prod[4];
+	_mm256_storeu_pd(prod, __prod);
+
+	x = prod[0];
+	y = prod[1];
+	z = prod[2];
+
+	#else
+
+	x /= scale;
+	y /= scale;
+	z /= scale;
+
+	#endif
+	return;
 }
 
 template<typename T>
