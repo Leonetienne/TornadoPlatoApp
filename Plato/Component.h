@@ -38,6 +38,9 @@ protected:
 	//! Gets called every frame
 	virtual void Update(double frametime) {};
 
+	//! Gets called every frame, right after Update() has been called on every Component
+	virtual void LateUpdate(double frametime) {};
+
 	//! Gets called every frame just before rendering Register your Renderables in renderer
 	virtual void Render(Renderer* renderer) {};
 

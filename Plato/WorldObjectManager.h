@@ -35,6 +35,10 @@ public:
 	// Only call this ONCE per frame in your main loop!!
 	static void CallHook__Update(double frametime);
 
+	// Will call the hook method "LateUpdate()" on all world objects.
+	// Only call this ONCE per frame in your main loop!!
+	static void CallHook__LateUpdate(double frametime);
+
 	// Will call the hook method "Update()" on all world objects.
 	// Only call this ONCE per frame in your main loop!!
 	static void CallHook__Render(Renderer* renderer);
