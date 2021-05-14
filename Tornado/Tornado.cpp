@@ -48,7 +48,6 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 		projectionEngine->RegisterRenderTriangle(tri);
 
 	projectionEngine->Project(projectionProperties, worldMatrix);
-
 	std::vector<InterRenderTriangle> projectedTriangles = projectionEngine->Finish();
 
 	// Draw triangles
