@@ -37,25 +37,22 @@ public:
 	void NormalizeSelf();
 
 	//! Will scale self.n by scalar.n
-	Vector3<T> VectorScale(const Vector3<T>& scalar) const;
+	[[nodiscard]] Vector3<T> VectorScale(const Vector3<T>& scalar) const;
 
 	//! Will lerp itself towards other by t
 	void LerpSelf(const Vector3<T>& other, double t);
 
 	//! Will return a lerp result between this and another vector
-	Vector3<double> Lerp(const Vector3<T>& other, double t) const;
-
-	//! Will lerp between a and b by t
-	static Vector3<double> Lerp(const Vector3<T>& a, const Vector3<T>& b, double t);
+	[[nodiscard]] Vector3<double> Lerp(const Vector3<T>& other, double t) const;
 
 	//! Will compare if two vectors are similar to a certain epsilon value
-	bool Similar(const Vector3<T>& other, double epsilon = 0.00001) const;
+	[[nodiscard]] bool Similar(const Vector3<T>& other, double epsilon = 0.00001) const;
 
 	//! Will convert this vector to a Vector3i
-	Vector3<int> ToInt() const;
+	[[nodiscard]] Vector3<int> ToInt() const;
 
 	//! Will convert this vector to a Vector3d
-	Vector3<double> ToDouble() const;
+	[[nodiscard]] Vector3<double> ToDouble() const;
 
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;

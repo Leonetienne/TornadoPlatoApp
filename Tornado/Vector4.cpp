@@ -259,6 +259,8 @@ void Vector4<double>::LerpSelf(const Vector4<double>& other, double t)
 	return;
 }
 
+
+
 // Slow, lame version for intcels
 void Vector4<int>::LerpSelf(const Vector4<int>& other, double t)
 {
@@ -286,19 +288,6 @@ Vector4<double> Vector4<int>::Lerp(const Vector4<int>& other, double t) const
 	copy.LerpSelf(other.ToDouble(), t);
 
 	return copy;
-}
-
-template<typename T>
-Vector4<double> Vector4<T>::Lerp(const Vector4<T>& a, const Vector4<T>& b, double t)
-{
-	double t1 = 1.0f - t;
-
-	return Vector4<double>(
-		t1 * a.x + t * b.x,
-		t1 * a.y + t * b.y,
-		t1 * a.z + t * b.z,
-		t1 * a.w + t * b.w
-	);
 }
 
 
