@@ -634,10 +634,10 @@ template<typename T>
 Vector3<T> Vector3<T>::operator/(const T scale) const
 {
 	return Vector3<T>(
-		x / scale,
-		y / scale,
-		z / scale
-	);
+			x / scale,
+			y / scale,
+			z / scale
+		);
 }
 
 
