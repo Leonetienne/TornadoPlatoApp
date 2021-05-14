@@ -91,6 +91,7 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	// Update test fixture
 	tf->Update(elapsedTime);
 	WorldObjectManager::CallHook__Update(elapsedTime);
+	WorldObjectManager::CallHook__LateUpdate(elapsedTime);
 
 	// Clear frame
 	renderer->BeginFrame();

@@ -113,6 +113,17 @@ void WorldObjectManager::CallHook__Update(double frametime)
 	return;
 }
 
+void WorldObjectManager::CallHook__LateUpdate(double frametime)
+{
+	for (WorldObject* wo : worldObjects)
+		if (wo->GetIsGloballyEnabled())
+			for (Component* co : wo->components)
+				if (co->GetIsGloballyEnabled())
+					co->LateUpdate(frametime);
+
+	return;
+}
+
 void WorldObjectManager::CallHook__Render(Renderer* renderer)
 {
 	for (WorldObject* wo : worldObjects)
