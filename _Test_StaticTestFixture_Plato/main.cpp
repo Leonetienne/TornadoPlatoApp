@@ -115,9 +115,9 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	window->SetTitle(ss.str());
 
 	// Limit fps to 120
-	std::this_thread::sleep_for(std::chrono::milliseconds((long long)
-		std::max<double>(((1000.0/120) - frameTimeClock.GetElapsedTime().AsMilliseconds()), 0)
-	));
+	//std::this_thread::sleep_for(std::chrono::milliseconds((long long)
+	//	std::max<double>(((1000.0/120) - frameTimeClock.GetElapsedTime().AsMilliseconds()), 0)
+	//));
 
 	return;
 }
