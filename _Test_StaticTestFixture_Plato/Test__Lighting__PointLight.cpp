@@ -72,8 +72,8 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	// Create plane
 	WorldObject* woPlane = WorldObjectManager::NewWorldObject("plane");
 	woPlane->AddComponent<MeshRenderer>(mPlane, ResourceManager::FindMaterial("floor"));
-	woPlane->transform->Scale(Vector3d::one * 100);
-	woPlane->transform->Move(Vector3d::down * 2);
+	woPlane->transform->Scale(Vector3d::one * 40);
+	woPlane->transform->Move(Vector3d::down * 2 + Vector3d::backward * 10);
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
@@ -94,6 +94,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	// Create gun
 	gun = WorldObjectManager::NewWorldObject("gun");
 	gun->transform->SetScale(Vector3d::one * 0.5);
+	gun->Disable();
 
 	gun->AddComponent<MeshRenderer>(
 		ResourceManager::FindMesh("gun"),
@@ -107,6 +108,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 		ResourceManager::FindMaterial("skybox")
 		);
 	skybox->transform->Scale(Vector3d::one * 50);
+	skybox->Disable();
 
 	// Set gun points
 	gunHolderPos_hip = Vector3d(2, -1, -4) * 0.75;
@@ -121,7 +123,12 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 
 	// Create point light
 	WorldObject* woLight = WorldObjectManager::NewWorldObject("point light");
-	pointLight = woLight->AddComponent<PointLight>(100, Color(255, 255, 255));
+	pointLight = woLight->AddComponent<PointLight>(100, Color(0, 130, 255));
+	pointLight->transform->Move(Vector3d::left * 4 + Vector3d::backward * 3);
+
+	woLight = WorldObjectManager::NewWorldObject("point light");
+	pointLight = woLight->AddComponent<PointLight>(100, Color(255, 130, 0));
+	pointLight->transform->Move(Vector3d::right * 4 + Vector3d::backward * 3);
 
 	return;
 }

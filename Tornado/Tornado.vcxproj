@@ -29,6 +29,7 @@
     <ClInclude Include="InterRenderTriangle.h" />
     <ClInclude Include="InterRenderVertex.h" />
     <ClInclude Include="LightingEngine.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="RenderLightSource.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="RenderPointLight.h" />
@@ -58,6 +59,7 @@
     <ClCompile Include="InterRenderTriangle.cpp" />
     <ClCompile Include="InterRenderVertex.cpp" />
     <ClCompile Include="LightingEngine.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="RenderLightSource.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="RenderPointLight.cpp" />
