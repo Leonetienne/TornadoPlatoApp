@@ -105,7 +105,7 @@ namespace WorldObjects
 			WorldObject* wo6	 = WorldObjectManager::NewWorldObject("Floor");
 
 			// Query objects
-			std::vector<WorldObject*> foundObjects = WorldObjectManager::FindObjectsByName("Bucket");
+			std::unordered_set<WorldObject*> foundObjects = WorldObjectManager::FindObjectsByName("Bucket");
 
 			// Check that the amount of found objects matches
 			Assert::AreEqual(std::size_t(3), foundObjects.size(), L"Size found mismatch!");
@@ -136,7 +136,7 @@ namespace WorldObjects
 			WorldObject* bucket3 = WorldObjectManager::NewWorldObject("Bucket");
 			WorldObject* wo6	 = WorldObjectManager::NewWorldObject("Floor");
 
-			std::vector<WorldObject*> foundObjects = WorldObjectManager::FindObjectsByName("Metro card");
+			std::unordered_set<WorldObject*> foundObjects = WorldObjectManager::FindObjectsByName("Metro card");
 
 			Assert::AreEqual(std::size_t(0), foundObjects.size());
 
@@ -186,7 +186,7 @@ namespace WorldObjects
 			wo7->AddTag("Static");
 
 			// Query objects
-			std::vector<WorldObject*> foundObjects = WorldObjectManager::FindObjectsByTag("Collectable");
+			std::unordered_set<WorldObject*> foundObjects = WorldObjectManager::FindObjectsByTag("Collectable");
 
 			// Check that the amount of found objects matches
 			Assert::AreEqual(std::size_t(4), foundObjects.size(), L"Size found mismatch!");
