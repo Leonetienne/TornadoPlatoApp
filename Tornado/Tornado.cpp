@@ -44,15 +44,6 @@ void Tornado::RegisterRender(const RenderTriangle3D* tri)
 
 void Tornado::Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix)
 {
-	// Cull backfaces
-	backfaceCullingEngine->BeginBatch(registeredTriangles.size());
-
-	for (const RenderTriangle3D* tri : registeredTriangles)
-		backfaceCullingEngine->RegisterRenderTriangle(tri);
-
-	backfaceCullingEngine->Cull();
-	registeredTriangles = backfaceCullingEngine->Finish();
-
 	// Project triangles
 	projectionEngine->BeginBatch(registeredTriangles.size());
 
@@ -62,10 +53,22 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	projectionEngine->Project(projectionProperties, worldMatrix);
 	std::vector<InterRenderTriangle> projectedTriangles = projectionEngine->Finish();
 
+
+
+	// Cull backfaces
+	backfaceCullingEngine->BeginBatch(registeredTriangles.size());
+
+	for (const InterRenderTriangle& ird : projectedTriangles)
+		backfaceCullingEngine->RegisterRenderTriangle(&ird);
+
+	backfaceCullingEngine->Cull();
+	std::vector<const InterRenderTriangle*> culledTriangles = backfaceCullingEngine->Finish();
+
+
 	// Draw triangles
 	drawingEngine->BeginBatch(projectedTriangles.size());
-	for (const InterRenderTriangle& tri : projectedTriangles)
-		drawingEngine->RegisterInterRenderTriangle(&tri);
+	for (const InterRenderTriangle* tri : culledTriangles)
+		drawingEngine->RegisterInterRenderTriangle(tri);
 
 	drawingEngine->Draw();
 
