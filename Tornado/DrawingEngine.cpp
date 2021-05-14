@@ -60,7 +60,11 @@ void DrawingEngine::Draw()
 
 void DrawingEngine::CalculateRenderingRelatedCaches_IRD(const InterRenderTriangle* ird)
 {
-	ird->meanNormal = (ird->a.normal + ird->b.normal + ird->c.normal) / 3.0;
+	// These normals are the meshes vertices normals!
+	// These should be rotated accordingly to the meshes rotation
+	ird->meanVertexNormal =
+		(ird->a.normal + ird->b.normal + ird->c.normal) / 3.0;
+
 	return;
 }
 
@@ -242,7 +246,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		if (!ird->material->noShading)
 		{
 			// This is just super simple vertex shading, relative to an arbitrary fixed point.
-			double dot = ird->meanNormal.DotProduct(Vector3d::up + Vector3d::forward + Vector3d::right);
+			double dot = ird->meanVertexNormal.DotProduct(Vector3d::up + Vector3d::forward + Vector3d::right);
 			dot = std::max(std::min(dot, 1.0), 0.0);
 			brightness = std::max(dot, globalIllu);
 		}
