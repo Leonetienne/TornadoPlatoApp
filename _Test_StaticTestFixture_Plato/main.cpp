@@ -96,6 +96,7 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	renderer->BeginFrame();
 
 	// Render test fixture
+	tf->Render(renderer);
 	WorldObjectManager::CallHook__Render(renderer);
 
 	// Render frame
@@ -112,9 +113,9 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	ss << tf->GetTestName() << " - FPS: " << (int)(1000.0 / elapsedTime);
 	window->SetTitle(ss.str());
 
-	// Limit fps to 60
+	// Limit fps to 120
 	std::this_thread::sleep_for(std::chrono::milliseconds((long long)
-		std::max<double>(((1000.0/60) - frameTimeClock.GetElapsedTime().AsMilliseconds()), 0)
+		std::max<double>(((1000.0/120) - frameTimeClock.GetElapsedTime().AsMilliseconds()), 0)
 	));
 
 	return;

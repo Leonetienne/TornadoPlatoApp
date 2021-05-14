@@ -90,33 +90,7 @@ Test__FPS::Test__FPS() :
 
 void Test__FPS::Update(double deltaTime)
 {
-	constexpr double lerpSpeed = 0.025;
-
-	// Lerp gun position
-	gun->transform->SetPosition(
-		gun->transform->GetGlobalPosition().Lerp(
-			gunHolder->transform->GetGlobalPosition(),
-			Clamp(lerpSpeed * deltaTime, 0, 1)
-		)
-	);
-
-	// Lerp gun rotation
-	gun->transform->SetRotation(
-		gun->transform->GetGlobalRotation().Lerp(
-			gunHolder->transform->GetGlobalRotation(),
-			Clamp(lerpSpeed * deltaTime, 0, 1)
-		)
-	);
-
-	// Lerp fov
-	// Quick vector hack, too lazy to make new lerp implementation. Gonna put that in a math class
-	camera->SetFov(
-		Vector2d(camera->GetFov(), 0).Lerp(
-			Vector2d(targetFov, 0),
-			Clamp(lerpSpeed * deltaTime, 0, 1)
-		).x
-	);
-
+	this->deltaTime = deltaTime;
 	// Handle user input
 	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::MOUSE_R))
 	{
@@ -127,6 +101,40 @@ void Test__FPS::Update(double deltaTime)
 		else
 			SetGunHip();
 	}
+
+	return;
+}
+
+void Test__FPS::Render(Renderer*)
+{
+	constexpr double lerpPosSpeed = 0.07;
+	constexpr double lerpRotSpeed = 0.04;
+	constexpr double lerpFovSpeed = 0.05;
+
+	// Lerp gun position
+	gun->transform->SetPosition(
+		gun->transform->GetGlobalPosition().Lerp(
+			gunHolder->transform->GetGlobalPosition(),
+			Clamp(lerpPosSpeed * deltaTime, 0, 1)
+		)
+	);
+
+	// Lerp gun rotation
+	gun->transform->SetRotation(
+		gun->transform->GetGlobalRotation().Lerp(
+			gunHolder->transform->GetGlobalRotation(),
+			Clamp(lerpRotSpeed * deltaTime, 0, 1)
+		)
+	);
+
+	// Lerp fov
+	// Quick vector hack, too lazy to make new lerp implementation. Gonna put that in a math class
+	camera->SetFov(
+		Vector2d(camera->GetFov(), 0).Lerp(
+			Vector2d(targetFov, 0),
+			Clamp(lerpFovSpeed * deltaTime, 0, 1)
+		).x
+	);
 
 	return;
 }
