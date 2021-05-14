@@ -31,15 +31,26 @@ const Camera* Renderer::GetMainCamera() const
 void Renderer::BeginFrame()
 {
 	meshRenderers.clear();
+	lightSourceComponents.clear();
+
 	renderTriangles.clear();
 	renderTriangles.reserve(100); // Should be a few
 
+	tornadoLightSources.clear();
+	tornadoLightSources.reserve(10);
+
+	return;
+}
+
+void Renderer::RegisterLightSource(const LightSource* lr)
+{
+	lightSourceComponents.emplace_back(lr);
 	return;
 }
 
 void Renderer::RegisterMeshRenderer(const MeshRenderer* mr)
 {
-	meshRenderers.push_back(mr);
+	meshRenderers.emplace_back(mr);
 	return;
 }
 
@@ -48,13 +59,38 @@ void Renderer::Render()
 	tornado.BeginFrame();
 	
 	ResolveRenderTriangles();
+	ResolveLightSources();
 	
+	// Register light sources
+	for (const RenderLightSource* lr : tornadoLightSources)
+		tornado.RegisterRender(lr);
+
+	// Register render triangles
 	for (const RenderTriangle3D& rd : renderTriangles)
 		tornado.RegisterRender(&rd);
 	
 	tornado.Render(mainCamera->GetProjectionProperties(), worldMatrix);
 
 	return;
+}
+
+void Renderer::ResolveLightSources()
+{
+	const Vector3d inverseCameraPosition = mainCamera->transform->GetGlobalPosition() * -1;
+	const Matrix4x4 inverseCameraRotation = mainCamera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
+
+	for (const LightSource* ls : lightSourceComponents)
+	{
+		// Fetch tornado light source
+		RenderLightSource* rls = ls->GetRawTornadoRenderLightSource();
+		
+		// Transform to camera space
+		rls->position = ls->transform->GetGlobalPosition() + inverseCameraPosition;
+		rls->position *= inverseCameraRotation;
+
+		// Add to vector
+		tornadoLightSources.emplace_back(rls);
+	}
 }
 
 void Renderer::ResolveRenderTriangles()

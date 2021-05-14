@@ -170,11 +170,13 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="KeyState.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="OBJParser.h" />
     <ClInclude Include="Plato.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -190,11 +192,13 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="OBJParser.cpp" />
     <ClCompile Include="Plato.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
