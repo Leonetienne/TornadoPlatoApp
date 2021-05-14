@@ -3,7 +3,7 @@
 Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point) const
 {
 	const Vector3d deltaPos = position - point;
-	const double sqrDistance = (deltaPos).SqrMagnitude();
+	const double sqrDistance = deltaPos.SqrMagnitude();
 
 	// Too far away.
 	if (intensity*13 < sqrDistance)
