@@ -9,7 +9,8 @@ class Test__FPS : public TestFixture
 public:
 	Test__FPS();
 
-	void Update(double deltaTime);
+	void Update(double deltaTime) override;
+	void Render(Renderer*) override;
 
 private:
 	void SetGunAimed();
@@ -26,6 +27,7 @@ private:
 	double fovAim = 60;
 	double fovHip = 80;
 	double targetFov = fovHip;
+	double deltaTime = 0;
 
 	WorldObject* gunHolder;
 	WorldObject* gun;
