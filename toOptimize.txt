@@ -1,2 +1,0 @@
-make worldobjectmanager use a std::unordered_set to store world objects
-make worldobjectmanager use a std::unordered set to store pointers to world objects that should be deleted (no loop anymore)
