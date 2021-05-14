@@ -15,10 +15,10 @@ void BackfaceCullingEngine::BeginBatch(std::size_t reserve_triangles)
 	return;
 }
 
-void BackfaceCullingEngine::RegisterRenderTriangle(const RenderTriangle3D* triangle)
+void BackfaceCullingEngine::RegisterRenderTriangle(const InterRenderTriangle* triangle)
 {
 	registeredTriangles.emplace_back(
-		std::pair<const RenderTriangle3D*, bool>(
+		std::pair<const InterRenderTriangle*, bool>(
 			triangle,
 			true // keep by default
 			)
@@ -29,30 +29,47 @@ void BackfaceCullingEngine::RegisterRenderTriangle(const RenderTriangle3D* trian
 
 void BackfaceCullingEngine::Cull()
 {
-	// MULTITHREAD THIS!
-
+	// Create and queue worker tasks
 	for (auto& tri : registeredTriangles)
 	{
-		// Get average normal INCLUDING position
-		const Vector3d avgNormal =
-			(
-				tri.first->a.pos_worldSpace + tri.first->a.normal +
-				tri.first->b.pos_worldSpace + tri.first->b.normal +
-				tri.first->c.pos_worldSpace + tri.first->c.normal) / 3.0;
+		WorkerTask* newTask = new WorkerTask; // Will be freed by the workerPool
+		newTask->task = std::bind(&BackfaceCullingEngine::Thread__CullTriangle, this,
+			&tri
+		);
 
-		// Get dot to world origin
-		const double dot = avgNormal.DotProduct(Vector3d::backward);
-
-		if (dot <= 0)
-			tri.second = false;
+		workerPool->QueueTask(newTask);
 	}
+
+	// Execute worker tasks
+	workerPool->Execute();
 
 	return;
 }
 
-std::vector<const RenderTriangle3D*> BackfaceCullingEngine::Finish()
+void BackfaceCullingEngine::Thread__CullTriangle(std::pair<const InterRenderTriangle*, bool>* ird)
 {
-	std::vector<const RenderTriangle3D*> toRet;
+	// Calculate InterRenderTriangle surface normal
+	ird->first->surfaceNormalNdc =
+		(
+			(
+				ird->first->b.pos_ndc - ird->first->a.pos_ndc
+			).CrossProduct(
+				ird->first->c.pos_ndc - ird->first->a.pos_ndc
+			)
+		);
+
+	// Get dot to world origin
+	const double dot = ird->first->surfaceNormalNdc.DotProduct(Vector3d::backward);
+
+	if (dot > 0)
+		ird->second = false;
+
+	return;
+}
+
+std::vector<const InterRenderTriangle*> BackfaceCullingEngine::Finish()
+{
+	std::vector<const InterRenderTriangle*> toRet;
 	toRet.reserve(registeredTriangles.size());
 
 	for (auto& tri : registeredTriangles)
