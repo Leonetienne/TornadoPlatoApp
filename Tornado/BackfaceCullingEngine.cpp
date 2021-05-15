@@ -10,6 +10,9 @@ BackfaceCullingEngine::BackfaceCullingEngine(WorkerPool* workerPool)
 void BackfaceCullingEngine::BeginBatch(std::size_t reserve_triangles)
 {
 	registeredTriangles.clear();
+	culledTriangles.clear();
+
+	culledTriangles.reserve(reserve_triangles); // Prepared for the best case. Won't be that much memory.
 	registeredTriangles.reserve(reserve_triangles);
 
 	return;
@@ -62,20 +65,20 @@ void BackfaceCullingEngine::Thread__CullTriangle(std::pair<const InterRenderTria
 	// Get dot to world origin
 	const double dot = ird->first->surfaceNormalNdc.DotProduct(Vector3d::backward);
 
+
 	if (dot > 0)
 		ird->second = false;
 
 	return;
 }
 
-std::vector<const InterRenderTriangle*> BackfaceCullingEngine::Finish()
+std::vector<const InterRenderTriangle*>& BackfaceCullingEngine::Finish()
 {
-	std::vector<const InterRenderTriangle*> toRet;
-	toRet.reserve(registeredTriangles.size());
+	culledTriangles.reserve(registeredTriangles.size());
 
 	for (auto& tri : registeredTriangles)
 		if (tri.second)
-			toRet.emplace_back(tri.first);
+			culledTriangles.emplace_back(tri.first);
 
-	return toRet;
+	return culledTriangles;
 }

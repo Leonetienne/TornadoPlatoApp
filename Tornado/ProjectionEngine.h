@@ -26,7 +26,7 @@ public:
 
 	//! Will clean up any remaining mess and return the projected triangles as InterRenderTriangles.
 	//! At this point, pos_ss will have been set.
-	std::vector<InterRenderTriangle> Finish();
+	std::vector<InterRenderTriangle>& Finish();
 
 private:
 	//! This is the task given to the WorkerPool. One task (call) per registered triangle.
