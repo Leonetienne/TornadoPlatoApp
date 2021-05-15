@@ -1,6 +1,15 @@
 #include "Component.h"
 #include "WorldObject.h"
 
+Component::Component(WorldObject* worldObject)
+	:
+	worldObject { worldObject },
+	transform { worldObject->transform }
+{
+	Init();
+	return;
+}
+
 void Component::SetIsEnabled(bool state)
 {
 	enabled = state;
@@ -34,11 +43,3 @@ bool Component::GetIsGloballyEnabled() const
 	return worldObject->GetIsGloballyEnabled();
 }
 
-Component::Component(WorldObject* worldObject)
-	:
-	worldObject { worldObject },
-	transform { worldObject->transform }
-{
-	Init();
-	return;
-}
