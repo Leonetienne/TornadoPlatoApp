@@ -476,7 +476,7 @@ namespace Matrices
 						<< "Actual: " << m * inv_m << std::endl
 						<< "Target: " << Matrix4x4() << std::endl;
 
-					Assert::IsTrue((m * inv_m).Math::Similar(Matrix4x4()), wss.str().c_str()); // Default constructor is identity matrix
+					Assert::IsTrue((m * inv_m).Similar(Matrix4x4()), wss.str().c_str()); // Default constructor is identity matrix
 					i++;
 				}
 			}
@@ -507,7 +507,7 @@ namespace Matrices
 						<< "Actual: " << m.Multiply4x4(inv_m) << std::endl
 						<< "Target: " << Matrix4x4() << std::endl;
 
-					Assert::IsTrue((m.Multiply4x4(inv_m)).Math::Similar(Matrix4x4(), 0.0001), wss.str().c_str()); // Default constructor is identity matrix
+					Assert::IsTrue((m.Multiply4x4(inv_m)).Similar(Matrix4x4(), 0.0001), wss.str().c_str()); // Default constructor is identity matrix
 					i++;
 				}
 			}
@@ -542,7 +542,7 @@ namespace Matrices
 				<< "Actual: " << a.Multiply4x4(b) << std::endl
 				<< "Target: " << e << std::endl;
 			
-			Assert::IsTrue(a.Multiply4x4(b).Math::Similar(e), wss.str().c_str());
+			Assert::IsTrue(a.Multiply4x4(b).Similar(e), wss.str().c_str());
 		}
 
 		// Tests that Math::Similar() works -> true
@@ -560,7 +560,7 @@ namespace Matrices
 			b[2] = { -69e-25, 13e-23, 1, 4.301e-15 };
 			b[3] = { -23e-19, 23e-19, 25e-7, 1 };
 
-			Assert::IsTrue(a.Math::Similar(b));
+			Assert::IsTrue(a.Similar(b));
 		}
 
 		// Tests that Math::Similar() works -> false
@@ -578,7 +578,7 @@ namespace Matrices
 			b[2] = { -69e-25, 13e-23, 1, 4.301e-15 };
 			b[3] = { -23e-19, 23e-19, 25e-7, 1 };
 
-			Assert::IsFalse(a.Math::Similar(b));
+			Assert::IsFalse(a.Similar(b));
 		}
 
 		// Tests if the equal operator (==) and not-equals operator (!=) work (equal: false)

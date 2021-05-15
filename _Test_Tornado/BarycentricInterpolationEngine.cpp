@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Tornado/BarycentricInterpolationEngine.h"
-#include "../Tornado/Similar.h"
+#include "../Tornado/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>

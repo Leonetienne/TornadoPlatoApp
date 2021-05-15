@@ -54,11 +54,28 @@
     <ClCompile Include="VectorConversion.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Similar.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="BackfaceCullingEngine.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Math_Similar.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Abs.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Min.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Max.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Clamp.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Math_Clamp.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

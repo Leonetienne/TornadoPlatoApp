@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Texture.h"
-#include "../Tornado/Similar.h"
+#include "../Tornado/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
