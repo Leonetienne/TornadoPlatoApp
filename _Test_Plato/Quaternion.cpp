@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Plato/Quaternion.h"
-#include "../Tornado/Similar.h"
+#include "../Tornado/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
@@ -47,7 +47,7 @@ namespace TransformRelated
 				Quaternion q(Vector4d(0, 0, 0, 0)); // Garbage values
 				
 				q.SetRawValues(v);
-				Assert::IsTrue(v.Math::Similar(q.GetRawValues()));
+				Assert::IsTrue(v.Similar(q.GetRawValues()));
 			}
 
 			return;
@@ -76,7 +76,7 @@ namespace TransformRelated
 					<< "Target vals: " << eul << std::endl;
 
 				// Assertion
-				Assert::IsTrue(eul.Math::Similar(q.ToEulerAngles()), wss.str().c_str());
+				Assert::IsTrue(eul.Similar(q.ToEulerAngles()), wss.str().c_str());
 			}
 
 			return;
@@ -88,7 +88,7 @@ namespace TransformRelated
 			Quaternion a(Vector3d(0, -45, 45));
 			Quaternion b(Vector3d(0, 0, 0));
 
-			Assert::IsTrue(Vector3d(0, -45, 45).Math::Similar((a * b).ToEulerAngles()));
+			Assert::IsTrue(Vector3d(0, -45, 45).Similar((a * b).ToEulerAngles()));
 
 			return;
 		}
@@ -99,7 +99,7 @@ namespace TransformRelated
 			Quaternion a(Vector3d(0, -45, 45));
 			Quaternion b(Vector3d(0, 0, 0));
 
-			Assert::IsTrue(Vector3d(0, -45, 45).Math::Similar((a / b).ToEulerAngles()));
+			Assert::IsTrue(Vector3d(0, -45, 45).Similar((a / b).ToEulerAngles()));
 
 			return;
 		}
@@ -111,7 +111,7 @@ namespace TransformRelated
 			for (std::size_t i = 0; i < 100; i++)
 			{
 				Quaternion a(Vector3d(LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE, LARGE_RAND_DOUBLE));
-				Assert::IsTrue(Vector3d(0,0,0).Math::Similar((a / a).ToEulerAngles()));
+				Assert::IsTrue(Vector3d(0,0,0).Similar((a / a).ToEulerAngles()));
 			}
 
 			return;
@@ -127,7 +127,7 @@ namespace TransformRelated
 
 				Vector3d point(32, 19, -14);
 
-				Assert::IsTrue((point * a.ToRotationMatrix()).Math::Similar(a * point));
+				Assert::IsTrue((point * a.ToRotationMatrix()).Similar(a * point));
 			}
 
 			return;
@@ -148,7 +148,7 @@ namespace TransformRelated
 				a *= b;
 
 				// Verify
-				Assert::IsTrue(a.GetRawValues().Math::Similar(ref.GetRawValues()));
+				Assert::IsTrue(a.GetRawValues().Similar(ref.GetRawValues()));
 			}
 
 			return;
@@ -169,7 +169,7 @@ namespace TransformRelated
 				a /= b;
 
 				// Verify
-				Assert::IsTrue(a.GetRawValues().Math::Similar(ref.GetRawValues()));
+				Assert::IsTrue(a.GetRawValues().Similar(ref.GetRawValues()));
 			}
 
 			return;
