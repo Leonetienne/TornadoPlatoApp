@@ -1,7 +1,7 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector4.h"
 #include "../Tornado/Matrix4x4.h"
-#include "../Tornado/Similar.h"
+#include "../Tornado/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
@@ -385,7 +385,7 @@ namespace Vectors
 
 			// Verify
 			Vector4d expected(0.0454594951, -0.07529228877, 0.14035619114, 0.98618692201);
-			Assert::IsTrue(v.Math::Similar(expected));
+			Assert::IsTrue(v.Similar(expected));
 		}
 
 		// Kinda dumb method, but ok lol
@@ -776,7 +776,7 @@ namespace Vectors
 		TEST_METHOD(Loose_Comparison_True_Vector4d)
 		{
 			Assert::IsTrue(
-				Vector4d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999, -3.3333333333333333333333333333333333333).Math::Similar(
+				Vector4d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999, -3.3333333333333333333333333333333333333).Similar(
 					Vector4d(0, -6.666666667, 10, -3.33333333333333)
 			));
 			return;
@@ -786,7 +786,7 @@ namespace Vectors
 		TEST_METHOD(Loose_Comparison_False_Vector4d)
 		{
 			Assert::IsFalse(
-				Vector4d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999, -3.3333333333333333333333333333333333333).Math::Similar(
+				Vector4d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999, -3.3333333333333333333333333333333333333).Similar(
 					Vector4d(0.1, -6.7, 10.1, -3.333)
 			));
 			return;

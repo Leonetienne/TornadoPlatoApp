@@ -1,7 +1,7 @@
 #include "CppUnitTest.h"
 #include "../Tornado/ProjectionProperties.h"
 #include "../_TestingUtilities/HandyMacros.h"
-#include "../Tornado/Similar.h"
+#include "../Tornado/Math.h"
 #include <random>
 #include <sstream>
 

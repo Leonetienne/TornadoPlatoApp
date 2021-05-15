@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Tornado/Vector3.h"
-#include "../Tornado/Similar.h"
+#include "../Tornado/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
@@ -682,7 +682,7 @@ namespace Vectors
 
 			// Verify
 			Vector3d expected(0.27445384355, -0.45456417839, 0.84737624198);
-			Assert::IsTrue(v.Math::Similar(expected));
+			Assert::IsTrue(v.Similar(expected));
 		}
 
 		// Tests for a normalized vector to still point in the exact same direction
@@ -1507,7 +1507,7 @@ namespace Vectors
 		TEST_METHOD(Similar_True)
 		{
 			Assert::IsTrue(
-				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Math::Similar(
+				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Similar(
 					Vector3d(0, -6.666666667, 10)
 			));
 			return;
@@ -1517,7 +1517,7 @@ namespace Vectors
 		TEST_METHOD(Similar_False)
 		{
 			Assert::IsFalse(
-				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Math::Similar(
+				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Similar(
 					Vector3d(0.1, -6.7, 10.1)
 			));
 			return;
