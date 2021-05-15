@@ -21,7 +21,7 @@ void BackfaceCullingEngine::RegisterRenderTriangle(const InterRenderTriangle* tr
 		std::pair<const InterRenderTriangle*, bool>(
 			triangle,
 			true // keep by default
-			)
+		)
 	);
 
 	return;
@@ -33,6 +33,7 @@ void BackfaceCullingEngine::Cull()
 	for (auto& tri : registeredTriangles)
 	{
 		WorkerTask* newTask = new WorkerTask; // Will be freed by the workerPool
+
 		newTask->task = std::bind(&BackfaceCullingEngine::Thread__CullTriangle, this,
 			&tri
 		);
@@ -48,7 +49,7 @@ void BackfaceCullingEngine::Cull()
 
 void BackfaceCullingEngine::Thread__CullTriangle(std::pair<const InterRenderTriangle*, bool>* ird)
 {
-	// Calculate InterRenderTriangle surface normal
+	// Calculate InterRenderTriangle surface normal (in device space)
 	ird->first->surfaceNormalNdc =
 		(
 			(
