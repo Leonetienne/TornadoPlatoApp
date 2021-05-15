@@ -135,7 +135,7 @@ namespace Rendering
 			for (std::size_t y = 0; y < 4; y++)
 				for (std::size_t x = 0; x < 4; x++)
 				{
-					Assert::IsTrue(Similar(comparison[y][x], props.GetProjectionMatrix()[y][x]));
+					Assert::IsTrue(Math::Similar(comparison[y][x], props.GetProjectionMatrix()[y][x]));
 				}
 
 			return;

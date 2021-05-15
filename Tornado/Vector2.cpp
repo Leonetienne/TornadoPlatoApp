@@ -1,5 +1,5 @@
 #include "Vector2.h"
-#include "Similar.h"
+#include "Math.h"
 #include <iostream>
 
 //#define _TORNADO_NO_INTRINSICS_
@@ -293,8 +293,8 @@ template<typename T>
 bool Vector2<T>::Similar(const Vector2<T>& other, double epsilon) const
 {
 	return
-		(::Similar(x, other.x, epsilon)) &&
-		(::Similar(y, other.y, epsilon))
+		(::Math::Similar(x, other.x, epsilon)) &&
+		(::Math::Similar(y, other.y, epsilon))
 	;
 }
 

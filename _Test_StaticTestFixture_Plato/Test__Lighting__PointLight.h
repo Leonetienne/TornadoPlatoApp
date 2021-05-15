@@ -13,7 +13,5 @@ public:
 	void Update(double deltaTime) override;
 
 private:
-	Camera* camera;
-
 	PointLight* rgbLight;
 };

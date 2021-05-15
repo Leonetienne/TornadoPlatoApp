@@ -1,6 +1,6 @@
 #include "Matrix4x4.h"
 #include "Vector3.h"
-#include "Similar.h"
+#include "Math.h"
 
 //#define _TORNADO_NO_INTRINSICS_
 #ifndef _TORNADO_NO_INTRINSICS_
@@ -369,7 +369,7 @@ bool Matrix4x4::Similar(const Matrix4x4& other, double epsilon) const
 {
 	for (std::size_t i = 0; i < 4; i++)
 		for (std::size_t j = 0; j < 4; j++)
-			if (!::Similar(v[i][j], other[i][j], epsilon))
+			if (!Math::Similar(v[i][j], other[i][j], epsilon))
 				return false;
 
 	return true;

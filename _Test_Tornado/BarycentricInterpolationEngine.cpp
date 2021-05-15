@@ -67,7 +67,7 @@ namespace Engines
 					c
 				);
 				// Check the interpolated value is the exact value at a
-				Assert::IsTrue(Similar(a, ret), L"Failed A");
+				Assert::IsTrue(Math::Similar(a, ret), L"Failed A");
 
 				// Interpolate value at position of b between a, b and c
 				ret = BarycentricInterpolationEngine::PerspectiveCorrected(
@@ -78,7 +78,7 @@ namespace Engines
 					c
 				);
 				// Check the interpolated value is the exact value at a
-				Assert::IsTrue(Similar(b, ret), L"Failed B");
+				Assert::IsTrue(Math::Similar(b, ret), L"Failed B");
 
 				// Interpolate value at position of c between a, b and c
 				ret = BarycentricInterpolationEngine::PerspectiveCorrected(
@@ -89,7 +89,7 @@ namespace Engines
 					c
 				);
 				// Check the interpolated value is the exact value at a
-				Assert::IsTrue(Similar(c, ret), L"Failed C");
+				Assert::IsTrue(Math::Similar(c, ret), L"Failed C");
 			}
 
 			return;

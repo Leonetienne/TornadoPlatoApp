@@ -464,7 +464,7 @@ namespace Vectors
 				double z = (double)(rng() % 1000) - 500.0;
 				double expected = x*x + y*y + z*z;
 
-				Assert::IsTrue(Similar(expected, Vector3d(x, y, z).SqrMagnitude()));
+				Assert::IsTrue(Math::Similar(expected, Vector3d(x, y, z).SqrMagnitude()));
 			}
 
 			return;
@@ -507,7 +507,7 @@ namespace Vectors
 				wss << std::endl << std::setprecision(20)
 					<< "Actual: " << vec.Magnitude() << std::endl
 					<< "Expected: " << x << std::endl;
-				Assert::IsTrue(Similar(abs(x), vec.Magnitude()), wss.str().c_str());
+				Assert::IsTrue(Math::Similar(abs(x), vec.Magnitude()), wss.str().c_str());
 			}
 
 			return;
@@ -526,7 +526,7 @@ namespace Vectors
 				wss << std::endl << std::setprecision(20)
 					<< "Actual: " << vec.Magnitude() << std::endl
 					<< "Expected: " << y << std::endl;
-				Assert::IsTrue(Similar(abs(y), vec.Magnitude()), wss.str().c_str());
+				Assert::IsTrue(Math::Similar(abs(y), vec.Magnitude()), wss.str().c_str());
 			}
 
 			return;
@@ -545,7 +545,7 @@ namespace Vectors
 				wss << std::endl << std::setprecision(20)
 					<< "Actual: " << vec.Magnitude() << std::endl
 					<< "Expected: " << z << std::endl;
-				Assert::IsTrue(Similar(abs(z), vec.Magnitude()), wss.str().c_str());
+				Assert::IsTrue(Math::Similar(abs(z), vec.Magnitude()), wss.str().c_str());
 			}
 
 			return;
@@ -665,7 +665,7 @@ namespace Vectors
 
 				std::wstringstream wss;
 				wss << vec;
-				Assert::IsTrue(Similar(vec.Normalize().Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
+				Assert::IsTrue(Math::Similar(vec.Normalize().Magnitude(), 1.0), wss.str().c_str()); // Account for floating point inaccuracy
 			}
 
 			return;
@@ -682,7 +682,7 @@ namespace Vectors
 
 			// Verify
 			Vector3d expected(0.27445384355, -0.45456417839, 0.84737624198);
-			Assert::IsTrue(v.Similar(expected));
+			Assert::IsTrue(v.Math::Similar(expected));
 		}
 
 		// Tests for a normalized vector to still point in the exact same direction
@@ -709,7 +709,7 @@ namespace Vectors
 				// Both vectors should still point in the same direction!
 				Assert::IsTrue(
 					(vec.DotProduct(vec_n) > 0) && // Roughly same direction
-					(Similar(vec_n.CrossProduct(vec).Magnitude(), 0.0)), // Both vectors align
+					(Math::Similar(vec_n.CrossProduct(vec).Magnitude(), 0.0)), // Both vectors align
 					wss.str().c_str());
 			}
 			return;
@@ -1152,9 +1152,9 @@ namespace Vectors
 			std::wstringstream wss;
 			wss << vec;
 			Assert::IsTrue(
-				Similar(vec.x, 1.207, 0.001) &&
-				Similar(vec.y, 1.207, 0.001) &&
-				Similar(vec.z, 0.2928, 0.001),
+				Math::Similar(vec.x, 1.207, 0.001) &&
+				Math::Similar(vec.y, 1.207, 0.001) &&
+				Math::Similar(vec.z, 0.2928, 0.001),
 				wss.str().c_str());
 
 			return;
@@ -1179,9 +1179,9 @@ namespace Vectors
 			std::wstringstream wss;
 			wss << vec;
 			Assert::IsTrue(
-				Similar(vec.x, 43.468, 0.001) &&
-				Similar(vec.y, 59.468, 0.001) &&
-				Similar(vec.z, -24.7968, 0.001),
+				Math::Similar(vec.x, 43.468, 0.001) &&
+				Math::Similar(vec.y, 59.468, 0.001) &&
+				Math::Similar(vec.z, -24.7968, 0.001),
 				wss.str().c_str());
 
 			return;
@@ -1206,9 +1206,9 @@ namespace Vectors
 			std::wstringstream wss;
 			wss << vec;
 			Assert::IsTrue(
-				Similar(vec.x, -43.9955, 0.001) &&
-				Similar(vec.y, 21.52, 0.001) &&
-				Similar(vec.z, -60.3646, 0.001),
+				Math::Similar(vec.x, -43.9955, 0.001) &&
+				Math::Similar(vec.y, 21.52, 0.001) &&
+				Math::Similar(vec.z, -60.3646, 0.001),
 				wss.str().c_str());
 
 			return;
@@ -1507,7 +1507,7 @@ namespace Vectors
 		TEST_METHOD(Similar_True)
 		{
 			Assert::IsTrue(
-				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Similar(
+				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Math::Similar(
 					Vector3d(0, -6.666666667, 10)
 			));
 			return;
@@ -1517,7 +1517,7 @@ namespace Vectors
 		TEST_METHOD(Similar_False)
 		{
 			Assert::IsFalse(
-				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Similar(
+				Vector3d(0.00000000000000000000001, -6.6666666666666666666666666666, 9.9999999999999999999999999999).Math::Similar(
 					Vector3d(0.1, -6.7, 10.1)
 			));
 			return;
