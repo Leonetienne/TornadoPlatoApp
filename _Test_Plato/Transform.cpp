@@ -1,5 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Plato/WorldObjectManager.h"
+#include "../Tornado/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
@@ -233,7 +234,7 @@ namespace TransformRelated
 			Vector3d transformedPoint = originalPoint * a->GetLocalTransformationMatrix();
 
 			// Verify
-			Assert::IsTrue(transformedPoint.Similar(originalPoint + Vector3d(255, 12, -23)));
+			Assert::IsTrue(transformedPoint.Math::Similar(originalPoint + Vector3d(255, 12, -23)));
 
 			WorldObjectManager::Free();
 			return;
@@ -263,7 +264,7 @@ namespace TransformRelated
 				<< "Target position     : " << targetPosition << std::endl;
 
 			//    Assertion
-			Assert::IsTrue(transformedPoint.Similar(targetPosition), wss.str().c_str());
+			Assert::IsTrue(transformedPoint.Math::Similar(targetPosition), wss.str().c_str());
 
 			WorldObjectManager::Free();
 			return;
@@ -293,7 +294,7 @@ namespace TransformRelated
 				<< "Target position     : " << targetPosition << std::endl;
 
 			//    Assertion
-			Assert::IsTrue(transformedPoint.Similar(targetPosition), wss.str().c_str());
+			Assert::IsTrue(transformedPoint.Math::Similar(targetPosition), wss.str().c_str());
 
 			WorldObjectManager::Free();
 			return;
@@ -335,7 +336,7 @@ namespace TransformRelated
 		//		<< "Target position     : " << targetPosition << std::endl;
 
 		//	//    Assertion
-		//	Assert::IsTrue(transformedPoint.Similar(targetPosition), wss.str().c_str());
+		//	Assert::IsTrue(transformedPoint.Math::Similar(targetPosition), wss.str().c_str());
 
 		//	WorldObjectManager::Free();
 		//	return;

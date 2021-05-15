@@ -3,8 +3,7 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Keyboard.h"
-#include "../Tornado/Similar.h"
-#include "../Tornado/Math.h"
+#include "../Plato/Math.h"
 #include "Rotator.h"
 #include <iostream>
 
@@ -126,9 +125,9 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 	case 0:
 		c = 1;
 
-		if (Similar(lightColor.r, 255))
+		if (Math::Similar(lightColor.r, 255))
 			up = false;
-		else if (Similar(lightColor.r, 0))
+		else if (Math::Similar(lightColor.r, 0))
 			up = true;
 
 		break;
@@ -136,9 +135,9 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 	case 1:
 		c = 2;
 
-		if (Similar(lightColor.g, 255))
+		if (Math::Similar(lightColor.g, 255))
 			up = false;
-		else if (Similar(lightColor.g, 0))
+		else if (Math::Similar(lightColor.g, 0))
 			up = true;
 		
 		break;
@@ -146,9 +145,9 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 	case 2:
 		c = 0;
 
-		if (Similar(lightColor.b, 255))
+		if (Math::Similar(lightColor.b, 255))
 			up = false;
-		else if (Similar(lightColor.b, 0))
+		else if (Math::Similar(lightColor.b, 0))
 			up = true;
 	
 		break;

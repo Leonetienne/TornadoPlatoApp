@@ -1,5 +1,5 @@
 #include "Vector4.h"
-#include "Similar.h"
+#include "Math.h"
 #include <iostream>
 
 //#define _TORNADO_NO_INTRINSICS_
@@ -160,10 +160,10 @@ template<typename T>
 bool Vector4<T>::Similar(const Vector4<T>& other, double epsilon) const
 {
 	return
-		(::Similar(x, other.x, epsilon)) &&
-		(::Similar(y, other.y, epsilon)) &&
-		(::Similar(z, other.z, epsilon)) &&
-		(::Similar(w, other.w, epsilon))
+		(::Math::Similar(x, other.x, epsilon)) &&
+		(::Math::Similar(y, other.y, epsilon)) &&
+		(::Math::Similar(z, other.z, epsilon)) &&
+		(::Math::Similar(w, other.w, epsilon))
 	;
 }
 

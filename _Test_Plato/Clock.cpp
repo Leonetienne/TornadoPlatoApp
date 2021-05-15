@@ -37,7 +37,7 @@ namespace Misc
 			const double se = clock.GetElapsedTime().AsSeconds();
 
 			// Verify
-			Assert::IsTrue(Similar(se, 0));
+			Assert::IsTrue(Math::Similar(se, 0));
 			return;
 		}
 
@@ -56,7 +56,7 @@ namespace Misc
 			std::wstringstream wss;
 			wss << "Elapsed time according to SUT: " << std::setprecision(100) << se << std::endl
 			<< "Elapsed time according to calculations: " << 269e-3 << std::endl;
-			Assert::IsTrue(Similar(se, 269e-3, 10), wss.str().c_str());
+			Assert::IsTrue(Math::Similar(se, 269e-3, 10), wss.str().c_str());
 			return;
 		}
 
@@ -75,7 +75,7 @@ namespace Misc
 			// Generate debug message
 			std::wstringstream wss;
 			wss << "Elapsed time accordint to SUT: " << std::setprecision(100) << se << std::endl;
-			Assert::IsTrue(Similar(se, 0), wss.str().c_str());
+			Assert::IsTrue(Math::Similar(se, 0), wss.str().c_str());
 
 			return;
 		}
@@ -112,10 +112,10 @@ namespace Misc
 
 				<< std::endl;
 
-			Assert::IsTrue(Similar(2069e-3, se, 10e-3), (wss.str() + L"Failed seconds!").c_str());
-			Assert::IsTrue(Similar(2069e+0, ms, 10e+0), (wss.str() + L"Failed milliseconds!").c_str());
-			Assert::IsTrue(Similar(2069e+3, us, 10e+3), (wss.str() + L"Failed microseconds!").c_str());
-			Assert::IsTrue(Similar(2069e+6, ns, 10e+6), (wss.str() + L"Failed nanoseconds!").c_str());
+			Assert::IsTrue(Math::Similar(2069e-3, se, 10e-3), (wss.str() + L"Failed seconds!").c_str());
+			Assert::IsTrue(Math::Similar(2069e+0, ms, 10e+0), (wss.str() + L"Failed milliseconds!").c_str());
+			Assert::IsTrue(Math::Similar(2069e+3, us, 10e+3), (wss.str() + L"Failed microseconds!").c_str());
+			Assert::IsTrue(Math::Similar(2069e+6, ns, 10e+6), (wss.str() + L"Failed nanoseconds!").c_str());
 			return;
 		}
 	};
