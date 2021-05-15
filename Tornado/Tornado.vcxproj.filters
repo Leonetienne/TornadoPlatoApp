@@ -81,9 +81,6 @@
     <ClInclude Include="Rect.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Similar.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Endian.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
