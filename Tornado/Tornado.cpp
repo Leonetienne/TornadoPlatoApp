@@ -74,6 +74,7 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	std::vector<const InterRenderTriangle*> culledTriangles = backfaceCullingEngine->Finish();
 
 
+
 	// Draw triangles
 	drawingEngine->BeginBatch(projectedTriangles.size());
 	for (const InterRenderTriangle* tri : culledTriangles)

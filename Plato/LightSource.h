@@ -3,6 +3,9 @@
 #include "../Tornado/Color.h"
 #include "../Tornado/RenderLightSource.h"
 
+/** This component is the abstract implementation of all LightSources.
+* You can't instanciate it on its own, and even if you did, bad things would happen. Don't do it.
+*/
 class LightSource : public Component
 {
 public:
