@@ -163,8 +163,13 @@
     <ClCompile Include="InterRenderVertex.cpp" />
     <ClCompile Include="Math_Abs.cpp" />
     <ClCompile Include="Math_Clamp.cpp" />
+    <ClCompile Include="Math_Lerp.cpp" />
     <ClCompile Include="Math_Max.cpp" />
     <ClCompile Include="Math_Min.cpp" />
+    <ClCompile Include="Math_Random.cpp" />
+    <ClCompile Include="Math_RandomInteger.cpp" />
+    <ClCompile Include="Math_RandomIntRange.cpp" />
+    <ClCompile Include="Math__RandomRange.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="PixelBuffer.cpp" />
     <ClCompile Include="ProjectionProperties.cpp" />
@@ -180,9 +185,6 @@
     <ProjectReference Include="..\Tornado\Tornado.vcxproj">
       <Project>{edbdbde4-9a5a-4c7d-afaf-b410abe4eaf2}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Math_Clamp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
