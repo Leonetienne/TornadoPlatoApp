@@ -1,0 +1,2 @@
+Cull light sources out of range (by min(cullingDistance, farclip + intensity*13), with cullingDistance being a new attribute of light sources.
+Give MeshRenderers a cullingDistance attribute aswell, but don't enforce farclip-culling, because the mesh can be arbitrarily big.
