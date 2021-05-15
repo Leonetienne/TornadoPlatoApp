@@ -22,7 +22,7 @@ public:
 	virtual void SetIntensity(double intensity);
 
 	//! Will return the tornado render light source. This does NOT include transformation!
-	virtual RenderLightSource* GetRawTornadoRenderLightSource() const;
+	virtual RenderLightSource* GetRawTornadoRenderLightSource() const = 0;
 
 protected:
 	mutable RenderLightSource* tornadoLightSource; // <-- Muteable so that the Renderer can access the position member

@@ -6,11 +6,9 @@
 class RenderLightSource
 {
 public:
-	virtual Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point) const;
+	virtual Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point) const = 0;
 	
 	Color color;
 	double intensity;
 	Vector3d position;
-
 };
-
