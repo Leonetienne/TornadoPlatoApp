@@ -13,6 +13,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Tests\Math">
+      <UniqueIdentifier>{bd2e8405-546e-46c6-b501-27f502a867a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4x4.cpp">
@@ -58,24 +61,34 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Math_Similar.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Math_Abs.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Math_Min.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Math_Max.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="Math_Clamp.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Math_Clamp.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
+    <ClCompile Include="Math_Lerp.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Max.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Min.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Random.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_Abs.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_RandomInteger.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math__RandomRange.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math_RandomIntRange.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
