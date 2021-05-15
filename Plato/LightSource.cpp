@@ -36,11 +36,6 @@ void LightSource::SetIntensity(double intensity)
 	return;
 }
 
-RenderLightSource* LightSource::GetRawTornadoRenderLightSource() const
-{
-	return nullptr;
-}
-
 void LightSource::Render(Renderer* renderer)
 {
 	renderer->RegisterLightSource(this);
