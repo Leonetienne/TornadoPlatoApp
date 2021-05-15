@@ -35,11 +35,11 @@ public:
 
 	//! Will return a random double within a range  
 	//! These bounds are INCLUSIVE!
-	[[nodiscard]] static double RandomRange(double min, double max);
+	[[nodiscard]] static double RandomRange(const double min, const double max);
 
 	//! Will return a random integer within a range. This is faster than '(int)RandomRange(x,y)'
 	//! These bounds are INCLUSIVE!
-	[[nodiscard]] static int RandomIntRange(int max, int min);
+	[[nodiscard]] static int RandomIntRange(const int max, const int min);
 
 private:
 	//! Will initialize the random number generator
