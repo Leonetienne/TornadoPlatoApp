@@ -25,21 +25,21 @@ public:
 	[[nodiscard]] static constexpr bool Similar(const double a, const double b, const double epsilon = 0.00001);
 
 	//! Will return a random double between 0 and 1
-	[[nodiscard]] static double Random();
+	static double Random();
 	
 	//! Will return a random unsigned integer.
-	[[nodiscard]] static unsigned int RandomUint();
+	static unsigned int RandomUint();
 
 	//! Will return a random integer
-	[[nodiscard]] static unsigned int RandomInt();
+	static unsigned int RandomInt();
 
 	//! Will return a random double within a range  
 	//! These bounds are INCLUSIVE!
-	[[nodiscard]] static double RandomRange(const double min, const double max);
+	static double RandomRange(const double min, const double max);
 
 	//! Will return a random integer within a range. This is faster than '(int)RandomRange(x,y)'
 	//! These bounds are INCLUSIVE!
-	[[nodiscard]] static int RandomIntRange(const int max, const int min);
+	static int RandomIntRange(const int max, const int min);
 
 private:
 	//! Will initialize the random number generator
