@@ -28,7 +28,7 @@ protected:
 	mutable RenderLightSource* tornadoLightSource; // <-- Muteable so that the Renderer can access the position member
 
 	friend class WorldObject;
-	LightSource(WorldObject* worldObject, double intensity, const Color& color = Color(255, 255, 255));
+	LightSource(WorldObject* worldObject, double intensity, const Color& color = Color::white);
 
 private:
 	void Render(Renderer* renderer) override;
