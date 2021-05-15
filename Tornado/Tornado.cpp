@@ -60,7 +60,7 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 		projectionEngine->RegisterRenderTriangle(tri);
 
 	projectionEngine->Project(projectionProperties, worldMatrix);
-	std::vector<InterRenderTriangle> projectedTriangles = projectionEngine->Finish();
+	std::vector<InterRenderTriangle>& projectedTriangles = projectionEngine->Finish();
 
 
 
@@ -71,7 +71,7 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 		backfaceCullingEngine->RegisterRenderTriangle(&ird);
 
 	backfaceCullingEngine->Cull();
-	std::vector<const InterRenderTriangle*> culledTriangles = backfaceCullingEngine->Finish();
+	std::vector<const InterRenderTriangle*>& culledTriangles = backfaceCullingEngine->Finish();
 
 
 

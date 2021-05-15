@@ -2,6 +2,7 @@
 #include "WorkerPool.h"
 #include "InterRenderTriangle.h"
 #include <utility>
+#include <mutex>
 
 /** This engine is responsible for removing all triangles from the rendering queue, that are not facing the camera.
 */
@@ -21,14 +22,15 @@ public:
 
 	//! Will finish the job and return a vector of pointers to all InterRenderTriangles's that should be rendered.
 	//! They point to the elements in the original vector.
-	std::vector<const InterRenderTriangle*> Finish();
+	std::vector<const InterRenderTriangle*>& Finish();
 
 private:
 	WorkerPool* workerPool;
+	std::vector<const InterRenderTriangle*> culledTriangles;
 
 	void Thread__CullTriangle(std::pair<const InterRenderTriangle*, bool>* ird);
 
-	// bool -> keep the triangle?
+	// bool -> if the triangle should be kept
 	std::vector<std::pair<const InterRenderTriangle*, bool>> registeredTriangles;
 };
 

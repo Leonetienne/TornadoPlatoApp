@@ -128,7 +128,7 @@ void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const
 	return;
 }
 
-std::vector<InterRenderTriangle> ProjectionEngine::Finish()
+std::vector<InterRenderTriangle>& ProjectionEngine::Finish()
 {
 	return projectedTriangles;
 }
