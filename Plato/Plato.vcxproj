@@ -171,6 +171,7 @@
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="KeyState.h" />
     <ClInclude Include="LightSource.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Mouse.h" />
