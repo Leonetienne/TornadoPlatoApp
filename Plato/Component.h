@@ -32,6 +32,9 @@ public:
 protected:
 	// ### GAME ENGINE HOOKS ### //
 
+	// These hooks are not defined as abstract ( = 0 ), because they should not have
+	// to be implemented. A component that just uses Update(double) should be fine by just implementing Update(double).
+
 	//! Gets called once after the object is all set up
 	virtual void Init() {};
 
