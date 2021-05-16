@@ -14,6 +14,13 @@ void LightingEngine::RegisterLightSource(const RenderLightSource* lightSource)
 	return;
 }
 
+void LightingEngine::HardsetLightsources(std::vector<const RenderLightSource*>&& lightSources)
+{
+	LightingEngine::lightSources = std::move(lightSources);
+
+	return;
+}
+
 Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point)
 {
 	// Calculate caches

@@ -14,6 +14,9 @@ public:
 	//! Will register a light source to be considerated
 	static void RegisterLightSource(const RenderLightSource* lightSource);
 
+	//! Faster way of registering a lot of RenderLightSource's at once using std::move. This will consume the original vector.
+	static void HardsetLightsources(std::vector<const RenderLightSource*>&& lightSources);
+
 	//! Will return the factors to multiply the render colors with for a specific location on an InterRenderTriangle. The point must be in world space.
 	static Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point);
 
