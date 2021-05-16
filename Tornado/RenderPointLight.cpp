@@ -10,7 +10,7 @@ Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird,
 		return Color::black;
 
 	// Angle of the face towards the point light
-	const double dot = (deltaPos.Normalize()).DotProduct(ird->surfaceNormalWs);
+	const double dot = (deltaPos.Normalize()).DotProduct(ird->meanVertexNormal);
 
 	// Not facing the point light? No light for you! >:(
 	if (dot < 0)

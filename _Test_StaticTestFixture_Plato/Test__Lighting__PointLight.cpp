@@ -76,16 +76,17 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	monke->transform->Move(Vector3d::backward * 5);
 
 	// Create point light
-	WorldObject* woLight = WorldObjectManager::NewWorldObject("point light");
-	PointLight* pointLight = woLight->AddComponent<PointLight>(100, Color(0, 130, 255));
-	pointLight->transform->Move(Vector3d::left * 4 + Vector3d::backward * 3);
-	
-	woLight = WorldObjectManager::NewWorldObject("point light");
-	pointLight = woLight->AddComponent<PointLight>(100, Color(255, 130, 0));
-	pointLight->transform->Move(Vector3d::right * 4 + Vector3d::backward * 3);
+	WorldObject* woLight;
+	//woLight; = WorldObjectManager::NewWorldObject("point light");
+	//PointLight* pointLight = woLight->AddComponent<PointLight>(100, Color(0, 130, 255));
+	//pointLight->transform->Move(Vector3d::left * 4 + Vector3d::backward * 3);
+	//
+	//woLight = WorldObjectManager::NewWorldObject("point light");
+	//pointLight = woLight->AddComponent<PointLight>(100, Color(255, 130, 0));
+	//pointLight->transform->Move(Vector3d::right * 4 + Vector3d::backward * 3);
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light");
-	rgbLight = woLight->AddComponent<PointLight>(0, Color(255, 0, 0));
+	rgbLight = woLight->AddComponent<PointLight>(200, Color(255, 0, 0));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 
 	return;
