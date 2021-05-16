@@ -41,9 +41,5 @@ void InterRenderVertex::Interpolate(const InterRenderVertex& b, double t)
 	{
 		normal.LerpSelf(b.normal, t);
 	}
-	if (interpolationMask & IRV_LERP_VERTEX_COLOR)
-	{
-		vertex_col.LerpSelf(b.vertex_col, t);
-	}
 	return;
 }

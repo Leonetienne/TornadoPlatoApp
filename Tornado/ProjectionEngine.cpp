@@ -66,11 +66,6 @@ void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const
 	ird.a.normal = tri->a.normal;
 	ird.b.normal = tri->b.normal;
 	ird.c.normal = tri->c.normal;
-	
-	ird.a.vertex_col = tri->a.vertexColor;
-	ird.b.vertex_col = tri->b.vertexColor;
-	ird.c.vertex_col = tri->c.vertexColor;
-
 
 	// Apply world matrix
 	ird.a.pos_wsmx = ird.a.pos_ws * worldMatrix;

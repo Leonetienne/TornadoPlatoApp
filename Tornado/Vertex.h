@@ -10,5 +10,4 @@ struct Vertex
 	Vector3d pos_worldSpace;
 	Vector2d pos_textureSpace;
 	Vector3d normal;
-	Color vertexColor;
 };

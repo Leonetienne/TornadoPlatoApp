@@ -201,11 +201,6 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		rd.b.normal *= objectRotationMatrix;
 		rd.c.normal *= objectRotationMatrix;
 
-		// Testing
-		rd.a.vertexColor = Color::red;
-		rd.b.vertexColor = Color::green;
-		rd.c.vertexColor = Color::blue;
-
 		// Add to local result cache
 		resultCache.emplace_back(std::move(rd));
 	}

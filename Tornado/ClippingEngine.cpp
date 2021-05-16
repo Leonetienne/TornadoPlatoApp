@@ -35,7 +35,7 @@ std::vector<InterRenderTriangle> ClippingEngine::Clip(const InterRenderTriangle&
 	clippingResult.reserve(64); // Mathematically impossible to get more triangles out of one when clipping in three dimensions (homogenous coords are technically just distorted 3d coordinates)
 	clippingResult.push_back(tri);
 
-	constexpr long long interpolationMask = IRV_LERP_POS_WS | IRV_LERP_POS_CS | IRV_LERP_POS_UV | IRV_LERP_NORMAL | IRV_LERP_VERTEX_COLOR;
+	constexpr long long interpolationMask = IRV_LERP_POS_WS | IRV_LERP_POS_CS | IRV_LERP_POS_UV | IRV_LERP_NORMAL;
 	clippingResult[0].a.SetInterpolationMask(interpolationMask);
 	clippingResult[0].b.SetInterpolationMask(interpolationMask);
 	clippingResult[0].c.SetInterpolationMask(interpolationMask);
