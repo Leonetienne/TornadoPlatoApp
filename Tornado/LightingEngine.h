@@ -1,6 +1,6 @@
 #pragma once
 #include "RenderLightSource.h"
-#include <unordered_set>
+#include <vector>
 
 /** This engine is responsible for calculating brightness levels (per r,g,b) for all registered RenderLightSource's, given an InterRenderTriangle and a worldspace point.
 * GetColorIntensityFactors() should best be called in a multithreaded fashion.
@@ -22,6 +22,6 @@ private:
 	//! Will calculate needed values for this InterRenderTriangle.
 	static void CalculateLightingRelatedCaches_IRD(const InterRenderTriangle* ird);
 
-	static std::unordered_set<const RenderLightSource*> lightSources;
+	static std::vector<const RenderLightSource*> lightSources;
 };
 

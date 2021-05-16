@@ -10,7 +10,7 @@ void LightingEngine::BeginBatch(std::size_t reserve_lightSources)
 
 void LightingEngine::RegisterLightSource(const RenderLightSource* lightSource)
 {
-	lightSources.emplace(lightSource);
+	lightSources.emplace_back(lightSource);
 	return;
 }
 
@@ -49,4 +49,4 @@ void LightingEngine::CalculateLightingRelatedCaches_IRD(const InterRenderTriangl
 	return;
 }
 
-std::unordered_set<const RenderLightSource*> LightingEngine::lightSources;
+std::vector<const RenderLightSource*> LightingEngine::lightSources;
