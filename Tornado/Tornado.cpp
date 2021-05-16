@@ -32,7 +32,10 @@ Tornado::~Tornado()
 void Tornado::BeginFrame()
 {
 	registeredTriangles.clear();
-	LightingEngine::BeginBatch(1);
+	registeredLightsources.clear();
+
+	registeredTriangles.reserve(200);
+	registeredLightsources.reserve(4);
 
 	return;
 }
@@ -46,7 +49,7 @@ void Tornado::RegisterRender(const RenderTriangle3D* tri)
 
 void Tornado::RegisterRender(const RenderLightSource* lightSource)
 {
-	LightingEngine::RegisterLightSource(lightSource);
+	registeredLightsources.emplace_back(lightSource);
 
 	return;
 }
@@ -73,7 +76,18 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	backfaceCullingEngine->Cull();
 	std::vector<const InterRenderTriangle*>& culledTriangles = backfaceCullingEngine->Finish();
 
+	// Init LightingEngine
+	LightingEngine::BeginBatch(registeredLightsources.size(), culledTriangles.size());
+	
+	// Register components in LightingEngine
+	for (const RenderLightSource* lrd : registeredLightsources)
+		LightingEngine::RegisterLightSource(lrd);
 
+	for (const InterRenderTriangle* ird : culledTriangles)
+		LightingEngine::RegisterInterRenderTriangle(ird);
+
+	// Optimize LightingEngine
+	LightingEngine::CalculateCullingMask();
 
 	// Draw triangles
 	drawingEngine->BeginBatch(projectedTriangles.size());
