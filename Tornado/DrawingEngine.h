@@ -20,6 +20,9 @@ public:
 	//! Will register an InterRenderTriangle to be drawn
 	void RegisterInterRenderTriangle(const InterRenderTriangle* tri);
 
+	//! Faster way to register a lot of InterRenderTriangle's at once using std::move. This consumes the original vector.
+	void HardsetInterRenderTriangles(std::vector<const InterRenderTriangle*>&& triangles);
+
 	//! Will create and start the drawing tasks and allocate resources accordingly.  
 	//! Will freeze the main (calling) thread, until the drawing has been finished.
 	void Draw();

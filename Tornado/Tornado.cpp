@@ -59,9 +59,10 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	// Project triangles
 	projectionEngine->BeginBatch(registeredTriangles.size());
 
-	for (const RenderTriangle3D* tri : registeredTriangles)
-		projectionEngine->RegisterRenderTriangle(tri);
+	// Pass triangle vector
+	projectionEngine->HardsetRenderTriangles(std::move(registeredTriangles));
 
+	// Project and receive results
 	projectionEngine->Project(projectionProperties, worldMatrix);
 	std::vector<InterRenderTriangle>& projectedTriangles = projectionEngine->Finish();
 
@@ -71,28 +72,24 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	backfaceCullingEngine->BeginBatch(registeredTriangles.size());
 
 	for (const InterRenderTriangle& ird : projectedTriangles)
-		backfaceCullingEngine->RegisterRenderTriangle(&ird);
+		backfaceCullingEngine->RegisterInterRenderTriangle(&ird);
 
 	backfaceCullingEngine->Cull();
 	std::vector<const InterRenderTriangle*>& culledTriangles = backfaceCullingEngine->Finish();
 
+
+
 	// Init LightingEngine
-	LightingEngine::BeginBatch(registeredLightsources.size(), culledTriangles.size());
+	LightingEngine::BeginBatch(registeredLightsources.size());
 	
 	// Register components in LightingEngine
-	for (const RenderLightSource* lrd : registeredLightsources)
-		LightingEngine::RegisterLightSource(lrd);
+	LightingEngine::HardsetLightsources(std::move(registeredLightsources));
 
-	for (const InterRenderTriangle* ird : culledTriangles)
-		LightingEngine::RegisterInterRenderTriangle(ird);
 
-	// Optimize LightingEngine
-	LightingEngine::CalculateCullingMask();
 
 	// Draw triangles
 	drawingEngine->BeginBatch(projectedTriangles.size());
-	for (const InterRenderTriangle* tri : culledTriangles)
-		drawingEngine->RegisterInterRenderTriangle(tri);
+	drawingEngine->HardsetInterRenderTriangles(std::move(culledTriangles));
 
 	drawingEngine->Draw();
 

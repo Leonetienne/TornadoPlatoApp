@@ -51,6 +51,13 @@ void DrawingEngine::RegisterInterRenderTriangle(const InterRenderTriangle* tri)
 	return;
 }
 
+void DrawingEngine::HardsetInterRenderTriangles(std::vector<const InterRenderTriangle*>&& triangles)
+{
+	this->registeredTriangles = std::move(triangles);
+
+	return;
+}
+
 void DrawingEngine::Draw()
 {
 	CreateTasks();
