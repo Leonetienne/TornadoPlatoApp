@@ -53,7 +53,12 @@ void DrawingEngine::RegisterInterRenderTriangle(const InterRenderTriangle* tri)
 
 void DrawingEngine::HardsetInterRenderTriangles(std::vector<const InterRenderTriangle*>&& triangles)
 {
+	// Replace our vector
 	this->registeredTriangles = std::move(triangles);
+
+	// Now update the cached values
+	for (const InterRenderTriangle* ird : registeredTriangles)
+		CalculateRenderingRelatedCaches_IRD(ird);
 
 	return;
 }
@@ -246,7 +251,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.00005;
+		constexpr double globalIllu = 0.05;
 
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
@@ -270,11 +275,11 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 
 
 		// Render normals
-		//r = 255 * (ird->meanVertexNormal.x + 1) * 0.5;
-		//g = 255 * (ird->meanVertexNormal.y + 1) * 0.5;
-		//b = 255 * (ird->meanVertexNormal.z + 1) * 0.5;
+		//r = uint8_t(255.0 * (ird->surfaceNormalWs.x + 1.0) * 0.5);
+		//g = uint8_t(255.0 * (ird->surfaceNormalWs.y + 1.0) * 0.5);
+		//b = uint8_t(255.0 * (ird->surfaceNormalWs.z + 1.0) * 0.5);
 	}
-	// If we have no material, paint vertex colors
+	// If we have no material, paint the normal map
 	else
 	{
 		r = 255 * uint8_t((ird->meanVertexNormal.x + 1) * 0.5);

@@ -196,10 +196,11 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		rd.b.pos_worldSpace *= inverseCameraRotation;
 		rd.c.pos_worldSpace *= inverseCameraRotation;
 
-		// Apply object rotation to the vertex normals
-		rd.a.normal *= objectRotationMatrix;
-		rd.b.normal *= objectRotationMatrix;
-		rd.c.normal *= objectRotationMatrix;
+		// Apply object- and camera rotation to the vertex normals
+		const Matrix4x4 normalTransMat = objectRotationMatrix * inverseCameraRotation;
+		rd.a.normal *= normalTransMat;
+		rd.b.normal *= normalTransMat;
+		rd.c.normal *= normalTransMat;
 
 		// Add to local result cache
 		resultCache.emplace_back(std::move(rd));
