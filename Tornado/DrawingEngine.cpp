@@ -170,34 +170,6 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 
 void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache)
 {
-	// Interpolate vertex color
-	const Color vertexColor(
-		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
-			*ird,
-			pixelPosition,
-			ird->a.vertex_col.r,
-			ird->b.vertex_col.r,
-			ird->c.vertex_col.r,
-			berp_cache
-		),
-		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
-			*ird,
-			pixelPosition,
-			ird->a.vertex_col.g,
-			ird->b.vertex_col.g,
-			ird->c.vertex_col.g,
-			berp_cache
-		),
-		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
-			*ird,
-			pixelPosition,
-			ird->a.vertex_col.b,
-			ird->b.vertex_col.b,
-			ird->c.vertex_col.b,
-			berp_cache
-		)
-	);
-
 	Vector2d uv_coords(
 		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
 			*ird,
@@ -267,7 +239,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.05;
+		constexpr double globalIllu = 0.00005;
 
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
@@ -291,16 +263,16 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 
 
 		// Render normals
-		//r = 255 * (ird->meanNormal.x + 1) * 0.5;
-		//g = 255 * (ird->meanNormal.y + 1) * 0.5;
-		//b = 255 * (ird->meanNormal.z + 1) * 0.5;
+		//r = 255 * (ird->meanVertexNormal.x + 1) * 0.5;
+		//g = 255 * (ird->meanVertexNormal.y + 1) * 0.5;
+		//b = 255 * (ird->meanVertexNormal.z + 1) * 0.5;
 	}
 	// If we have no material, paint vertex colors
 	else
 	{
-		r = (uint8_t)vertexColor.r;
-		g = (uint8_t)vertexColor.g;
-		b = (uint8_t)vertexColor.b;
+		r = 255 * uint8_t((ird->meanVertexNormal.x + 1) * 0.5);
+		g = 255 * uint8_t((ird->meanVertexNormal.y + 1) * 0.5);
+		b = 255 * uint8_t((ird->meanVertexNormal.z + 1) * 0.5);
 	}
 
 	return;

@@ -15,7 +15,6 @@ void InitA(InterRenderVertex& a)
 	a.pos_ss = { 0,0,0 };
 	a.pos_uv = { 0,0 };
 	a.normal = { 0,0,0 };
-	a.vertex_col = { 0,0,0 };
 
 	return;
 }
@@ -28,7 +27,6 @@ void InitB(InterRenderVertex& b)
 	b.pos_ss = { 100,100, 100 };
 	b.pos_uv = { 100,100 };
 	b.normal = { 100,100,100 };
-	b.vertex_col = { 100,100,100 };
 
 	return;
 }
@@ -66,7 +64,6 @@ namespace Rendering
 			Assert::IsTrue(aold.pos_ss == a.pos_ss);
 			Assert::IsTrue(aold.pos_uv == a.pos_uv);
 			Assert::IsTrue(aold.normal == a.normal);
-			Assert::IsTrue(aold.vertex_col == a.vertex_col);
 
 			return;
 		}
@@ -86,7 +83,6 @@ namespace Rendering
 				const bool lerp_ss = rng() % 2;
 				const bool lerp_uv = rng() % 2;
 				const bool lerp_nm = rng() % 2;
-				const bool lerp_cl = rng() % 2;
 
 				// Generate interpolation mask
 				long long mask = 0;
@@ -104,8 +100,6 @@ namespace Rendering
 					mask |= IRV_LERP_POS_SS;
 				if (lerp_nm)
 					mask |= IRV_LERP_NORMAL;
-				if (lerp_cl)
-					mask |= IRV_LERP_VERTEX_COLOR;
 
 				// Create vertices
 				InterRenderVertex a;
@@ -155,11 +149,6 @@ namespace Rendering
 					Assert::IsFalse(aold.normal == a.normal);
 				else
 					Assert::IsTrue(aold.normal == a.normal);
-
-				if (lerp_cl)
-					Assert::IsFalse(aold.vertex_col == a.vertex_col);
-				else
-					Assert::IsTrue(aold.vertex_col == a.vertex_col);
 			}
 
 			return;

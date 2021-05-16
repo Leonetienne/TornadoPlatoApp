@@ -82,7 +82,7 @@ namespace _Math
 		{
 			// Create 1000 random values
 			std::array<int, 1000> rands;
-			std::generate_n(rands.data(), rands.size(), []()->int { return Math::RandomIntRange(100, 4e9); });
+			std::generate_n(rands.data(), rands.size(), []()->int { return Math::RandomIntRange(100, (int)4e9); });
 
 			// Calculate mean
 			double sum = 0;

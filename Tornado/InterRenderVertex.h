@@ -12,7 +12,6 @@
 #define IRV_LERP_POS_SS       (1<<4)
 #define IRV_LERP_POS_UV       (1<<5)
 #define IRV_LERP_NORMAL       (1<<6)
-#define IRV_LERP_VERTEX_COLOR (1<<7)
 
 /** A vertex representation for within the rendering pipeline.
 * This struct contains a lot of cached values. We have much more ram than processing time!
@@ -27,7 +26,6 @@ struct InterRenderVertex
 	Vector2d pos_uv;  //! Positionin texture space
 	
 	Vector3d normal;  //! Normal
-	Color vertex_col; //! Vertex color
 
 	mutable double berp_iw = -1; //! 1.0 / pos_cs.z caching value. Used by the barycentric interpolation engine to only calculate it once per triangle instead of every pixel
 
