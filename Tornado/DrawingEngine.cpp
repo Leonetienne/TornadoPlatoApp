@@ -228,6 +228,33 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		)
 	);
 
+	Vector3d smooth_normal(
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.normal.x,
+			ird->b.normal.x,
+			ird->c.normal.x,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.normal.y,
+			ird->b.normal.y,
+			ird->c.normal.y,
+			berp_cache
+		),
+		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
+			*ird,
+			pixelPosition,
+			ird->a.normal.z,
+			ird->b.normal.z,
+			ird->c.normal.z,
+			berp_cache
+		)
+	);
+
 	uint8_t& r = pixelBase[0];
 	uint8_t& g = pixelBase[1];
 	uint8_t& b = pixelBase[2];
@@ -251,14 +278,16 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.05;
+		constexpr double globalIllu = 0.0005;
 
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
 		if (!ird->material->noShading)
 		{
 			// Apply lighting
-			const Color lightingIntensity = LightingEngine::GetColorIntensityFactors(ird, ws_coords);
+			const Color lightingIntensity =
+				LightingEngine::GetColorIntensityFactors(ird, ws_coords, smooth_normal);
+
 			brightness.r = lightingIntensity.r / 255.0;
 			brightness.g = lightingIntensity.g / 255.0;
 			brightness.b = lightingIntensity.b / 255.0;
@@ -274,10 +303,10 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		b = uint8_t(Math::Clamp((double)text_pixel[2] * brightness.b, 0, 255));
 
 
-		// Render normals
-		//r = uint8_t(255.0 * (ird->surfaceNormalWs.x + 1.0) * 0.5);
-		//g = uint8_t(255.0 * (ird->surfaceNormalWs.y + 1.0) * 0.5);
-		//b = uint8_t(255.0 * (ird->surfaceNormalWs.z + 1.0) * 0.5);
+		// Render camera-space normals
+		//r = uint8_t(255.0 * (smooth_normal.x + 1.0) * 0.5);
+		//g = uint8_t(255.0 * (smooth_normal.y + 1.0) * 0.5);
+		//b = uint8_t(255.0 * (smooth_normal.z + 1.0) * 0.5);
 	}
 	// If we have no material, paint the normal map
 	else

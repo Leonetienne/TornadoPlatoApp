@@ -85,7 +85,8 @@ void Renderer::ResolveLightSources()
 		RenderLightSource* rls = ls->GetRawTornadoRenderLightSource();
 		
 		// Transform to camera space
-		rls->position = ls->transform->GetGlobalPosition() + inverseCameraPosition;
+		rls->position = ls->transform->GetGlobalPosition();
+		rls->position += inverseCameraPosition;
 		rls->position *= inverseCameraRotation;
 
 		// Add to vector

@@ -9,8 +9,8 @@
 class RenderLightSource
 {
 public:
-	//! Will return color multipliers/factors (r,g,b only) for this light source, given an InterRenderTriangle, and a worldspace point.
-	virtual Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point) const = 0;
+	//! Will return color multipliers/factors (r,g,b only) for this light source, given an InterRenderTriangle, a normal, and a worldspace point.
+	virtual Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const = 0;
 	
 	Color color;
 	double intensity;
