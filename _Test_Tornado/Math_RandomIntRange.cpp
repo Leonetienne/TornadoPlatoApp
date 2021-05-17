@@ -1,4 +1,5 @@
 #include "CppUnitTest.h"
+#include "Testutil.h"
 #include "../Tornado/Math.h"
 #include <array>
 #include <sstream>
@@ -80,25 +81,16 @@ namespace _Math
 		// Checks that the produced integer distribution shows a big standard deviation
 		TEST_METHOD(Big_Standard_Deviation)
 		{
+			// Setup
+			std::vector<int> rands;
+			rands.resize(1000);
+
+			// Exercise
 			// Create 1000 random values
-			std::array<int, 1000> rands;
 			std::generate_n(rands.data(), rands.size(), []()->int { return Math::RandomIntRange(100, (int)4e9); });
-
-			// Calculate mean
-			double sum = 0;
-			for (int& i : rands)
-				sum += i;
-			const double mean = sum / rands.size();
-
-			// Calculate variance
-			sum = 0;
-			for (int& i : rands)
-				sum += (i - mean) * (i - mean);
-			const double variance = sum / (rands.size() - 1);
-
-			// Calcuate stddev
-			const double stddev = sqrt(variance);
-
+			
+			// Verify
+			const double stddev = Testutil::Stddev(rands);
 			Assert::IsTrue(stddev >= 1000000, (std::wstringstream() << stddev).str().c_str());
 
 			return;
