@@ -21,7 +21,7 @@ void LightingEngine::HardsetLightsources(std::vector<const RenderLightSource*>&&
 	return;
 }
 
-Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point)
+Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal)
 {
 	// Calculate caches
 	CalculateLightingRelatedCaches_IRD(ird);
@@ -30,7 +30,7 @@ Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, c
 
 	for (const RenderLightSource* ls : lightSources)
 	{
-		Color result = ls->GetColorIntensityFactors(ird, point);
+		Color result = ls->GetColorIntensityFactors(ird, point, normal);
 		
 		totalIntensity.r += result.r;
 		totalIntensity.g += result.g;
