@@ -18,6 +18,7 @@ public:
 	static void HardsetLightsources(std::vector<const RenderLightSource*>&& lightSources);
 
 	//! Will return the factors to multiply the render colors with for a specific location on an InterRenderTriangle. The point must be in world space.
+	//! Multiply the raw color values with these factors to get the shaded color (for this light)
 	static Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal);
 
 
