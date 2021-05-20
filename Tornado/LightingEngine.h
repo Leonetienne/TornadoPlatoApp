@@ -28,4 +28,3 @@ private:
 
 	static std::vector<const RenderLightSource*> lightSources;
 };
-
