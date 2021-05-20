@@ -19,8 +19,7 @@ public:
 	//! Will set this lightsources intensity
 	void SetIntensity(const double intensity);
 
-	//! Will set this lightsources softness  
-	//! \f$0 <= soft <= 1\f$
+	//! Will set this lightsources softness. Valid range: \f$0 <= soft <= 1\f$
 	void SetSoftness(const double softness);
 
 	//! Will set this lightsources 3d position
