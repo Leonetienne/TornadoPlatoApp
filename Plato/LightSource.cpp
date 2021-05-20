@@ -36,6 +36,18 @@ void LightSource::SetIntensity(double intensity)
 	return;
 }
 
+const double LightSource::GetSoftness() const
+{
+	return tornadoLightSource->GetSoftness();
+}
+
+void LightSource::SetSoftness(const double softness) const
+{
+	// Softness gets clamped to 0 < soft < 1 in the tornado SetSoftness setter
+	tornadoLightSource->SetSoftness(softness);
+	return;
+}
+
 void LightSource::Render(Renderer* renderer)
 {
 	renderer->RegisterLightSource(this);

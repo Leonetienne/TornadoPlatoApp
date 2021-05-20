@@ -24,6 +24,12 @@ public:
 	//! Will set the light intensity
 	virtual void SetIntensity(double intensity);
 
+	//! Will return the light softness
+	virtual const double GetSoftness() const;
+
+	//! Will set this lights softness. Valid range: \f$0 <= soft <= 1\f$
+	virtual void SetSoftness(const double softness) const;
+
 	//! Will return the tornado render light source. This does NOT include transformation!
 	virtual RenderLightSource* GetRawTornadoRenderLightSource() const = 0;
 
