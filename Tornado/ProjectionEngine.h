@@ -21,6 +21,9 @@ public:
 	//! Will register a RenderTriangle3D to be projected.
 	void RegisterRenderTriangle(const RenderTriangle3D* triangle);
 
+	//! Faster way of registering a lot of RenderTriangle3D's at once by using std::move. This will consume the original vector.
+	void HardsetRenderTriangles(std::vector<const RenderTriangle3D*>&& triangles);
+
 	//! Will chew through projecting (and clipping) all the registered triangles using multiple threads.
 	void Project(const ProjectionProperties& projectionProperties, const Matrix4x4& worldMatrix);
 

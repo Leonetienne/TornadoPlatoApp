@@ -10,11 +10,18 @@ void LightingEngine::BeginBatch(std::size_t reserve_lightSources)
 
 void LightingEngine::RegisterLightSource(const RenderLightSource* lightSource)
 {
-	lightSources.emplace(lightSource);
+	lightSources.emplace_back(lightSource);
 	return;
 }
 
-Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point)
+void LightingEngine::HardsetLightsources(std::vector<const RenderLightSource*>&& lightSources)
+{
+	LightingEngine::lightSources = std::move(lightSources);
+
+	return;
+}
+
+Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal)
 {
 	// Calculate caches
 	CalculateLightingRelatedCaches_IRD(ird);
@@ -23,7 +30,7 @@ Color LightingEngine::GetColorIntensityFactors(const InterRenderTriangle* ird, c
 
 	for (const RenderLightSource* ls : lightSources)
 	{
-		Color result = ls->GetColorIntensityFactors(ird, point);
+		Color result = ls->GetColorIntensityFactors(ird, point, normal);
 		
 		totalIntensity.r += result.r;
 		totalIntensity.g += result.g;
@@ -49,4 +56,4 @@ void LightingEngine::CalculateLightingRelatedCaches_IRD(const InterRenderTriangl
 	return;
 }
 
-std::unordered_set<const RenderLightSource*> LightingEngine::lightSources;
+std::vector<const RenderLightSource*> LightingEngine::lightSources;

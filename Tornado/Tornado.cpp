@@ -32,7 +32,10 @@ Tornado::~Tornado()
 void Tornado::BeginFrame()
 {
 	registeredTriangles.clear();
-	LightingEngine::BeginBatch(1);
+	registeredLightsources.clear();
+
+	registeredTriangles.reserve(200);
+	registeredLightsources.reserve(4);
 
 	return;
 }
@@ -46,7 +49,7 @@ void Tornado::RegisterRender(const RenderTriangle3D* tri)
 
 void Tornado::RegisterRender(const RenderLightSource* lightSource)
 {
-	LightingEngine::RegisterLightSource(lightSource);
+	registeredLightsources.emplace_back(lightSource);
 
 	return;
 }
@@ -56,9 +59,10 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	// Project triangles
 	projectionEngine->BeginBatch(registeredTriangles.size());
 
-	for (const RenderTriangle3D* tri : registeredTriangles)
-		projectionEngine->RegisterRenderTriangle(tri);
+	// Pass triangle vector
+	projectionEngine->HardsetRenderTriangles(std::move(registeredTriangles));
 
+	// Project and receive results
 	projectionEngine->Project(projectionProperties, worldMatrix);
 	std::vector<InterRenderTriangle>& projectedTriangles = projectionEngine->Finish();
 
@@ -68,17 +72,24 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	backfaceCullingEngine->BeginBatch(registeredTriangles.size());
 
 	for (const InterRenderTriangle& ird : projectedTriangles)
-		backfaceCullingEngine->RegisterRenderTriangle(&ird);
+		backfaceCullingEngine->RegisterInterRenderTriangle(&ird);
 
 	backfaceCullingEngine->Cull();
 	std::vector<const InterRenderTriangle*>& culledTriangles = backfaceCullingEngine->Finish();
 
 
 
+	// Init LightingEngine
+	LightingEngine::BeginBatch(registeredLightsources.size());
+	
+	// Register components in LightingEngine
+	LightingEngine::HardsetLightsources(std::move(registeredLightsources));
+
+
+
 	// Draw triangles
 	drawingEngine->BeginBatch(projectedTriangles.size());
-	for (const InterRenderTriangle* tri : culledTriangles)
-		drawingEngine->RegisterInterRenderTriangle(tri);
+	drawingEngine->HardsetInterRenderTriangles(std::move(culledTriangles));
 
 	drawingEngine->Draw();
 

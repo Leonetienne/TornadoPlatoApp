@@ -39,7 +39,7 @@ namespace Engines
 			tris.push_back(ird);
 
 			cullingEngine.BeginBatch();
-			cullingEngine.RegisterRenderTriangle(&tris[0]);
+			cullingEngine.RegisterInterRenderTriangle(&tris[0]);
 			cullingEngine.Cull();
 			std::vector<const InterRenderTriangle*> ret = cullingEngine.Finish();
 
@@ -66,7 +66,7 @@ namespace Engines
 			tris.push_back(ird);
 
 			cullingEngine.BeginBatch();
-			cullingEngine.RegisterRenderTriangle(&tris[0]);
+			cullingEngine.RegisterInterRenderTriangle(&tris[0]);
 			cullingEngine.Cull();
 			std::vector<const InterRenderTriangle*> ret = cullingEngine.Finish();
 

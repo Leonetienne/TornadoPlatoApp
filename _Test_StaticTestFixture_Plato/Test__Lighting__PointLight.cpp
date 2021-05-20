@@ -74,10 +74,11 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 		ResourceManager::FindMaterial("monke")
 		);
 	monke->transform->Move(Vector3d::backward * 5);
+	//monke->AddComponent<Rotator>(Vector3d(0, 1.0, 0));
 
 	// Create point light
 	WorldObject* woLight;
-	//WorldObject* woLight = WorldObjectManager::NewWorldObject("point light");
+	//woLight; = WorldObjectManager::NewWorldObject("point light");
 	//PointLight* pointLight = woLight->AddComponent<PointLight>(100, Color(0, 130, 255));
 	//pointLight->transform->Move(Vector3d::left * 4 + Vector3d::backward * 3);
 	//
@@ -86,7 +87,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	//pointLight->transform->Move(Vector3d::right * 4 + Vector3d::backward * 3);
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light");
-	rgbLight = woLight->AddComponent<PointLight>(200, Color(255, 0, 0));
+	rgbLight = woLight->AddComponent<PointLight>(200, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 
 	return;
@@ -118,7 +119,7 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 		break;
 	}
 
-	rgbLight->SetColor(lightColor);
+	//rgbLight->SetColor(lightColor);
 
 	switch (c)
 	{

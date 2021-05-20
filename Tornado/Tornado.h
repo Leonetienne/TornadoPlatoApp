@@ -37,4 +37,5 @@ private:
 	PixelBuffer<3>* pixelBuffer;
 
 	std::vector<const RenderTriangle3D*> registeredTriangles;
+	std::vector<const RenderLightSource*> registeredLightsources;
 };
