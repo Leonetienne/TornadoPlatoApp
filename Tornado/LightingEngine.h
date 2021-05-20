@@ -21,7 +21,6 @@ public:
 	//! Multiply the raw color values with these factors to get the shaded color (for this light)
 	static Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal);
 
-
 private:
 	//! Will calculate needed values for this InterRenderTriangle.
 	static void CalculateLightingRelatedCaches_IRD(const InterRenderTriangle* ird);
