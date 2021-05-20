@@ -41,7 +41,7 @@ public:
 	//! These bounds are INCLUSIVE!
 	static int RandomIntRange(const int max, const int min);
 	
-	//! Kind of like sin(counter), but it oscillates between a and b by a given speed.  
+	//! Kind of like \f$sin(counter)\f$, but it oscillates between `a` and `b` by a given speed.  
 	//! Speed should be a very small value (0 is frozen, 1 is sin(counter))
 	static double Oscillate(const double a, const double b, const double counter, const double speed);
 
