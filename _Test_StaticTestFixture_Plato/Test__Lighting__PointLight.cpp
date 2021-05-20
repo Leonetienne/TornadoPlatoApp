@@ -97,19 +97,15 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 
 void Test__Lighting__PointLight::Update(double deltaTime)
 {
-	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
-
-	UpdateSoftnessPulse(deltaTime);
-	UpdateColorCycle(deltaTime);
-	return;
-}
-
-void Test__Lighting__PointLight::UpdateSoftnessPulse(double deltaTime)
-{
 	static double absTime = 0;
 	absTime += deltaTime;
 
-	rgbLight->SetSoftness(sin(absTime / 1000.0) * 0.5 + 0.5);
+	rgbLight->SetSoftness(Math::Oscillate(0, 1, absTime, 0.002));
+	rgbLight->SetIntensity(Math::Oscillate(5, 140, absTime, 0.001));
+
+	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
+
+	UpdateColorCycle(deltaTime);
 
 	return;
 }

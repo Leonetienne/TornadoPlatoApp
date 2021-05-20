@@ -13,7 +13,6 @@ public:
 	void Update(double deltaTime) override;
 
 private:
-	void UpdateSoftnessPulse(double deltaTime);
 	void UpdateColorCycle(double deltaTime);
 
 	PointLight* rgbLight;
