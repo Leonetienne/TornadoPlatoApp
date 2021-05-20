@@ -1,9 +1,0 @@
-GAME ENGINE:
-Support culling distances for light sources and mesh renderers
-
-RENDERING ENGINE:
-Cull lights if distance to camera is > farclip + intensity*13
-
-LightingEngine should create a mapping between each render triangle and light source. Flag a triangle-lightsource relationship as "false",
-if every triangle vertex is farther away from the light source than lightsource.intensity*13. If a triangle-lightsource relationship is "false",
-don't even call the lightsource computation method on this triangle
