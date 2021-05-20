@@ -12,19 +12,19 @@ public:
 	//! Will return the smaller of two values
 	[[nodiscard]] static constexpr double Min(const double a, const double b);
 	
-	//! Will return 'v', but at least 'min', and at most 'max'
+	//! Will return `v`, but at least `min`, and at most `max`
 	[[nodiscard]] static constexpr double Clamp(const double v, const double min, const double max);
 	
-	//! Will return the linear interpolation between 'a' and 'b' by 't'
+	//! Will return the linear interpolation between `a` and `b` by `t`
 	[[nodiscard]] static constexpr double Lerp(double a, double b, double t);
 	
-	//! Will return the absolute value of 'a'
+	//! Will return the absolute value of `a`
 	[[nodiscard]] static constexpr double Abs(const double a);
 
 	//! Compares two double values with a given accuracy
 	[[nodiscard]] static constexpr bool Similar(const double a, const double b, const double epsilon = 0.00001);
 
-	//! Will return a random double between 0 and 1
+	//! Will return a random double between `0` and `1`
 	static double Random();
 	
 	//! Will return a random unsigned integer.
@@ -37,12 +37,12 @@ public:
 	//! These bounds are INCLUSIVE!
 	static double RandomRange(const double min, const double max);
 
-	//! Will return a random integer within a range. This is faster than '(int)RandomRange(x,y)'
+	//! Will return a random integer within a range. This is faster than `(int)RandomRange(x,y)`  
 	//! These bounds are INCLUSIVE!
 	static int RandomIntRange(const int max, const int min);
 	
-	//! Kind of like \f$sin(counter)\f$, but it oscillates between `a` and `b` by a given speed.  
-	//! Speed should be a very small value (0 is frozen, 1 is sin(counter))
+	//! Kind of like \f$sin(counter)\f$, but it oscillates over \f$[a,b]\f$ instead of \f$[-1,1]\f$, by a given speed.  
+	//! `Speed` should be a very small value (`0` is halted, 1 is \f$sin(counter)\f$)
 	static double Oscillate(const double a, const double b, const double counter, const double speed);
 
 private:
@@ -78,7 +78,7 @@ constexpr inline double Math::Clamp(double v, double min, double max)
 
 constexpr inline double Math::Lerp(double a, double b, double t)
 {
-	double it = 1.0 - t;
+	const double it = 1.0 - t;
 	return (a * it) + (b * t);
 }
 
