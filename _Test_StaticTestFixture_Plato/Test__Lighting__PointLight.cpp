@@ -95,6 +95,22 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 
 void Test__Lighting__PointLight::Update(double deltaTime)
 {
+	UpdateSoftnessPulse(deltaTime);
+	return;
+}
+
+void Test__Lighting__PointLight::UpdateSoftnessPulse(double deltaTime)
+{
+	static double absTime = 0;
+	absTime += deltaTime;
+
+	rgbLight->SetSoftness(sin(absTime / 1000.0) * 0.5 + 0.5);
+
+	return;
+}
+
+void Test__Lighting__PointLight::UpdateColorCycle(double deltaTime)
+{
 	static Color lightColor = Color::red;
 	static int c = 2;
 	static bool up = true;
@@ -140,7 +156,7 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 			up = false;
 		else if (Math::Similar(lightColor.g, 0))
 			up = true;
-		
+
 		break;
 
 	case 2:
@@ -150,9 +166,10 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 			up = false;
 		else if (Math::Similar(lightColor.b, 0))
 			up = true;
-	
+
 		break;
 	}
+
 
 	return;
 }
