@@ -62,5 +62,10 @@ int Math::RandomIntRange(int min, int max)
 	return (rng() % (max + 1 - min)) + min;
 }
 
+double Math::Oscillate(const double a, const double b, const double counter, const double speed)
+{
+	return (sin(counter * speed) * 0.5 + 0.5) * (b-a) + a;
+}
+
 std::mt19937 Math::rng;
 bool Math::isRngInitialized = true;
