@@ -17,4 +17,5 @@ private:
 	void UpdateColorCycle(double deltaTime);
 
 	PointLight* rgbLight;
+	Transform* rgbParent;
 };
