@@ -86,16 +86,21 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	//pointLight = woLight->AddComponent<PointLight>(100, Color(255, 130, 0));
 	//pointLight->transform->Move(Vector3d::right * 4 + Vector3d::backward * 3);
 
-	woLight = WorldObjectManager::NewWorldObject("rgb light");
-	rgbLight = woLight->AddComponent<PointLight>(10, Color(255, 255, 255));
-	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
+	rgbParent = WorldObjectManager::NewWorldObject("rgb parent")->transform;
+
+	woLight = WorldObjectManager::NewWorldObject("rgb light", rgbParent);
+	rgbLight = woLight->AddComponent<PointLight>(20, Color(255, 255, 255));
+	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 10);
 
 	return;
 }
 
 void Test__Lighting__PointLight::Update(double deltaTime)
 {
+	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
+
 	UpdateSoftnessPulse(deltaTime);
+	UpdateColorCycle(deltaTime);
 	return;
 }
 
@@ -135,7 +140,7 @@ void Test__Lighting__PointLight::UpdateColorCycle(double deltaTime)
 		break;
 	}
 
-	//rgbLight->SetColor(lightColor);
+	rgbLight->SetColor(lightColor);
 
 	switch (c)
 	{
