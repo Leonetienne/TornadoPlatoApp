@@ -11,32 +11,33 @@ LightSource::LightSource(WorldObject* worldObject, double intensity, const Color
 
 Color& LightSource::GetColor()
 {
-	return tornadoLightSource->color;
+	return tornadoLightSource->GetColor();
 }
 
 const Color& LightSource::GetColor() const
 {
-	return tornadoLightSource->color;
+	return tornadoLightSource->GetColor();
 }
 
 void LightSource::SetColor(const Color& col)
 {
-	tornadoLightSource->color = col;
+	tornadoLightSource->SetColor(col);
 	return;
 }
 
 const double LightSource::GetIntensity() const
 {
-	return tornadoLightSource->intensity;
+	return tornadoLightSource->GetIntensity();
 }
 
 void LightSource::SetIntensity(double intensity)
 {
-	tornadoLightSource->intensity = intensity;
+	tornadoLightSource->SetIntensity(intensity);
 	return;
 }
 
 void LightSource::Render(Renderer* renderer)
 {
 	renderer->RegisterLightSource(this);
+	return;
 }

@@ -6,8 +6,8 @@ PointLight::PointLight(WorldObject* worldObject, double intensity, const Color& 
 	LightSource(worldObject, intensity, color)
 {
 	tornadoLightSource = new RenderPointLight();
-	tornadoLightSource->color = color;
-	tornadoLightSource->intensity = intensity;
+	tornadoLightSource->SetColor(color);
+	tornadoLightSource->SetIntensity(intensity);
 }
 
 

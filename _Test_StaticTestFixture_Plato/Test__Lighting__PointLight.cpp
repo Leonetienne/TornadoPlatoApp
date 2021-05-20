@@ -87,7 +87,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	//pointLight->transform->Move(Vector3d::right * 4 + Vector3d::backward * 3);
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light");
-	rgbLight = woLight->AddComponent<PointLight>(200, Color(255, 255, 255));
+	rgbLight = woLight->AddComponent<PointLight>(10, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 
 	return;
