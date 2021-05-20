@@ -1,0 +1,15 @@
+OPTIMIZATIONS:
+
+	GAME ENGINE:
+	Support culling distances for light sources and mesh renderers
+
+	RENDERING ENGINE:
+	Cull lights if distance to camera is > farclip + intensity*13
+
+
+FEATURES:
+	SIMPLE LIGHT SOURCES:
+		Attribute: double softness [0,1] ->
+			the higher, the less will the dot factor (angle of the face) matter for its brightness.
+			Value 0 means: faces that face away get no light at all
+			Value 1 means: faces that face away are just as bright as ones that face directly towards the light source
