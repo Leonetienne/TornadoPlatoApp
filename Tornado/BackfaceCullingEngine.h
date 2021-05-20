@@ -15,7 +15,7 @@ public:
 	void BeginBatch(std::size_t reserve_triangles = 0);
 
 	//! Will register an InterRenderTriangle to be checked if it should be culled.
-	void RegisterRenderTriangle(const InterRenderTriangle* triangle);
+	void RegisterInterRenderTriangle(const InterRenderTriangle* triangle);
 
 	//! Will cull the triangles in a multithreaded workload
 	void Cull();

@@ -25,6 +25,12 @@ void ProjectionEngine::RegisterRenderTriangle(const RenderTriangle3D* triangle)
 	return;
 }
 
+void ProjectionEngine::HardsetRenderTriangles(std::vector<const RenderTriangle3D*>&& triangles)
+{
+	this->registeredTriangles = std::move(triangles);
+	return;
+}
+
 void ProjectionEngine::Project(const ProjectionProperties& projectionProperties, const Matrix4x4& worldMatrix)
 {
 	for (const RenderTriangle3D* tri : registeredTriangles)

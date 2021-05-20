@@ -18,7 +18,7 @@ void BackfaceCullingEngine::BeginBatch(std::size_t reserve_triangles)
 	return;
 }
 
-void BackfaceCullingEngine::RegisterRenderTriangle(const InterRenderTriangle* triangle)
+void BackfaceCullingEngine::RegisterInterRenderTriangle(const InterRenderTriangle* triangle)
 {
 	registeredTriangles.emplace_back(
 		std::pair<const InterRenderTriangle*, bool>(
