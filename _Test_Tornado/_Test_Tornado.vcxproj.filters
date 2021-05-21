@@ -90,6 +90,9 @@
     <ClCompile Include="Math_RandomIntRange.cpp">
       <Filter>Tests\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Math__Oscillate.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Testutil.h">
