@@ -68,27 +68,27 @@ double RenderPointLight::Dot(uint8_t side, const Vector3d& p) const
 	{
 		// left
 	case 0:
-		return (box.blb - box.flb).CrossProduct(box.flt - box.flb).DotProduct(p - box.flb);
+		return box.nm_l.DotProduct(p - box.flb);
 	
 		// right
 	case 1:
-		return (box.frt - box.frb).CrossProduct(box.brb - box.frb).DotProduct(p - box.frb);
+		return box.nm_r.DotProduct(p - box.frb);
 	
 		// front
 	case 2:
-		return (box.flt - box.flb).CrossProduct(box.frb - box.flb).DotProduct(p - box.flb);
+		return box.nm_f.DotProduct(p - box.flb);
 	
 		// back
 	case 3:
-		return (box.brb - box.blb).CrossProduct(box.blt - box.blb).DotProduct(p - box.blb);
+		return box.nm_ba.DotProduct(p - box.blb);
 	
 		// top
 	case 4:
-		return (box.blt - box.flt).CrossProduct(box.frt - box.flt).DotProduct(p - box.flt);
+		return box.nm_t.DotProduct(p - box.flt);
 	
 		// bottom
 	case 5:
-		return (box.frb - box.flb).CrossProduct(box.blb - box.flb).DotProduct(p - box.flb);
+		return box.nm_bo.DotProduct(p - box.flb);
 	}
 
 	return 0.0;

@@ -14,6 +14,24 @@ struct Box
 	Vector3d blb; // back left bottom
 	Vector3d brt; // back right top
 	Vector3d brb; // back right bottom
+
+	Vector3d nm_l; // normal left
+	Vector3d nm_r; // normal right
+	Vector3d nm_t; // normal top
+	Vector3d nm_bo; // normal bottom
+	Vector3d nm_f; // normal front
+	Vector3d nm_ba; // normal back
+
+	void GenerateNormalsFromVertices()
+	{
+		nm_l = (blb - flb).CrossProduct(flt - flb);
+		nm_r = (frt - frb).CrossProduct(brb - frb);
+		nm_f = (flt - flb).CrossProduct(frb - flb);
+		nm_ba = (brb - blb).CrossProduct(blt - blb);
+		nm_t = (blt - flt).CrossProduct(frt - flt);
+		nm_bo = (frb - flb).CrossProduct(blb - flb);
+		return;
+	}
 };
 
 
