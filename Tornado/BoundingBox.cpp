@@ -49,24 +49,30 @@ double BoundingBox::FaceDot(FACE_NORMALS face, const Vector3d& point) const
 	{
 	case FACE_NORMALS::LEFT:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
+		break;
 
 	case FACE_NORMALS::RIGHT:
 		coreVertexIdx = FRONT|RIGHT|BOTTOM;
+		break;
 	
 	case FACE_NORMALS::FRONT:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
+		break;
 
 	case FACE_NORMALS::BACK:
 		coreVertexIdx = BACK|LEFT|BOTTOM;
+		break;
 
 	case FACE_NORMALS::TOP:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
+		break;
 
 	case FACE_NORMALS::BOTTOM:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
+		break;
 	}
 
-	return faceNormals[(std::size_t)FACE_NORMALS::LEFT].DotProduct(point - vertices[coreVertexIdx]);
+	return faceNormals[(std::size_t)face].DotProduct(point - vertices[coreVertexIdx]);
 }
 
 bool BoundingBox::Contains(const Vector3d& point) const
