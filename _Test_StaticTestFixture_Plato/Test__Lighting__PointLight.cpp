@@ -7,11 +7,6 @@
 #include "Rotator.h"
 #include <iostream>
 
-// temporary code
-inline double Clamp(double v, double min, double max)
-{
-	return std::min<double>(std::max<double>(v, min), max);
-}
 
 /*
 	Expected behaviour: 
@@ -100,8 +95,8 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 	static double absTime = 0;
 	absTime += deltaTime;
 
-	rgbLight->SetSoftness(Math::Oscillate(0, 1, absTime, 0.002));
-	rgbLight->SetIntensity(Math::Oscillate(5, 140, absTime, 0.001));
+	rgbLight->SetSoftness(Math::Oscillate(0, 0.5, absTime, 0.002));
+	rgbLight->SetIntensity(Math::Oscillate(5, 40, absTime, 0.001));
 
 	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
 
