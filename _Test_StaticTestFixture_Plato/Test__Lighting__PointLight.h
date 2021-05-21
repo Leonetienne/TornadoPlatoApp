@@ -17,4 +17,5 @@ private:
 
 	PointLight* rgbLight;
 	Transform* rgbParent;
+	WorldObject* woPlane;
 };

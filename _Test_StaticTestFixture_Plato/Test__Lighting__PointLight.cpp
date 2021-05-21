@@ -57,10 +57,10 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	ResourceManager::NewMaterial("floor")->texture = ResourceManager::FindTexture("floor");
 
 	// Create plane
-	WorldObject* woPlane = WorldObjectManager::NewWorldObject("plane");
+	woPlane = WorldObjectManager::NewWorldObject("plane");
 	woPlane->AddComponent<MeshRenderer>(mPlane, ResourceManager::FindMaterial("floor"));
 	woPlane->transform->Scale(Vector3d::one * 40);
-	woPlane->transform->Move(Vector3d::down * 2 + Vector3d::backward * 10);
+	woPlane->transform->Move(Vector3d::down * 2 + Vector3d::backward * -10);
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
@@ -85,7 +85,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light", rgbParent);
 	rgbLight = woLight->AddComponent<PointLight>(20, Color(255, 255, 255));
-	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 10);
+	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 13);
 
 	return;
 }
@@ -95,12 +95,14 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 	static double absTime = 0;
 	absTime += deltaTime;
 
-	rgbLight->SetSoftness(Math::Oscillate(0, 0.5, absTime, 0.002));
-	rgbLight->SetIntensity(Math::Oscillate(5, 40, absTime, 0.001));
+	//woPlane->transform->Rotate(Quaternion(Vector3d::right * 0.01 * deltaTime));
+
+	//rgbLight->SetSoftness(Math::Oscillate(0, 0.5, absTime, 0.002));
+	//rgbLight->SetIntensity(Math::Oscillate(5, 40, absTime, 0.001));
 
 	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
 
-	UpdateColorCycle(deltaTime);
+	//UpdateColorCycle(deltaTime);
 
 	return;
 }

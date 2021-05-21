@@ -60,7 +60,7 @@ int main()
 	RegisterReverseEventCallbacks(&window);
 
 	// Let's add a CameraKeyboardControl component to the camera by default
-	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.4, 0.6, 4);
+	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
 	// Create test fixture. Change that to the fixture you want to use (in the macro definition)
 	TEST_TO_RUN testFixture;
