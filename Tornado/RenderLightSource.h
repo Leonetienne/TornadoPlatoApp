@@ -3,6 +3,20 @@
 #include "Vector3.h"
 #include "InterRenderTriangle.h"
 
+// zxy
+struct Box
+{
+	Vector3d flt; // front left top
+	Vector3d flb; // front left bottom
+	Vector3d frt; // front right top
+	Vector3d frb; // front right bottom
+	Vector3d blt; // back left top
+	Vector3d blb; // back left bottom
+	Vector3d brt; // back right top
+	Vector3d brb; // back right bottom
+};
+
+
 /** Abstract implementation of all light sources within Tornado.
 * You can't instanciate it on its own, and even if you could, bad things would happen. Don't do it.
 */
@@ -41,11 +55,14 @@ public:
 	//! Will return this lightsources 3d position
 	const Vector3d& GetPosition() const;
 
+	Box box;
+	bool useBoundingBox = false;
+
 protected:
 	Color color;
 	double intensity = 10;
 	double intensityTimes255 = 0; //! intensity * 255.0  - gets calculated in SetIntensity()
 
-	double softness = 0.6;
+	double softness = 0;
 	Vector3d position;
 };
