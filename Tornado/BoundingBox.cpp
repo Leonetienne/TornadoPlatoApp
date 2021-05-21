@@ -57,7 +57,7 @@ double BoundingBox::FaceDot(FACE_NORMALS face, const Vector3d& point) const
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
 
 	case FACE_NORMALS::BACK:
-		coreVertexIdx = BOTTOM|LEFT|BOTTOM;
+		coreVertexIdx = BACK|LEFT|BOTTOM;
 
 	case FACE_NORMALS::TOP:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
