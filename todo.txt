@@ -9,7 +9,8 @@ OPTIMIZATIONS:
 
 FEATURES:
 	SIMPLE LIGHT SOURCES:
-		Attribute: double softness [0,1] ->
-			the higher, the less will the dot factor (angle of the face) matter for its brightness.
-			Value 0 means: faces that face away get no light at all
-			Value 1 means: faces that face away are just as bright as ones that face directly towards the light source
+		Attribute: Box boundingBox
+			If boundingBox is set, this light source should only cast light within the box.
+			User story: We want to use a shadowless light to light a house from the inside.
+				    We want to avoid the light casting brightness onto objects outside the house.
+			            The house would be the bounding box.
