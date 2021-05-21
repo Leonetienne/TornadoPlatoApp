@@ -28,7 +28,7 @@ double Math::Random()
 {
 	MAKE_SURE_RNG_IS_INITIALIZED;
 
-	return (rng() % 6942069) / 6942069.0;
+	return (rng() % 694206942069ll) / 694206942069.0;
 }
 
 // Will return a random unsigned integer.
@@ -66,6 +66,11 @@ int Math::RandomIntRange(int min, int max)
 double Math::Oscillate(const double a, const double b, const double counter, const double speed)
 {
 	return (sin(counter * speed * PI - HALF_PI) * 0.5 + 0.5) * (b-a) + a;
+}
+
+bool Math::RandomChance(const double chance)
+{
+	return Random() <= chance;
 }
 
 std::mt19937 Math::rng;
