@@ -42,7 +42,9 @@ public:
 	static int RandomIntRange(const int max, const int min);
 	
 	//! Kind of like \f$sin(counter)\f$, but it oscillates over \f$[a,b]\f$ instead of \f$[-1,1]\f$, by a given speed.  
-	//! `Speed` should be a very small value (`0` is halted, 1 is \f$sin(counter)\f$)
+	//! Given that \f$speed = 1\f$, the result will always be `a` if `counter` is even, and `b` if `counter` is uneven.  
+	//! If `counter` is a rational, the result will oscillate between `a` and `b`, like `sin()` does.  
+	//! If you increase `speed`, the oscillation frequency will increase. Meaning \f$speed = 2\f$ would result in \f$counter=0.5\f$ returning `b`.
 	static double Oscillate(const double a, const double b, const double counter, const double speed);
 
 private:

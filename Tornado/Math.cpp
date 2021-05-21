@@ -1,4 +1,5 @@
 #include "Math.h"
+#include "Constants.h"
 #include <array>
 
 // Checks if the random number generator is initialized. Does nothing if it is, initializes if it isn't.
@@ -64,7 +65,7 @@ int Math::RandomIntRange(int min, int max)
 
 double Math::Oscillate(const double a, const double b, const double counter, const double speed)
 {
-	return (sin(counter * speed) * 0.5 + 0.5) * (b-a) + a;
+	return (sin(counter * speed * PI - HALF_PI) * 0.5 + 0.5) * (b-a) + a;
 }
 
 std::mt19937 Math::rng;
