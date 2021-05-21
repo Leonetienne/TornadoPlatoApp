@@ -40,6 +40,9 @@ public:
 	//! Will return a random integer within a range. This is faster than `(int)RandomRange(x,y)`  
 	//! These bounds are INCLUSIVE!
 	static int RandomIntRange(const int max, const int min);
+
+	//! Will 'roll' a dice, returning `true` \f$100 * chance\f$ percent of the time.
+	static bool RandomChance(const double chance);
 	
 	//! Kind of like \f$sin(counter)\f$, but it oscillates over \f$[a,b]\f$ instead of \f$[-1,1]\f$, by a given speed.  
 	//! Given that \f$speed = 1\f$, the result will always be `a` if `counter` is even, and `b` if `counter` is uneven.  
