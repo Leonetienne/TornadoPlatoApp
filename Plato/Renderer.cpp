@@ -99,6 +99,7 @@ void Renderer::ResolveLightSources()
 		rls->box.frt = (Vector3d(1, 1, 1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
 		rls->box.brb = (Vector3d(1, -1, -1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
 		rls->box.brt = (Vector3d(1, 1, -1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
+		rls->box.GenerateNormalsFromVertices();
 
 		// Add to vector
 		tornadoLightSources.emplace_back(rls);
