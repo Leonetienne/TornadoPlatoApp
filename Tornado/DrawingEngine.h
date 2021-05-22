@@ -42,7 +42,7 @@ private:
 	void Thread_Draw(const InterRenderTriangle* ird, const Rect& bounds);
 
 	//! Will draw a single pixel
-	void Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache);
+	void Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z);
 
 	WorkerPool* workerPool;
 	PixelBuffer<3>* renderTarget;

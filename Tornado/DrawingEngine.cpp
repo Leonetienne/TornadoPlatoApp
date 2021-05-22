@@ -160,9 +160,9 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 					const double z = BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
 						*ird,
 						pixelPosition,
-						ird->a.pos_cs.z,
-						ird->b.pos_cs.z,
-						ird->c.pos_cs.z,
+						ird->a.pos_ss.z,
+						ird->b.pos_ss.z,
+						ird->c.pos_ss.z,
 						&berp_cache
 					);
 
@@ -170,7 +170,7 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 					if (z < zBuf)
 					{
 						zBuf = z;
-						Thread_PixelShader(ird, basePixel, pixelPosition, &berp_cache);
+						Thread_PixelShader(ird, basePixel, pixelPosition, &berp_cache, z);
 					}
 				}
 			}
@@ -180,7 +180,7 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 	return;
 }
 
-void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache)
+void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z)
 {
 	Vector2d uv_coords(
 		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
@@ -301,7 +301,6 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		r = uint8_t(Math::Clamp((double)text_pixel[0] * brightness.r, 0, 255));
 		g = uint8_t(Math::Clamp((double)text_pixel[1] * brightness.g, 0, 255));
 		b = uint8_t(Math::Clamp((double)text_pixel[2] * brightness.b, 0, 255));
-
 
 		// Render camera-space normals
 		//r = uint8_t(255.0 * (smooth_normal.x + 1.0) * 0.5);
