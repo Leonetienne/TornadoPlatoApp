@@ -14,8 +14,8 @@ class Vector2
 public:
 	Vector2() : x{ 0 }, y{ 0 } {}
 	Vector2(T _x, T _y) : x{ _x }, y{ _y } {}
-	Vector2(const Vector2<T>& other);
-	Vector2(Vector2<T>&& other) noexcept;
+	Vector2(const Vector2<T>& other)     = default;
+	Vector2(Vector2<T>&& other) noexcept = default;
 
 	//! Will compute the dot product to another Vector2
 	double DotProduct(const Vector2<T>& other) const;

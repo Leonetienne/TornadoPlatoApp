@@ -17,8 +17,8 @@ class Vector4
 public:
 	Vector4() : x{ 0 }, y{ 0 }, z{ 0 }, w{ 0 } {}
 	Vector4(T _x, T _y, T _z, T _w) : x{ _x }, y{ _y }, z{ _z }, w{ _w } {}
-	Vector4(const Vector4<T>& other);
-	Vector4(Vector4<T>&& other) noexcept;
+	Vector4(const Vector4<T>& other)     = default;
+	Vector4(Vector4<T>&& other) noexcept = default;
 
 	//! Will compute the square magnitude
 	double SqrMagnitude() const;

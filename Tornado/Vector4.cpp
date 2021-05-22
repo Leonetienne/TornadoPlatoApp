@@ -16,28 +16,6 @@
 	The T=int instantiation only exists to store a value-pair of two ints. Not so-much as a vector in terms of vector calculus.
 */
 
-template<typename T>
-Vector4<T>::Vector4(const Vector4<T>& other)
-{
-	x = other.x;
-	y = other.y;
-	z = other.z;
-	w = other.w;
-
-	return;
-}
-
-template<typename T>
-Vector4<T>::Vector4(Vector4<T>&& other) noexcept
-{
-	x = std::move(other.x);
-	y = std::move(other.y);
-	z = std::move(other.z);
-	w = std::move(other.w);
-
-	return;
-}
-
 // Good, optimized chad version for doubles
 double Vector4<double>::SqrMagnitude() const
 {
