@@ -10,9 +10,7 @@ void BoundingBox::operator=(const BoundingBox& other)
 {
 	vertices = other.vertices;
 	faceNormals = other.faceNormals;
-	flb = other.flb;
-	flt = other.flt;
-	blb = other.blb;
+
 	return;
 }
 
@@ -20,9 +18,7 @@ void BoundingBox::operator=(BoundingBox&& other) noexcept
 {
 	vertices = std::move(other.vertices);
 	faceNormals = std::move(other.faceNormals);
-	flb = Vector3d(other.flb);
-	flt = Vector3d(other.flt);
-	blb = Vector3d(other.blb);
+
 	return;
 }
 
@@ -108,19 +104,6 @@ bool BoundingBox::Contains(const Vector3d& point) const
 	for (std::size_t i = 0; i < 6; i++)
 		if (FaceDot((FACE_NORMALS)i, point) < 0)
 			return false;
-
-	//return faceNormals[(std::size_t)FACE_NORMALS::LEFT]
-	//	.DotProduct(point - vertices[FRONT|LEFT|BOTTOM]) >= 0;
-
-	//return (vertices[BACK | LEFT | BOTTOM] - vertices[FRONT | LEFT | BOTTOM])
-	//	   .CrossProduct(vertices[FRONT | LEFT | TOP] - vertices[FRONT | LEFT | BOTTOM])
-	//	   .DotProduct(point - vertices[FRONT | LEFT | BOTTOM]) >= 0;
-
-	//return (blb - flb).CrossProduct(flt - flb).DotProduct(point - flb) >= 0;
-	//
-	//return ((blb - flb)
-	//	.CrossProduct(flt - flb)
-	//	.DotProduct(point - flb)) >= 0;
 
 	return true;
 }
