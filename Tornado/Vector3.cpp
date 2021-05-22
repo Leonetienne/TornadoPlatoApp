@@ -16,6 +16,24 @@
 	The T=int instantiation only exists to store a value-pair of two ints. Not so-much as a vector in terms of vector calculus.
 */
 
+template<typename T>
+Vector3<T>::Vector3(const Vector3<T>& other)
+{
+	x = other.x;
+	y = other.y;
+	z = other.z;
+	return;
+}
+
+template<typename T>
+Vector3<T>::Vector3(Vector3<T>&& other) noexcept
+{
+	x = std::move(other.x);
+	y = std::move(other.y);
+	z = std::move(other.z);
+	return;
+}
+
 // Good, optimized chad version for doubles
 double Vector3<double>::DotProduct(const Vector3<double>& other) const
 {
@@ -816,6 +834,16 @@ void Vector3<T>::operator=(const Vector3<T>& other)
 	x = other.x;
 	y = other.y;
 	z = other.z;
+
+	return;
+}
+
+template<typename T>
+void Vector3<T>::operator=(Vector3<T>&& other) noexcept
+{
+	x = std::move(other.x);
+	y = std::move(other.y);
+	z = std::move(other.z);
 
 	return;
 }

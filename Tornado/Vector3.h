@@ -17,6 +17,8 @@ class Vector3
 public:
 	Vector3() : x{ 0 }, y{ 0 }, z{ 0 } {}
 	Vector3(T _x, T _y, T _z) : x{ _x }, y{ _y }, z{ _z } {}
+	Vector3(const Vector3<T>& other);
+	Vector3(Vector3<T>&& other) noexcept;
 
 	//! Will compute the dot product to another Vector3
 	double DotProduct(const Vector3<T>& other) const;
@@ -73,6 +75,7 @@ public:
 	operator Vector4<T>() const; //! Conversion method
 
 	void operator=(const Vector3<T>& other);
+	void operator=(Vector3<T>&& other) noexcept;
 
 	bool operator==(const Vector3<T>& other) const;
 	bool operator!=(const Vector3<T>& other) const;

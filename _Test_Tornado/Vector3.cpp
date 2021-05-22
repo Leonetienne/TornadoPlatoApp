@@ -1522,5 +1522,31 @@ namespace Vectors
 			));
 			return;
 		}
+
+		// Tests that the move constructor works
+		TEST_METHOD(Move_Constructor)
+		{
+			Vector3d a(1,2,3);
+			Vector3d b(std::move(a));
+
+			Assert::AreEqual(b.x, 1.0);
+			Assert::AreEqual(b.y, 2.0);
+			Assert::AreEqual(b.z, 3.0);
+
+			return;
+		}
+
+		// Tests that the move operator works
+		TEST_METHOD(Move_Operator)
+		{
+			Vector3d a(1, 2, 3);
+			Vector3d b = std::move(a);
+
+			Assert::AreEqual(b.x, 1.0);
+			Assert::AreEqual(b.y, 2.0);
+			Assert::AreEqual(b.z, 3.0);
+
+			return;
+		}
 	};
 }

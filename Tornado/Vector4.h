@@ -17,6 +17,8 @@ class Vector4
 public:
 	Vector4() : x{ 0 }, y{ 0 }, z{ 0 }, w{ 0 } {}
 	Vector4(T _x, T _y, T _z, T _w) : x{ _x }, y{ _y }, z{ _z }, w{ _w } {}
+	Vector4(const Vector4<T>& other);
+	Vector4(Vector4<T>&& other) noexcept;
 
 	//! Will compute the square magnitude
 	double SqrMagnitude() const;
@@ -67,6 +69,7 @@ public:
 	operator Vector3<T>() const; //! Conversion method
 
 	void operator=(const Vector4<T>& other);
+	void operator=(Vector4<T>&& other) noexcept;
 
 	bool operator==(const Vector4<T>& other) const;
 	bool operator!=(const Vector4<T>& other) const;

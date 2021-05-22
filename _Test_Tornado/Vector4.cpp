@@ -791,5 +791,33 @@ namespace Vectors
 			));
 			return;
 		}
+
+		// Tests that the move constructor works
+		TEST_METHOD(Move_Constructor)
+		{
+			Vector4d a(1, 2, 3, 4);
+			Vector4d b(std::move(a));
+
+			Assert::AreEqual(b.x, 1.0);
+			Assert::AreEqual(b.y, 2.0);
+			Assert::AreEqual(b.z, 3.0);
+			Assert::AreEqual(b.w, 4.0);
+
+			return;
+		}
+
+		// Tests that the move operator works
+		TEST_METHOD(Move_Operator)
+		{
+			Vector4d a(1, 2, 3, 4);
+			Vector4d b = std::move(a);
+
+			Assert::AreEqual(b.x, 1.0);
+			Assert::AreEqual(b.y, 2.0);
+			Assert::AreEqual(b.z, 3.0);
+			Assert::AreEqual(b.w, 4.0);
+
+			return;
+		}
 	};
 }

@@ -14,6 +14,8 @@ class Vector2
 public:
 	Vector2() : x{ 0 }, y{ 0 } {}
 	Vector2(T _x, T _y) : x{ _x }, y{ _y } {}
+	Vector2(const Vector2<T>& other);
+	Vector2(Vector2<T>&& other) noexcept;
 
 	//! Will compute the dot product to another Vector2
 	double DotProduct(const Vector2<T>& other) const;
@@ -68,6 +70,7 @@ public:
 	operator Vector4<T>() const; //! Conversion method
 	
 	void operator=(const Vector2<T>& other);
+	void operator=(Vector2<T>&& other) noexcept;
 
 	bool operator==(const Vector2<T>& other) const;
 	bool operator!=(const Vector2<T>& other) const;
