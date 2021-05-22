@@ -94,7 +94,7 @@ const Matrix4x4& ProjectionProperties::GetProjectionMatrix() const
 void ProjectionProperties::UpdateMatrix()
 {
 	const double range = nearclip - farclip;
-	const double tanHalfFov = tan((fov / 2.0) * PI / 180.0);
+	const double tanHalfFov = tan((fov * 0.5) * Deg2Rad);
 
 	projectionMatrix.a = 1.0 / (tanHalfFov * aspectRatio);
 	projectionMatrix.f = 1.0 / tanHalfFov;
