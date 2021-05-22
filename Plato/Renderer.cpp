@@ -8,9 +8,9 @@ Renderer::Renderer(const Vector2i& renderResolution)
 	workerPool(24)
 {
 	
-	worldMatrix[0] = { 10,  0,  0, 0 };
-	worldMatrix[1] = {  0, 10,  0, 0 };
-	worldMatrix[2] = {  0,  0, 10, 0 };
+	worldMatrix[0] = {  1,  0,  0, 0 };
+	worldMatrix[1] = {  0,  1,  0, 0 };
+	worldMatrix[2] = {  0,  0,  1, 0 };
 	worldMatrix[3] = {  0,  0,  0, 1 };
 
 	return;
