@@ -100,7 +100,7 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 	//rgbLight->SetSoftness(Math::Oscillate(0, 0.5, absTime, 0.002));
 	//rgbLight->SetIntensity(Math::Oscillate(5, 40, absTime, 0.001));
 
-	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
+	//rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
 
 	//UpdateColorCycle(deltaTime);
 

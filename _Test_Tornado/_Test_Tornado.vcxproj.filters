@@ -93,6 +93,9 @@
     <ClCompile Include="Math__Oscillate.cpp">
       <Filter>Tests\Math</Filter>
     </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Testutil.h">
