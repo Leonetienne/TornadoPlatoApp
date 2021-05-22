@@ -35,13 +35,13 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 			// Technically just using tri.a.pos_ss.z should work aswell, but it causes artifacts most likely due to
 			// floating point inaccuracies. Let's just roll with 1.0 / cs.z
 			if (tri.a.berp_iw == -1)
-				tri.a.berp_iw = 1.0 / tri.a.pos_cs.z;
+				tri.a.berp_iw = 1.0 / (tri.a.pos_cs.z + 1);
 
 			if (tri.b.berp_iw == -1)
-				tri.b.berp_iw = 1.0 / tri.b.pos_cs.z;
+				tri.b.berp_iw = 1.0 / (tri.b.pos_cs.z + 1);
 
 			if (tri.c.berp_iw == -1)
-				tri.c.berp_iw = 1.0 / tri.c.pos_cs.z;
+				tri.c.berp_iw = 1.0 / (tri.c.pos_cs.z + 1);
 
 			aw1 = a1 * tri.ss_iarea * tri.a.berp_iw;
 			aw2 = a2 * tri.ss_iarea * tri.b.berp_iw;
