@@ -1,7 +1,7 @@
 #include "MeshRenderer.h"
 #include "Renderer.h"
 
-MeshRenderer::MeshRenderer(WorldObject* worldObject, const Mesh* mesh, const Material* material)
+MeshRenderer::MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material)
 	:
 	Component(worldObject)
 {
@@ -11,10 +11,15 @@ MeshRenderer::MeshRenderer(WorldObject* worldObject, const Mesh* mesh, const Mat
 	return;
 }
 
-void MeshRenderer::SetMesh(const Mesh* mesh)
+void MeshRenderer::SetMesh(Mesh* mesh)
 {
 	this->mesh = mesh;
 	return;
+}
+
+Mesh* MeshRenderer::GetMesh()
+{
+	return mesh;
 }
 
 const Mesh* MeshRenderer::GetMesh() const
@@ -22,10 +27,15 @@ const Mesh* MeshRenderer::GetMesh() const
 	return mesh;
 }
 
-void MeshRenderer::SetMaterial(const Material* material)
+void MeshRenderer::SetMaterial(Material* material)
 {
 	this->material = material;
 	return;
+}
+
+Material* MeshRenderer::GetMaterial()
+{
+	return material;
 }
 
 const Material* MeshRenderer::GetMaterial() const

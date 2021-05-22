@@ -11,19 +11,21 @@ class Renderer;
 class MeshRenderer : public Component
 {
 public:
-	void SetMesh(const Mesh* mesh);
+	void SetMesh(Mesh* mesh);
+	Mesh* GetMesh();
 	const Mesh* GetMesh() const;
 
-	void SetMaterial(const Material* material);
+	void SetMaterial(Material* material);
+	Material* GetMaterial();
 	const Material* GetMaterial() const;
 
 	void Render(Renderer* renderer);
 
 private:
-	MeshRenderer(WorldObject* worldObject, const Mesh* mesh, const Material* material);
+	MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material);
 
-	const Mesh* mesh;
-	const Material* material;
+	Mesh* mesh;
+	Material* material;
 
 	friend class WorldObject;
 };
