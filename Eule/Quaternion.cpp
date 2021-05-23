@@ -1,5 +1,5 @@
 #include "Quaternion.h"
-#include "../Tornado/Constants.h"
+#include "Constants.h"
 
 //#define _TORNADO_NO_INTRINSICS_
 #ifndef _TORNADO_NO_INTRINSICS_

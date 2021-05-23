@@ -15,21 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix4x4.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector4.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -78,9 +63,6 @@
     <ClInclude Include="Tornado.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Endian.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -96,26 +78,11 @@
     <ClInclude Include="RenderPointLight.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Matrix4x4.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector4.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -165,9 +132,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RenderPointLight.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="BoundingBox.cpp">

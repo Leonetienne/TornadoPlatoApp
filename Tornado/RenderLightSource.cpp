@@ -1,5 +1,5 @@
 #include "RenderLightSource.h"
-#include "Math.h"
+#include "../Eule/Math.h"
 
 void RenderLightSource::SetColor(const Color& color)
 {

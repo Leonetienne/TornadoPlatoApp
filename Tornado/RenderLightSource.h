@@ -1,6 +1,6 @@
 #pragma once
 #include "Color.h"
-#include "Vector3.h"
+#include "../Eule/Vector3.h"
 #include "InterRenderTriangle.h"
 #include "BoundingBox.h"
 #include <vector>

@@ -1,5 +1,6 @@
 #pragma once
 #include "InterRenderTriangle.h"
+#include "../Eule/Vector2.h"
 
 /** Perspective accurately interpolates values between three points.
 * This class is used to interpolate values between three points, within a triangle.  

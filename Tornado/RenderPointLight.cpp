@@ -1,5 +1,5 @@
 #include "RenderPointLight.h"
-#include "Math.h"
+#include "../Eule/Math.h"
 
 Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const
 {

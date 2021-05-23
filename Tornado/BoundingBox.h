@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.h"
+#include "../Eule/Vector3.h"
 #include <array>
 
 class BoundingBox

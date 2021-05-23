@@ -6,6 +6,7 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
+#include "../Plato/Vector.h"
 #include <iostream>
 
 // Include test cases

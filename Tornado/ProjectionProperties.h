@@ -1,7 +1,7 @@
 #pragma once
-#include "Vector2.h"
-#include "Matrix4x4.h"
-#include "Constants.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Matrix4x4.h"
+#include "../Eule/Constants.h"
 
 /** This is a generator for a projection matrix, if you will.
 * Offers a nice, and easy to use interface. Just pass this object as-is to the rendering engine.

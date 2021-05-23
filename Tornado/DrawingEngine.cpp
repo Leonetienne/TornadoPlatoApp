@@ -1,6 +1,6 @@
 #include "DrawingEngine.h"
 #include "BarycentricInterpolationEngine.h"
-#include "Math.h"
+#include "../Eule/Math.h"
 #include <cstddef>
 
 DrawingEngine::DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool)

@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Vector3.h"
+#include "../Eule/Vector4.h"
 #include "Color.h"
 
 #define IRV_LERP_POS_WS		  (1<<0)

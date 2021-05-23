@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "../Tornado/Vector2.h"
-#include "../Tornado/Vector3.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Vector3.h"
 
 //! This struct holds indices for all important vertex types.
 struct MeshVertexIndices

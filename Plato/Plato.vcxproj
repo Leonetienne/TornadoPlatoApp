@@ -183,6 +183,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Util.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="WorldObject.h" />
     <ClInclude Include="WorldObjectManager.h" />
   </ItemGroup>
@@ -200,7 +201,6 @@
     <ClCompile Include="OBJParser.cpp" />
     <ClCompile Include="Plato.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Transform.cpp" />
