@@ -8,9 +8,9 @@ Renderer::Renderer(const Vector2i& renderResolution)
 	workerPool(24)
 {
 	
-	worldMatrix[0] = { 10,  0,  0, 0 };
-	worldMatrix[1] = {  0, 10,  0, 0 };
-	worldMatrix[2] = {  0,  0, 10, 0 };
+	worldMatrix[0] = {  1,  0,  0, 0 };
+	worldMatrix[1] = {  0,  1,  0, 0 };
+	worldMatrix[2] = {  0,  0,  1, 0 };
 	worldMatrix[3] = {  0,  0,  0, 1 };
 
 	return;
@@ -74,6 +74,7 @@ void Renderer::Render()
 	return;
 }
 
+#include <iostream>
 void Renderer::ResolveLightSources()
 {
 	const Vector3d inverseCameraPosition = mainCamera->transform->GetGlobalPosition() * -1;
@@ -90,16 +91,33 @@ void Renderer::ResolveLightSources()
 		rls->GetPosition() += inverseCameraPosition;
 		rls->GetPosition() *= inverseCameraRotation;
 
+		
+		// THIS IS PROTOTYPING CODE!!!!!!!!!!!!! MOVE TO PLATO!!!!
+		// This adds two rectangular bounding boxes, forming a cross.
+		BoundingBox bb;
+		rls->GetBoundingBoxes().clear();
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		rls->GetBoundingBoxes().push_back((bb));
 
-		rls->box.flb = (Vector3d(-1, -1, 1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.flt = (Vector3d(-1, 1, 1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.blb = (Vector3d(-1, -1, -1) *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.blt = (Vector3d(-1, 1, -1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.frb = (Vector3d(1, -1, 1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.frt = (Vector3d(1, 1, 1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.brb = (Vector3d(1, -1, -1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.brt = (Vector3d(1, 1, -1)	 *10	+ inverseCameraPosition) * inverseCameraRotation;
-		rls->box.GenerateNormalsFromVertices();
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
+		rls->GetBoundingBoxes().push_back((bb));
+
+		rls->SetUseBoundingBox(true);
+		// </proto>
 
 		// Add to vector
 		tornadoLightSources.emplace_back(rls);

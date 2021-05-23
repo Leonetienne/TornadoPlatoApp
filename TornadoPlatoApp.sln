@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plato", "Plato\Plato.vcxproj", "{020DFD5D-9456-4117-BBAD-18B89B136EDE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1} = {E15CD460-78CB-4B3F-BE85-C1E3205247B1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "App", "App\App.vcxproj", "{EA15CEFC-4DA6-4CFB-B289-6EE6C05EC0EF}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -16,6 +19,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinWindowDisplay", "WinWind
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tornado", "Tornado\Tornado.vcxproj", "{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1} = {E15CD460-78CB-4B3F-BE85-C1E3205247B1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_Test_Tornado", "_Test_Tornado\_Test_Tornado.vcxproj", "{B7CD16F3-D823-4E42-B92A-C4248F6153A6}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -30,8 +36,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_Test_StaticTestFixture_Plato", "_Test_StaticTestFixture_Plato\_Test_StaticTestFixture_Plato.vcxproj", "{2E3ABB8D-178A-46EF-A0D9-AB6B177AC213}"
 	ProjectSection(ProjectDependencies) = postProject
 		{020DFD5D-9456-4117-BBAD-18B89B136EDE} = {020DFD5D-9456-4117-BBAD-18B89B136EDE}
-		{EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2} = {EDBDBDE4-9A5A-4C7D-AFAF-B410ABE4EAF2}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eule", "Eule\Eule.vcxproj", "{E15CD460-78CB-4B3F-BE85-C1E3205247B1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_Test_Eule", "_Test_Eule\_Test_Eule.vcxproj", "{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +114,22 @@ Global
 		{2E3ABB8D-178A-46EF-A0D9-AB6B177AC213}.Release|x64.Build.0 = Release|x64
 		{2E3ABB8D-178A-46EF-A0D9-AB6B177AC213}.Release|x86.ActiveCfg = Release|Win32
 		{2E3ABB8D-178A-46EF-A0D9-AB6B177AC213}.Release|x86.Build.0 = Release|Win32
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Debug|x64.ActiveCfg = Debug|x64
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Debug|x64.Build.0 = Debug|x64
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Debug|x86.ActiveCfg = Debug|Win32
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Debug|x86.Build.0 = Debug|Win32
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Release|x64.ActiveCfg = Release|x64
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Release|x64.Build.0 = Release|x64
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Release|x86.ActiveCfg = Release|Win32
+		{E15CD460-78CB-4B3F-BE85-C1E3205247B1}.Release|x86.Build.0 = Release|Win32
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Debug|x64.ActiveCfg = Debug|x64
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Debug|x64.Build.0 = Debug|x64
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Debug|x86.ActiveCfg = Debug|Win32
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Debug|x86.Build.0 = Debug|Win32
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Release|x64.ActiveCfg = Release|x64
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Release|x64.Build.0 = Release|x64
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Release|x86.ActiveCfg = Release|Win32
+		{2B6C03E2-179C-45EA-9FDE-45D0214B4D5E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

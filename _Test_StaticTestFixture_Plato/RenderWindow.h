@@ -3,7 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <unordered_map>
-#include "../Tornado/Vector2.h"
+#include "../Plato/Vector.h"
 #include "../Tornado/PixelBuffer.h"
 
 class RenderWindow

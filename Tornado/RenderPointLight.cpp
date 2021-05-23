@@ -1,12 +1,13 @@
 #include "RenderPointLight.h"
-#include "Math.h"
+#include "../Eule/Math.h"
 
 Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const
 {
 	const Vector3d deltaPos = position - point;
 	const double sqrDistance = deltaPos.SqrMagnitude();
 
-	if ((useBoundingBox) && (!Inside(point)))
+	// Bounding box check
+	if ((useBoundingBox) && (!DoBoundingBoxesContainPoint(point)))
 		return Color::black;
 
 	// Too far away.
@@ -60,45 +61,4 @@ double RenderPointLight::GetHardlightFac(const double dot, const double invSqrCo
 double RenderPointLight::GetSoftlightFac(const double invSqrCoefficient) const
 {
 	return invSqrCoefficient;
-}
-
-double RenderPointLight::Dot(uint8_t side, const Vector3d& p) const
-{
-	switch (side)
-	{
-		// left
-	case 0:
-		return box.nm_l.DotProduct(p - box.flb);
-	
-		// right
-	case 1:
-		return box.nm_r.DotProduct(p - box.frb);
-	
-		// front
-	case 2:
-		return box.nm_f.DotProduct(p - box.flb);
-	
-		// back
-	case 3:
-		return box.nm_ba.DotProduct(p - box.blb);
-	
-		// top
-	case 4:
-		return box.nm_t.DotProduct(p - box.flt);
-	
-		// bottom
-	case 5:
-		return box.nm_bo.DotProduct(p - box.flb);
-	}
-
-	return 0.0;
-}
-
-bool RenderPointLight::Inside(const Vector3d& p) const
-{
-	for (std::size_t i = 0; i < 6; i++)
-		if (Dot(i, p) < 0)
-			return false;
-		
-	return true;
 }

@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
-#include "Vector2.h"
+#include "../Eule/Vector2.h"
 #include "Endian.h"
 
 /** A pixel buffer (or screen buffer) class, that is a whole lot easier to deal with than just a uint8_t*.

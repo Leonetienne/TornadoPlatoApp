@@ -6,6 +6,7 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
+#include "../Plato/Vector.h"
 #include <iostream>
 
 // Include test cases
@@ -49,7 +50,7 @@ int main()
 	// Create important objects, such as the Window and the Renderer, including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 10000);
+	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 100);
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->worldObject->SetId("main_camera");
 	Renderer renderer(resolution);

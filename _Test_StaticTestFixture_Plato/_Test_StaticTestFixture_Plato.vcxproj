@@ -175,9 +175,6 @@
     <ProjectReference Include="..\Plato\Plato.vcxproj">
       <Project>{020dfd5d-9456-4117-bbad-18b89b136ede}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Tornado\Tornado.vcxproj">
-      <Project>{edbdbde4-9a5a-4c7d-afaf-b410abe4eaf2}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

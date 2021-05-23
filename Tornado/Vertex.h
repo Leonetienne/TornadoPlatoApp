@@ -1,6 +1,6 @@
 #pragma once
-#include "Vector2.h"
-#include "Vector3.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Vector3.h"
 #include "Color.h"
 
 /** Trivial representation of a rendering vertex containing world space, texture space, normal, and vertex color information

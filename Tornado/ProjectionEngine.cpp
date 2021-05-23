@@ -49,12 +49,6 @@ void ProjectionEngine::Project(const ProjectionProperties& projectionProperties,
 
 void ProjectionEngine::Thread_ProjectTriangle(const RenderTriangle3D* tri, const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix)
 {
-	// Perform a quick distance check, and cull the triangle if all vertices are farther away than the farclip
-	if ((tri->a.pos_worldSpace.SqrMagnitude() > projectionProperties.GetSqrFarclip()) &&
-		(tri->b.pos_worldSpace.SqrMagnitude() > projectionProperties.GetSqrFarclip()) &&
-		(tri->c.pos_worldSpace.SqrMagnitude() > projectionProperties.GetSqrFarclip()))
-		return;
-
 	// Create InterRenderTriangle
 	InterRenderTriangle ird;
 

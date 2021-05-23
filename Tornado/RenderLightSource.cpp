@@ -1,5 +1,5 @@
 #include "RenderLightSource.h"
-#include "Math.h"
+#include "../Eule/Math.h"
 
 void RenderLightSource::SetColor(const Color& color)
 {
@@ -54,4 +54,34 @@ Vector3d& RenderLightSource::GetPosition()
 const Vector3d& RenderLightSource::GetPosition() const
 {
 	return position;
+}
+
+void RenderLightSource::SetUseBoundingBox(bool useBoundingBox)
+{
+	this->useBoundingBox = useBoundingBox;
+	return;
+}
+
+bool RenderLightSource::GetUseBoundingBox()
+{
+	return useBoundingBox;
+}
+
+std::vector<BoundingBox>& RenderLightSource::GetBoundingBoxes()
+{
+	return boundingBoxes;
+}
+
+const std::vector<BoundingBox>& RenderLightSource::GetBoundingBoxes() const
+{
+	return boundingBoxes;
+}
+
+bool RenderLightSource::DoBoundingBoxesContainPoint(const Vector3d& point) const
+{
+	for (const BoundingBox& bb : boundingBoxes)
+		if (bb.Contains(point))
+			return true;
+
+	return false;
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_set>
 #include "Quaternion.h"
-#include "../Tornado/Matrix4x4.h"
-#include "../Tornado/Vector3.h"
+#include "../Eule/Matrix4x4.h"
+#include "../Eule/Vector3.h"
 
 class WorldObject;
 

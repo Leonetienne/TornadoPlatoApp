@@ -2,7 +2,7 @@
 #include "PixelBuffer.h"
 #include "WorkerPool.h"
 #include "InterRenderTriangle.h"
-#include "Rect.h"
+#include "../Eule/Rect.h"
 #include "LightingEngine.h"
 
 /** Engine to draw InterRenderTriangle's to the screen.

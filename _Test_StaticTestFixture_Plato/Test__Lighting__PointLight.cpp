@@ -87,6 +87,8 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	rgbLight = woLight->AddComponent<PointLight>(20, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 13);
 
+	//woPlane->GetComponentOfType<MeshRenderer>()->GetMaterial()->noShading = true;
+
 	return;
 }
 

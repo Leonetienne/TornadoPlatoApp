@@ -1,6 +1,6 @@
 #include "DrawingEngine.h"
 #include "BarycentricInterpolationEngine.h"
-#include "Math.h"
+#include "../Eule/Math.h"
 #include <cstddef>
 
 DrawingEngine::DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool)
@@ -278,7 +278,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.0005;
+		constexpr double globalIllu = 0.05;
 
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);

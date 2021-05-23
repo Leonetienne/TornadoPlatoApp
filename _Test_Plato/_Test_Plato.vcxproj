@@ -158,7 +158,6 @@
   <ItemGroup>
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WorldObject.cpp" />

@@ -2,8 +2,8 @@
 #include "KeyState.h"
 #include "KeyCode.h"
 #include "Event_ReverseEventCallback.h"
-#include "../Tornado/Vector2.h"
-#include "../Tornado/Rect.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Rect.h"
 #include <unordered_map>
 #include <functional>
 #include <vector>

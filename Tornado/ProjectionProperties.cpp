@@ -91,15 +91,20 @@ const Matrix4x4& ProjectionProperties::GetProjectionMatrix() const
 	return projectionMatrix;
 }
 
+// Source: http://www.songho.ca/opengl/gl_projectionmatrix.html
 void ProjectionProperties::UpdateMatrix()
 {
-	const double range = nearclip - farclip;
-	const double tanHalfFov = tan((fov / 2.0) * PI / 180.0);
+	const double n = nearclip;
+	const double f = farclip;
+	const double range = f - n;
+	const double tanHalfFov = tan(fov * 0.5 * Deg2Rad);
+	const double r = tanHalfFov * aspectRatio;
+	const double t = tanHalfFov;
 
-	projectionMatrix.a = 1.0 / (tanHalfFov * aspectRatio);
-	projectionMatrix.f = 1.0 / tanHalfFov;
-	projectionMatrix.k = (nearclip + farclip) / range;
-	projectionMatrix.l = (2.0 * farclip * nearclip) / range;
+	projectionMatrix.a = 1.0 / r;
+	projectionMatrix.f = 1.0 / t;
+	projectionMatrix.k = -(f + n) / range;
+	projectionMatrix.l = (-2.0 * f * n) / range;
 	projectionMatrix.o = -1;
 
 	return;

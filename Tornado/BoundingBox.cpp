@@ -1,11 +1,33 @@
 #include "BoundingBox.h"
+#include <iostream>
+
+BoundingBox::BoundingBox()
+{
+	return;
+}
+
+void BoundingBox::operator=(const BoundingBox& other)
+{
+	vertices = other.vertices;
+	faceNormals = other.faceNormals;
+
+	return;
+}
+
+void BoundingBox::operator=(BoundingBox&& other) noexcept
+{
+	vertices = std::move(other.vertices);
+	faceNormals = std::move(other.faceNormals);
+
+	return;
+}
 
 const Vector3d& BoundingBox::GetVertex(std::size_t index) const
 {
 	return vertices[index];
 }
 
-void BoundingBox::SetVertex(std::size_t index, const Vector3d& value)
+void BoundingBox::SetVertex(std::size_t index, const Vector3d value)
 {
 	vertices[index] = value;
 	GenerateNormalsFromVertices();
@@ -58,21 +80,23 @@ double BoundingBox::FaceDot(FACE_NORMALS face, const Vector3d& point) const
 	case FACE_NORMALS::FRONT:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
 		break;
-
+	
 	case FACE_NORMALS::BACK:
 		coreVertexIdx = BACK|LEFT|BOTTOM;
 		break;
-
+	
 	case FACE_NORMALS::TOP:
-		coreVertexIdx = FRONT|LEFT|BOTTOM;
+		coreVertexIdx = FRONT|LEFT|TOP;
 		break;
-
+	
 	case FACE_NORMALS::BOTTOM:
 		coreVertexIdx = FRONT|LEFT|BOTTOM;
 		break;
 	}
 
-	return faceNormals[(std::size_t)face].DotProduct(point - vertices[coreVertexIdx]);
+	if ((std::size_t)face < 6)
+		return faceNormals[(std::size_t)face].DotProduct(point - vertices[coreVertexIdx]);
+	return 1;
 }
 
 bool BoundingBox::Contains(const Vector3d& point) const
