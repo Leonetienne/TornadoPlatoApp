@@ -1,5 +1,5 @@
 #include "CppUnitTest.h"
-#include "../Tornado/Math.h"
+#include "../Eule/Math.h"
 #include <random>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

@@ -1,7 +1,7 @@
 #include "CppUnitTest.h"
-#include "../Tornado/Vector4.h"
-#include "../Tornado/Matrix4x4.h"
-#include "../Tornado/Math.h"
+#include "../Eule/Vector4.h"
+#include "../Eule/Matrix4x4.h"
+#include "../Eule/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>

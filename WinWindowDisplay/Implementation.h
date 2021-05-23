@@ -1,9 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "../Tornado/Vector2.h"
-#include "../Tornado/Vector3.h"
-#include "../Tornado/Vector4.h"
-
+#include "../Plato/Vector.h"
 #include "../Plato/Plato.h"
 
 class AppImplementation

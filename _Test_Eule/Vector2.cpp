@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
-#include "../Tornado/Vector2.h"
-#include "../Tornado/Math.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 
 #include <random>

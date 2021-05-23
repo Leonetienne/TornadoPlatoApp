@@ -1,7 +1,7 @@
 #include "CppUnitTest.h"
-#include "Testutil.h"
-#include "../Tornado/Math.h"
-#include "../Tornado/Constants.h"
+#include "../_TestingUtilities/Testutil.h"
+#include "../Eule/Math.h"
+#include "../Eule/Constants.h"
 #include <array>
 #include <sstream>
 

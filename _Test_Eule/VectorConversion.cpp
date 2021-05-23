@@ -1,7 +1,7 @@
 #include "CppUnitTest.h"
-#include "../Tornado/Vector2.h"
-#include "../Tornado/Vector3.h"
-#include "../Tornado/Vector4.h"
+#include "../Eule/Vector2.h"
+#include "../Eule/Vector3.h"
+#include "../Eule/Vector4.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>

@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
-#include "../Tornado/Matrix4x4.h"
-#include "../Tornado/Vector3.h"
+#include "../Eule/Matrix4x4.h"
+#include "../Eule/Vector3.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 

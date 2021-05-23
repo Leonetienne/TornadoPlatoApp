@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
-#include "Testutil.h"
-#include "../Tornado/Math.h"
+#include "../_TestingUtilities/Testutil.h"
+#include "../Eule/Math.h"
 #include <array>
 #include <sstream>
 

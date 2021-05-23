@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Plato/Quaternion.h"
-#include "../Tornado/Math.h"
+#include "../Eule/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 #include <sstream>
