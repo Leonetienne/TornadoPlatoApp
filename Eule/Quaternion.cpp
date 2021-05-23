@@ -1,8 +1,8 @@
 #include "Quaternion.h"
 #include "Constants.h"
 
-//#define _TORNADO_NO_INTRINSICS_
-#ifndef _TORNADO_NO_INTRINSICS_
+//#define _EULE_NO_INTRINSICS_
+#ifndef _EULE_NO_INTRINSICS_
 #include <immintrin.h>
 #endif
 
@@ -28,7 +28,7 @@ Quaternion::Quaternion(const Vector3d eulerAngles)
 {
 	Vector3d eulerRad = eulerAngles * Deg2Rad;
 
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Calculate sine and cos values
 	__m256d __vec = _mm256_set_pd(0, eulerRad.z, eulerRad.y, eulerRad.x);

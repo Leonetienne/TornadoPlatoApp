@@ -2,8 +2,8 @@
 #include "Vector3.h"
 #include "Math.h"
 
-//#define _TORNADO_NO_INTRINSICS_
-#ifndef _TORNADO_NO_INTRINSICS_
+//#define _EULE_NO_INTRINSICS_
+#ifndef _EULE_NO_INTRINSICS_
 #include <immintrin.h>
 #endif
 
@@ -32,7 +32,7 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const
 	Matrix4x4 newMatrix;
 	newMatrix.p = 1;
 
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 
 	/*     <=  Matrix3x3 multiplication =>     */

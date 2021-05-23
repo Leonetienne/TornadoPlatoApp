@@ -2,8 +2,8 @@
 #include "Math.h"
 #include <iostream>
 
-//#define _TORNADO_NO_INTRINSICS_
-#ifndef _TORNADO_NO_INTRINSICS_
+//#define _EULE_NO_INTRINSICS_
+#ifndef _EULE_NO_INTRINSICS_
 #include <immintrin.h>
 #endif
 
@@ -19,7 +19,7 @@
 // Good, optimized chad version for doubles
 double Vector3<double>::DotProduct(const Vector3<double>& other) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components into registers
 	__m256 __vector_self  = _mm256_set_ps(0,0,0,0,0, (float)z, (float)y, (float)x);
@@ -99,7 +99,7 @@ double Vector3<T>::Magnitude() const
 
 Vector3<double> Vector3<double>::VectorScale(const Vector3<double>& scalar) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 	
 	// Load vectors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -164,7 +164,7 @@ void Vector3<double>::NormalizeSelf()
 	}
 	else
 	{
-		#ifndef _TORNADO_NO_INTRINSICS_
+		#ifndef _EULE_NO_INTRINSICS_
 
 		// Load vector and length into registers
 		__m256d __vec = _mm256_set_pd(0, z, y, x);
@@ -268,7 +268,7 @@ void Vector3<double>::LerpSelf(const Vector3<double>& other, double t)
 {
 	const double it = 1.0 - t; // Inverse t
 
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -337,7 +337,7 @@ Vector3<double> Vector3<int>::Lerp(const Vector3<int>& other, double t) const
 
 Vector3<double> Vector3<double>::operator+(const Vector3<double>& other) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -380,7 +380,7 @@ Vector3<T> Vector3<T>::operator+(const Vector3<T>& other) const
 
 void Vector3<double>::operator+=(const Vector3<double>& other)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -421,7 +421,7 @@ void Vector3<T>::operator+=(const Vector3<T>& other)
 
 Vector3<double> Vector3<double>::operator-(const Vector3<double>& other) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -464,7 +464,7 @@ Vector3<T> Vector3<T>::operator-(const Vector3<T>& other) const
 
 void Vector3<double>::operator-=(const Vector3<double>& other)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -505,7 +505,7 @@ void Vector3<T>::operator-=(const Vector3<T>& other)
 
 Vector3<double> Vector3<double>::operator*(const double scale) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -549,7 +549,7 @@ Vector3<T> Vector3<T>::operator*(const T scale) const
 
 void Vector3<double>::operator*=(const double scale)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -590,7 +590,7 @@ void Vector3<T>::operator*=(const T scale)
 
 Vector3<double> Vector3<double>::operator/(const double scale) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -634,7 +634,7 @@ Vector3<T> Vector3<T>::operator/(const T scale) const
 
 void Vector3<double>::operator/=(const double scale)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(0, z, y, x);
@@ -677,7 +677,7 @@ Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
 {
 	Vector3<double> newVec;
 
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 	// Store x, y, and z values
 	__m256d __vecx = _mm256_set1_pd(x);
 	__m256d __vecy = _mm256_set1_pd(y);
@@ -752,7 +752,7 @@ Vector3<int> Vector3<int>::operator*(const Matrix4x4& mat) const
 // Good, optimized chad version for doubles
 void Vector3<double>::operator*=(const Matrix4x4& mat)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 	// Store x, y, and z values
 	__m256d __vecx = _mm256_set1_pd(x);
 	__m256d __vecy = _mm256_set1_pd(y);

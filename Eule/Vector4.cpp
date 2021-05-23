@@ -2,8 +2,8 @@
 #include "Math.h"
 #include <iostream>
 
-//#define _TORNADO_NO_INTRINSICS_
-#ifndef _TORNADO_NO_INTRINSICS_
+//#define _EULE_NO_INTRINSICS_
+#ifndef _EULE_NO_INTRINSICS_
 #include <immintrin.h>
 #endif
 
@@ -41,7 +41,7 @@ double Vector4<T>::Magnitude() const
 
 Vector4<double> Vector4<double>::VectorScale(const Vector4<double>& scalar) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Load vectors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -110,7 +110,7 @@ void Vector4<double>::NormalizeSelf()
 	}
 	else
 	{
-		#ifndef _TORNADO_NO_INTRINSICS_
+		#ifndef _EULE_NO_INTRINSICS_
 
 		// Load vector and length into registers
 		__m256d __vec = _mm256_set_pd(w, z, y, x);
@@ -222,7 +222,7 @@ void Vector4<double>::LerpSelf(const Vector4<double>& other, double t)
 {
 	const double it = 1.0 - t; // Inverse t
 
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -294,7 +294,7 @@ Vector4<double> Vector4<int>::Lerp(const Vector4<int>& other, double t) const
 
 Vector4<double> Vector4<double>::operator+(const Vector4<double>& other) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -340,7 +340,7 @@ Vector4<T> Vector4<T>::operator+(const Vector4<T>& other) const
 
 void Vector4<double>::operator+=(const Vector4<double>& other)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -384,7 +384,7 @@ void Vector4<T>::operator+=(const Vector4<T>& other)
 
 Vector4<double> Vector4<double>::operator-(const Vector4<double>& other) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -430,7 +430,7 @@ Vector4<T> Vector4<T>::operator-(const Vector4<T>& other) const
 
 void Vector4<double>::operator-=(const Vector4<double>& other)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -474,7 +474,7 @@ void Vector4<T>::operator-=(const Vector4<T>& other)
 
 Vector4<double> Vector4<double>::operator*(const double scale) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -521,7 +521,7 @@ Vector4<T> Vector4<T>::operator*(const T scale) const
 
 void Vector4<double>::operator*=(const double scale)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -565,7 +565,7 @@ void Vector4<T>::operator*=(const T scale)
 
 Vector4<double> Vector4<double>::operator/(const double scale) const
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
@@ -612,7 +612,7 @@ Vector4<T> Vector4<T>::operator/(const T scale) const
 
 void Vector4<double>::operator/=(const double scale)
 {
-	#ifndef _TORNADO_NO_INTRINSICS_
+	#ifndef _EULE_NO_INTRINSICS_
 
 	// Move vector components and factors into registers
 	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
