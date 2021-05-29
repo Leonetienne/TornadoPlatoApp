@@ -94,7 +94,6 @@ Quaternion::Quaternion(const Vector3d eulerAngles)
 
 Quaternion::~Quaternion()
 {
-
 	return;
 }
 
@@ -173,7 +172,14 @@ bool Quaternion::operator!= (const Quaternion& q) const
 
 Quaternion Quaternion::Inverse() const
 {
-	return Conjugate() * (1.0 / v.SqrMagnitude());
+	if (!isCacheUpToDate_inverse)
+	{
+		cache_inverse = (Conjugate() * (1.0 / v.SqrMagnitude())).v;
+
+		isCacheUpToDate_inverse = true;
+	}
+
+	return Quaternion(cache_inverse);
 }
 
 Quaternion Quaternion::Conjugate() const
@@ -228,11 +234,11 @@ Vector3d Quaternion::ToEulerAngles() const
 
 		euler *= Rad2Deg;
 
-		eulerCache = euler;
+		cache_euler = euler;
 		isCacheUpToDate_matrix = true;
 	}
 
-	return eulerCache;
+	return cache_euler;
 }
 
 Matrix4x4 Quaternion::ToRotationMatrix() const
@@ -272,11 +278,11 @@ Matrix4x4 Quaternion::ToRotationMatrix() const
 
 		m.p = 1;
 		
-		matrixCache = m;
+		cache_matrix = m;
 		isCacheUpToDate_matrix = true;
 	}
 
-	return matrixCache;
+	return cache_matrix;
 }
 
 Vector4d Quaternion::GetRawValues() const
@@ -307,6 +313,8 @@ void Quaternion::InvalidateCache()
 {
 	isCacheUpToDate_euler = false;
 	isCacheUpToDate_matrix = false;
+	isCacheUpToDate_inverse = false;
+
 	return;
 }
 

@@ -11,7 +11,7 @@ public:
     Quaternion();
 
     //! Constructs by these raw values
-    Quaternion(const Vector4d values);
+    explicit Quaternion(const Vector4d values);
 
     //! Copies this existing Quaternion
     Quaternion(const Quaternion& q);
@@ -40,7 +40,6 @@ public:
     Vector3d operator* (const Vector3d& p) const;
 
     bool operator== (const Quaternion& q) const;
-
     bool operator!= (const Quaternion& q) const;
 
     Quaternion Inverse() const;
@@ -86,9 +85,12 @@ private:
 
     // Caches for conversions
     mutable bool isCacheUpToDate_euler = false;
-    mutable Vector3d eulerCache;
+    mutable Vector3d cache_euler;
 
     mutable bool isCacheUpToDate_matrix = false;
-    mutable Matrix4x4 matrixCache;
+    mutable Matrix4x4 cache_matrix;
+
+    mutable bool isCacheUpToDate_inverse = false;
+    mutable Vector4d cache_inverse;
 
 };
