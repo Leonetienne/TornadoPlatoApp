@@ -74,7 +74,7 @@ void Renderer::Render()
 	return;
 }
 
-#include <iostream>
+#include "../Eule/TopologicalBoxCollider.h"
 void Renderer::ResolveLightSources()
 {
 	const Vector3d inverseCameraPosition = mainCamera->transform->GetGlobalPosition() * -1;
@@ -94,27 +94,19 @@ void Renderer::ResolveLightSources()
 		
 		// THIS IS PROTOTYPING CODE!!!!!!!!!!!!! MOVE TO PLATO!!!!
 		// This adds two rectangular bounding boxes, forming a cross.
-		BoundingBox bb;
-		rls->GetBoundingBoxes().clear();
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		rls->GetBoundingBoxes().push_back((bb));
+		static TopologicalBoxCollider bb;
+		rls->GetDomains().clear();
 
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::BOTTOM, ((Vector3d(-1, -1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::LEFT  | BoundingBox::TOP,	((Vector3d(-1,  1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::FRONT | BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1,  1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::BOTTOM, ((Vector3d( 1, -1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(BoundingBox::BACK	| BoundingBox::RIGHT | BoundingBox::TOP,	((Vector3d( 1,  1, -1).VectorScale(Vector3d(5,10,10))) + inverseCameraPosition) * inverseCameraRotation);
-		rls->GetBoundingBoxes().push_back((bb));
+		using TBC = TopologicalBoxCollider;
+		bb.SetVertex(TBC::FRONT | TBC::LEFT  | TBC::BOTTOM, ((Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::FRONT | TBC::LEFT  | TBC::TOP,	((Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::BACK	| TBC::LEFT  | TBC::BOTTOM, ((Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::BACK	| TBC::LEFT  | TBC::TOP,	((Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::FRONT | TBC::RIGHT | TBC::BOTTOM, ((Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::FRONT | TBC::RIGHT | TBC::TOP,	((Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::BACK	| TBC::RIGHT | TBC::BOTTOM, ((Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		bb.SetVertex(TBC::BACK	| TBC::RIGHT | TBC::TOP,	((Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
+		rls->GetDomains().push_back(&bb);
 
 		rls->SetUseBoundingBox(true);
 		// </proto>

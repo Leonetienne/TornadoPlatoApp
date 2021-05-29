@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BarycentricInterpolationEngine.h" />
-    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="ClippingEngine.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="BackfaceCullingEngine.h" />
@@ -44,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BarycentricInterpolationEngine.cpp" />
-    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="ClippingEngine.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CrossPlatformSyscalls.cpp" />

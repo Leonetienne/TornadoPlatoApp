@@ -1,8 +1,8 @@
 #pragma once
-#include "Color.h"
 #include "../Eule/Vector3.h"
+#include "../Eule/Collider.h"
+#include "Color.h"
 #include "InterRenderTriangle.h"
-#include "BoundingBox.h"
 #include <vector>
 
 /** Abstract implementation of all light sources within Tornado.
@@ -49,20 +49,20 @@ public:
 	//! Will return wether or not this lightsource uses bounding boxes
 	bool GetUseBoundingBox();
 
+	//! Will return a vector of the light domains used
+	std::vector<Collider*>& GetDomains();
 	//! Will return a vector of the bounding boxes used
-	std::vector<BoundingBox>& GetBoundingBoxes();
-	//! Will return a vector of the bounding boxes used
-	const std::vector<BoundingBox>& GetBoundingBoxes() const;
+	const std::vector<Collider*>& GetDomains() const;
 
 protected:
 
-	bool DoBoundingBoxesContainPoint(const Vector3d& point) const;
+	bool DoDomainsContainPoint(const Vector3d& point) const;
 
 	Color color;
 	double intensity = 10;
 	double intensityTimes255 = 0; //! intensity * 255.0  - gets calculated in SetIntensity()
 	double softness = 0;
-	bool useBoundingBox = false;
-	std::vector<BoundingBox> boundingBoxes;
+	bool useDomains = false;
+	std::vector<Collider*> domains;
 	Vector3d position;
 };

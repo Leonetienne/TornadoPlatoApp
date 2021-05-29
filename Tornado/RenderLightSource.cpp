@@ -58,29 +58,29 @@ const Vector3d& RenderLightSource::GetPosition() const
 
 void RenderLightSource::SetUseBoundingBox(bool useBoundingBox)
 {
-	this->useBoundingBox = useBoundingBox;
+	this->useDomains = useBoundingBox;
 	return;
 }
 
 bool RenderLightSource::GetUseBoundingBox()
 {
-	return useBoundingBox;
+	return useDomains;
 }
 
-std::vector<BoundingBox>& RenderLightSource::GetBoundingBoxes()
+std::vector<Collider*>& RenderLightSource::GetDomains()
 {
-	return boundingBoxes;
+	return domains;
 }
 
-const std::vector<BoundingBox>& RenderLightSource::GetBoundingBoxes() const
+const std::vector<Collider*>& RenderLightSource::GetDomains() const
 {
-	return boundingBoxes;
+	return domains;
 }
 
-bool RenderLightSource::DoBoundingBoxesContainPoint(const Vector3d& point) const
+bool RenderLightSource::DoDomainsContainPoint(const Vector3d& point) const
 {
-	for (const BoundingBox& bb : boundingBoxes)
-		if (bb.Contains(point))
+	for (const Collider* col : domains)
+		if (col->Contains(point))
 			return true;
 
 	return false;

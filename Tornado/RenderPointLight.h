@@ -14,7 +14,4 @@ public:
 private:
 	double GetHardlightFac(const double dot, const double invSqrCoefficient) const;
 	double GetSoftlightFac(const double invSqrCoefficient) const;
-
-	double Dot(uint8_t side, const Vector3d& p) const;
-	bool Inside(const Vector3d& p) const;
 };

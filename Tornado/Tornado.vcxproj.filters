@@ -78,9 +78,6 @@
     <ClInclude Include="RenderPointLight.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="BoundingBox.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture.cpp">
@@ -132,9 +129,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RenderPointLight.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

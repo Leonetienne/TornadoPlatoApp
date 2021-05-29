@@ -7,7 +7,7 @@ Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird,
 	const double sqrDistance = deltaPos.SqrMagnitude();
 
 	// Bounding box check
-	if ((useBoundingBox) && (!DoBoundingBoxesContainPoint(point)))
+	if ((useDomains) && (!DoDomainsContainPoint(point)))
 		return Color::black;
 
 	// Too far away.
