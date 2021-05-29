@@ -35,8 +35,8 @@ class Matrix4x4
 {
 public:
 	Matrix4x4();
-	Matrix4x4(const Matrix4x4& other) = default;
-	Matrix4x4(Matrix4x4&& other) noexcept = default;
+	Matrix4x4(const Matrix4x4& other);
+	Matrix4x4(Matrix4x4&& other) noexcept;
 
 	//! Array holding the matrices values
 	std::array<std::array<double, 4>, 4> v;

@@ -17,6 +17,18 @@ Matrix4x4::Matrix4x4()
 	return;
 }
 
+Matrix4x4::Matrix4x4(const Matrix4x4& other)
+{
+	v = other.v;
+	return;
+}
+
+Matrix4x4::Matrix4x4(Matrix4x4&& other) noexcept
+{
+	v = std::move(other.v);
+	return;
+}
+
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const
 {
 	Matrix4x4 newMatrix;

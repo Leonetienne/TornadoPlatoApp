@@ -515,15 +515,16 @@ namespace Matrices
 				if (m.IsInversible3x3())
 				{
 					Matrix4x4 inv_m = m.Inverse3x3();
-
+					Matrix4x4 result = m * inv_m;
+					
 					// Create debug output
 					std::wstringstream wss;
 					wss << std::endl
 						<< "i: " << i << std::endl
-						<< "Actual: " << m * inv_m << std::endl
+						<< "Actual: " << result << std::endl
 						<< "Target: " << Matrix4x4() << std::endl;
 
-					Assert::IsTrue((m * inv_m).Similar(Matrix4x4()), wss.str().c_str()); // Default constructor is identity matrix
+					Assert::IsTrue(result.Similar(Matrix4x4()), wss.str().c_str()); // Default constructor is identity matrix
 					i++;
 				}
 			}
