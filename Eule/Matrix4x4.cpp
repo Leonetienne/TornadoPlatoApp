@@ -415,6 +415,15 @@ void Matrix4x4::SetTranslationComponent(const Vector3d& trans)
 	return;
 }
 
+Matrix4x4 Matrix4x4::DropTranslationComponents() const
+{
+	Matrix4x4 m(*this);
+	m.d = 0;
+	m.h = 0;
+	m.l = 0;
+	return m;
+}
+
 Matrix4x4 Matrix4x4::Transpose3x3() const
 {
 	Matrix4x4 trans(*this); // Keep other cells

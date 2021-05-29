@@ -82,6 +82,9 @@ public:
 	//! Will set d,h,l from a Vector3d(x,y,z)
 	void SetTranslationComponent(const Vector3d& trans);
 
+	//! Will return this Matrix4x4 with d,h,l being set to 0
+	Matrix4x4 DropTranslationComponents() const;
+
 	//! Will return the 3x3 transpose of this matrix
 	Matrix4x4 Transpose3x3() const;
 

@@ -593,6 +593,27 @@ namespace Matrices
 			Assert::IsTrue(a.Multiply4x4(b).Similar(e), wss.str().c_str());
 		}
 
+		// Tests the DropTranslationComponents method. It should return itself, with d,h,l = 0,0,0
+		TEST_METHOD(DropTranslationComponents)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { 0, 1, 2, 3 };
+			a[1] = { 4, 5, 6, 7 };
+			a[2] = { 8, 9, 0, 1 };
+			a[3] = { 2, 3, 4, 5 };
+
+			Matrix4x4 e; // Expected
+			e[0] = { 0, 1, 2, 0 };
+			e[1] = { 4, 5, 6, 0 };
+			e[2] = { 8, 9, 0, 0 };
+			e[3] = { 2, 3, 4, 5 };
+
+			// Exercise, Verify
+			Assert::IsTrue(e == a.DropTranslationComponents());
+			return;
+		}
+
 		//! Tests that adding two matrices works as intended
 		TEST_METHOD(Operator_Add)
 		{
