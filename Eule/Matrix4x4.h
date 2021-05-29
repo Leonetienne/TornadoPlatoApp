@@ -44,6 +44,9 @@ public:
 	Matrix4x4 operator*(const Matrix4x4& other) const;
 	void operator*=(const Matrix4x4& other);
 
+	Matrix4x4 operator/(const Matrix4x4& other) const;
+	void operator/=(const Matrix4x4& other);
+
 	//! Cellwise scaling
 	Matrix4x4 operator*(const double scalar) const;
 	//! Cellwise scaling

@@ -824,6 +824,64 @@ namespace Matrices
 			return;
 		}
 
+		// Tests that matrix division (multiplication with inverse) works
+		TEST_METHOD(Operator_DivideMatrix)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { 0.0503814, 0.3314391, 0.9421304, 33 };
+			a[1] = { 0.4941404, 0.8115034, -0.3119095, 44 };
+			a[2] = { -0.8679211, 0.4812591, -0.1228928 , 55 };
+			a[3] = { 0, 0, 0, 1 };
+
+			Matrix4x4 b;
+			b[0] = { -0.3980391, -0.5301175, -0.7486925, 3 };
+			b[1] = { 0.3352839, 0.6756021, -0.6566175, 4 };
+			b[2] = { 0.8539026, -0.5123839, -0.0911762  , 5 };
+			b[3] = { 0, 0, 0, 1 };
+
+			Matrix4x4 expected = a * b.Inverse3x3();
+			// Just to be sure, but should already be set
+			expected.SetTranslationComponent(Vector3d(30, 40, 50));
+
+			// Exercise
+			Matrix4x4 actual = a / b;
+
+			// Verify
+			Assert::IsTrue(expected.Similar(actual));
+
+			return;
+		}
+
+		// Tests that matrix division (multiplication with inverse) works
+		TEST_METHOD(Operator_DivideEqualsMatrix)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { 0.0503814, 0.3314391, 0.9421304, 33 };
+			a[1] = { 0.4941404, 0.8115034, -0.3119095, 44 };
+			a[2] = { -0.8679211, 0.4812591, -0.1228928 , 55 };
+			a[3] = { 0, 0, 0, 1 };
+
+			Matrix4x4 b;
+			b[0] = { -0.3980391, -0.5301175, -0.7486925, 3 };
+			b[1] = { 0.3352839, 0.6756021, -0.6566175, 4 };
+			b[2] = { 0.8539026, -0.5123839, -0.0911762  , 5 };
+			b[3] = { 0, 0, 0, 1 };
+
+			Matrix4x4 expected = a * b.Inverse3x3();
+			// Just to be sure, but should already be set
+			expected.SetTranslationComponent(Vector3d(30, 40, 50));
+
+			// Exercise
+			a /= b;
+
+			// Verify
+			Assert::IsTrue(expected.Similar(a));
+
+			return;
+		}
+
 		// Tests that Math::Similar() works -> true
 		TEST_METHOD(Similar_True)
 		{

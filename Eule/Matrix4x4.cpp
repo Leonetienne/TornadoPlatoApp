@@ -136,6 +136,17 @@ void Matrix4x4::operator*=(const Matrix4x4& other)
 	return;
 }
 
+Matrix4x4 Matrix4x4::operator/(const Matrix4x4& other) const
+{
+	return *this * other.Inverse3x3();
+}
+
+void Matrix4x4::operator/=(const Matrix4x4& other)
+{
+	*this = *this * other.Inverse3x3();
+	return;
+}
+
 Matrix4x4 Matrix4x4::operator*(const double scalar) const
 {
 	Matrix4x4 m;
