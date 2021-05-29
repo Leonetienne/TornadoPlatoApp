@@ -8,13 +8,7 @@ OPTIMIZATIONS:
 
 
 FEATURES:
-	SIMPLE LIGHT SOURCES:
-		Attribute: Box boundingBox
-			If boundingBox is set, this light source should only cast light within the box.
-			User story: We want to use a shadowless light to light a house from the inside.
-				    We want to avoid the light casting brightness onto objects outside the house.
-			            The house would be the bounding box.
 
 ORGANIZATION:
-	Split Quaternion, Vectors, Matrices, and the Math util into its own library/project. They will be used by multiple higher layers.
-	Why should the physics engine depend on the graphics engine just to use its matrices and vectors?
+	Put each project into a designated namespace. Then rename Plato:PCollider, PTrapazoidPrismCollider back to without P.
+	Ideas for namespaces: tornadoGL, plato, eule
