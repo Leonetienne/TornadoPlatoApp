@@ -37,11 +37,20 @@ public:
 	//! Will return the projection matrix
 	const ProjectionProperties& GetProjectionProperties() const;
 
-private:
-	ProjectionProperties projectionProperties;
+	//! Will set the current camera as the new main camera
+	void SetAsMainCamera();
+
+	//! Will return the current main camera
+	static Camera* GetMainCamera();
+
+protected:
+	~Camera();
 
 private:
 	Camera(WorldObject* worldObject, const Vector2i& renderResolution, double fov, double nearclip, double farclip);
+	ProjectionProperties projectionProperties;
 
 	friend WorldObject;
+
+	static Camera* mainCamera;
 };

@@ -1,9 +1,22 @@
 #include "Camera.h"
+#include "WorldObjectManager.h"
 
 Camera::Camera(WorldObject* worldObject, const Vector2i& renderResolution, double fov, double nearclip, double farclip) :
 	Component(worldObject),
 	projectionProperties(renderResolution, fov, nearclip, farclip)
 {
+	// If there is no main camera, set myself as the new main camera
+	if (mainCamera == nullptr)
+		SetAsMainCamera();
+
+	return;
+}
+
+Camera::~Camera()
+{
+	if (mainCamera == this)
+		mainCamera = nullptr;
+
 	return;
 }
 
@@ -20,6 +33,27 @@ double Camera::GetSqrFarclip() const
 const ProjectionProperties& Camera::GetProjectionProperties() const
 {
 	return projectionProperties;
+}
+
+void Camera::SetAsMainCamera()
+{
+	// Clear the id on the existing main camera
+	WorldObject* currentIdHolder = WorldObjectManager::FindObjectById("main_camera");
+	if (currentIdHolder != nullptr)
+		currentIdHolder->ClearId();
+
+	// Set own id to main_camera
+	worldObject->SetId("main_camera");
+
+	// Update record in classifier
+	mainCamera = this;
+
+	return;
+}
+
+Camera* Camera::GetMainCamera()
+{
+	return mainCamera;
 }
 
 void Camera::SetRenderResolution(const Vector2i& resolution)
@@ -60,3 +94,5 @@ void Camera::SetFarclip(double farclip)
 	projectionProperties.SetFarclip(farclip);
 	return;
 }
+
+Camera* Camera::mainCamera = nullptr;

@@ -30,6 +30,8 @@ public:
 	void Disable();
 
 protected:
+	virtual ~Component() {};
+
 	// ### GAME ENGINE HOOKS ### //
 
 	// These hooks are not defined as abstract ( = 0 ), because they should not have
@@ -56,6 +58,7 @@ protected:
 private:
 	bool enabled = true;
 
+	friend class WorldObject;
 	// Allow access to call hooks
 	friend class WorldObjectManager;
 };
