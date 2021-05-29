@@ -1,11 +1,11 @@
-#include "TopologicalBoxCollider.h"
+#include "TrapazoidalPrismCollider.h"
 
-TopologicalBoxCollider::TopologicalBoxCollider()
+TrapazoidalPrismCollider::TrapazoidalPrismCollider()
 {
 	return;
 }
 
-void TopologicalBoxCollider::operator=(const TopologicalBoxCollider& other)
+void TrapazoidalPrismCollider::operator=(const TrapazoidalPrismCollider& other)
 {
 	vertices = other.vertices;
 	faceNormals = other.faceNormals;
@@ -13,7 +13,7 @@ void TopologicalBoxCollider::operator=(const TopologicalBoxCollider& other)
 	return;
 }
 
-void TopologicalBoxCollider::operator=(TopologicalBoxCollider&& other) noexcept
+void TrapazoidalPrismCollider::operator=(TrapazoidalPrismCollider&& other) noexcept
 {
 	vertices = std::move(other.vertices);
 	faceNormals = std::move(other.faceNormals);
@@ -21,19 +21,19 @@ void TopologicalBoxCollider::operator=(TopologicalBoxCollider&& other) noexcept
 	return;
 }
 
-const Vector3d& TopologicalBoxCollider::GetVertex(std::size_t index) const
+const Vector3d& TrapazoidalPrismCollider::GetVertex(std::size_t index) const
 {
 	return vertices[index];
 }
 
-void TopologicalBoxCollider::SetVertex(std::size_t index, const Vector3d value)
+void TrapazoidalPrismCollider::SetVertex(std::size_t index, const Vector3d value)
 {
 	vertices[index] = value;
 	GenerateNormalsFromVertices();
 	return;
 }
 
-void TopologicalBoxCollider::GenerateNormalsFromVertices()
+void TrapazoidalPrismCollider::GenerateNormalsFromVertices()
 {
 	faceNormals[(std::size_t)FACE_NORMALS::LEFT] =
 		(vertices[BACK|LEFT|BOTTOM] - vertices[FRONT|LEFT|BOTTOM])
@@ -62,7 +62,7 @@ void TopologicalBoxCollider::GenerateNormalsFromVertices()
 	return;
 }
 
-double TopologicalBoxCollider::FaceDot(FACE_NORMALS face, const Vector3d& point) const
+double TrapazoidalPrismCollider::FaceDot(FACE_NORMALS face, const Vector3d& point) const
 {
 	// This vertex is the one being used twice to calculate the normals
 	std::size_t coreVertexIdx;
@@ -98,7 +98,7 @@ double TopologicalBoxCollider::FaceDot(FACE_NORMALS face, const Vector3d& point)
 	return 1;
 }
 
-bool TopologicalBoxCollider::Contains(const Vector3d& point) const
+bool TrapazoidalPrismCollider::Contains(const Vector3d& point) const
 {
 	for (std::size_t i = 0; i < 6; i++)
 		if (FaceDot((FACE_NORMALS)i, point) < 0)

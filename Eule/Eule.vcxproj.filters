@@ -36,7 +36,7 @@
     <ClCompile Include="Collider.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TopologicalBoxCollider.cpp">
+    <ClCompile Include="TrapazoidalPrismCollider.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +68,7 @@
     <ClInclude Include="Collider.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="TopologicalBoxCollider.h">
+    <ClInclude Include="TrapazoidalPrismCollider.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

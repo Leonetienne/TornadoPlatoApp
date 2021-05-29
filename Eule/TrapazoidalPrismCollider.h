@@ -3,14 +3,19 @@
 #include "Collider.h"
 #include <array>
 
-class TopologicalBoxCollider : public Collider
+/** A collider describing a trapazoidal prism.
+* A trapazoidal prism is basically a box, but each vertex can be manipulated individually, altering
+* the angles between faces.
+* Distorting a 2d face into 3d space will result in undefined behaviour. Each face should stay flat, relative to itself. This shape is based on QUADS!
+*/
+class TrapazoidalPrismCollider : public Collider
 {
 public:
-	TopologicalBoxCollider();
-	TopologicalBoxCollider(const TopologicalBoxCollider& other) = default;
-	TopologicalBoxCollider(TopologicalBoxCollider&& other) noexcept = default;
-	void operator=(const TopologicalBoxCollider& other);
-	void operator=(TopologicalBoxCollider&& other) noexcept;
+	TrapazoidalPrismCollider();
+	TrapazoidalPrismCollider(const TrapazoidalPrismCollider& other) = default;
+	TrapazoidalPrismCollider(TrapazoidalPrismCollider&& other) noexcept = default;
+	void operator=(const TrapazoidalPrismCollider& other);
+	void operator=(TrapazoidalPrismCollider&& other) noexcept;
 
 	//! Will return a specific vertex
 	const Vector3d& GetVertex(std::size_t index) const;
