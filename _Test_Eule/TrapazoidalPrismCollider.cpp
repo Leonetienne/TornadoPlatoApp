@@ -76,9 +76,14 @@ namespace Colliders
 			
 			// Exercise
 			// Now check that these points are inside for all these possible angles
-			for (double theta = 0; theta < 360.01; theta += 2)
+			#ifndef _DEBUG
+			constexpr double stepSize = 2;
+			#else
+			constexpr double stepSize = 32;
+			#endif
+			for (double theta = 0; theta < 360.01; theta += stepSize)
 			for (double phi = 0; phi < 360.01; phi += 2)
-			for (double alpha = 0; alpha < 360.01; alpha += 2)
+			for (double alpha = 0; alpha < 360.01; alpha += stepSize)
 			{
 				// Rotate box
 				tpc.SetVertex(TPC::FRONT	| TPC::LEFT		| TPC::BOTTOM,	Quaternion({theta, phi, alpha}) * (Vector3d(-1, -1, 1)  * 10));
@@ -129,25 +134,30 @@ namespace Colliders
 
 			// Exercise
 			// Now check that these points are inside for all these possible angles
-			for (double theta = 0; theta < 360.01; theta += 2)
-				for (double phi = 0; phi < 360.01; phi += 2)
-					for (double alpha = 0; alpha < 360.01; alpha += 2)
-					{
-						// Rotate box
-						tpc.SetVertex(TPC::FRONT | TPC::LEFT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, -1, 1) * 10));
-						tpc.SetVertex(TPC::FRONT | TPC::LEFT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, 1, 1) * 10));
-						tpc.SetVertex(TPC::BACK | TPC::LEFT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, -1, -1) * 10));
-						tpc.SetVertex(TPC::BACK | TPC::LEFT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, 1, -1) * 10));
-						tpc.SetVertex(TPC::FRONT | TPC::RIGHT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(1, -1, 1) * 10));
-						tpc.SetVertex(TPC::FRONT | TPC::RIGHT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(1, 1, 1) * 10));
-						tpc.SetVertex(TPC::BACK | TPC::RIGHT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(1, -1, -1) * 10));
-						tpc.SetVertex(TPC::BACK | TPC::RIGHT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(1, 1, -1) * 10));
+			#ifndef _DEBUG
+			constexpr double stepSize = 2;
+			#else
+			constexpr double stepSize = 32;
+			#endif
+			for (double theta = 0; theta < 360.01; theta += stepSize)
+			for (double phi = 0; phi < 360.01; phi += 2)
+			for (double alpha = 0; alpha < 360.01; alpha += stepSize)
+			{
+				// Rotate box
+				tpc.SetVertex(TPC::FRONT | TPC::LEFT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, -1, 1) * 10));
+				tpc.SetVertex(TPC::FRONT | TPC::LEFT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, 1, 1) * 10));
+				tpc.SetVertex(TPC::BACK | TPC::LEFT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, -1, -1) * 10));
+				tpc.SetVertex(TPC::BACK | TPC::LEFT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(-1, 1, -1) * 10));
+				tpc.SetVertex(TPC::FRONT | TPC::RIGHT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(1, -1, 1) * 10));
+				tpc.SetVertex(TPC::FRONT | TPC::RIGHT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(1, 1, 1) * 10));
+				tpc.SetVertex(TPC::BACK | TPC::RIGHT | TPC::BOTTOM, Quaternion({ theta, phi, alpha }) * (Vector3d(1, -1, -1) * 10));
+				tpc.SetVertex(TPC::BACK | TPC::RIGHT | TPC::TOP, Quaternion({ theta, phi, alpha }) * (Vector3d(1, 1, -1) * 10));
 
-						// Verify
-						// Verify that all are inside
-						for (const Vector3d& v : knownOutsides)
-							Assert::IsFalse(tpc.Contains(v));
-					}
+				// Verify
+				// Verify that all are inside
+				for (const Vector3d& v : knownOutsides)
+					Assert::IsFalse(tpc.Contains(v));
+			}
 
 			return;
 		}
