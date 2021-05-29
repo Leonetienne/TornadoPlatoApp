@@ -4,6 +4,7 @@
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Keyboard.h"
 #include "../Plato/Math.h"
+#include "../Plato/TrapazoidalPrismCollider.h"
 #include "Rotator.h"
 #include <iostream>
 
@@ -86,6 +87,22 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	woLight = WorldObjectManager::NewWorldObject("rgb light", rgbParent);
 	rgbLight = woLight->AddComponent<PointLight>(20, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 13);
+	
+	PTrapazoidalPrismCollider* col = woLight->AddComponent<PTrapazoidalPrismCollider>();
+
+	rgbLight->SetUseDomains(true);
+	
+	using TPC = PTrapazoidalPrismCollider;
+	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::BACK	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5)));
+	col->SetVertex(TPC::BACK	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5)));
+
+	rgbLight->GetDomains().push_back(col);
 
 	//woPlane->GetComponentOfType<MeshRenderer>()->GetMaterial()->noShading = true;
 

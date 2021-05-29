@@ -48,6 +48,42 @@ void LightSource::SetSoftness(const double softness) const
 	return;
 }
 
+void LightSource::SetUseDomains(bool useDomains)
+{
+	tornadoLightSource->SetUseDomains(useDomains);
+	return;
+}
+
+bool LightSource::GetUseDomains() const
+{
+	return tornadoLightSource->GetUseDomains();
+}
+
+std::vector<PCollider*>& LightSource::GetDomains()
+{
+	return lightDomains;
+}
+
+const std::vector<PCollider*>& LightSource::GetDomains() const
+{
+	return lightDomains;
+}
+
+#include <iostream>
+void LightSource::LateUpdate(double frameTime)
+{
+	// TODO: Resolve position here!
+	//rls->GetPosition() = ls->transform->GetGlobalPosition();
+	//rls->GetPosition() += inverseCameraPosition;
+	//rls->GetPosition() *= inverseCameraRotation;
+
+	tornadoLightSource->GetDomains().clear();
+	for (const PCollider* domain : lightDomains)
+		tornadoLightSource->GetDomains().push_back(domain->CameraSpaceColldier());
+
+	return;
+}
+
 void LightSource::Render(Renderer* renderer)
 {
 	renderer->RegisterLightSource(this);

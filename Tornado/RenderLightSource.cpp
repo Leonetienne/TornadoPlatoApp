@@ -56,23 +56,23 @@ const Vector3d& RenderLightSource::GetPosition() const
 	return position;
 }
 
-void RenderLightSource::SetUseBoundingBox(bool useBoundingBox)
+void RenderLightSource::SetUseDomains(bool useDomains)
 {
-	this->useDomains = useBoundingBox;
+	this->useDomains = useDomains;
 	return;
 }
 
-bool RenderLightSource::GetUseBoundingBox()
+bool RenderLightSource::GetUseDomains() const
 {
 	return useDomains;
 }
 
-std::vector<Collider*>& RenderLightSource::GetDomains()
+std::vector<const Collider*>& RenderLightSource::GetDomains()
 {
 	return domains;
 }
 
-const std::vector<Collider*>& RenderLightSource::GetDomains() const
+const std::vector<const Collider*>& RenderLightSource::GetDomains() const
 {
 	return domains;
 }

@@ -91,27 +91,6 @@ void Renderer::ResolveLightSources()
 		rls->GetPosition() += inverseCameraPosition;
 		rls->GetPosition() *= inverseCameraRotation;
 
-		
-		// THIS IS PROTOTYPING CODE!!!!!!!!!!!!! MOVE TO PLATO!!!!
-		// This adds two rectangular bounding boxes, forming a cross.
-		static TrapazoidalPrismCollider bb;
-		rls->GetDomains().clear();
-
-		using TPC = TrapazoidalPrismCollider;
-		bb.SetVertex(TPC::FRONT | TPC::LEFT  | TPC::BOTTOM, ((Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::FRONT | TPC::LEFT  | TPC::TOP,	((Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::BACK	| TPC::LEFT  | TPC::BOTTOM, ((Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::BACK	| TPC::LEFT  | TPC::TOP,	((Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::FRONT | TPC::RIGHT | TPC::BOTTOM, ((Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::FRONT | TPC::RIGHT | TPC::TOP,	((Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::BACK	| TPC::RIGHT | TPC::BOTTOM, ((Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		bb.SetVertex(TPC::BACK	| TPC::RIGHT | TPC::TOP,	((Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5))) + inverseCameraPosition) * inverseCameraRotation);
-		rls->GetDomains().push_back(&bb);
-
-		rls->SetUseBoundingBox(true);
-		// </proto>
-
-		// Add to vector
 		tornadoLightSources.emplace_back(rls);
 	}
 }

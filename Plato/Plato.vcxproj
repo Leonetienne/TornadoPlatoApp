@@ -176,12 +176,14 @@
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="OBJParser.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Plato.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TrapazoidalPrismCollider.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="WorldObject.h" />
@@ -199,11 +201,13 @@
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="OBJParser.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Plato.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TrapazoidalPrismCollider.cpp" />
     <ClCompile Include="WorldObject.cpp" />
     <ClCompile Include="WorldObjectManager.cpp" />
   </ItemGroup>

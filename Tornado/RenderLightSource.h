@@ -43,16 +43,20 @@ public:
 	//! Will return this lightsources 3d position
 	const Vector3d& GetPosition() const;
 	
-	//! Will set wether or not this lightsource uses bounding boxes
-	void SetUseBoundingBox(bool useBoundingBox);
+	//! Will set wether or not this lightsource uses domains.  
+	//! Domains are Collider objects that will restrict where the light will be rendered.
+	void SetUseDomains(bool useDomains);
 
-	//! Will return wether or not this lightsource uses bounding boxes
-	bool GetUseBoundingBox();
+	//! Will return wether or not this lightsource uses domains.  
+	//! Domains are Collider objects that will restrict where the light will be rendered.
+	bool GetUseDomains() const;
 
-	//! Will return a vector of the light domains used
-	std::vector<Collider*>& GetDomains();
-	//! Will return a vector of the bounding boxes used
-	const std::vector<Collider*>& GetDomains() const;
+	//! Will return a vector of the lighting domains used.  
+	//! Domains are Collider objects that will restrict where the light will be rendered.
+	std::vector<const Collider*>& GetDomains();
+	//! Will return a vector of the lighting domains used.  
+	//! Domains are Collider objects that will restrict where the light will be rendered.
+	const std::vector<const Collider*>& GetDomains() const;
 
 protected:
 
@@ -63,6 +67,6 @@ protected:
 	double intensityTimes255 = 0; //! intensity * 255.0  - gets calculated in SetIntensity()
 	double softness = 0;
 	bool useDomains = false;
-	std::vector<Collider*> domains;
+	std::vector<const Collider*> domains;
 	Vector3d position;
 };
