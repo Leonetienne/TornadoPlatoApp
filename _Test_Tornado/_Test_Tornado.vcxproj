@@ -157,7 +157,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BarycentricInterpolationEngine.cpp" />
-    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="ClippingEngine.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="BackfaceCullingEngine.cpp" />

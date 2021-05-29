@@ -42,8 +42,5 @@
     <ClCompile Include="BackfaceCullingEngine.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

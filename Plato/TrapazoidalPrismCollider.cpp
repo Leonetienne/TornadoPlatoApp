@@ -4,7 +4,20 @@
 PTrapazoidalPrismCollider::PTrapazoidalPrismCollider(WorldObject* worldObject) :
 	PCollider(worldObject)
 {
+	// Get a link to the camera
 	cam = WorldObjectManager::FindObjectById("main_camera")->GetComponentOfType<Camera>();
+
+	// Create default shape (a cube unit-cube)
+	using TPC = PTrapazoidalPrismCollider;
+	SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1));
+	SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1,  1));
+	SetVertex(TPC::BACK		| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1, -1));
+	SetVertex(TPC::BACK		| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1, -1));
+	SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1,  1));
+	SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1,  1));
+	SetVertex(TPC::BACK		| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1, -1));
+	SetVertex(TPC::BACK		| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1, -1));
+	
 	return;
 }
 

@@ -72,5 +72,8 @@
     <ClCompile Include="VectorConversion.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="TrapazoidalPrismCollider.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
