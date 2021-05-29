@@ -40,6 +40,9 @@ public:
 	//! Will set the current camera as the new main camera
 	void SetAsMainCamera();
 
+	//! Will transform a world-space point to a camera-space point.
+	Vector3d WorldSpaceToCameraSpace(const Vector3d& worldSpacePoint) const;
+
 	//! Will return the current main camera
 	static Camera* GetMainCamera();
 

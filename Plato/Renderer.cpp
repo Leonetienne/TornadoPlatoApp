@@ -16,20 +16,15 @@ Renderer::Renderer(const Vector2i& renderResolution)
 	return;
 }
 
-void Renderer::SetMainCamera(Camera* camera)
-{
-	camera->SetRenderResolution(renderResolution);
-	this->mainCamera = camera;
-	return;
-}
-
-const Camera* Renderer::GetMainCamera() const
-{
-	return mainCamera;
-}
 
 void Renderer::BeginFrame()
 {
+	mainCamera = Camera::GetMainCamera();
+	hasCamera = mainCamera != nullptr;
+
+	if (hasCamera)
+		mainCamera->SetRenderResolution(renderResolution);
+
 	meshRenderers.clear();
 	lightSourceComponents.clear();
 
@@ -56,6 +51,10 @@ void Renderer::RegisterMeshRenderer(const MeshRenderer* mr)
 
 void Renderer::Render()
 {
+	// Don't render without a camera!
+	if (!hasCamera)
+		return;
+
 	tornado.BeginFrame();
 	
 	ResolveRenderTriangles();
@@ -74,12 +73,8 @@ void Renderer::Render()
 	return;
 }
 
-#include "../Eule/TrapazoidalPrismCollider.h"
 void Renderer::ResolveLightSources()
 {
-	const Vector3d inverseCameraPosition = mainCamera->transform->GetGlobalPosition() * -1;
-	const Matrix4x4 inverseCameraRotation = mainCamera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
-
 	for (const LightSource* ls : lightSourceComponents)
 	{
 		// Fetch tornado light source
@@ -87,9 +82,6 @@ void Renderer::ResolveLightSources()
 		
 		// Transform to camera space
 		// These are references!
-		rls->GetPosition() = ls->transform->GetGlobalPosition();
-		rls->GetPosition() += inverseCameraPosition;
-		rls->GetPosition() *= inverseCameraRotation;
 
 		tornadoLightSources.emplace_back(rls);
 	}
@@ -97,10 +89,6 @@ void Renderer::ResolveLightSources()
 
 void Renderer::ResolveRenderTriangles()
 {
-	const Vector3d inverseCameraPosition = mainCamera->transform->GetGlobalPosition() * -1;
-	const Matrix4x4 inverseCameraRotation = mainCamera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
-	
-
 	// Create resolving tasks
 	// Convert mesh renderers to individual world space triangles
 	for (const MeshRenderer* mr : meshRenderers)
@@ -127,10 +115,6 @@ void Renderer::ResolveRenderTriangles()
 
 			// Create task
 			task->task = std::bind(&Renderer::Thread__ResolveMeshRenderer_RenderTriangle, this,
-				inverseCameraPosition,
-				inverseCameraRotation,
-				mr->transform->GetGlobalTransformationMatrix(),
-				mr->transform->GetRotation().ToRotationMatrix(),
 				mr,
 				&mesh->tris[i],
 				numTrianglesForThisTask
@@ -151,10 +135,6 @@ void Renderer::ResolveRenderTriangles()
 }
 
 void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
-	const Vector3d inverseCameraPosition,
-	const Matrix4x4 inverseCameraRotation,
-	const Matrix4x4 objectTransformationMatrix,
-	const Matrix4x4 objectRotationMatrix,
 	const MeshRenderer* mr,
 	const MeshVertexIndices* idx,
 	std::size_t numTris
@@ -172,11 +152,21 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		RenderTriangle3D rd;
 		rd.material = mr->GetMaterial();
 
+		// Transform vertices from object space to camera space
+		rd.a.pos_worldSpace = 
+			mainCamera->WorldSpaceToCameraSpace(
+				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 0].v]));
 
-		rd.a.pos_worldSpace = mesh->v_vertices[idx[i*3 + 0].v];
-		rd.b.pos_worldSpace = mesh->v_vertices[idx[i*3 + 1].v];
-		rd.c.pos_worldSpace = mesh->v_vertices[idx[i*3 + 2].v];
+		rd.b.pos_worldSpace = 
+			mainCamera->WorldSpaceToCameraSpace(
+				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 1].v]));
 
+		rd.c.pos_worldSpace = 
+			mainCamera->WorldSpaceToCameraSpace(
+				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 2].v]));
+
+
+		// Texture space can stay as is
 		rd.a.pos_textureSpace = mesh->uv_vertices[idx[i*3 + 0].uv];
 		rd.b.pos_textureSpace = mesh->uv_vertices[idx[i*3 + 1].uv];
 		rd.c.pos_textureSpace = mesh->uv_vertices[idx[i*3 + 2].uv];
@@ -185,24 +175,15 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		rd.b.normal = mesh->normals[idx[i*3 + 1].vn];
 		rd.c.normal = mesh->normals[idx[i*3 + 2].vn];
 
-		// Apply world space transformation
-		rd.a.pos_worldSpace *= objectTransformationMatrix;
-		rd.b.pos_worldSpace *= objectTransformationMatrix;
-		rd.c.pos_worldSpace *= objectTransformationMatrix;
-
-		// Apply camera space transformation
-		rd.a.pos_worldSpace += inverseCameraPosition;
-		rd.b.pos_worldSpace += inverseCameraPosition;
-		rd.c.pos_worldSpace += inverseCameraPosition;
-		rd.a.pos_worldSpace *= inverseCameraRotation;
-		rd.b.pos_worldSpace *= inverseCameraRotation;
-		rd.c.pos_worldSpace *= inverseCameraRotation;
 
 		// Apply object- and camera rotation to the vertex normals
-		const Matrix4x4 normalTransMat = objectRotationMatrix * inverseCameraRotation;
+		const Matrix4x4 normalTransMat = mr->transform->GetGlobalTransformationMatrix().DropTranslationComponents() * mainCamera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
 		rd.a.normal *= normalTransMat;
 		rd.b.normal *= normalTransMat;
 		rd.c.normal *= normalTransMat;
+		rd.a.normal.NormalizeSelf();
+		rd.b.normal.NormalizeSelf();
+		rd.c.normal.NormalizeSelf();
 
 		// Add to local result cache
 		resultCache.emplace_back(std::move(rd));

@@ -15,9 +15,6 @@ class Renderer
 public:
 	Renderer(const Vector2i& renderResolution);
 
-	void SetMainCamera(Camera* camera);
-	const Camera* GetMainCamera() const;
-
 	void BeginFrame();
 	void RegisterLightSource(const LightSource* lr);
 	void RegisterMeshRenderer(const MeshRenderer* mr);
@@ -35,10 +32,6 @@ private:
 
 	// Will resolve a single render triangle from a single mesh renderer
 	void Thread__ResolveMeshRenderer_RenderTriangle(
-		const Vector3d inverseCameraPosition,
-		const Matrix4x4 inverseCameraRotation,
-		const Matrix4x4 objectTransformationMatrix,
-		const Matrix4x4 objectRotationMatrix,
 		const MeshRenderer* mr,
 		const MeshVertexIndices* idx,
 		std::size_t numTris
@@ -53,7 +46,8 @@ private:
 	std::vector<RenderLightSource*> tornadoLightSources;
 	Matrix4x4 worldMatrix;
 	const Vector2i& renderResolution;
-	const Camera* mainCamera;
+	Camera* mainCamera;
+	bool hasCamera = false;
 
 	std::mutex vecMutex;
 };

@@ -51,6 +51,11 @@ void Camera::SetAsMainCamera()
 	return;
 }
 
+Vector3d Camera::WorldSpaceToCameraSpace(const Vector3d& worldSpacePoint) const
+{
+	return transform->GetGlobalRotation().Inverse() * (worldSpacePoint - transform->GetGlobalPosition());
+}
+
 Camera* Camera::GetMainCamera()
 {
 	return mainCamera;

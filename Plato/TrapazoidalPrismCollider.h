@@ -1,6 +1,5 @@
 #pragma once
 #include "Collider.h"
-#include "Camera.h"
 #include "../Eule/TrapazoidalPrismCollider.h"
 
 class PTrapazoidalPrismCollider : public PCollider, private TrapazoidalPrismCollider
@@ -37,6 +36,4 @@ private:
 
 	//! collider in camera space
 	TrapazoidalPrismCollider cameraspaceCollider;
-
-	Camera* cam;
 };

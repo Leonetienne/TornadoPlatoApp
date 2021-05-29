@@ -86,7 +86,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light", rgbParent);
 	rgbLight = woLight->AddComponent<PointLight>(20, Color(255, 255, 255));
-	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 13);
+	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 	
 	PTrapazoidalPrismCollider* col = woLight->AddComponent<PTrapazoidalPrismCollider>();
 

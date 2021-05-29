@@ -89,6 +89,9 @@ public:
 	//! Will reset this transforms local values
 	void Reset();
 
+	//! Will transform an object-space point to a world-space point
+	Vector3d ObjectSpaceToWorldSpace(const Vector3d& objectSpacePoint) const;
+
 private:
 	Matrix4x4 scaleMatrix;
 	Matrix4x4 translationMatrix;

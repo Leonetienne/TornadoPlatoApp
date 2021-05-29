@@ -1,12 +1,10 @@
 #include "TrapazoidalPrismCollider.h"
 #include "WorldObjectManager.h"
+#include "Camera.h"
 
 PTrapazoidalPrismCollider::PTrapazoidalPrismCollider(WorldObject* worldObject) :
 	PCollider(worldObject)
 {
-	// Get a link to the camera
-	cam = WorldObjectManager::FindObjectById("main_camera")->GetComponentOfType<Camera>();
-
 	// Create default shape (a cube unit-cube)
 	using TPC = PTrapazoidalPrismCollider;
 	SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1));
@@ -21,19 +19,14 @@ PTrapazoidalPrismCollider::PTrapazoidalPrismCollider(WorldObject* worldObject) :
 	return;
 }
 
-#include <iostream>
 void PTrapazoidalPrismCollider::LateUpdate(double frameTime)
 {
-	Matrix4x4 inverseCameraRotation = cam->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
-	Vector3d  inverseCameraPosition = -cam->transform->GetGlobalPosition();
-
 	// Update the trapazoidal collider
 	for (std::size_t i = 0; i < 8; i++)
 	{
-		// TODO: Optimize this
 		const Vector3d& relativeVertex = GetVertex(i);
-		const Vector3d worldspaceVertex = transform->GetRotation() * (relativeVertex + transform->GetGlobalPosition());
-		const Vector3d cameraspaceVertex = (relativeVertex + inverseCameraPosition) * inverseCameraRotation;
+		const Vector3d worldspaceVertex = transform->ObjectSpaceToWorldSpace(relativeVertex);
+		const Vector3d cameraspaceVertex = Camera::GetMainCamera()->WorldSpaceToCameraSpace(worldspaceVertex);
 
 		worldspaceCollider.SetVertex(i, worldspaceVertex);
 		cameraspaceCollider.SetVertex(i, cameraspaceVertex);
@@ -44,15 +37,9 @@ void PTrapazoidalPrismCollider::LateUpdate(double frameTime)
 
 void PTrapazoidalPrismCollider::SetVertex(std::size_t index, const Vector3d value)
 {
-	// For consistency we need to calculate world, and camera space values aswell just after setting a vertex.
-	// TODO: Optimize this
-
-	Matrix4x4 inverseCameraRotation = cam->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
-	Vector3d  inverseCameraPosition = -cam->transform->GetGlobalPosition();
-
 	const Vector3d& relativeVertex = value;
-	const Vector3d worldspaceVertex = transform->GetRotation() * (relativeVertex + transform->GetGlobalPosition());
-	const Vector3d cameraspaceVertex = (relativeVertex + inverseCameraPosition) * inverseCameraRotation;
+	const Vector3d worldspaceVertex = transform->ObjectSpaceToWorldSpace(relativeVertex);
+	const Vector3d cameraspaceVertex = Camera::GetMainCamera()->WorldSpaceToCameraSpace(worldspaceVertex);
 
 	TrapazoidalPrismCollider::SetVertex(index, relativeVertex);
 	worldspaceCollider.SetVertex(index, worldspaceVertex);

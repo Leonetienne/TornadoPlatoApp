@@ -52,9 +52,8 @@ int main()
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
 	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 100);
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
-	camera->worldObject->SetId("main_camera");
+	camera->SetAsMainCamera();
 	Renderer renderer(resolution);
-	renderer.SetMainCamera(camera);
 	window.SetPixelBuffer(renderer.GetPixelBuffer());
 
 	// Register reverse-event callbacks

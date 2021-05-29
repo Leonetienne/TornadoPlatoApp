@@ -69,17 +69,20 @@ const std::vector<PCollider*>& LightSource::GetDomains() const
 	return lightDomains;
 }
 
-#include <iostream>
 void LightSource::LateUpdate(double frameTime)
 {
-	// TODO: Resolve position here!
-	//rls->GetPosition() = ls->transform->GetGlobalPosition();
-	//rls->GetPosition() += inverseCameraPosition;
-	//rls->GetPosition() *= inverseCameraRotation;
+	// Update light source camera space position
+	tornadoLightSource->SetPosition(
+		Camera::GetMainCamera()->WorldSpaceToCameraSpace(transform->GetGlobalPosition())
+	);
 
-	tornadoLightSource->GetDomains().clear();
-	for (const PCollider* domain : lightDomains)
-		tornadoLightSource->GetDomains().push_back(domain->CameraSpaceColldier());
+	// Update light source domains, if in use
+	if (tornadoLightSource->GetUseDomains())
+	{
+		tornadoLightSource->GetDomains().clear();
+		for (const PCollider* domain : lightDomains)
+			tornadoLightSource->GetDomains().push_back(domain->CameraSpaceColldier());
+	}
 
 	return;
 }

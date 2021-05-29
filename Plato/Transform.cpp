@@ -271,6 +271,11 @@ void Transform::Reset()
 	return;
 }
 
+Vector3d Transform::ObjectSpaceToWorldSpace(const Vector3d& objectSpacePoint) const
+{
+	return objectSpacePoint * GetGlobalTransformationMatrix();
+}
+
 void Transform::InvalidateLocalTransform()
 {
 	// Invalidate the local transform
