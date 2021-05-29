@@ -17,16 +17,6 @@ Matrix4x4::Matrix4x4()
 	return;
 }
 
-Matrix4x4::Matrix4x4(const Matrix4x4& other)
-{
-	// Clone
-	for (std::size_t i = 0; i < 4; i++)
-		for (std::size_t j = 0; j < 4; j++)
-			v[i][j] = other[i][j];
-
-	return;
-}
-
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const
 {
 	Matrix4x4 newMatrix;
@@ -370,6 +360,12 @@ const std::array<double, 4>& Matrix4x4::operator[](std::size_t y) const
 void Matrix4x4::operator=(const Matrix4x4& other)
 {
 	v = other.v;
+	return;
+}
+
+void Matrix4x4::operator=(Matrix4x4&& other) noexcept
+{
+	v = std::move(other.v);
 	return;
 }
 

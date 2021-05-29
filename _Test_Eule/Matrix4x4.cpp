@@ -242,6 +242,53 @@ namespace Matrices
 			return;
 		}
 
+		// Tests that copying via operator= works
+		TEST_METHOD(Copy_Operator)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { 1, 0, 0, 5 };
+			a[1] = { 2, 0, 0, 6 };
+			a[2] = { 3, 0, 0, 7 };
+			a[3] = { 4, 0, 0, 8 };
+
+			Matrix4x4 a_toCopy;
+			a_toCopy[0] = { 1, 0, 0, 5 };
+			a_toCopy[1] = { 2, 0, 0, 6 };
+			a_toCopy[2] = { 3, 0, 0, 7 };
+			a_toCopy[3] = { 4, 0, 0, 8 };
+
+			// Exercise
+			Matrix4x4 b = a_toCopy;
+
+			// Verify
+			Assert::IsTrue(a == a_toCopy, L"a got destroyed!");
+			Assert::IsTrue(b == a, L"a does not match b!");
+
+			return;
+		}
+
+		// Tests that moving via operator= works
+		TEST_METHOD(Move_Operator)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { 1, 0, 0, 5 };
+			a[1] = { 2, 0, 0, 6 };
+			a[2] = { 3, 0, 0, 7 };
+			a[3] = { 4, 0, 0, 8 };
+
+			Matrix4x4 a_backup = a;
+
+			// Exercise
+			Matrix4x4 b = std::move(a);
+
+			// Verify
+			Assert::IsTrue(b == a_backup, L"Values don't match!");
+
+			return;
+		}
+
 		// Tests if the multiply-equals (*=) operator works as intended
 		TEST_METHOD(Multiplication_Equals)
 		{

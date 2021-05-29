@@ -35,7 +35,8 @@ class Matrix4x4
 {
 public:
 	Matrix4x4();
-	Matrix4x4(const Matrix4x4& other);
+	Matrix4x4(const Matrix4x4& other) = default;
+	Matrix4x4(Matrix4x4&& other) noexcept = default;
 
 	//! Array holding the matrices values
 	std::array<std::array<double, 4>, 4> v;
@@ -68,6 +69,7 @@ public:
 	const std::array<double, 4>& operator[](std::size_t y) const;
 
 	void operator=(const Matrix4x4& other);
+	void operator=(Matrix4x4&& other) noexcept;
 
 	bool operator==(const Matrix4x4& other);
 	bool operator!=(const Matrix4x4& other);
