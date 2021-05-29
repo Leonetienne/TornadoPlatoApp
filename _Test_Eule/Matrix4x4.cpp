@@ -545,6 +545,130 @@ namespace Matrices
 			Assert::IsTrue(a.Multiply4x4(b).Similar(e), wss.str().c_str());
 		}
 
+		//! Tests that adding two matrices works as intended
+		TEST_METHOD(Operator_Add)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = {  1,  2, 5, 0 };
+			a[2] = {  2, -2, 7, 5 };
+			a[3] = {  3,  0, 3, 0 };
+
+			Matrix4x4 b;
+			b[0] = { 6, 0, 5, 0 };
+			b[1] = { 3, 0, 1, 1 };
+			b[2] = { 1, 7, 2, 7 };
+			b[3] = { 0, 2, 0, 0 };
+
+			Matrix4x4 exp;
+			exp[0] = { -3, 5, 11, 7 };
+			exp[1] = {  4, 2, 6, 1 };
+			exp[2] = {  3, 5, 9, 12 };
+			exp[3] = {  3, 2, 3, 0 };
+
+			// Exercise
+			Matrix4x4 result = a + b;
+
+			// Verify
+			Assert::IsTrue(exp == result);
+
+			return;
+		}
+
+		//! Tests that adding two matrices works as intended
+		TEST_METHOD(Operator_AddEquals)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = { 1,  2, 5, 0 };
+			a[2] = { 2, -2, 7, 5 };
+			a[3] = { 3,  0, 3, 0 };
+
+			Matrix4x4 b;
+			b[0] = { 6, 0, 5, 0 };
+			b[1] = { 3, 0, 1, 1 };
+			b[2] = { 1, 7, 2, 7 };
+			b[3] = { 0, 2, 0, 0 };
+
+			Matrix4x4 exp;
+			exp[0] = { -3, 5, 11, 7 };
+			exp[1] = { 4, 2, 6, 1 };
+			exp[2] = { 3, 5, 9, 12 };
+			exp[3] = { 3, 2, 3, 0 };
+
+			// Exercise
+			a += b;
+
+			// Verify
+			Assert::IsTrue(exp == a);
+
+			return;
+		}
+
+		//! Tests that subtracting two matrices works as intended
+		TEST_METHOD(Operator_Sub)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = { 1,  2, 5, 0 };
+			a[2] = { 2, -2, 7, 5 };
+			a[3] = { 3,  0, 3, 0 };
+
+			Matrix4x4 b;
+			b[0] = { -6, -0, -5, -0 };
+			b[1] = { -3, -0, -1, -1 };
+			b[2] = { -1, -7, -2, -7 };
+			b[3] = { -0, -2, -0, -0 };
+
+			Matrix4x4 exp;
+			exp[0] = { -3, 5, 11, 7 };
+			exp[1] = { 4, 2, 6, 1 };
+			exp[2] = { 3, 5, 9, 12 };
+			exp[3] = { 3, 2, 3, 0 };
+
+			// Exercise
+			Matrix4x4 result = a - b;
+
+			// Verify
+			Assert::IsTrue(exp == result);
+
+			return;
+		}
+
+		//! Tests that subtracting two matrices works as intended
+		TEST_METHOD(Operator_SubEuqals)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = { 1,  2, 5, 0 };
+			a[2] = { 2, -2, 7, 5 };
+			a[3] = { 3,  0, 3, 0 };
+
+			Matrix4x4 b;
+			b[0] = { -6, -0, -5, -0 };
+			b[1] = { -3, -0, -1, -1 };
+			b[2] = { -1, -7, -2, -7 };
+			b[3] = { -0, -2, -0, -0 };
+
+			Matrix4x4 exp;
+			exp[0] = { -3, 5, 11, 7 };
+			exp[1] = { 4, 2, 6, 1 };
+			exp[2] = { 3, 5, 9, 12 };
+			exp[3] = { 3, 2, 3, 0 };
+
+			// Exercise
+			a -= b;
+
+			// Verify
+			Assert::IsTrue(exp == a);
+
+			return;
+		}
+
 		// Tests that Math::Similar() works -> true
 		TEST_METHOD(Similar_True)
 		{

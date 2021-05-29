@@ -143,6 +143,159 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const
 void Matrix4x4::operator*=(const Matrix4x4& other)
 {
 	*this = *this * other;
+	return;
+}
+
+Matrix4x4 Matrix4x4::operator+(const Matrix4x4& other) const
+{
+	Matrix4x4 m;
+
+	#ifndef _EULE_NO_INTRINSICS_
+
+	// Load matrix rows
+	__m256d __row0a = _mm256_set_pd(v[0][3], v[0][2], v[0][1], v[0][0]);
+	__m256d __row1a = _mm256_set_pd(v[1][3], v[1][2], v[1][1], v[1][0]);
+	__m256d __row2a = _mm256_set_pd(v[2][3], v[2][2], v[2][1], v[2][0]);
+	__m256d __row3a = _mm256_set_pd(v[3][3], v[3][2], v[3][1], v[3][0]);
+
+	__m256d __row0b = _mm256_set_pd(other[0][3], other[0][2], other[0][1], other[0][0]);
+	__m256d __row1b = _mm256_set_pd(other[1][3], other[1][2], other[1][1], other[1][0]);
+	__m256d __row2b = _mm256_set_pd(other[2][3], other[2][2], other[2][1], other[2][0]);
+	__m256d __row3b = _mm256_set_pd(other[3][3], other[3][2], other[3][1], other[3][0]);
+
+	// Add rows
+	__m256d __sr0 = _mm256_add_pd(__row0a, __row0b);
+	__m256d __sr1 = _mm256_add_pd(__row1a, __row1b);
+	__m256d __sr2 = _mm256_add_pd(__row2a, __row2b);
+	__m256d __sr3 = _mm256_add_pd(__row3a, __row3b);
+
+	// Extract results
+	_mm256_storeu_pd(m.v[0].data(), __sr0);
+	_mm256_storeu_pd(m.v[1].data(), __sr1);
+	_mm256_storeu_pd(m.v[2].data(), __sr2);
+	_mm256_storeu_pd(m.v[3].data(), __sr3);
+
+	#else
+
+	for (std::size_t x = 0; x < 4; x++)
+	for (std::size_t y = 0; y < 4; y++)
+		m[x][y] = v[x][y] + other[x][y];
+
+	#endif
+
+	return m;
+}
+
+void Matrix4x4::operator+=(const Matrix4x4& other)
+{
+	#ifndef _EULE_NO_INTRINSICS_
+	// Doing it again is a tad directer, and thus faster. We avoid an intermittent Matrix4x4 instance
+
+	// Load matrix rows
+	__m256d __row0a = _mm256_set_pd(v[0][3], v[0][2], v[0][1], v[0][0]);
+	__m256d __row1a = _mm256_set_pd(v[1][3], v[1][2], v[1][1], v[1][0]);
+	__m256d __row2a = _mm256_set_pd(v[2][3], v[2][2], v[2][1], v[2][0]);
+	__m256d __row3a = _mm256_set_pd(v[3][3], v[3][2], v[3][1], v[3][0]);
+
+	__m256d __row0b = _mm256_set_pd(other[0][3], other[0][2], other[0][1], other[0][0]);
+	__m256d __row1b = _mm256_set_pd(other[1][3], other[1][2], other[1][1], other[1][0]);
+	__m256d __row2b = _mm256_set_pd(other[2][3], other[2][2], other[2][1], other[2][0]);
+	__m256d __row3b = _mm256_set_pd(other[3][3], other[3][2], other[3][1], other[3][0]);
+
+	// Add rows
+	__m256d __sr0 = _mm256_add_pd(__row0a, __row0b);
+	__m256d __sr1 = _mm256_add_pd(__row1a, __row1b);
+	__m256d __sr2 = _mm256_add_pd(__row2a, __row2b);
+	__m256d __sr3 = _mm256_add_pd(__row3a, __row3b);
+
+	// Extract results
+	_mm256_storeu_pd(v[0].data(), __sr0);
+	_mm256_storeu_pd(v[1].data(), __sr1);
+	_mm256_storeu_pd(v[2].data(), __sr2);
+	_mm256_storeu_pd(v[3].data(), __sr3);
+
+	#else
+	
+	*this = *this + other;
+	
+	#endif
+
+	return;
+}
+
+Matrix4x4 Matrix4x4::operator-(const Matrix4x4& other) const
+{
+	Matrix4x4 m;
+
+	#ifndef _EULE_NO_INTRINSICS_
+
+	// Load matrix rows
+	__m256d __row0a = _mm256_set_pd(v[0][3], v[0][2], v[0][1], v[0][0]);
+	__m256d __row1a = _mm256_set_pd(v[1][3], v[1][2], v[1][1], v[1][0]);
+	__m256d __row2a = _mm256_set_pd(v[2][3], v[2][2], v[2][1], v[2][0]);
+	__m256d __row3a = _mm256_set_pd(v[3][3], v[3][2], v[3][1], v[3][0]);
+
+	__m256d __row0b = _mm256_set_pd(other[0][3], other[0][2], other[0][1], other[0][0]);
+	__m256d __row1b = _mm256_set_pd(other[1][3], other[1][2], other[1][1], other[1][0]);
+	__m256d __row2b = _mm256_set_pd(other[2][3], other[2][2], other[2][1], other[2][0]);
+	__m256d __row3b = _mm256_set_pd(other[3][3], other[3][2], other[3][1], other[3][0]);
+
+	// Subtract rows
+	__m256d __sr0 = _mm256_sub_pd(__row0a, __row0b);
+	__m256d __sr1 = _mm256_sub_pd(__row1a, __row1b);
+	__m256d __sr2 = _mm256_sub_pd(__row2a, __row2b);
+	__m256d __sr3 = _mm256_sub_pd(__row3a, __row3b);
+
+	// Extract results
+	_mm256_storeu_pd(m.v[0].data(), __sr0);
+	_mm256_storeu_pd(m.v[1].data(), __sr1);
+	_mm256_storeu_pd(m.v[2].data(), __sr2);
+	_mm256_storeu_pd(m.v[3].data(), __sr3);
+
+	#else
+
+	for (std::size_t x = 0; x < 4; x++)
+		for (std::size_t y = 0; y < 4; y++)
+			m[x][y] = v[x][y] - other[x][y];
+
+	#endif
+
+	return m;
+}
+
+void Matrix4x4::operator-=(const Matrix4x4& other)
+{
+	#ifndef _EULE_NO_INTRINSICS_
+	// Doing it again is a tad directer, and thus faster. We avoid an intermittent Matrix4x4 instance
+
+	// Load matrix rows
+	__m256d __row0a = _mm256_set_pd(v[0][3], v[0][2], v[0][1], v[0][0]);
+	__m256d __row1a = _mm256_set_pd(v[1][3], v[1][2], v[1][1], v[1][0]);
+	__m256d __row2a = _mm256_set_pd(v[2][3], v[2][2], v[2][1], v[2][0]);
+	__m256d __row3a = _mm256_set_pd(v[3][3], v[3][2], v[3][1], v[3][0]);
+
+	__m256d __row0b = _mm256_set_pd(other[0][3], other[0][2], other[0][1], other[0][0]);
+	__m256d __row1b = _mm256_set_pd(other[1][3], other[1][2], other[1][1], other[1][0]);
+	__m256d __row2b = _mm256_set_pd(other[2][3], other[2][2], other[2][1], other[2][0]);
+	__m256d __row3b = _mm256_set_pd(other[3][3], other[3][2], other[3][1], other[3][0]);
+
+	// Subtract rows
+	__m256d __sr0 = _mm256_sub_pd(__row0a, __row0b);
+	__m256d __sr1 = _mm256_sub_pd(__row1a, __row1b);
+	__m256d __sr2 = _mm256_sub_pd(__row2a, __row2b);
+	__m256d __sr3 = _mm256_sub_pd(__row3a, __row3b);
+
+	// Extract results
+	_mm256_storeu_pd(v[0].data(), __sr0);
+	_mm256_storeu_pd(v[1].data(), __sr1);
+	_mm256_storeu_pd(v[2].data(), __sr2);
+	_mm256_storeu_pd(v[3].data(), __sr3);
+
+	#else
+
+	* this = *this - other;
+
+	#endif
 
 	return;
 }

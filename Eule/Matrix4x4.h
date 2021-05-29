@@ -43,6 +43,16 @@ public:
 	Matrix4x4 operator*(const Matrix4x4& other) const;
 	void operator*=(const Matrix4x4& other);
 
+	//! Cellwise addition
+	Matrix4x4 operator+(const Matrix4x4& other) const;
+	//! Cellwise addition
+	void operator+=(const Matrix4x4& other);
+
+	//! Cellwise subtraction
+	Matrix4x4 operator-(const Matrix4x4& other) const;
+	//! Cellwise subtraction
+	void operator-=(const Matrix4x4& other);
+
 	std::array<double, 4>& operator[](std::size_t y);
 	const std::array<double, 4>& operator[](std::size_t y) const;
 
