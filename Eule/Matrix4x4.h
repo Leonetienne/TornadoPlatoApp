@@ -43,6 +43,16 @@ public:
 	Matrix4x4 operator*(const Matrix4x4& other) const;
 	void operator*=(const Matrix4x4& other);
 
+	//! Cellwise scaling
+	Matrix4x4 operator*(const double scalar) const;
+	//! Cellwise scaling
+	void operator*=(const double scalar);
+
+	//! Cellwise division
+	Matrix4x4 operator/(const double denominator) const;
+	//! Cellwise division
+	void operator/=(const double denominator);
+
 	//! Cellwise addition
 	Matrix4x4 operator+(const Matrix4x4& other) const;
 	//! Cellwise addition
@@ -52,6 +62,7 @@ public:
 	Matrix4x4 operator-(const Matrix4x4& other) const;
 	//! Cellwise subtraction
 	void operator-=(const Matrix4x4& other);
+
 
 	std::array<double, 4>& operator[](std::size_t y);
 	const std::array<double, 4>& operator[](std::size_t y) const;

@@ -561,7 +561,7 @@ namespace Matrices
 			b[2] = { 1, 7, 2, 7 };
 			b[3] = { 0, 2, 0, 0 };
 
-			Matrix4x4 exp;
+			Matrix4x4 exp; // Expected
 			exp[0] = { -3, 5, 11, 7 };
 			exp[1] = {  4, 2, 6, 1 };
 			exp[2] = {  3, 5, 9, 12 };
@@ -592,7 +592,7 @@ namespace Matrices
 			b[2] = { 1, 7, 2, 7 };
 			b[3] = { 0, 2, 0, 0 };
 
-			Matrix4x4 exp;
+			Matrix4x4 exp; // Expected
 			exp[0] = { -3, 5, 11, 7 };
 			exp[1] = { 4, 2, 6, 1 };
 			exp[2] = { 3, 5, 9, 12 };
@@ -623,7 +623,7 @@ namespace Matrices
 			b[2] = { -1, -7, -2, -7 };
 			b[3] = { -0, -2, -0, -0 };
 
-			Matrix4x4 exp;
+			Matrix4x4 exp; // Expected
 			exp[0] = { -3, 5, 11, 7 };
 			exp[1] = { 4, 2, 6, 1 };
 			exp[2] = { 3, 5, 9, 12 };
@@ -654,7 +654,7 @@ namespace Matrices
 			b[2] = { -1, -7, -2, -7 };
 			b[3] = { -0, -2, -0, -0 };
 
-			Matrix4x4 exp;
+			Matrix4x4 exp; // Expected
 			exp[0] = { -3, 5, 11, 7 };
 			exp[1] = { 4, 2, 6, 1 };
 			exp[2] = { 3, 5, 9, 12 };
@@ -665,6 +665,114 @@ namespace Matrices
 
 			// Verify
 			Assert::IsTrue(exp == a);
+
+			return;
+		}
+
+		// Tests that the multiplication operator for a double parameter works
+		TEST_METHOD(Operator_MultiplyDouble)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = {  1, 2, 5, 0 };
+			a[2] = {  2,-2, 7, 5 };
+			a[3] = {  3, 0, 3, 0 };
+
+			double s = LARGE_RAND_DOUBLE;
+
+			Matrix4x4 exp; // Expected
+			exp[0] = { -9*s, 5*s, 6*s, 7*s };
+			exp[1] = {  1*s, 2*s, 5*s, 0*s };
+			exp[2] = {  2*s,-2*s, 7*s, 5*s };
+			exp[3] = {  3*s, 0*s, 3*s, 0*s };
+
+			// Exercise
+			Matrix4x4 result = a * s;
+
+			// Verify
+			Assert::IsTrue(exp.Similar(result));
+
+			return;
+		}
+
+		// Tests that the multiplication operator for a double parameter works
+		TEST_METHOD(Operator_MultiplyEqualsDouble)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = {  1, 2, 5, 0 };
+			a[2] = {  2,-2, 7, 5 };
+			a[3] = {  3, 0, 3, 0 };
+
+			double s = LARGE_RAND_DOUBLE;
+
+			Matrix4x4 exp; // Expected
+			exp[0] = { -9*s, 5*s, 6*s, 7*s };
+			exp[1] = {  1*s, 2*s, 5*s, 0*s };
+			exp[2] = {  2*s,-2*s, 7*s, 5*s };
+			exp[3] = {  3*s, 0*s, 3*s, 0*s };
+
+			// Exercise
+			a *= s;
+
+			// Verify
+			Assert::IsTrue(exp.Similar(a));
+
+			return;
+		}
+
+		// Tests that the division operator for a double parameter works
+		TEST_METHOD(Operator_DivideDouble)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = {  1, 2, 5, 0 };
+			a[2] = {  2,-2, 7, 5 };
+			a[3] = {  3, 0, 3, 0 };
+
+			double s = LARGE_RAND_DOUBLE;
+
+			Matrix4x4 exp; // Expected
+			exp[0] = { -9/s, 5/s, 6/s, 7/s };
+			exp[1] = {  1/s, 2/s, 5/s, 0/s };
+			exp[2] = {  2/s,-2/s, 7/s, 5/s };
+			exp[3] = {  3/s, 0/s, 3/s, 0/s };
+
+			// Exercise
+			Matrix4x4 result = a / s;
+
+			// Verify
+			Assert::IsTrue(exp.Similar(result));
+
+			return;
+		}
+
+		// Tests that the division operator for a double parameter works
+		TEST_METHOD(Operator_DivideEqualsDouble)
+		{
+			// Setup
+			Matrix4x4 a;
+			a[0] = { -9, 5, 6, 7 };
+			a[1] = {  1, 2, 5, 0 };
+			a[2] = {  2,-2, 7, 5 };
+			a[3] = {  3, 0, 3, 0 };
+
+			double s = LARGE_RAND_DOUBLE;
+
+			Matrix4x4 exp; // Expected
+			exp[0] = { -9/s, 5/s, 6/s, 7/s };
+			exp[1] = {  1/s, 2/s, 5/s, 0/s };
+			exp[2] = {  2/s,-2/s, 7/s, 5/s };
+			exp[3] = {  3/s, 0/s, 3/s, 0/s };
+
+			// Exercise
+			a /= s;
+
+			// Verify
+			Assert::IsTrue(exp.Similar(a));
 
 			return;
 		}

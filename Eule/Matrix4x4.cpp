@@ -146,6 +146,63 @@ void Matrix4x4::operator*=(const Matrix4x4& other)
 	return;
 }
 
+Matrix4x4 Matrix4x4::operator*(const double scalar) const
+{
+	Matrix4x4 m;
+
+	#ifndef _EULE_NO_INTRINSICS_
+
+	// Load matrix rows
+	__m256d __row0 = _mm256_set_pd(v[0][3], v[0][2], v[0][1], v[0][0]);
+	__m256d __row1 = _mm256_set_pd(v[1][3], v[1][2], v[1][1], v[1][0]);
+	__m256d __row2 = _mm256_set_pd(v[2][3], v[2][2], v[2][1], v[2][0]);
+	__m256d __row3 = _mm256_set_pd(v[3][3], v[3][2], v[3][1], v[3][0]);
+
+	// Load scalar
+	__m256d __scalar = _mm256_set1_pd(scalar);
+
+	// Scale values
+	__m256d __sr0 = _mm256_mul_pd(__row0, __scalar);
+	__m256d __sr1 = _mm256_mul_pd(__row1, __scalar);
+	__m256d __sr2 = _mm256_mul_pd(__row2, __scalar);
+	__m256d __sr3 = _mm256_mul_pd(__row3, __scalar);
+
+	// Extract results
+	_mm256_storeu_pd(m.v[0].data(), __sr0);
+	_mm256_storeu_pd(m.v[1].data(), __sr1);
+	_mm256_storeu_pd(m.v[2].data(), __sr2);
+	_mm256_storeu_pd(m.v[3].data(), __sr3);
+
+	#else
+
+	for (std::size_t x = 0; x < 4; x++)
+	for (std::size_t y = 0; y < 4; y++)
+		m[x][y] = v[x][y] * scalar;
+
+	#endif
+
+	return m;
+}
+
+void Matrix4x4::operator*=(const double scalar)
+{
+	*this = *this * scalar;
+	return;
+}
+
+Matrix4x4 Matrix4x4::operator/(const double denominator) const
+{
+	const double precomputeDivision = 1.0 / denominator;
+
+	return *this * precomputeDivision;
+}
+
+void Matrix4x4::operator/=(const double denominator)
+{
+	*this = *this / denominator;
+	return;
+}
+
 Matrix4x4 Matrix4x4::operator+(const Matrix4x4& other) const
 {
 	Matrix4x4 m;
