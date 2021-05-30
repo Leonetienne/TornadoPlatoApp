@@ -1,6 +1,5 @@
 #include "CppUnitTest.h"
 #include "../Eule/Math.h"
-#include <random>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Eule;
