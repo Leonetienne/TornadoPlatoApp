@@ -1,7 +1,12 @@
 #pragma once
 #include <string>
 
-class Renderer;
+namespace Plato
+{
+	class Renderer;
+}
+
+using namespace Plato;
 
 class TestFixture
 {

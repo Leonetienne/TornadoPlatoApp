@@ -1,7 +1,8 @@
 #pragma once
 #include "TestFixture.h"
 #include "../Plato/MeshRenderer.h"
-#include "../Tornado/Material.h"
+#include "../Plato/Material.h"
+#include "../Plato/Texture.h"
 
 class Test__TextureProjectionWorks : public TestFixture
 {

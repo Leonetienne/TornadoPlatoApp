@@ -4,6 +4,8 @@
 #include "Rotator.h"
 #include <iostream>
 
+using namespace Plato;
+
 /*
 	Expected behaviour: The objects load
 */
@@ -34,7 +36,7 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 
 	// Create spider
 	WorldObject* spider = WorldObjectManager::NewWorldObject("spoder");
-	spider->AddComponent<MeshRenderer>(
+	spider->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("spoder"),
 		ResourceManager::FindMaterial("spoder")
 	);
@@ -42,14 +44,14 @@ Test__OBJParser__Load::Test__OBJParser__Load() :
 	spider->transform->Rotate(Quaternion(Vector3d(0, 90, 0)));
 
 	WorldObject* character = WorldObjectManager::NewWorldObject("character", spider->transform);
-	character->AddComponent<MeshRenderer>(
+	character->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("character"),
 		ResourceManager::FindMaterial("character")
 		);
 
 	// Create skybox
 	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
-	skybox->AddComponent<MeshRenderer>(
+	skybox->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("skybox"),
 		ResourceManager::FindMaterial("skybox")
 	);

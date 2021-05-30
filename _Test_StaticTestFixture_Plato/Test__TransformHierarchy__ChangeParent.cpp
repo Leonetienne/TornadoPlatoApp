@@ -7,6 +7,8 @@
 #include "Rotator.h"
 #include "Util.h"
 
+using namespace Plato;
+
 /*
 	Tests that changing an objects parent does not affect its global position
 
@@ -19,7 +21,7 @@
 Transform* Test__TransformHierarchy__ChangeParent::CreateLink(Transform* parent)
 {
 	WorldObject* wo = WorldObjectManager::NewWorldObject("joint", parent);
-		wo->AddComponent<MeshRenderer>(
+		wo->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("cube"),
 		ResourceManager::FindMaterial("cube")
 	);

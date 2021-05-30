@@ -2,10 +2,12 @@
 #include "renderres.h"
 #include <math.h>
 
+using namespace Plato;
+
 AppImplementation::AppImplementation(std::size_t width, std::size_t height)
 {
 	bgrPixelBuffer = new unsigned char[width * height * 3];
-	plato = new Plato();
+	plato = new PlatoGameEngine();
 
 	return;
 }

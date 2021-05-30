@@ -1,6 +1,8 @@
 #pragma once
 #include "../Plato/Mesh.h"
 
+using namespace Plato;
+
 class Cube : public Mesh
 {
 public:

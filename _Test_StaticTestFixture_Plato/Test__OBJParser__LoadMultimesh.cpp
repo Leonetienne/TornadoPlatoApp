@@ -5,6 +5,8 @@
 #include "Rotator.h"
 #include <iostream>
 
+using namespace Plato;
+
 /*
 	Expected behaviour: We are loading two models (the monkey, and the hat) from one obj file
 	No materials / textures supplied
@@ -30,7 +32,7 @@ Test__OBJParser__LoadMultimesh::Test__OBJParser__LoadMultimesh() :
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
-	monke->AddComponent<MeshRenderer>(
+	monke->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("monke"),
 		ResourceManager::FindMaterial("monke")
 	);
@@ -40,7 +42,7 @@ Test__OBJParser__LoadMultimesh::Test__OBJParser__LoadMultimesh() :
 
 	// Create skybox
 	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
-	skybox->AddComponent<MeshRenderer>(
+	skybox->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("skybox"),
 		ResourceManager::FindMaterial("skybox")
 		);

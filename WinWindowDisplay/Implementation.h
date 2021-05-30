@@ -15,5 +15,5 @@ public:
 private:
 	uint8_t* bgrPixelBuffer; // BitBlt uses bgr.
 
-	Plato* plato;
+	Plato::PlatoGameEngine* plato;
 };

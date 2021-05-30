@@ -7,6 +7,8 @@
 #include "Rotator.h"
 #include "Util.h"
 
+using namespace Plato;
+
 /*
 	This test tests the transform hierarchy resolving rotations.
 	It does this by "curling a finger".
@@ -20,7 +22,7 @@
 Transform* Test__TransformHierarchy__Curl::CreateLink(Transform* parent)
 {
 	WorldObject* wo = WorldObjectManager::NewWorldObject("joint", parent);
-	wo->AddComponent<MeshRenderer>(
+	wo->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("cube"),
 		ResourceManager::FindMaterial("cube")
 	);

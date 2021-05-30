@@ -6,6 +6,8 @@
 #include "Rotator.h"
 #include "Util.h"
 
+using namespace Plato;
+
 Test__TextureProjectionWorks::Test__TextureProjectionWorks() :
 	TestFixture(__FUNCTION__), // Set the test fixtures name equal to the specialized class name (constructor function)
 	txt_coob(Color::black)
@@ -15,7 +17,7 @@ Test__TextureProjectionWorks::Test__TextureProjectionWorks() :
 	mat_coob.texture = &txt_coob;
 
 	wo_coob = WorldObjectManager::NewWorldObject();
-	wo_coob->AddComponent<MeshRenderer>(&mesh_coob, &mat_coob);
+	wo_coob->AddComponent<Components::MeshRenderer>(&mesh_coob, &mat_coob);
 	wo_coob->AddComponent<Rotator>(0.1);
 
 	wo_coob->transform->Move(Vector3d(0, 0, 5));

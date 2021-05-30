@@ -6,6 +6,8 @@
 #include "../Plato/Vector.h"
 #include "../Tornado/PixelBuffer.h"
 
+using namespace Plato;
+
 class RenderWindow
 {
 public:
@@ -20,7 +22,7 @@ public:
 	static RenderWindow* HwndToWindow(HWND hwnd);
 
 	void SetTitle(const std::string& title);
-	void SetPixelBuffer(const PixelBuffer<3>* pxb);
+	void SetPixelBuffer(const TorGL::PixelBuffer<3>* pxb);
 
 	// Will update the bgr pixel buffer from the rgb pixel buffer
 	void UpdateBgrPixelBuffer();
@@ -36,7 +38,7 @@ private:
 	std::string title;
 	std::string className;
 	bool isOpen = true;
-	const PixelBuffer<3>* pixelBuffer;
+	const TorGL::PixelBuffer<3>* pixelBuffer;
 	// The windows api takes bgr instead of rgb -.-
 	uint8_t* bgrPixelBuffer;
 

@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include "../Plato/Component.h"
 
+using namespace Plato;
+
 class Rotator : Component
 {
 public:

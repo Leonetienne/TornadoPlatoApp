@@ -30,6 +30,7 @@
 	Use these to manually check if specific things are working
 */
 
+using namespace Plato;
 using Input::EventManager;
 using Input::REVERSE_EVENT_CALLBACK;
 
@@ -50,7 +51,7 @@ int main()
 	// Create important objects, such as the Window and the Renderer, including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Camera>(resolution, 90, 0.001, 100);
+	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 100);
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->SetAsMainCamera();
 	Renderer renderer(resolution);

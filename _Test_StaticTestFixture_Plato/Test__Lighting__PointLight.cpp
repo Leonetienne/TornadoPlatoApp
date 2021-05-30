@@ -8,6 +8,7 @@
 #include "Rotator.h"
 #include <iostream>
 
+using namespace Plato;
 
 /*
 	Expected behaviour: 
@@ -59,13 +60,13 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 
 	// Create plane
 	woPlane = WorldObjectManager::NewWorldObject("plane");
-	woPlane->AddComponent<MeshRenderer>(mPlane, ResourceManager::FindMaterial("floor"));
+	woPlane->AddComponent<Components::MeshRenderer>(mPlane, ResourceManager::FindMaterial("floor"));
 	woPlane->transform->Scale(Vector3d::one * 40);
 	woPlane->transform->Move(Vector3d::down * 2 + Vector3d::backward * -10);
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
-	monke->AddComponent<MeshRenderer>(
+	monke->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("monke"),
 		ResourceManager::FindMaterial("monke")
 		);
@@ -85,14 +86,14 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	rgbParent = WorldObjectManager::NewWorldObject("rgb parent")->transform;
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light", rgbParent);
-	rgbLight = woLight->AddComponent<PointLight>(20, Color(255, 255, 255));
+	rgbLight = woLight->AddComponent<Components::PointLight>(20, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 	
-	PTrapazoidalPrismCollider* col = woLight->AddComponent<PTrapazoidalPrismCollider>();
+	Components::PTrapazoidalPrismCollider* col = woLight->AddComponent<Components::PTrapazoidalPrismCollider>();
 
 	rgbLight->SetUseDomains(true);
 	
-	using TPC = PTrapazoidalPrismCollider;
+	using TPC = Components::PTrapazoidalPrismCollider;
 	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5)));
 	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5)));
 	col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5)));

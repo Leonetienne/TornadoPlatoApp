@@ -3,6 +3,7 @@
 #include <functional>
 #include <windowsx.h>
 
+using namespace Plato;
 using Input::EventManager;
 using Input::KEY_CODE;
 
@@ -106,7 +107,7 @@ void RenderWindow::Thread__CreateWindow()
         RECT clientRect;
         GetClientRect(systemHandle, &clientRect);
 
-        EventManager::RegisterEventNewWindowRect(Rect{
+        EventManager::RegisterEventNewWindowRect(Eule::Rect{
             Vector2d(clientRect.left, clientRect.top),
             Vector2d((double)clientRect.right - (double)clientRect.left, (double)clientRect.bottom - (double)clientRect.top),
         });
@@ -298,7 +299,7 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
         newSize.y = HIWORD(lparam);
 
         EventManager::RegisterEventNewWindowRect(
-            Rect{
+            Eule::Rect{
                 EventManager::GetWindowRect().pos,
                 newSize
             }
@@ -314,7 +315,7 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wparam, L
         newPos.y = HIWORD(lparam);
 
         EventManager::RegisterEventNewWindowRect(
-            Rect{
+            Eule::Rect{
                 newPos,
                 EventManager::GetWindowRect().size
             }
@@ -381,7 +382,7 @@ void RenderWindow::SetTitle(const std::string& title)
     return;
 }
 
-void RenderWindow::SetPixelBuffer(const PixelBuffer<3>* pxb)
+void RenderWindow::SetPixelBuffer(const TorGL::PixelBuffer<3>* pxb)
 {
     pixelBuffer = pxb;
     return;

@@ -7,6 +7,8 @@
 #include "../Plato/Mouse.h"
 #include <algorithm>
 
+using namespace Plato;
+
 class CameraKeyboardControl : Component
 {
 public:
@@ -133,7 +135,7 @@ private:
 		camera_yPivot { camera_yPivot },
 		camera { camera }
 	{
-		cameraComponent = camera->worldObject->GetComponentOfType<Camera>();
+		cameraComponent = Components::Camera::GetMainCamera();
 
 		shiftFactor = 1; // Gets calculated at the beginning of Update()
 
@@ -147,7 +149,7 @@ private:
 
 	Transform* camera_yPivot;
 	Transform* camera;
-	Camera* cameraComponent;
+	Components::Camera* cameraComponent;
 
 	friend WorldObject;
 };

@@ -6,6 +6,8 @@
 #include "Rotator.h"
 #include <iostream>
 
+using namespace Plato;
+
 // temporary code
 inline double Clamp(double v, double min, double max)
 {
@@ -22,7 +24,7 @@ Test__FPS::Test__FPS() :
 {
 	// Configure camera
 	trCamera = WorldObjectManager::FindObjectById("main_camera")->transform;
-	camera = trCamera->worldObject->GetComponentOfType<Camera>();
+	camera = trCamera->worldObject->GetComponentOfType<Components::Camera>();
 
 	// Load mesh files
 	ResourceManager::LoadMeshFromObj("gun", "gun.obj");
@@ -44,7 +46,7 @@ Test__FPS::Test__FPS() :
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
-	monke->AddComponent<MeshRenderer>(
+	monke->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("monke"),
 		ResourceManager::FindMaterial("monke")
 		);
@@ -62,14 +64,14 @@ Test__FPS::Test__FPS() :
 	gun = WorldObjectManager::NewWorldObject("gun");
 	gun->transform->SetScale(Vector3d::one * 0.5);
 
-	gun->AddComponent<MeshRenderer>(
+	gun->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("gun"),
 		ResourceManager::FindMaterial("gun")
 	);
 
 	// Create skybox
 	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
-	skybox->AddComponent<MeshRenderer>(
+	skybox->AddComponent<Components::MeshRenderer>(
 		ResourceManager::FindMesh("skybox"),
 		ResourceManager::FindMaterial("skybox")
 		);

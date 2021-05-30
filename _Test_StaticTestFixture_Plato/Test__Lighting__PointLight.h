@@ -5,6 +5,8 @@
 #include "../Plato/Camera.h"
 #include "../Plato/PointLight.h"
 
+using namespace Plato;
+
 class Test__Lighting__PointLight : public TestFixture
 {
 public:
@@ -15,7 +17,7 @@ public:
 private:
 	void UpdateColorCycle(double deltaTime);
 
-	PointLight* rgbLight;
+	Components::PointLight* rgbLight;
 	Transform* rgbParent;
 	WorldObject* woPlane;
 };

@@ -4,13 +4,15 @@
 #include "../Tornado/Material.h"
 #include "../Plato/Camera.h"
 
+using namespace Plato;
+
 class Test__FPS : public TestFixture
 {
 public:
 	Test__FPS();
 
 	void Update(double deltaTime) override;
-	void Render(Renderer*) override;
+	void Render(Renderer* renderer) override;
 
 private:
 	void SetGunAimed();
@@ -32,5 +34,5 @@ private:
 	WorldObject* gunHolder;
 	WorldObject* gun;
 	Transform* trCamera;
-	Camera* camera;
+	Components::Camera* camera;
 };
