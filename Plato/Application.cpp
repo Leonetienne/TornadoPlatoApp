@@ -1,12 +1,16 @@
 #include "Application.h"
 #include "EventManager.h"
 
-const Rect& Input::Application::GetWindowRect()
+using namespace Plato;
+using namespace Plato::Input;
+using namespace Eule;
+
+const Rect& Application::GetWindowRect()
 {
 	return EventManager::GetWindowRect();
 }
 
-const bool Input::Application::Exit()
+const bool Application::Exit()
 {
 	return EventManager::ExecuteReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::EXIT,

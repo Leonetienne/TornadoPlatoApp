@@ -2,13 +2,15 @@
 #include <string>
 #include "Mesh.h"
 
-/** Wavefront mesh parser
-*/
-class OBJParser
+namespace Plato
 {
-public:
-	//! Will parse a wavefront (.obj) file to a Mesh
-	Mesh ParseObj(const std::string& filepath);
+	/** Wavefront mesh parser
+	*/
+	class OBJParser
+	{
+	public:
+		//! Will parse a wavefront (.obj) file to a Mesh
+		Mesh ParseObj(const std::string& filepath);
 
 	private:
 		//! Will interpret any line in a wavefront file
@@ -19,7 +21,7 @@ public:
 
 		//! Will interpret v-lines in a wavefront file
 		void Interpret_v(const std::string& line);
-		
+
 		//! Will interpret vt-lines in a wavefront file
 		void Interpret_vt(const std::string& line);
 
@@ -46,5 +48,6 @@ public:
 
 		std::vector<Mesh> submeshes;
 		Mesh curSubmesh;
-};
+	};
 
+}

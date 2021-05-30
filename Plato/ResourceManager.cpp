@@ -1,6 +1,8 @@
 #include "ResourceManager.h"
+#include "Color.h"
 
 using namespace BMPlib;
+using namespace Plato;
 
 Material* ResourceManager::NewMaterial(const std::string& name)
 {

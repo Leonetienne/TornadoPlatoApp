@@ -3,10 +3,11 @@
 #include <fstream>
 #include "Util.h"
 
-#include <iostream>
+using namespace Plato;
+
 Mesh OBJParser::ParseObj(const std::string& filepath)
 {
-	std::stringstream ss(ReadFile(filepath));
+	std::stringstream ss(Util::ReadFile(filepath));
 
 	std::string line;
 	while (std::getline(ss, line))
@@ -243,7 +244,7 @@ void OBJParser::Interpret_f(const std::string& line)
 					}
 					catch (std::logic_error)
 					{
-						std::cerr << "Exception details: " << ss.str() << std::endl;
+						//std::cerr << "Exception details: " << ss.str() << std::endl;
 						throw std::runtime_error("Wavefront file syntax error! std::stoul failure in f");
 					}
 

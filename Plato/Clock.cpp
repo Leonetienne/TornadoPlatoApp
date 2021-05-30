@@ -1,5 +1,7 @@
 #include "Clock.h"
 
+using namespace Plato;
+
 double Clock::Duration::AsSeconds() const
 {
 	return AsNanoseconds() * 10e-10;

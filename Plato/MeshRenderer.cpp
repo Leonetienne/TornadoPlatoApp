@@ -1,6 +1,10 @@
 #include "MeshRenderer.h"
 #include "Renderer.h"
 
+using namespace Plato;
+using namespace Plato::Components;
+using namespace TorGL;
+
 MeshRenderer::MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material)
 	:
 	Component(worldObject)

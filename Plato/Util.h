@@ -3,21 +3,27 @@
 #include <sstream>
 #include <string>
 
-//! Will read a file to a string
-inline std::string ReadFile(const std::string& filepath)
+namespace Plato
 {
-    std::ifstream ifs;
-    ifs.open(filepath);
-    if (!ifs.good())
+    namespace Util
     {
-        throw std::runtime_error("No such file");
-        std::terminate();
+        //! Will read a file to a string
+        inline std::string ReadFile(const std::string& filepath)
+        {
+            std::ifstream ifs;
+            ifs.open(filepath);
+            if (!ifs.good())
+            {
+                throw std::runtime_error("No such file");
+                std::terminate();
+            }
+            std::string buf;
+            std::stringstream content;
+            while (std::getline(ifs, buf))
+            {
+                content << buf << std::endl;
+            }
+            return content.str();
+        }
     }
-    std::string buf;
-    std::stringstream content;
-    while (std::getline(ifs, buf))
-    {
-        content << buf << std::endl;
-    }
-    return content.str();
 }

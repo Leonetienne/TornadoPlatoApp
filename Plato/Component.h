@@ -1,64 +1,67 @@
 #pragma once
 #include "Transform.h"
 
-class WorldObject;
-class Renderer;
-
-/** Base class for component-scripts that can be added to world objects.
-*/
-class Component
+namespace Plato
 {
-public:
-	//! Handle to the corresponding world object
-	WorldObject* const worldObject;
-	//! Handle to the corresponding transform
-	Transform* const transform;
+	class WorldObject;
+	class Renderer;
 
-	//! Will return whether or not this component is locally enabled
-	bool GetIsEnabled() const;
+	/** Base class for component-scripts that can be added to world objects.
+	*/
+	class Component
+	{
+	public:
+		//! Handle to the corresponding world object
+		WorldObject* const worldObject;
+		//! Handle to the corresponding transform
+		Transform* const transform;
 
-	//! Will return whether or not this component is globally enabled (respecting its world objects and its parents disabled-states)
-	bool GetIsGloballyEnabled() const;
+		//! Will return whether or not this component is locally enabled
+		bool GetIsEnabled() const;
 
-	//! Will set the enabled-status of this component. Disabled components receive no hook calls!
-	void SetIsEnabled(bool state);
+		//! Will return whether or not this component is globally enabled (respecting its world objects and its parents disabled-states)
+		bool GetIsGloballyEnabled() const;
 
-	//! Will locally enable this component. Disabled components receive no hook calls!
-	void Enable();
+		//! Will set the enabled-status of this component. Disabled components receive no hook calls!
+		void SetIsEnabled(bool state);
 
-	//! Will locally disable this component. Disabled components receive no hook calls!
-	void Disable();
+		//! Will locally enable this component. Disabled components receive no hook calls!
+		void Enable();
 
-protected:
-	virtual ~Component() {};
+		//! Will locally disable this component. Disabled components receive no hook calls!
+		void Disable();
 
-	// ### GAME ENGINE HOOKS ### //
+	protected:
+		virtual ~Component() {};
 
-	// These hooks are not defined as abstract ( = 0 ), because they should not have
-	// to be implemented. A component that just uses Update(double) should be fine by just implementing Update(double).
+		// ### GAME ENGINE HOOKS ### //
 
-	//! Gets called once after the object is all set up
-	virtual void Init() {};
+		// These hooks are not defined as abstract ( = 0 ), because they should not have
+		// to be implemented. A component that just uses Update(double) should be fine by just implementing Update(double).
 
-	//! Gets called every frame
-	virtual void Update(double frametime) {};
+		//! Gets called once after the object is all set up
+		virtual void Init() {};
 
-	//! Gets called every frame, right after Update() has been called on every Component
-	virtual void LateUpdate(double frametime) {};
+		//! Gets called every frame
+		virtual void Update(double frametime) {};
 
-	//! Gets called every frame just before rendering Register your Renderables in renderer
-	virtual void Render(Renderer* renderer) {};
+		//! Gets called every frame, right after Update() has been called on every Component
+		virtual void LateUpdate(double frametime) {};
 
-	//! Gets called just before this object gets deleted
-	virtual void OnDestroy() {};
+		//! Gets called every frame just before rendering Register your Renderables in renderer
+		virtual void Render(Renderer* renderer) {};
 
-protected:
-	Component(WorldObject* worldObject);
+		//! Gets called just before this object gets deleted
+		virtual void OnDestroy() {};
 
-private:
-	bool enabled = true;
+	protected:
+		Component(WorldObject* worldObject);
 
-	friend class WorldObject;
-	// Allow access to call hooks
-	friend class WorldObjectManager;
-};
+	private:
+		bool enabled = true;
+
+		friend class WorldObject;
+		// Allow access to call hooks
+		friend class WorldObjectManager;
+	};
+}

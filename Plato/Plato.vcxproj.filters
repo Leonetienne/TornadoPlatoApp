@@ -19,6 +19,15 @@
     <Filter Include="Quelldateien\Components">
       <UniqueIdentifier>{f8708638-93c3-41f3-bde1-6a75428bb71f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Mirrors">
+      <UniqueIdentifier>{a0f7d0d2-7837-47e2-8c0a-798e2458110b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{209cbfd7-b447-41c4-97c8-dc1318bb1cde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Input">
+      <UniqueIdentifier>{ec80d1c0-0112-4954-a109-bbf134ce12a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Plato.h">
@@ -57,36 +66,6 @@
     <ClInclude Include="Clock.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="KeyState.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyCode.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Event_ReverseEventCallback.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Quaternion.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Headerdateien\Components</Filter>
     </ClInclude>
@@ -104,6 +83,48 @@
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Headerdateien\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4x4.h">
+      <Filter>Headerdateien\Mirrors</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCode.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Event_ReverseEventCallback.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,18 +158,6 @@
     <ClCompile Include="Clock.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Quelldateien\Components</Filter>
     </ClCompile>
@@ -166,6 +175,18 @@
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Quelldateien\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Quelldateien\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Quelldateien\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Quelldateien\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Quelldateien\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,8 @@
 #include "WorldObject.h"
 #include "WorldObjectManager.h"
 
+using namespace Plato;
+
 WorldObject::WorldObject()
 	:
 	transform { privateHandle__Transform }

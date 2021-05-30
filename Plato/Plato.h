@@ -2,13 +2,15 @@
 #include "WorldObjectManager.h"
 #include "Renderer.h"
 
-class Plato
+namespace Plato
 {
-public:
-	Plato();
-	~Plato();
+	class PlatoGameEngine
+	{
+	public:
+		PlatoGameEngine();
+		~PlatoGameEngine();
 
-private:
+	private:
 
-};
-
+	};
+}

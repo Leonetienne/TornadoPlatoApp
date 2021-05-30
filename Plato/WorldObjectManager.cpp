@@ -5,6 +5,8 @@
 #include <iostream>
 #endif
 
+using namespace Plato;
+
 WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transform* parent)
 {
 	// Create new pair

@@ -1,6 +1,8 @@
 #include "EventManager.h"
 
-using namespace Input;
+using namespace Plato;
+using namespace Plato::Input;
+using namespace Eule;
 
 void EventManager::Init()
 {

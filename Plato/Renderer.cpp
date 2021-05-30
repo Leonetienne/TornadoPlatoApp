@@ -1,5 +1,9 @@
 #include "Renderer.h"
 
+using namespace Plato;
+using namespace Plato::Components;
+using namespace TorGL;
+
 Renderer::Renderer(const Vector2i& renderResolution)
 	:
 	renderResolution { renderResolution },

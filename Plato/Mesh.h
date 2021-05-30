@@ -1,27 +1,29 @@
 #pragma once
 #include <vector>
-#include "../Eule/Vector2.h"
-#include "../Eule/Vector3.h"
+#include "Vector.h"
 
-//! This struct holds indices for all important vertex types.
-struct MeshVertexIndices
+namespace Plato
 {
-	//! Index of the 3D world vertex
-	std::size_t v;
+	//! This struct holds indices for all important vertex types.
+	struct MeshVertexIndices
+	{
+		//! Index of the 3D world vertex
+		std::size_t v;
 
-	// Index of the uv (texture space) vertex
-	std::size_t uv;
+		// Index of the uv (texture space) vertex
+		std::size_t uv;
 
-	// Index of the normal value
-	std::size_t vn;
-};
+		// Index of the normal value
+		std::size_t vn;
+	};
 
-/** 3D mesh representation.
-*/
-struct Mesh
-{
-	std::vector<Vector3d> v_vertices;
-	std::vector<Vector2d> uv_vertices;
-	std::vector<Vector3d> normals;
-	std::vector<MeshVertexIndices> tris;
-};
+	/** 3D mesh representation.
+	*/
+	struct Mesh
+	{
+		std::vector<Vector3d> v_vertices;
+		std::vector<Vector2d> uv_vertices;
+		std::vector<Vector3d> normals;
+		std::vector<MeshVertexIndices> tris;
+	};
+}

@@ -1,6 +1,8 @@
 #include "Component.h"
 #include "WorldObject.h"
 
+using namespace Plato;
+
 Component::Component(WorldObject* worldObject)
 	:
 	worldObject { worldObject },
@@ -42,4 +44,3 @@ bool Component::GetIsGloballyEnabled() const
 	// Gotta ask my parents then!
 	return worldObject->GetIsGloballyEnabled();
 }
-

@@ -1,22 +1,25 @@
 #include "Mouse.h"
 #include "EventManager.h"
 
-const Vector2i& Input::Mouse::GetGlobalMousePosition()
+using namespace Plato;
+using namespace Plato::Input;
+
+const Vector2i& Mouse::GetGlobalMousePosition()
 {
 	return EventManager::GetGlobalMousePosition();
 }
 
-const Vector2i& Input::Mouse::GetLocalMousePosition()
+const Vector2i& Mouse::GetLocalMousePosition()
 {
 	return EventManager::GetLocalMousePosition();
 }
 
-double Input::Mouse::GetMousewheelDelta()
+double Mouse::GetMousewheelDelta()
 {
 	return EventManager::GetMousewheelDelta();
 }
 
-bool Input::Mouse::SetGlobalMousePosition(const Vector2i& newPos)
+bool Mouse::SetGlobalMousePosition(const Vector2i& newPos)
 {
 	return EventManager::ExecuteReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
@@ -27,7 +30,7 @@ bool Input::Mouse::SetGlobalMousePosition(const Vector2i& newPos)
 	);
 }
 
-bool Input::Mouse::SetLocalMousePosition(const Vector2i& newPos)
+bool Mouse::SetLocalMousePosition(const Vector2i& newPos)
 {
 	return EventManager::ExecuteReverseEventCallback(
 		REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION,

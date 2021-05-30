@@ -1,31 +1,37 @@
 #pragma once
 #include "Component.h"
 #include "Mesh.h"
-#include "../Tornado/Material.h"
+#include "Material.h"
 
-class Renderer;
-
-/** Component to render meshes. 
-* This component will take a reference to a mesh and a material, and will automatically render it at the end of each frame.
-*/
-class MeshRenderer : public Component
+namespace Plato
 {
-public:
-	void SetMesh(Mesh* mesh);
-	Mesh* GetMesh();
-	const Mesh* GetMesh() const;
+	class Renderer;
 
-	void SetMaterial(Material* material);
-	Material* GetMaterial();
-	const Material* GetMaterial() const;
+	namespace Components
+	{
+		/** Component to render meshes.
+		* This component will take a reference to a mesh and a material, and will automatically render it at the end of each frame.
+		*/
+		class MeshRenderer : public Component
+		{
+		public:
+			void SetMesh(Mesh* mesh);
+			Mesh* GetMesh();
+			const Mesh* GetMesh() const;
 
-	void Render(Renderer* renderer);
+			void SetMaterial(Material* material);
+			Material* GetMaterial();
+			const Material* GetMaterial() const;
 
-private:
-	MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material);
+			void Render(Renderer* renderer);
 
-	Mesh* mesh;
-	Material* material;
+		private:
+			MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material);
 
-	friend class WorldObject;
-};
+			Mesh* mesh;
+			Material* material;
+
+			friend class WorldObject;
+		};
+	}
+}

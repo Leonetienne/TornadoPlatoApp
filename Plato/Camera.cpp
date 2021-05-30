@@ -1,6 +1,10 @@
 #include "Camera.h"
 #include "WorldObjectManager.h"
 
+using namespace Plato;
+using namespace Plato::Components;
+using namespace TorGL;
+
 Camera::Camera(WorldObject* worldObject, const Vector2i& renderResolution, double fov, double nearclip, double farclip) :
 	Component(worldObject),
 	projectionProperties(renderResolution, fov, nearclip, farclip)

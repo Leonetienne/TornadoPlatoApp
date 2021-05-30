@@ -1,12 +1,14 @@
 #include "Plato.h"
 
-Plato::Plato()
+using namespace Plato;
+
+PlatoGameEngine::PlatoGameEngine()
 {
 
 	return;
 }
 
-Plato::~Plato()
+PlatoGameEngine::~PlatoGameEngine()
 {
 	return;
 }

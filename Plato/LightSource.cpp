@@ -1,6 +1,10 @@
 #include "LightSource.h"
 #include "Renderer.h"
 
+using namespace Plato;
+using namespace Plato::Components;
+using namespace TorGL;
+
 LightSource::LightSource(WorldObject* worldObject, double intensity, const Color& color) :
 	Component(worldObject),
 	tornadoLightSource { nullptr }

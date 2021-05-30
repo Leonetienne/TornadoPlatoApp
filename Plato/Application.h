@@ -1,18 +1,21 @@
 #pragma once
 #include "../Eule/Rect.h"
 
-namespace Input
+namespace Plato
 {
-	/** Interface to interface with the application in general
-	*/
-	class Application
+	namespace Input
 	{
-	public:
-		//! Will return the applications window bounds
-		static const Rect& GetWindowRect();
+		/** Interface to interface with the application in general
+		*/
+		class Application
+		{
+		public:
+			//! Will return the applications window bounds
+			static const Eule::Rect& GetWindowRect();
 
-		//! Will exit the application, if such an reverse-event callback is implemented.  
-		//! Returns false if it isn't.
-		static const bool Exit();
-	};
+			//! Will exit the application, if such an reverse-event callback is implemented.  
+			//! Returns false if it isn't.
+			static const bool Exit();
+		};
+	}
 }

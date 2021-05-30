@@ -1,6 +1,10 @@
 #include "PointLight.h"
 #include "../Tornado/RenderPointLight.h"
 
+using namespace Plato;
+using namespace Plato::Components;
+using namespace TorGL;
+
 PointLight::PointLight(WorldObject* worldObject, double intensity, const Color& color)
 	:
 	LightSource(worldObject, intensity, color)

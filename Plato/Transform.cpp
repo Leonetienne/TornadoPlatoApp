@@ -1,6 +1,8 @@
 #include "Transform.h"
 #include <iostream>
 
+using namespace Plato;
+
 Transform::Transform()
 	:
 	worldObject { privateHandle__WorldObject }

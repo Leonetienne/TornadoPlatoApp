@@ -3,74 +3,77 @@
 #include "WorldObject.h"
 #include "Transform.h"
 
-// TODO:
-// Optimize name, id, tag lookups via hashes
-
-/** Manager class for WorldObjects.
-* This is the only class able to instanciate WorldObject's and Transform's.  
-* This class will take complete care of them. When creating a new WorldObject, 
-* it will automatically create a new Transform alongside it, link them, call their Component's hook methods
-* and free their memory either during runtime or in teardown.  
-*   
-* IMPORTANT:  
-* Don NOT delete WorldObject and Transform instances yourself!! Don't do it! If you have to, for whatever reason, 
-* delete a WorldObject immediately, do it like this:
-* ```
-* wObject->Destroy();
-* WorldObjectManager::DeleteFlaggedObjects();
-* `` 
-*/
-class WorldObjectManager
+namespace Plato
 {
-public:
-	//! Will create a new world object just by a parent
-	static WorldObject* NewWorldObject(Transform* parent);
+	// TODO:
+	// Optimize name, id, tag lookups via hashes
 
-	//! Will create a new world object by an optional name and optional parent
-	static WorldObject* NewWorldObject(const std::string& name = "World Object", Transform* parent = nullptr);
+	/** Manager class for WorldObjects.
+	* This is the only class able to instanciate WorldObject's and Transform's.
+	* This class will take complete care of them. When creating a new WorldObject,
+	* it will automatically create a new Transform alongside it, link them, call their Component's hook methods
+	* and free their memory either during runtime or in teardown.
+	*
+	* IMPORTANT:
+	* Don NOT delete WorldObject and Transform instances yourself!! Don't do it! If you have to, for whatever reason,
+	* delete a WorldObject immediately, do it like this:
+	* ```
+	* wObject->Destroy();
+	* WorldObjectManager::DeleteFlaggedObjects();
+	* ``
+	*/
+	class WorldObjectManager
+	{
+	public:
+		//! Will create a new world object just by a parent
+		static WorldObject* NewWorldObject(Transform* parent);
 
-	//! Will return a world object that goes by this id. Nullptr if none
-	static WorldObject* FindObjectById(const std::string& id);
+		//! Will create a new world object by an optional name and optional parent
+		static WorldObject* NewWorldObject(const std::string& name = "World Object", Transform* parent = nullptr);
 
-	//! Will search for world objects by their name. Only returns absolute matches.
-	static std::unordered_set<WorldObject*> FindObjectsByName(const std::string& name);
+		//! Will return a world object that goes by this id. Nullptr if none
+		static WorldObject* FindObjectById(const std::string& id);
 
-	//! Will search for world objects by their associated tags.
-	static std::unordered_set<WorldObject*> FindObjectsByTag(const std::string& tag);
+		//! Will search for world objects by their name. Only returns absolute matches.
+		static std::unordered_set<WorldObject*> FindObjectsByName(const std::string& name);
 
-	//! Will register this WorldObject (and all its children) to be deleted with the next call of DeleteFlaggedObjects(), which is most likely at the end of the current frame
-	static void RegisterWorldObjectForDeletion(WorldObject* wo);
+		//! Will search for world objects by their associated tags.
+		static std::unordered_set<WorldObject*> FindObjectsByTag(const std::string& tag);
 
-	//! Will return the number of world objects
-	static std::size_t GetNumObjects();
+		//! Will register this WorldObject (and all its children) to be deleted with the next call of DeleteFlaggedObjects(), which is most likely at the end of the current frame
+		static void RegisterWorldObjectForDeletion(WorldObject* wo);
 
-	//! Will look for objects marked to be deleted and will delete them.  
-	//! Call this once at the absolute beginning of every frame
-	static void DeleteFlaggedObjects();
+		//! Will return the number of world objects
+		static std::size_t GetNumObjects();
 
-	//! Will call the hook method "Update()" on all world objects.  
-	//! Only call this ONCE per frame in your main loop!!
-	static void CallHook__Update(double frametime);
+		//! Will look for objects marked to be deleted and will delete them.  
+		//! Call this once at the absolute beginning of every frame
+		static void DeleteFlaggedObjects();
 
-	//! Will call the hook method "LateUpdate()" on all world objects.  
-	//! Only call this ONCE per frame in your main loop!!
-	static void CallHook__LateUpdate(double frametime);
+		//! Will call the hook method "Update()" on all world objects.  
+		//! Only call this ONCE per frame in your main loop!!
+		static void CallHook__Update(double frametime);
 
-	//! Will call the hook method "Update()" on all world objects.  
-	//! Only call this ONCE per frame in your main loop!!
-	static void CallHook__Render(Renderer* renderer);
+		//! Will call the hook method "LateUpdate()" on all world objects.  
+		//! Only call this ONCE per frame in your main loop!!
+		static void CallHook__LateUpdate(double frametime);
 
-	//! Will free all world objects
-	static void Free();
+		//! Will call the hook method "Update()" on all world objects.  
+		//! Only call this ONCE per frame in your main loop!!
+		static void CallHook__Render(Renderer* renderer);
 
-private:
+		//! Will free all world objects
+		static void Free();
 
-	// Will call delete on a world object and its transform
-	static void FreeWorldObject(WorldObject* wo);
+	private:
 
-	static std::unordered_set<WorldObject*> worldObjects;
-	static std::unordered_set<WorldObject*> objectsFlaggedForDeletion;
+		// Will call delete on a world object and its transform
+		static void FreeWorldObject(WorldObject* wo);
 
-	// No instantation! >:(
-	WorldObjectManager();
-};
+		static std::unordered_set<WorldObject*> worldObjects;
+		static std::unordered_set<WorldObject*> objectsFlaggedForDeletion;
+
+		// No instantation! >:(
+		WorldObjectManager();
+	};
+}

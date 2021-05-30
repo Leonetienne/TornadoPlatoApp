@@ -2,6 +2,10 @@
 #include "WorldObjectManager.h"
 #include "Camera.h"
 
+using namespace Plato;
+using namespace Plato::Components;
+using namespace TorGL;
+
 PTrapazoidalPrismCollider::PTrapazoidalPrismCollider(WorldObject* worldObject) :
 	PCollider(worldObject)
 {
@@ -48,12 +52,12 @@ void PTrapazoidalPrismCollider::SetVertex(std::size_t index, const Vector3d valu
 	return;
 }
 
-const Collider* PTrapazoidalPrismCollider::WorldSpaceColldier() const
+const Eule::Collider* PTrapazoidalPrismCollider::WorldSpaceColldier() const
 {
 	return &worldspaceCollider;
 }
 
-const Collider* PTrapazoidalPrismCollider::CameraSpaceColldier() const
+const Eule::Collider* PTrapazoidalPrismCollider::CameraSpaceColldier() const
 {
 	return &cameraspaceCollider;
 }
