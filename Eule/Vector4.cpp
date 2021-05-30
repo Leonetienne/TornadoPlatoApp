@@ -7,6 +7,8 @@
 #include <immintrin.h>
 #endif
 
+using namespace Eule;
+
 /*
 	NOTE:
 	Here you will find bad, unoptimized methods for T=int.

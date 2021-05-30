@@ -1,5 +1,7 @@
 #include "TrapazoidalPrismCollider.h"
 
+using namespace Eule;
+
 TrapazoidalPrismCollider::TrapazoidalPrismCollider()
 {
 	return;

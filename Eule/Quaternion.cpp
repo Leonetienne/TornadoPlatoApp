@@ -6,6 +6,8 @@
 #include <immintrin.h>
 #endif
 
+using namespace Eule;
+
 Quaternion::Quaternion()
 {
 	v = Vector4d(0, 0, 0, 1);
@@ -318,14 +320,17 @@ void Quaternion::InvalidateCache()
 	return;
 }
 
-std::ostream& operator << (std::ostream& os, const Quaternion& q)
+namespace Eule
 {
-	os << "[" << q.v << "]";
-	return os;
-}
+	std::ostream& operator<< (std::ostream& os, const Quaternion& q)
+	{
+		os << "[" << q.v << "]";
+		return os;
+	}
 
-std::wostream& operator<<(std::wostream& os, const Quaternion& q)
-{
-	os << L"[" << q.v << L"]";
-	return os;
+	std::wostream& operator<<(std::wostream& os, const Quaternion& q)
+	{
+		os << L"[" << q.v << L"]";
+		return os;
+	}
 }

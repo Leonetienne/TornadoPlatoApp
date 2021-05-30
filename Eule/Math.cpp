@@ -2,6 +2,8 @@
 #include "Constants.h"
 #include <array>
 
+using namespace Eule;
+
 // Checks if the random number generator is initialized. Does nothing if it is, initializes if it isn't.
 #define MAKE_SURE_RNG_IS_INITIALIZED if (!isRngInitialized) InitRng();
 
