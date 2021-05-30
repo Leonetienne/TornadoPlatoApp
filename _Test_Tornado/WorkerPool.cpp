@@ -10,6 +10,7 @@
 #define SUPER_COMPUTATIONALLY_EXPENSIVE_FORMULA (atan2(sqrt(sqrt(sin((rng()%21929) / 1.29422) / ((rng()%3292) / 0.0028))), pow(22.1, 3.14159265358979323846)))
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace TorGL;
 
 namespace Multithreading
 {

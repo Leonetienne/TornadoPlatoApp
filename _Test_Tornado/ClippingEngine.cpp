@@ -6,6 +6,7 @@
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace TorGL;
 
 // HomoDot method to check if clipped triangles are indeed no longer outside the clipping space
 double HomoDot(uint8_t edge, const Vector4d& v)

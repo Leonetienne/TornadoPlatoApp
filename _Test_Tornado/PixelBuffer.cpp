@@ -7,6 +7,7 @@
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace TorGL;
 
 // The Refit() tests cover the Refit() method, the PixelBuffer(uint8_t* existingData, Vector2i size) constructor, and the copy constructor!
 // They all use the Refit() method!

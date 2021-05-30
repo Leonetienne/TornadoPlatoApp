@@ -7,6 +7,8 @@
 #include <chrono>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace TorGL;
+using Eule::Math;
 
 InterRenderTriangle GetExampleTriangle()
 {
