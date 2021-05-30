@@ -2,11 +2,11 @@
 #include "../Eule/Vector2.h"
 #include "../Eule/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
-
 #include <random>
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Eule;
 
 namespace Vectors
 {

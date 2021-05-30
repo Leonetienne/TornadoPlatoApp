@@ -5,6 +5,7 @@
 #include <random>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Eule;
 
 namespace Matrices
 {

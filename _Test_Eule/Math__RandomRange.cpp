@@ -5,6 +5,7 @@
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Eule;
 
 namespace _Math
 {

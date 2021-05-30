@@ -3,6 +3,7 @@
 #include <random>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Eule;
 
 /** Equivalence classes:
 *		-- min < v < max

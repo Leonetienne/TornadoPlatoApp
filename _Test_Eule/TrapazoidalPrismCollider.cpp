@@ -7,6 +7,7 @@
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Eule;
 using TPC = TrapazoidalPrismCollider;
 
 namespace Colliders
