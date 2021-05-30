@@ -89,11 +89,11 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	rgbLight = woLight->AddComponent<Components::PointLight>(20, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 	
-	Components::PTrapazoidalPrismCollider* col = woLight->AddComponent<Components::PTrapazoidalPrismCollider>();
+	Components::TrapazoidalPrismCollider* col = woLight->AddComponent<Components::TrapazoidalPrismCollider>();
 
 	rgbLight->SetUseDomains(true);
 	
-	using TPC = Components::PTrapazoidalPrismCollider;
+	using TPC = Components::TrapazoidalPrismCollider;
 	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5)));
 	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5)));
 	col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5)));

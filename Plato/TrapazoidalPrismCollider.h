@@ -6,7 +6,7 @@ namespace Plato
 {
 	namespace Components
 	{
-		class PTrapazoidalPrismCollider : public PCollider, private Eule::TrapazoidalPrismCollider
+		class TrapazoidalPrismCollider : public Collider, private Eule::TrapazoidalPrismCollider
 		{
 		public:
 			// Make these public again
@@ -23,14 +23,14 @@ namespace Plato
 			void SetVertex(std::size_t index, const Vector3d value);
 
 			//! Will return a pointer to this collider in world space.
-			virtual const Collider* WorldSpaceColldier() const override;
+			virtual const Eule::Collider* WorldSpaceColldier() const override;
 
 			//! Will return a pointer to this collider in camera space.
-			virtual const Collider* CameraSpaceColldier() const override;
+			virtual const Eule::Collider* CameraSpaceColldier() const override;
 
 		protected:
 			friend class WorldObject;
-			PTrapazoidalPrismCollider(WorldObject* worldObject);
+			TrapazoidalPrismCollider(WorldObject* worldObject);
 
 		private:
 			void LateUpdate(double frameTime) override;

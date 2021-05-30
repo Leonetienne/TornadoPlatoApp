@@ -3,7 +3,7 @@
 using namespace Plato;
 using namespace Plato::Components;
 
-PCollider::PCollider(WorldObject* worldObject)
+Collider::Collider(WorldObject* worldObject)
 	:
 	Component(worldObject)
 {

@@ -8,7 +8,7 @@ namespace Plato
 	{
 		/** Abstract implementation of a Collider Component
 		*/
-		class PCollider : public Component
+		class Collider : public Component
 		{
 		public:
 			//! Will return a pointer to this collider in world space.
@@ -19,7 +19,7 @@ namespace Plato
 
 		protected:
 			// No WorldObject friend declaration, because this abstract component should not be instanciable
-			PCollider(WorldObject* worldObject);
+			Collider(WorldObject* worldObject);
 
 		private:
 

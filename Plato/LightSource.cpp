@@ -63,12 +63,12 @@ bool LightSource::GetUseDomains() const
 	return tornadoLightSource->GetUseDomains();
 }
 
-std::vector<PCollider*>& LightSource::GetDomains()
+std::vector<Collider*>& LightSource::GetDomains()
 {
 	return lightDomains;
 }
 
-const std::vector<PCollider*>& LightSource::GetDomains() const
+const std::vector<Collider*>& LightSource::GetDomains() const
 {
 	return lightDomains;
 }
@@ -84,7 +84,7 @@ void LightSource::LateUpdate(double frameTime)
 	if (tornadoLightSource->GetUseDomains())
 	{
 		tornadoLightSource->GetDomains().clear();
-		for (const PCollider* domain : lightDomains)
+		for (const Collider* domain : lightDomains)
 			tornadoLightSource->GetDomains().push_back(domain->CameraSpaceColldier());
 	}
 

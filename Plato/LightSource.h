@@ -45,10 +45,10 @@ namespace Plato
 
 			//! Will return a vector of the lighting domains used.  
 			//! Domains are Collider objects that will restrict where the light will be rendered.
-			std::vector<PCollider*>& GetDomains();
+			std::vector<Collider*>& GetDomains();
 			//! Will return a vector of the lighting domains used.  
 			//! Domains are Collider objects that will restrict where the light will be rendered.
-			const std::vector<PCollider*>& GetDomains() const;
+			const std::vector<Collider*>& GetDomains() const;
 
 			//! Will return the tornado render light source. This does NOT include transformation!
 			virtual TorGL::RenderLightSource* GetRawTornadoRenderLightSource() const = 0;
@@ -63,7 +63,7 @@ namespace Plato
 			void LateUpdate(double frameTime) override;
 			void Render(Renderer* renderer) override;
 
-			std::vector<PCollider*> lightDomains;
+			std::vector<Collider*> lightDomains;
 
 		};
 	}

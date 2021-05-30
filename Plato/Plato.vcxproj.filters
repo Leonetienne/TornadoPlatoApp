@@ -22,11 +22,11 @@
     <Filter Include="Headerdateien\Mirrors">
       <UniqueIdentifier>{a0f7d0d2-7837-47e2-8c0a-798e2458110b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{209cbfd7-b447-41c4-97c8-dc1318bb1cde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\Input">
       <UniqueIdentifier>{ec80d1c0-0112-4954-a109-bbf134ce12a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Input">
+      <UniqueIdentifier>{209cbfd7-b447-41c4-97c8-dc1318bb1cde}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,25 +106,25 @@
       <Filter>Headerdateien\Mirrors</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
     <ClInclude Include="KeyCode.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
     <ClInclude Include="KeyState.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
     <ClInclude Include="Event_ReverseEventCallback.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>Input</Filter>
+      <Filter>Headerdateien\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
