@@ -3,10 +3,9 @@
 #include "Camera.h"
 
 using namespace Plato;
-using namespace Plato::Components;
 using namespace TorGL;
 
-TrapazoidalPrismCollider::TrapazoidalPrismCollider(WorldObject* worldObject) :
+Plato::Components::TrapazoidalPrismCollider::TrapazoidalPrismCollider(WorldObject* worldObject) :
 	Plato::Components::Collider(worldObject)
 {
 	// Create default shape (a cube unit-cube)
@@ -22,7 +21,7 @@ TrapazoidalPrismCollider::TrapazoidalPrismCollider(WorldObject* worldObject) :
 	return;
 }
 
-void TrapazoidalPrismCollider::LateUpdate(double frameTime)
+void Plato::Components::TrapazoidalPrismCollider::LateUpdate(double frameTime)
 {
 	// Update the trapazoidal collider
 	for (std::size_t i = 0; i < 8; i++)
@@ -38,7 +37,7 @@ void TrapazoidalPrismCollider::LateUpdate(double frameTime)
 	return;
 }
 
-void TrapazoidalPrismCollider::SetVertex(std::size_t index, const Vector3d value)
+void Plato::Components::TrapazoidalPrismCollider::SetVertex(std::size_t index, const Vector3d value)
 {
 	const Vector3d& relativeVertex = value;
 	const Vector3d worldspaceVertex = transform->ObjectSpaceToWorldSpace(relativeVertex);
@@ -51,12 +50,12 @@ void TrapazoidalPrismCollider::SetVertex(std::size_t index, const Vector3d value
 	return;
 }
 
-const Eule::Collider* TrapazoidalPrismCollider::WorldSpaceColldier() const
+const Eule::Collider* Plato::Components::TrapazoidalPrismCollider::WorldSpaceColldier() const
 {
 	return &worldspaceCollider;
 }
 
-const Eule::Collider* TrapazoidalPrismCollider::CameraSpaceColldier() const
+const Eule::Collider* Plato::Components::TrapazoidalPrismCollider::CameraSpaceColldier() const
 {
 	return &cameraspaceCollider;
 }
