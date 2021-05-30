@@ -6,6 +6,8 @@
 #include <thread>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Plato;
+using namespace Plato::Components;
 
 #define DUMMY_CAM_ARGUMENTS Vector2i(10,10), 90, 0.1, 100
 

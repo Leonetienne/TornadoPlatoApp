@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Plato/Clock.h"
-#include "../Eule/Math.h"
+#include "../Plato/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
@@ -10,6 +10,8 @@
 #include <chrono>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Plato;
+
 typedef std::chrono::milliseconds ms;
 
 namespace Misc

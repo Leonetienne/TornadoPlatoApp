@@ -6,6 +6,7 @@
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Plato;
 
 #define SETUP_TEST WorldObjectManager::Free();
 #define CLEAN_TEST WorldObjectManager::Free();

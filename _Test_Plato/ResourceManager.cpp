@@ -1,12 +1,13 @@
 #include "CppUnitTest.h"
 #include "../Plato/ResourceManager.h"
-#include "../Eule/Math.h"
+#include "../Plato/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Plato;
 
 #define SETUP_TEST ResourceManager::Free();
 #define CLEAN_TEST ResourceManager::Free();

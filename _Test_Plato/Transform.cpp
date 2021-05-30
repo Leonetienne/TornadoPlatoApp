@@ -1,10 +1,12 @@
 #include "CppUnitTest.h"
 #include "../Plato/WorldObjectManager.h"
-#include "../Eule/Math.h"
+#include "../Plato/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
 #include <sstream>
+
+using namespace Plato;
 
 Vector3d ScaleVec(Vector3d a, Vector3d b)
 {
