@@ -1,6 +1,9 @@
 #include "RenderLightSource.h"
 #include "../Eule/Math.h"
 
+using namespace TorGL;
+using namespace Eule;
+
 void RenderLightSource::SetColor(const Color& color)
 {
 	this->color = color;

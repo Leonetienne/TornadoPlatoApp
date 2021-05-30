@@ -1,5 +1,7 @@
 #include "BarycentricInterpolationEngine.h"
 
+using namespace TorGL;
+
 double BarycentricInterpolationEngine::PerspectiveCorrected(const InterRenderTriangle& tri, const Vector2d& pos, double val_a, double val_b, double val_c)
 {
 	std::array<double, 5> cache { 0 };

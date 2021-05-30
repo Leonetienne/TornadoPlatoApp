@@ -3,6 +3,9 @@
 #include "../Eule/Math.h"
 #include <cstddef>
 
+using namespace TorGL;
+using namespace Eule;
+
 DrawingEngine::DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool)
 	:
 	workerPool {workerPool},

@@ -1,5 +1,7 @@
 #include "ClippingEngine.h"
 
+using namespace TorGL;
+
 /*
 	Credits to https://chaosinmotion.com/2016/05/22/3d-clipping-in-homogeneous-coordinates/
 	for nudging me in the right direction on that one!

@@ -1,6 +1,9 @@
 #include "RenderPointLight.h"
 #include "../Eule/Math.h"
 
+using namespace TorGL;
+using namespace Eule;
+
 Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const
 {
 	const Vector3d deltaPos = position - point;

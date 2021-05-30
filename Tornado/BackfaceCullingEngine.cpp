@@ -1,5 +1,7 @@
 #include "BackfaceCullingEngine.h"
 
+using namespace TorGL;
+
 BackfaceCullingEngine::BackfaceCullingEngine(WorkerPool* workerPool)
 	:
 	workerPool { workerPool }

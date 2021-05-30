@@ -1,6 +1,8 @@
 #include "Tornado.h"
 #include "RenderPointLight.h"
 
+using namespace TorGL;
+
 Tornado::Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads)
 {
 	workerPool = new WorkerPool(numRenderthreads);

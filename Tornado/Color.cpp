@@ -1,5 +1,7 @@
 #include "Color.h"
 
+using namespace TorGL;
+
 const Color Color::black	{   0,   0,   0, 255 };
 const Color Color::gray		{ 128, 128, 128, 255 };
 const Color Color::red		{ 255,   0,   0, 255 };

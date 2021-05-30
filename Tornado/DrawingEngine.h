@@ -5,49 +5,52 @@
 #include "../Eule/Rect.h"
 #include "LightingEngine.h"
 
-/** Engine to draw InterRenderTriangle's to the screen.
-* These IRDs have to be completely processed (e.g. projected and clipped)
-*/
-class DrawingEngine
+namespace TorGL
 {
-public:
-	DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool);
-	~DrawingEngine();
+	/** Engine to draw InterRenderTriangle's to the screen.
+	* These IRDs have to be completely processed (e.g. projected and clipped)
+	*/
+	class DrawingEngine
+	{
+	public:
+		DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool);
+		~DrawingEngine();
 
-	//! Will initialize the new drawing sequence
-	void BeginBatch(std::size_t reservesize_triangles = 0);
+		//! Will initialize the new drawing sequence
+		void BeginBatch(std::size_t reservesize_triangles = 0);
 
-	//! Will register an InterRenderTriangle to be drawn
-	void RegisterInterRenderTriangle(const InterRenderTriangle* tri);
+		//! Will register an InterRenderTriangle to be drawn
+		void RegisterInterRenderTriangle(const InterRenderTriangle* tri);
 
-	//! Faster way to register a lot of InterRenderTriangle's at once using std::move. This consumes the original vector.
-	void HardsetInterRenderTriangles(std::vector<const InterRenderTriangle*>&& triangles);
+		//! Faster way to register a lot of InterRenderTriangle's at once using std::move. This consumes the original vector.
+		void HardsetInterRenderTriangles(std::vector<const InterRenderTriangle*>&& triangles);
 
-	//! Will create and start the drawing tasks and allocate resources accordingly.  
-	//! Will freeze the main (calling) thread, until the drawing has been finished.
-	void Draw();
+		//! Will create and start the drawing tasks and allocate resources accordingly.  
+		//! Will freeze the main (calling) thread, until the drawing has been finished.
+		void Draw();
 
-private:
-	//! Will calculate cached values that only need to be calculated once ber InterRenderTriangle.
-	//! Call before running its compute task!!
-	void CalculateRenderingRelatedCaches_IRD(const InterRenderTriangle* ird);
-	
-	//! Will distribute drawing tasks based on a triangles screen size
-	void CreateTasks();
+	private:
+		//! Will calculate cached values that only need to be calculated once ber InterRenderTriangle.
+		//! Call before running its compute task!!
+		void CalculateRenderingRelatedCaches_IRD(const InterRenderTriangle* ird);
 
-	//! Will execute the tasks
-	void ComputeTasks();
+		//! Will distribute drawing tasks based on a triangles screen size
+		void CreateTasks();
 
-	//! Main drawing method for the tasks
-	void Thread_Draw(const InterRenderTriangle* ird, const Rect& bounds);
+		//! Will execute the tasks
+		void ComputeTasks();
 
-	//! Will draw a single pixel
-	void Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z);
+		//! Main drawing method for the tasks
+		void Thread_Draw(const InterRenderTriangle* ird, const Eule::Rect& bounds);
 
-	WorkerPool* workerPool;
-	PixelBuffer<3>* renderTarget;
+		//! Will draw a single pixel
+		void Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z);
 
-	double* zBuffer;
-	std::size_t numPixels;
-	std::vector<const InterRenderTriangle*> registeredTriangles;
-};
+		WorkerPool* workerPool;
+		PixelBuffer<3>* renderTarget;
+
+		double* zBuffer;
+		std::size_t numPixels;
+		std::vector<const InterRenderTriangle*> registeredTriangles;
+	};
+}

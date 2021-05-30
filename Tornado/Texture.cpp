@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+using namespace TorGL;
+
 Texture::Texture(const PixelBuffer<4>& pixelBuffer)
 {
 	this->pixelBuffer = new PixelBuffer<4>(pixelBuffer);

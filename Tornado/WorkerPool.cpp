@@ -1,6 +1,8 @@
 #include "WorkerPool.h"
 #include "CrossPlatformSyscalls.h"
 
+using namespace TorGL;
+
 WorkerPool::WorkerPool(std::size_t numWorkers)
 {
 	if (numWorkers == 0)

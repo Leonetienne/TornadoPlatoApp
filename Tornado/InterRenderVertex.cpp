@@ -1,5 +1,7 @@
 #include "InterRenderVertex.h"
 
+using namespace TorGL;
+
 void InterRenderVertex::SetInterpolationMask(long long mask)
 {
 	interpolationMask = mask;

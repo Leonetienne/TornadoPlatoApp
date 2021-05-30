@@ -1,5 +1,7 @@
 #include "ProjectionProperties.h"
 
+using namespace TorGL;
+
 ProjectionProperties::ProjectionProperties(const Vector2i& resolution, double fov, double nearclip, double farclip)
 	:
 	fov { fov },

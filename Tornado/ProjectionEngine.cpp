@@ -1,6 +1,8 @@
 #include "ProjectionEngine.h"
 #include "ClippingEngine.h"
 
+using namespace TorGL;
+
 ProjectionEngine::ProjectionEngine(WorkerPool* workerPool)
 {
 	this->workerPool = workerPool;

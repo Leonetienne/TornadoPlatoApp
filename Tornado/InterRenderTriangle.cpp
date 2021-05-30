@@ -1,5 +1,7 @@
 #include "InterRenderTriangle.h"
 
+using namespace TorGL;
+
 bool InterRenderTriangle::DoesScreenspaceContainPoint(const Vector2d& p) const
 {
 	//double ef_ab = EdgeFunction2D(a.pos_ss, b.pos_ss, p);

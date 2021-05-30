@@ -28,6 +28,7 @@
     <ClInclude Include="InterRenderTriangle.h" />
     <ClInclude Include="InterRenderVertex.h" />
     <ClInclude Include="LightingEngine.h" />
+    <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="RenderLightSource.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="RenderPointLight.h" />
@@ -38,6 +39,9 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="PixelBuffer.h" />
     <ClInclude Include="Tornado.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WorkerPool.h" />
   </ItemGroup>

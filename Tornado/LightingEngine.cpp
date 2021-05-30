@@ -1,5 +1,7 @@
 #include "LightingEngine.h"
 
+using namespace TorGL;
+
 void LightingEngine::BeginBatch(std::size_t reserve_lightSources)
 {
 	lightSources.clear();
