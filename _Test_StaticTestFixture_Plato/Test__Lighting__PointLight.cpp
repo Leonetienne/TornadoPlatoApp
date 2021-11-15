@@ -89,21 +89,22 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	rgbLight = woLight->AddComponent<Components::PointLight>(20, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 	
-	Components::TrapazoidalPrismCollider* col = woLight->AddComponent<Components::TrapazoidalPrismCollider>();
 
-	rgbLight->SetUseDomains(true);
 	
-	using TPC = Components::TrapazoidalPrismCollider;
-	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::BACK	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5)));
-	col->SetVertex(TPC::BACK	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5)));
-
-	rgbLight->GetDomains().push_back(col);
+	// outsource this part to a pointlight light-domain test
+		//Components::TrapazoidalPrismCollider* col = woLight->AddComponent<Components::TrapazoidalPrismCollider>();
+		//using TPC = Components::TrapazoidalPrismCollider;
+		//col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1,  1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::FRONT	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1,  1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::BOTTOM, Vector3d(-1, -1, -1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::BACK	| TPC::LEFT  | TPC::TOP,	Vector3d(-1,  1, -1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1,  1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::FRONT	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1,  1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::BACK	| TPC::RIGHT | TPC::BOTTOM, Vector3d( 1, -1, -1).VectorScale(Vector3d(10,10,5)));
+		//col->SetVertex(TPC::BACK	| TPC::RIGHT | TPC::TOP,	Vector3d( 1,  1, -1).VectorScale(Vector3d(10,10,5)));
+		//rgbLight->GetDomains().push_back(col);
+		//rgbLight->SetUseDomains(true);
+	// </>
 
 	//woPlane->GetComponentOfType<MeshRenderer>()->GetMaterial()->noShading = true;
 
@@ -122,7 +123,7 @@ void Test__Lighting__PointLight::Update(double deltaTime)
 
 	rgbParent->Rotate(Quaternion(Vector3d::up * 0.05 * deltaTime));
 
-	//UpdateColorCycle(deltaTime);
+	UpdateColorCycle(deltaTime);
 
 	return;
 }

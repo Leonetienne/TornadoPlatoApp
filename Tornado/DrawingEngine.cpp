@@ -296,6 +296,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			brightness.b = lightingIntensity.b / 255.0;
 		
 			// Apply global illumination
+			// This could overflow the int!!! FIX THIS
 			brightness.r += globalIllu;
 			brightness.g += globalIllu;
 			brightness.b += globalIllu;
