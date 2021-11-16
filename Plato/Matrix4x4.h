@@ -5,7 +5,7 @@
 // within the game engine. Much more convenient to just include "Matrix4x4.h".
 // Also, when using the game engine, one should ideally not have to directly interact with the maths engine at all.
 
-#include "../Eule/Matrix4x4.h"
+#include "Eule/Matrix4x4.h"
 
 namespace Plato
 {

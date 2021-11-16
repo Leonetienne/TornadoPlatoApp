@@ -1,5 +1,5 @@
 #pragma once
-#include "../Eule/Collider.h"
+#include "Eule/Collider.h"
 #include "Vector3.h"
 #include "Color.h"
 #include "InterRenderTriangle.h"

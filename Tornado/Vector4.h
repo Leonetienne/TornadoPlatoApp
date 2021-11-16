@@ -1,5 +1,5 @@
 #pragma once
-#include "../Eule/Vector4.h"
+#include "Eule/Vector4.h"
 // Just an ease-of-use includer for Eule::Vector4
 
 namespace TorGL

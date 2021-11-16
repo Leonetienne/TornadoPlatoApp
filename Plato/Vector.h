@@ -5,9 +5,9 @@
 // within the game engine. Much more convenient to just include "Vector.h".
 // Also, when using the game engine, one should ideally not have to directly interact with the maths engine at all.
 
-#include "../Eule/Vector2.h"
-#include "../Eule/Vector3.h"
-#include "../Eule/Vector4.h"
+#include "Eule/Vector2.h"
+#include "Eule/Vector3.h"
+#include "Eule/Vector4.h"
 
 namespace Plato
 {

@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "../Tornado/PixelBuffer.h"
-#include "../Eule/Math.h"
+#include "Eule/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
