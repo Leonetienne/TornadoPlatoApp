@@ -2,6 +2,7 @@
 #include "Test__OBJParser__LoadMultimesh.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
+#include "../Plato/PointLight.h"
 #include "Rotator.h"
 #include <iostream>
 

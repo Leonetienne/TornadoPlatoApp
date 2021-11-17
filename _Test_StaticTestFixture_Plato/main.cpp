@@ -19,7 +19,7 @@
 #include "Test__Lighting__PointLight.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__Lighting__PointLight
+#define TEST_TO_RUN Test__OBJParser__LoadMultimesh
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -51,7 +51,7 @@ int main()
 	// Create important objects, such as the Window and the Renderer, including Camera
 	RenderWindow window(resolution, "Plato Static Test Fixture");
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 1);
+	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 10);
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->SetAsMainCamera();
 	Renderer renderer(resolution);

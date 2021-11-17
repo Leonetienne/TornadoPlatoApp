@@ -92,6 +92,7 @@ Test__FPS::Test__FPS() :
 
 void Test__FPS::Update(double deltaTime)
 {
+	return;
 	this->deltaTime = deltaTime;
 	// Handle user input
 	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::MOUSE_R))

@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_set>
+#include <mutex>
 #include "Quaternion.h"
 #include "Matrix4x4.h"
 #include "Vector.h"
@@ -94,6 +95,15 @@ namespace Plato
 		//! Will transform an object-space point to a world-space point
 		Vector3d ObjectSpaceToWorldSpace(const Vector3d& objectSpacePoint) const;
 
+		// Will cause the local transform values to be re-calculated.
+		void InvalidateLocalTransform();
+
+		// Will cause the global transform values to be re-calculated. It also forwards this call to all children
+		void InvalidateGlobalTransform();
+
+		// Will recalculate the global transform values. You should only call this when cache__isGlobal... is false
+		void RecalculateGlobalTransformCache() const;
+
 	private:
 		Matrix4x4 scaleMatrix;
 		Matrix4x4 translationMatrix;
@@ -115,15 +125,11 @@ namespace Plato
 		// Stores pointers to all child transforms
 		std::unordered_set<Transform*> children;
 
+		// Mutexes for recalculating the transform caches
+		mutable std::mutex lock_localCache;
+		mutable std::mutex lock_globalCache;
 	private:
-		// Will cause the local transform values to be re-calculated.
-		void InvalidateLocalTransform();
 
-		// Will cause the global transform values to be re-calculated. It also forwards this call to all children
-		void InvalidateGlobalTransform();
-
-		// Will recalculate the global transform values. You should only call this when cache__isGlobal... is false
-		void RecalculateGlobalTransformCache() const;
 
 		// No public instantiation! >:(
 		Transform();

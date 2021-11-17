@@ -223,6 +223,9 @@ const std::unordered_set<Transform*>& Transform::GetChildren() const
 
 Matrix4x4 Transform::GetLocalTransformationMatrix() const
 {
+	// Thread-safety
+	const std::lock_guard<std::mutex> lock(lock_localCache);
+
 	// Recalculate if cache is invalid
 	if (!cache__IsLocalTransformationMatrix_UpToDate)
 	{
@@ -239,6 +242,9 @@ Matrix4x4 Transform::GetLocalTransformationMatrix() const
 
 Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 {
+	// Thread-safety
+	const std::lock_guard<std::mutex> lock(lock_globalCache);
+
 	// Recalculate if cache is invalid
 	if (!cache__IsGlobalTransformation_UpToDate)
 		RecalculateGlobalTransformCache();
@@ -248,6 +254,9 @@ Matrix4x4 Transform::GetGlobalTransformationMatrix() const
 
 Vector3d Transform::GetGlobalPosition() const
 {
+	// Thread-safety
+	const std::lock_guard<std::mutex> lock(lock_globalCache);
+
 	// Recalculate if cache is invalid
 	if (!cache__IsGlobalTransformation_UpToDate)
 		RecalculateGlobalTransformCache();
@@ -257,6 +266,9 @@ Vector3d Transform::GetGlobalPosition() const
 
 Quaternion Transform::GetGlobalRotation() const
 {
+	// Thread-safety
+	const std::lock_guard<std::mutex> lock(lock_globalCache);
+
 	// Recalculate if cache is invalid
 	if(!cache__IsGlobalTransformation_UpToDate)
 		RecalculateGlobalTransformCache();

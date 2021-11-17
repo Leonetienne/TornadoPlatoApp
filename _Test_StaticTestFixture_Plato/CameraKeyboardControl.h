@@ -9,7 +9,7 @@
 
 using namespace Plato;
 
-class CameraKeyboardControl : Component
+class CameraKeyboardControl : public Component
 {
 public:
 	void Update(double deltaTime)

@@ -76,6 +76,7 @@ const std::vector<Collider*>& LightSource::GetDomains() const
 void LightSource::LateUpdate(double frameTime)
 {
 	// Update light source camera space position
+	// Shouldn't this be moved to Renderer.cpp/ResolveLightSources...?
 	tornadoLightSource->SetPosition(
 		Camera::GetMainCamera()->WorldSpaceToCameraSpace(transform->GetGlobalPosition())
 	);

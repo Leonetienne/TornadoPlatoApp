@@ -1,4 +1,5 @@
 #include "LightingEngine.h"
+#include <iostream>
 
 using namespace TorGL;
 

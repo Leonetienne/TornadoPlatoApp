@@ -159,15 +159,18 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 		// Transform vertices from object space to camera space
 		rd.a.pos_worldSpace = 
 			mainCamera->WorldSpaceToCameraSpace(
-				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 0].v]));
+				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 0].v])
+			);
 
 		rd.b.pos_worldSpace = 
 			mainCamera->WorldSpaceToCameraSpace(
-				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 1].v]));
+				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 1].v])
+			);
 
 		rd.c.pos_worldSpace = 
 			mainCamera->WorldSpaceToCameraSpace(
-				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 2].v]));
+				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 2].v])
+			);
 
 
 		// Texture space can stay as is
@@ -194,7 +197,7 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 	}
 
 	// After having calculated all iterations, add them all at once to the vector
-	std::unique_lock<std::mutex> lock(vecMutex);
+	std::lock_guard<std::mutex> lock(vecMutex);
 	renderTriangles.insert(renderTriangles.end(), resultCache.begin(), resultCache.end());
 
 	return;

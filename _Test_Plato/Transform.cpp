@@ -302,6 +302,72 @@ namespace TransformRelated
 			return;
 		}
 
+		// Tests that recalculating a transforms global transform cache multiple times always yields the same result
+		TEST_METHOD(Recalculating_GlobalTransformCache_Always_Yields_Same_Result)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			// Setup
+			Transform* a = NEW_TRANSFORM;
+			a->SetPosition(Vector3d(127, 3, -5));
+			a->SetScale(Vector3d(1, 2, -2));
+			a->SetRotation(Quaternion(Vector3d(33, 5, 15)));
+
+			// Exercise
+			Matrix4x4 goodTrMat = a->GetGlobalTransformationMatrix();
+
+			for (std::size_t i = 0; i < 2000; i++)
+				a->RecalculateGlobalTransformCache();
+
+			Matrix4x4 recalculatedMat = a->GetGlobalTransformationMatrix();
+
+			// Verify
+			Assert::IsTrue(goodTrMat == recalculatedMat);
+
+			WorldObjectManager::Free();
+			return;
+		}
+
+		// Tests that recalculating a transforms global transform cache multiple times always yields the same result
+		TEST_METHOD(Recalculating_GlobalTransformCache_Always_Yields_Same_Result__Deep_Hierarchy)
+		{
+			// Free any rubbish previously failed tests left behind
+			WorldObjectManager::Free();
+
+			// Setup
+			Transform* a = NEW_TRANSFORM;
+			a->SetPosition(Vector3d(127, 3, -5));
+			a->SetScale(Vector3d(1, 2, -2));
+			a->SetRotation(Quaternion(Vector3d(33, 5, 15)));
+
+			Transform* b = NEW_TRANSFORM;
+			b->SetParent(a);
+			b->SetPosition(Vector3d(127, 3, -5));
+			b->SetScale(Vector3d(1, 2, -2));
+			b->SetRotation(Quaternion(Vector3d(33, 5, 15)));
+
+			Transform* c = NEW_TRANSFORM;
+			c->SetParent(b);
+			c->SetPosition(Vector3d(127, 3, -5));
+			c->SetScale(Vector3d(1, 2, -2));
+			c->SetRotation(Quaternion(Vector3d(33, 5, 15)));
+
+			// Exercise
+			Matrix4x4 goodTrMat = c->GetGlobalTransformationMatrix();
+
+			for (std::size_t i = 0; i < 2000; i++)
+				c->RecalculateGlobalTransformCache();
+
+			Matrix4x4 recalculatedMat = c->GetGlobalTransformationMatrix();
+
+			// Verify
+			Assert::IsTrue(goodTrMat == recalculatedMat);
+
+			WorldObjectManager::Free();
+			return;
+		}
+
 		// Tests that the local transformation matrix works with all factors
 		//TEST_METHOD(Local_Transformation_Matrix_Combined)
 		//{
