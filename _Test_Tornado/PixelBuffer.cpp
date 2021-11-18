@@ -174,10 +174,10 @@ namespace PixelBuffers
 		TEST_METHOD(GetDimensions_Refit)
 		{
 			// Test 10 times
-			for (std::size_t i = 0; i < 10; i++)
+			for (std::size_t i = 0; i < 100; i++)
 			{
-				std::size_t x = LARGE_RAND_POSITIVE_INT;
-				std::size_t y = LARGE_RAND_POSITIVE_INT;
+				std::size_t x = LARGE_RAND_POSITIVE_INT | 1;
+				std::size_t y = LARGE_RAND_POSITIVE_INT | 1; // anding with 1 to ensure it's never 0
 
 				// Create existing buffer
 				uint8_t* existingData = new uint8_t[x * y * (std::size_t)2];
