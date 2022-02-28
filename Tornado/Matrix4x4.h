@@ -1,5 +1,5 @@
 #pragma once
-#include "Eule/Matrix4x4.h"
+#include <Eule/Eule/Matrix4x4.h>
 // Just an ease-of-use includer for Eule::Matrix4x4
 
 namespace TorGL

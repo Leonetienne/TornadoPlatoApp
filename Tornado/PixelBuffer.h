@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
+#include <cstring>
 #include "Vector2.h"
 #include "Endian.h"
 
@@ -136,7 +137,7 @@ namespace TorGL
 
 		// Copy existing buffer
 		std::size_t cachedBufferSize = GetSizeofBuffer();
-		memcpy_s(pixelBuffer, cachedBufferSize, data, cachedBufferSize);
+		std::memcpy(pixelBuffer, data, cachedBufferSize);
 
 		// Set flag
 		isInitialized = true;

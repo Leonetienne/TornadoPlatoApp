@@ -1,7 +1,5 @@
 #include "CrossPlatformSyscalls.h"
 
-#define WINDOWS _WIN32 or _WIN64
-
 #ifdef WINDOWS
 #include <windows.h>
 #else

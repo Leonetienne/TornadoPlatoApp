@@ -54,7 +54,7 @@ namespace TorGL
 		void SetThread(std::thread* thr) { ownThread = thr; };
 		std::thread* GetThread() { return ownThread; };
 		void Lifecycle();
-		#endif;
+		#endif
 
 	private:
 		#ifndef _DEBUG

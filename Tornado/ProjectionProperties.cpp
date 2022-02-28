@@ -1,4 +1,5 @@
 #include "ProjectionProperties.h"
+#include <math.h>
 
 using namespace TorGL;
 
