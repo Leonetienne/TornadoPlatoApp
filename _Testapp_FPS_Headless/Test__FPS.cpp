@@ -27,14 +27,14 @@ Test__FPS::Test__FPS() :
 	camera = trCamera->worldObject->GetComponentOfType<Components::Camera>();
 
 	// Load mesh files
-	ResourceManager::LoadMeshFromObj("gun", "gun.obj");
-	ResourceManager::LoadMeshFromObj("monke", "monke.obj");
-	ResourceManager::LoadMeshFromObj("skybox", "skybox.obj");
+	ResourceManager::LoadMeshFromObj("gun", "assets/gun.obj");
+	ResourceManager::LoadMeshFromObj("monke", "assets/monke.obj");
+	ResourceManager::LoadMeshFromObj("skybox", "assets/skybox.obj");
 
 	// Load texture files
-	ResourceManager::LoadTextureFromBmp("gun", "gun.bmp");
-	ResourceManager::LoadTextureFromBmp("monke", "monke.bmp");
-	ResourceManager::LoadTextureFromBmp("skybox", "example_skybox.bmp");
+	ResourceManager::LoadTextureFromBmp("gun", "assets/gun.bmp");
+	ResourceManager::LoadTextureFromBmp("monke", "assets/monke.bmp");
+	ResourceManager::LoadTextureFromBmp("skybox", "assets/example_skybox.bmp");
 
 
 	// Create materials
