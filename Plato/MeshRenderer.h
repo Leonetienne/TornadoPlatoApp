@@ -25,8 +25,9 @@ namespace Plato
 
 			void Render(Renderer* renderer);
 
+            // This should be private, but g++ is not having it...
+            MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material);
 		private:
-			MeshRenderer(WorldObject* worldObject, Mesh* mesh, Material* material);
 
 			Mesh* mesh;
 			Material* material;
