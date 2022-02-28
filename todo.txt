@@ -1,7 +1,10 @@
 OPTIMIZATIONS:
 
 	GAME ENGINE:
-	Support culling distances for light sources and mesh renderers
+	- Support culling distances for light sources and mesh renderers
+	- Adding new components to worldObjects should be using smart pointers instead.
+	    The current templated solution is producing problems on linux.
+	    This way the components could be instantiated on user-side, without having to be freed.
 
 	RENDERING ENGINE:
 	Cull lights if distance to camera is > farclip + intensity*13
