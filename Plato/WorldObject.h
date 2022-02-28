@@ -110,7 +110,7 @@ namespace Plato
 
 		// Oops! T is not a derivation of class Component
 		if (compPtr == nullptr)
-			throw std::runtime_error("Template type not derivation of Component!");
+			throw std::runtime_error("Template type not derivation of type 'Component'!");
 
 		components.insert(compPtr);
 		return newComponent;
