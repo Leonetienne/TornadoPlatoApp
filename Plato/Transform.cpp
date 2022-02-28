@@ -189,7 +189,7 @@ const Transform* Transform::operator[](std::size_t i) const
 	if (i >= children.size())
 		throw std::out_of_range("Transform child index out of range");
 
-	std::unordered_set<Transform*>::iterator it = children.begin();
+	auto it = children.begin();
 	std::advance(it, i);
 
 	return *it;

@@ -43,6 +43,6 @@ namespace Plato
 		Duration GetElapsedTime() const;
 
 	private:
-		std::chrono::steady_clock::time_point begin;
+		std::chrono::high_resolution_clock::time_point begin;
 	};
 }
