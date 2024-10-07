@@ -5,6 +5,7 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "Test__FPS.h"
+#include "Test__Yubi.h"
 #include <cstring>
 #include <iostream>
 
@@ -23,21 +24,15 @@ int main() {
     std::cout << "Creating camera..." << std::endl;
     Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
     Components::Camera* camera =
-            WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolition, 90, 0.001, 10);
+            WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolition, 65, 0.001, 10);
 
     // Instantiate the test scene
-    Test__FPS testScene;
+    Test__Yubi testScene;
 
     // Just to be clean, call update once
     std::cout << "Calling update hooks..." << std::endl;
-    for (int i = 0; i < 120; i++) {
-        Input::EventManager::RegisterEventKeyDown(Input::KEY_CODE::S);
-
-        WorldObjectManager::CallHook__Update(0.01);
-        WorldObjectManager::CallHook__LateUpdate(0.01);
-
-        Input::EventManager::RegisterEventKeyUp(Input::KEY_CODE::S);
-    }
+    WorldObjectManager::CallHook__Update(0.01);
+    WorldObjectManager::CallHook__LateUpdate(0.01);
     
     // Render an image
     std::cout << "Rendering scene..." << std::endl;

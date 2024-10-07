@@ -1,4 +1,3 @@
-#pragma once
 #include "Test__FPS.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
