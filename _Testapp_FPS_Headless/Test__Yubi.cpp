@@ -45,7 +45,7 @@ Test__Yubi::Test__Yubi() : TestFixture(__FUNCTION__) // Set the test fixtures na
 	// Create yubikey
     int line = -1;
     constexpr int linesize = 20;
-    for (unsigned int i = 0; i < 200; i++) {
+    for (unsigned int i = 0; i < 50; i++) {
         // Every tenth key initiates a new line
         if (i%linesize == 0) {
             line++;

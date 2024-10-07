@@ -4,6 +4,7 @@
 #include "../Plato/PointLight.h"
 #include "../Eule/Eule/Vector3.h"
 #include "../Plato/Color.h"
+#include "../Plato/Keyboard.h"
 #include "Cube.h"
 
 using namespace Plato;
@@ -43,6 +44,7 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
         WorldObjectManager::NewWorldObject("furnace-light")
         ->AddComponent<Components::PointLight>(20, Color(255, 143, 0));
     furnaceLight->transform->Move(Vector3d(-2, 2, -2));
+    light = furnaceLight->worldObject;
 
     // Move cube
     this->cube->transform->Move(Vector3d(0, -2.5, -5));
@@ -54,7 +56,26 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
 
 void Test__Cube::Update(double deltaTime)
 {
-    const double speedFac = 1.5;
+    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'o')) {
+        speedFac -= 1.0;
+    }
+    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'p')) {
+        speedFac += 1.0;
+    }
+
+    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'a')) {
+        light->transform->Move(Vector3d(-1, 0, 0));
+    }
+    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'d')) {
+        light->transform->Move(Vector3d(1, 0, 0));
+    }
+    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'w')) {
+        light->transform->Move(Vector3d(0, 0, -1));
+    }
+    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'s')) {
+        light->transform->Move(Vector3d(0, 0, 1));
+    }
+
     this->cube->transform->Rotate(Vector3d(
         15.0 * speedFac * deltaTime,
         10.0 * speedFac * deltaTime,

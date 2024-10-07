@@ -15,7 +15,9 @@ public:
 	void Render(Renderer* renderer) override;
 
 private:
+    double speedFac = 1.5;
 	Components::Camera* camera;
     WorldObject* cube;
+    WorldObject* light;
 };
 
