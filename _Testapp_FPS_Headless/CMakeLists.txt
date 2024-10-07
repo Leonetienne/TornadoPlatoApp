@@ -21,6 +21,7 @@ add_executable(
         #HeadlessFPS.cpp
         Test__FPS.cpp
         Test__Yubi.cpp
+        Test__Cube.cpp
         TestFixture.cpp
         main.cpp
 )

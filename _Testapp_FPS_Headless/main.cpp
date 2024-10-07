@@ -6,6 +6,7 @@
 #include "../Plato/Renderer.h"
 #include "Test__FPS.h"
 #include "Test__Yubi.h"
+#include "Test__Cube.h"
 #include <cstring>
 #include <iostream>
 
@@ -27,7 +28,7 @@ int main() {
             WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolition, 65, 0.001, 10);
 
     // Instantiate the test scene
-    Test__Yubi testScene;
+    Test__Cube testScene;
 
     // Just to be clean, call update once
     std::cout << "Calling update hooks..." << std::endl;
@@ -42,8 +43,8 @@ int main() {
 
     // Free memory
     std::cout << "Freeing engine memory..." << std::endl;
-    WorldObjectManager::Free();
-    ResourceManager::Free();
+    //WorldObjectManager::Free();
+    //ResourceManager::Free();
 
     // Create a bmp image and write the render result to it
     std::cout << "Initializing bmp image..." << std::endl;
