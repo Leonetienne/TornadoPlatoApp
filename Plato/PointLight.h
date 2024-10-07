@@ -15,11 +15,11 @@ namespace Plato
 
 			//! Will return the tornado render light source. This will be an instance of RenderPointLight. This does NOT include transformation!
 			TorGL::RenderLightSource* GetRawTornadoRenderLightSource() const override;
+			PointLight(WorldObject* worldObject, double intensity, const Color& color = Color::white);
 
 		private:
 
 			friend class WorldObject;
-			PointLight(WorldObject* worldObject, double intensity, const Color& color = Color::white);
 		};
 	}
 }

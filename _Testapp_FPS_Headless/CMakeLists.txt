@@ -11,14 +11,16 @@ FILE(GLOB Eule ../Eule/Eule/*.cpp)
 FILE(GLOB Tornado ../Tornado/*.cpp)
 FILE(GLOB Plato ../Plato/*.cpp)
 
-add_library(
+add_executable(
         __Testapp_FPS_Headless
 
         ${Eule}
         ${Tornado}
         ${Plato}
 
-        HeadlessFPS.cpp
+        #HeadlessFPS.cpp
         Test__FPS.cpp
         TestFixture.cpp
+        main.cpp
 )
+

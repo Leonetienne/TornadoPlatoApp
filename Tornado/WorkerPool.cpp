@@ -1,5 +1,6 @@
 #include "WorkerPool.h"
 #include "CrossPlatformSyscalls.h"
+#include <stdexcept>
 
 using namespace TorGL;
 

@@ -13,9 +13,11 @@
     if you want bmplib to stop writing runtime_errors to stderr
 */
 
-#pragma once
+#ifndef _BMPLIB_
+#define _BMPLIB_
 #include <sstream>
 #include <fstream>
+#include <string>
 #include <string.h>
 #include <vector>
 
@@ -27,21 +29,7 @@ namespace BMPlib
     typedef unsigned short byte2;
     typedef unsigned int   byte4;
 
-    using bytestring = std::basic_string<byte>;
-    using bytestream = std::basic_stringstream<byte>;
-
-    template<typename T>
-    // Will convert (int)15 to 0F 00 00 00 and NOT TO 00 00 00 0F
-    bytestring ToBytes(T t)
-    {
-        bytestream toret;
-        long long sizeofT = (long long)sizeof(T); // Let's make it a signed value to keep the compiler happy with the comparison
-        byte* bPtr = (byte*)&t;
-        for (long long i = 0; i < sizeofT; i++)
-            toret << *(bPtr + i);
-
-        return toret.str();
-    }
+    using bytestring = std::vector<byte>;
 
     template<typename ST, typename SO, typename T>
     // Will convert 0F 00 00 00 to 15 and NOT TO 251658240
@@ -405,29 +393,27 @@ namespace BMPlib
                 return false;
 
             std::size_t paddingSize = (4 - ((width * numChannelsFile) % 4)) % 4; // number of padding bytes per scanline
-            byte paddingData[4] = { 0x69,0x69,0x69,0x69 }; // dummy-data for padding
 
-            bytestream data;
-            data
                 // BMP Header
-                << ToBytes(byte2(0x4D42)) // signature
-                << ToBytes(byte4(0x36 + sizeofPxlbfr + paddingSize * height)) // size of the bmp file (all bytes)
-                << ToBytes(byte2(0))      // unused
-                << ToBytes(byte2(0))      // unused
-                << ToBytes(byte4(0x36))   // Offset where the pixel array begins (size of both headers)
-
-                // DIB Header
-                << ToBytes(byte4(0x28))   // Number of bytes in DIB header (without this field)
-                << ToBytes(byte4(width))  // width
-                << ToBytes(byte4(height)) // height
-                << ToBytes(byte2(1))      // number of planes used
-                << ToBytes(byte2(numChannelsFile * 8)) // bit-depth
-                << ToBytes(byte4(0))      // no compression
-                << ToBytes(byte4(sizeofPxlbfr + paddingSize * height)) // Size of raw bitmap data (including padding)
-                << ToBytes(byte4(0xB13))  // print resolution pixels/meter X
-                << ToBytes(byte4(0xB13))  // print resolution pixels/meter Y
-                << ToBytes(byte4(0))      // 0 colors in the color palette
-                << ToBytes(byte4(0));     // 0 means all colors are important
+            bytestring data;
+            AppendBS(data, ToBytes(byte2(0x4D42))); // signature
+            AppendBS(data, ToBytes(byte4(0x36 + sizeofPxlbfr + paddingSize * height))); // size of the bmp file (all bytes)
+            AppendBS(data, ToBytes(byte2(0)));      // unused
+            AppendBS(data, ToBytes(byte2(0)));      // unused
+            AppendBS(data, ToBytes(byte4(0x36)));   // Offset where the pixel array begins (size of both headers)
+            
+            // DIB Header
+            AppendBS(data, ToBytes(byte4(0x28)));   // Number of bytes in DIB header (without this field)
+            AppendBS(data, ToBytes(byte4(width)));  // width
+            AppendBS(data, ToBytes(byte4(height))); // height
+            AppendBS(data, ToBytes(byte2(1)));      // number of planes used
+            AppendBS(data, ToBytes(byte2(numChannelsFile * 8))); // bit-depth
+            AppendBS(data, ToBytes(byte4(0)));      // no compression
+            AppendBS(data, ToBytes(byte4(sizeofPxlbfr + paddingSize * height))); // Size of raw bitmap data (including padding)
+            AppendBS(data, ToBytes(byte4(0xB13)));  // print resolution pixels/meter X
+            AppendBS(data, ToBytes(byte4(0xB13)));  // print resolution pixels/meter Y
+            AppendBS(data, ToBytes(byte4(0)));      // 0 colors in the color palette
+            AppendBS(data, ToBytes(byte4(0)));      // 0 means all colors are important
 
             // Dumbass unusual pixel order of bmp made me do this...
             for (long long y = height - 1; y >= 0; y--)
@@ -440,34 +426,37 @@ namespace BMPlib
                     {
                     case COLOR_MODE::BW:
                         // pixelbfr ==> R-G-B ==> B-G-R ==> bmp format
-                        data.write((pixelbfr + idx), 1); // B
-                        data.write((pixelbfr + idx), 1); // G
-                        data.write((pixelbfr + idx), 1); // R
+                        data.push_back(*(pixelbfr + idx)); // B
+                        data.push_back(*(pixelbfr + idx)); // G
+                        data.push_back(*(pixelbfr + idx)); // R
 
                         break;
 
                     case COLOR_MODE::RGB:
                         // pixelbfr ==> R-G-B ==> B-G-R ==> bmp format
-                        data.write((pixelbfr + idx + 2), 1); // B
-                        data.write((pixelbfr + idx + 1), 1); // G
-                        data.write((pixelbfr + idx + 0), 1); // R
+                        data.push_back(*(pixelbfr + idx + 2)); // B
+                        data.push_back(*(pixelbfr + idx + 1)); // G
+                        data.push_back(*(pixelbfr + idx + 0)); // R
 
                         break;
 
                     case COLOR_MODE::RGBA:
                         // pixelbfr ==> R-G-B-A ==> B-G-R-A ==> bmp format
-                        data.write((pixelbfr + idx + 2), 1); // B
-                        data.write((pixelbfr + idx + 1), 1); // G
-                        data.write((pixelbfr + idx + 0), 1); // R
-                        data.write((pixelbfr + idx + 3), 1); // A
+                        data.push_back(*(pixelbfr + idx + 2)); // B
+                        data.push_back(*(pixelbfr + idx + 1)); // G
+                        data.push_back(*(pixelbfr + idx + 0)); // R
+                        data.push_back(*(pixelbfr + idx + 3)); // A
 
                         break;
                     }
                 }
 
                 if ((colorMode == COLOR_MODE::BW) || (colorMode == COLOR_MODE::RGB))
-                    if (paddingSize > 0)
-                        data.write(paddingData, paddingSize);
+                    if (paddingSize > 0) {
+                        for (std::size_t i = 0; i < paddingSize; i++) {
+                            data.push_back(0x69);
+                        }
+                    }
             }
 
 
@@ -478,8 +467,7 @@ namespace BMPlib
             if (!bs.good())
                 return false;
 
-            bytestring bytes = data.str();
-            bs.write((const char*)bytes.c_str(), bytes.length());
+            bs.write((const char*)data.data(), sizeof(byte) * data.size());
             bs.flush();
             bs.close();
 
@@ -627,6 +615,25 @@ namespace BMPlib
             return;
         }
 
+        template<typename T>
+        // Will convert (int)15 to 0F 00 00 00 and NOT TO 00 00 00 0F
+        bytestring ToBytes(T t)
+        {
+            bytestring toret;
+            long long sizeofT = (long long)sizeof(T); // Let's make it a signed value to keep the compiler happy with the comparison
+            byte* bPtr = (byte*)&t;
+            for (long long i = 0; i < sizeofT; i++)
+                toret.push_back(*(bPtr + i));
+
+            return toret;
+        }
+
+        // Append bytestrings
+        void AppendBS(bytestring& a, const bytestring& b) {
+            a.reserve(a.size() + b.size());
+            a.insert(a.end(), b.begin(), b.end());
+        }
+
         std::size_t width;
         std::size_t height;
         std::size_t numChannelsFile; // Num channels of the file format
@@ -637,3 +644,5 @@ namespace BMPlib
         std::size_t sizeofPxlbfr; // how many bytes the pixelbuffer is long
     };
 }
+#endif
+

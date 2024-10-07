@@ -3,6 +3,8 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Keyboard.h"
+#include "../Plato/PointLight.h"
+#include "../Plato/Color.h"
 #include <iostream>
 
 using namespace Plato;
@@ -42,7 +44,7 @@ Test__FPS::Test__FPS() :
 	ResourceManager::NewMaterial("monke")->texture = ResourceManager::FindTexture("monke");
 	Material* matSkybox = ResourceManager::NewMaterial("skybox");
 	matSkybox->texture = ResourceManager::FindTexture("skybox");
-	matSkybox->noShading = true;
+	matSkybox->noShading = false;
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
@@ -51,6 +53,7 @@ Test__FPS::Test__FPS() :
 		ResourceManager::FindMaterial("monke")
     );
 	monke->transform->Move(Vector3d::backward * 5);
+    monke->transform->Rotate(Vector3d::up * 30);
 
 	// Create gun holder
 	gunHolder = WorldObjectManager::NewWorldObject(
@@ -61,7 +64,7 @@ Test__FPS::Test__FPS() :
 	gunHolder->transform->SetPosition(Vector3d(2, -1, -4));
 	
 	// Create gun
-	gun = WorldObjectManager::NewWorldObject("gun");
+	gun = WorldObjectManager::NewWorldObject("gun", gunHolder->transform);
 	gun->transform->SetScale(Vector3d::one * 0.5);
 
 	gun->AddComponent<Components::MeshRenderer>(
@@ -83,6 +86,11 @@ Test__FPS::Test__FPS() :
 
 	gunHolderPos_aim = Vector3d(0, -1.0, -4) * 0.75;
 	gunHolderRot_aim = Quaternion(Vector3d(0, 90, 0));
+
+    Components::PointLight* leftLight = WorldObjectManager::NewWorldObject("left-light")->AddComponent<Components::PointLight>(150, Color(255, 200, 150));
+    Components::PointLight* rightLight = WorldObjectManager::NewWorldObject("right-light")->AddComponent<Components::PointLight>(150, Color(150, 200, 255));
+    leftLight->transform->Move(Vector3d(-1, 1, 1) * 5);
+    rightLight->transform->Move(Vector3d(1, -1, 1) * 5);
 
 	// Set gun to hip
 	SetGunHip();
@@ -108,7 +116,7 @@ void Test__FPS::Update(double deltaTime)
 	return;
 }
 
-void Test__FPS::Render(Renderer*)
+void Test__FPS::Render(Renderer* renderer)
 {
 	constexpr double lerpPosSpeed = 0.07;
 	constexpr double lerpRotSpeed = 0.04;
@@ -138,6 +146,7 @@ void Test__FPS::Render(Renderer*)
 			Clamp(lerpFovSpeed * deltaTime, 0, 1)
 		).x
 	);
+
 
 	return;
 }

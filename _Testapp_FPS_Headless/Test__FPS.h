@@ -36,3 +36,4 @@ private:
 	Transform* trCamera;
 	Components::Camera* camera;
 };
+
