@@ -8,11 +8,14 @@
 #include "Test__FPS.h"
 #include "Test__Yubi.h"
 #include "Test__Cube.h"
+#include "Test__MC.h"
+#include "CameraKeyboardControl.h"
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
+#include <chrono>
 
 using namespace Plato;
 using namespace Eule;
@@ -54,21 +57,28 @@ int getKey() {
 
 
 void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
+    static double frametime = 1.0/60.0;
+
+    // Get the starting time point
+    auto start = std::chrono::high_resolution_clock::now();
+
     // Handle key presses
     const char key = getKey();
 
     if (key != -1) {
         Input::EventManager::RegisterEventKeyDown((Input::KEY_CODE)key);
+        //std::cout << (int)key << std::endl;
         //exit(0);
     }
+    Input::EventManager::Digest();
 
     WorldObjectManager::DeleteFlaggedObjects();
 
     // Just to be clean, call update once
     // std::cout << "Calling update hooks..." << std::endl;
-    WorldObjectManager::CallHook__Update(15.0 / 1000.0);
-    WorldObjectManager::CallHook__LateUpdate(15.0 / 1000.0);
-    fix.Update(15.0 / 1000.0);
+    fix.Update(frametime);
+    WorldObjectManager::CallHook__Update(frametime);
+    WorldObjectManager::CallHook__LateUpdate(frametime);
     
     // Render an image
     // std::cout << "Rendering scene..." << std::endl;
@@ -103,7 +113,14 @@ void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
     usleep(15000);
 
 	// Digest events
+    if (key != -1) {
+        Input::EventManager::RegisterEventKeyUp((Input::KEY_CODE)key);
+    }
 	Input::EventManager::Digest();
+
+    // Get the ending time point
+    auto end = std::chrono::high_resolution_clock::now();
+    frametime = std::chrono::duration<double, std::milli>(end - start).count();
 }
 
 int main() {
@@ -117,12 +134,15 @@ int main() {
     Renderer renderer(resolution);
 
     // std::cout << "Creating camera..." << std::endl;
-    Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-    Components::Camera* camera =
-            WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 65, 0.001, 10);
+	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
+	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 10);
+	cameraYPivot->worldObject->SetId("main_camera_ypiv");
+	camera->SetAsMainCamera();
+	// Let's add a CameraKeyboardControl component to the camera by default
+	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
     // Instantiate the test scene
-    Test__Cube testScene;
+    Test__MC testScene;
 
     while (1) {
         Loop(renderer, resolution, testScene);

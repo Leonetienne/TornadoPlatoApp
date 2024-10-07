@@ -49,31 +49,17 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
     // Move cube
     this->cube->transform->Move(Vector3d(0, -2.5, -5));
     this->cube->transform->Rotate(Vector3d(0, 150, 0));
-    this->cube->transform->Scale(Vector3d(1,1,1) * 2);
 
     return;
 }
 
 void Test__Cube::Update(double deltaTime)
 {
-    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'o')) {
+    if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::NUM_1)) {
         speedFac -= 1.0;
     }
-    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'p')) {
+    if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::NUM_2)) {
         speedFac += 1.0;
-    }
-
-    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'a')) {
-        light->transform->Move(Vector3d(-1, 0, 0));
-    }
-    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'d')) {
-        light->transform->Move(Vector3d(1, 0, 0));
-    }
-    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'w')) {
-        light->transform->Move(Vector3d(0, 0, -1));
-    }
-    if (Input::Keyboard::GetKeyDown((Input::KEY_CODE)'s')) {
-        light->transform->Move(Vector3d(0, 0, 1));
     }
 
     this->cube->transform->Rotate(Vector3d(

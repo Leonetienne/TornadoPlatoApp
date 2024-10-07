@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o.d"
   "CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o"
   "CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o.d"
+  "CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o"
+  "CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o.d"
   "CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o"
   "CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o.d"
   "CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Eule/Eule/Collider.cpp.o"

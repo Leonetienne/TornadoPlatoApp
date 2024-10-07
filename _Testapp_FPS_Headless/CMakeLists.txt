@@ -18,11 +18,11 @@ add_executable(
         ${Tornado}
         ${Plato}
 
-        #HeadlessFPS.cpp
+        TestFixture.cpp
         Test__FPS.cpp
         Test__Yubi.cpp
         Test__Cube.cpp
-        TestFixture.cpp
+        Test__MC.cpp
         main.cpp
 )
 

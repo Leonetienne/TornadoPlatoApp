@@ -713,10 +713,24 @@ CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/P
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/WorldObjectManager.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/agent/private-work/TornadoPlatoApp/Plato/WorldObjectManager.cpp -o CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/WorldObjectManager.cpp.s
 
+CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
+CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp
+CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp
+
+CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp > CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.i
+
+CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp -o CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.s
+
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__FPS.cpp
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__FPS.cpp
 
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.i: cmake_force
@@ -730,7 +744,7 @@ CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.s: cmake_force
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__Yubi.cpp
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__Yubi.cpp
 
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.i: cmake_force
@@ -744,7 +758,7 @@ CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.s: cmake_force
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__Cube.cpp
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__Cube.cpp
 
 CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.i: cmake_force
@@ -755,24 +769,24 @@ CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__Cube.cpp -o CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.s
 
-CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
-CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp
-CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp
+CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
+CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__MC.cpp
+CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__MC.cpp
 
-CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp > CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.i
+CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__MC.cpp > CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.i
 
-CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/TestFixture.cpp -o CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.s
+CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/Test__MC.cpp -o CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.s
 
 CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/flags.make
 CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o: /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/main.cpp
 CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o: CMakeFiles/__Testapp_FPS_Headless.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o -MF CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o.d -o CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o -c /Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/main.cpp
 
 CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.i: cmake_force
@@ -831,10 +845,11 @@ __Testapp_FPS_Headless_OBJECTS = \
 "CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/TrapazoidalPrismCollider.cpp.o" \
 "CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/WorldObject.cpp.o" \
 "CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/WorldObjectManager.cpp.o" \
+"CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o" \
 "CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o" \
 "CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o" \
 "CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o" \
-"CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o" \
+"CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o" \
 "CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o"
 
 # External object files for target __Testapp_FPS_Headless
@@ -886,14 +901,15 @@ __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/privat
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/TrapazoidalPrismCollider.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/WorldObject.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Users/agent/private-work/TornadoPlatoApp/Plato/WorldObjectManager.cpp.o
+__Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Test__Yubi.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Test__Cube.cpp.o
-__Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/TestFixture.cpp.o
+__Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/main.cpp.o
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/build.make
 __Testapp_FPS_Headless: CMakeFiles/__Testapp_FPS_Headless.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Linking CXX executable __Testapp_FPS_Headless"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Linking CXX executable __Testapp_FPS_Headless"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/__Testapp_FPS_Headless.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -201,6 +201,30 @@ Test__FPS.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/__Testapp_FPS_Headless.dir/build.make CMakeFiles/__Testapp_FPS_Headless.dir/Test__FPS.cpp.s
 .PHONY : Test__FPS.cpp.s
 
+Test__MC.o: Test__MC.cpp.o
+.PHONY : Test__MC.o
+
+# target to build an object file
+Test__MC.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/__Testapp_FPS_Headless.dir/build.make CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.o
+.PHONY : Test__MC.cpp.o
+
+Test__MC.i: Test__MC.cpp.i
+.PHONY : Test__MC.i
+
+# target to preprocess a source file
+Test__MC.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/__Testapp_FPS_Headless.dir/build.make CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.i
+.PHONY : Test__MC.cpp.i
+
+Test__MC.s: Test__MC.cpp.s
+.PHONY : Test__MC.s
+
+# target to generate assembly for a file
+Test__MC.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/__Testapp_FPS_Headless.dir/build.make CMakeFiles/__Testapp_FPS_Headless.dir/Test__MC.cpp.s
+.PHONY : Test__MC.cpp.s
+
 Test__Yubi.o: Test__Yubi.cpp.o
 .PHONY : Test__Yubi.o
 
@@ -1371,6 +1395,9 @@ help:
 	@echo "... Test__FPS.o"
 	@echo "... Test__FPS.i"
 	@echo "... Test__FPS.s"
+	@echo "... Test__MC.o"
+	@echo "... Test__MC.i"
+	@echo "... Test__MC.s"
 	@echo "... Test__Yubi.o"
 	@echo "... Test__Yubi.i"
 	@echo "... Test__Yubi.s"

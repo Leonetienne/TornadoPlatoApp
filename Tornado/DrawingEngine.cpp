@@ -172,8 +172,11 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 					double& zBuf = zBuffer[x + y * renderTarget->GetDimensions().x];
 					if (z < zBuf)
 					{
-						zBuf = z;
-						Thread_PixelShader(ird, basePixel, pixelPosition, &berp_cache, z);
+                        // Only fill in the zbuffer value, if a pixel was actually rendered.
+                        // Cases in which no pixel gets rendered by Thread__PixelShader might be when its texture marks it as transparent...
+						if (Thread_PixelShader(ird, basePixel, pixelPosition, &berp_cache, z)) {
+						    zBuf = z;
+                        }
 					}
 				}
 			}
@@ -183,7 +186,7 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 	return;
 }
 
-void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z)
+bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z)
 {
 	Vector2d uv_coords(
 		BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(
@@ -262,7 +265,6 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 	uint8_t& g = pixelBase[1];
 	uint8_t& b = pixelBase[2];
 
-
 	// Do we have a material?
 	if (ird->material != nullptr)
 	{
@@ -281,7 +283,7 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.7;
+		constexpr double globalIllu = 0.4;
 
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
@@ -302,6 +304,12 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			brightness.b += globalIllu;
 		}
 
+        // Is the pixel marked as transparent?
+        // If yes, don't render it.
+        if (text_pixel[4] == 255) {
+            return false;
+        }
+
 		r = uint8_t(Math::Clamp((double)text_pixel[0] * brightness.r, 0, 255));
 		g = uint8_t(Math::Clamp((double)text_pixel[1] * brightness.g, 0, 255));
 		b = uint8_t(Math::Clamp((double)text_pixel[2] * brightness.b, 0, 255));
@@ -319,5 +327,5 @@ void DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		b = 255 * uint8_t((ird->meanVertexNormal.z + 1) * 0.5);
 	}
 
-	return;
+	return true;
 }

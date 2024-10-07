@@ -43,8 +43,8 @@ namespace TorGL
 		//! Main drawing method for the tasks
 		void Thread_Draw(const InterRenderTriangle* ird, const Eule::Rect& bounds);
 
-		//! Will draw a single pixel
-		void Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z);
+		//! Will draw a single pixel. Returns false, if now pixel was drawn (like, when its texture marks it as transparent.)
+		bool Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z);
 
 		WorkerPool* workerPool;
 		PixelBuffer<3>* renderTarget;
