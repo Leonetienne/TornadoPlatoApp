@@ -19,8 +19,8 @@ namespace {
 Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures name
 {
 	// Configure camera
-    Mesh* cube = ResourceManager::NewMesh("cube");
-    *cube = Cube();
+    Mesh* cubeMesh = ResourceManager::NewMesh("cube");
+    *cubeMesh = Cube();
 
 	// Load texture files
 	ResourceManager::LoadTextureFromBmp("furnace", "assets/furnace.bmp");
@@ -29,9 +29,9 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
 	ResourceManager::NewMaterial("furnace")->texture = ResourceManager::FindTexture("furnace");
 
 	// Create Cube
-    WorldObject* cubeWo = WorldObjectManager::NewWorldObject("Cube")
+    this->cube = WorldObjectManager::NewWorldObject("Cube")
         ->AddComponent<Components::MeshRenderer>(
-            cube,
+            cubeMesh,
             ResourceManager::FindMaterial("furnace")
     )->worldObject;
 
@@ -40,20 +40,26 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
 
     // Create lights
     Components::PointLight* furnaceLight =
-        WorldObjectManager::NewWorldObject("furnace-light", cubeWo->transform)
-        ->AddComponent<Components::PointLight>(50, Color(255, 143, 0));
-    furnaceLight->transform->Move(Vector3d(0, 3, -2) * 2);
+        WorldObjectManager::NewWorldObject("furnace-light")
+        ->AddComponent<Components::PointLight>(20, Color(255, 143, 0));
+    furnaceLight->transform->Move(Vector3d(-2, 2, -2));
 
     // Move cube
-    cubeWo->transform->Move(Vector3d(0, -2.5, -5));
-    cubeWo->transform->Rotate(Vector3d(0, 150, 0));
-    cubeWo->transform->Scale(Vector3d(1,1,1) * 2);
+    this->cube->transform->Move(Vector3d(0, -2.5, -5));
+    this->cube->transform->Rotate(Vector3d(0, 150, 0));
+    this->cube->transform->Scale(Vector3d(1,1,1) * 2);
 
     return;
 }
 
 void Test__Cube::Update(double deltaTime)
 {
+    const double speedFac = 1.5;
+    this->cube->transform->Rotate(Vector3d(
+        15.0 * speedFac * deltaTime,
+        10.0 * speedFac * deltaTime,
+        5.0 * speedFac * deltaTime
+    ));
 	return;
 }
 

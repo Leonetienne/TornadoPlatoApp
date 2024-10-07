@@ -16,5 +16,6 @@ public:
 
 private:
 	Components::Camera* camera;
+    WorldObject* cube;
 };
 
