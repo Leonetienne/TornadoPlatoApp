@@ -1,13 +1,19 @@
 #include "WorkerPool.h"
 #include "CrossPlatformSyscalls.h"
-#include <stdexcept>
 
 using namespace TorGL;
 
 WorkerPool::WorkerPool(std::size_t numWorkers)
 {
-	if (numWorkers == 0)
-		throw std::runtime_error("Bad amount of workers for worker pool! Must satisfy 'n > 0'!");
+    // If number of workers is 0 (default argument for tornado and plato renderers) determine automatically
+	if (numWorkers == 0) {
+        numWorkers = std::thread::hardware_concurrency();
+
+        // hardware_concurrency() may return 0, if it does, just set it to 1
+        if (numWorkers == 0) {
+            numWorkers = 1;
+        }
+    }
 
 	workers.reserve(numWorkers);
 
