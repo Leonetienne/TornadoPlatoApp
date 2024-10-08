@@ -9,8 +9,7 @@
 using namespace Plato;
 
 /*
-	Expected behaviour: We are loading two models (the monkey, and the hat) from one obj file
-	No materials / textures supplied
+	Expected behaviour: See minecraft house in dark. Ceiling light inside should flicker randomly. Press F to toggle flashlight.
 */
 
 namespace {
