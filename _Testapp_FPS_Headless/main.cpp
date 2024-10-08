@@ -10,6 +10,7 @@
 #include "Test__Cube.h"
 #include "Test__MC.h"
 #include "CameraKeyboardControl.h"
+#include <algorithm>
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
@@ -67,10 +68,10 @@ void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
 
     if (key != -1) {
         Input::EventManager::RegisterEventKeyDown((Input::KEY_CODE)key);
-        //std::cout << (int)key << std::endl;
+        Input::EventManager::Digest();
+        //std::cout << key << std::endl;
         //exit(0);
     }
-    Input::EventManager::Digest();
 
     WorldObjectManager::DeleteFlaggedObjects();
 
@@ -85,11 +86,6 @@ void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
     renderer.BeginFrame();
     WorldObjectManager::CallHook__Render(&renderer);
     renderer.Render();
-
-    // Free memory (segfaulting on mac qwq)
-    // std::cout << "Freeing engine memory..." << std::endl;
-    //WorldObjectManager::Free();
-    //ResourceManager::Free();
 
     // Draw image to console
     std::cout << "\e[2J\e[H";
@@ -110,13 +106,13 @@ void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
     }
     std::cout << "\e[0m";
     std::cout.flush();
-    usleep(15000);
+    usleep(15000 - std::max<double>(frametime*1000, 0));
 
 	// Digest events
     if (key != -1) {
         Input::EventManager::RegisterEventKeyUp((Input::KEY_CODE)key);
+	    Input::EventManager::Digest();
     }
-	Input::EventManager::Digest();
 
     // Get the ending time point
     auto end = std::chrono::high_resolution_clock::now();
@@ -147,6 +143,11 @@ int main() {
     while (1) {
         Loop(renderer, resolution, testScene);
     }
+
+    // Free memory (segfaulting on mac qwq)
+    // std::cout << "Freeing engine memory..." << std::endl;
+    //WorldObjectManager::Free();
+    //ResourceManager::Free();
 
     return 0;
 }
