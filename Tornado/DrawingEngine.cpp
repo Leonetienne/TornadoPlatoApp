@@ -306,7 +306,7 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 
         // Is the pixel marked as transparent?
         // If yes, don't render it.
-        if (text_pixel[4] == 255) {
+        if (text_pixel[3] == 0) {
             return false;
         }
 
