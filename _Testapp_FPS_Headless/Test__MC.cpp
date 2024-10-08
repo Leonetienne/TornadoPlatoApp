@@ -54,7 +54,7 @@ Test__MC::Test__MC() : TestFixture(__FUNCTION__) // Set the test fixtures name
     WorldObject* cameraWo = WorldObjectManager::FindObjectById("main_camera");
     flashlight =
         WorldObjectManager::NewWorldObject("player-light", cameraWo->transform)
-        ->AddComponent<Components::PointLight>(0, Color(255, 183, 140));
+        ->AddComponent<Components::PointLight>(3, Color(255, 183, 140));
 
     // Create a light positioned at the ceiling light
     WorldObject* celingLight = WorldObjectManager::NewWorldObject("ceiling-light");
