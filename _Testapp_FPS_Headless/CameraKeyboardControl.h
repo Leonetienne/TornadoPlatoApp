@@ -24,8 +24,8 @@ public:
 	}
 
 private:
-	const double internalMultiplier = 1 * 0.06;
-	const double viewSensitivity = 4 * 0.06;
+	const double internalMultiplier = 1 * 0.03;
+	const double viewSensitivity = 3.3 * 0.06;
 
 	void MovementControl(double deltaTime)
 	{

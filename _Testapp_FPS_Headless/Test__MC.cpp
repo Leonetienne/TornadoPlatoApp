@@ -49,7 +49,7 @@ Test__MC::Test__MC() : TestFixture(__FUNCTION__) // Set the test fixtures name
 
     // Move it, to position the player infront of it
     mc->transform->Rotate(Quaternion(Vector3d(0, 90, 0)));
-    mc->transform->Move(Vector3d(0, 5, -10));
+    mc->transform->Move(Vector3d(0, 5, -15));
 
     // Create player light
     WorldObject* cameraWo = WorldObjectManager::FindObjectById("main_camera");
@@ -60,7 +60,7 @@ Test__MC::Test__MC() : TestFixture(__FUNCTION__) // Set the test fixtures name
     // Create a light positioned at the ceiling light
     WorldObjectManager::NewWorldObject("ceiling-light")
         ->AddComponent<Components::PointLight>(15, Color(255, 183, 140))
-        ->transform->SetPosition(Vector3d(0, 1.3, -9.91571));
+        ->transform->SetPosition(Vector3d(0, 1.3, -9.91571 - 5));
 
     return;
 }

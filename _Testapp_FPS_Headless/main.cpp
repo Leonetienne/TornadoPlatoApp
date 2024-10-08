@@ -104,7 +104,7 @@ void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
             //const char asciiCharacter = ".:-=+*%#@"[(int)(((bw / 255.0) * 8) + 0.5)];
 
             std::cout << "\e[38;2;" << (int)r << ";" << (int)g << ";" << (int)b << "m" << "\u2588\u2588";
-            //bmp.SetPixel(x, y, *(px + 0), *(px + 1), *(px + 2));
+            //std::cout << "\e[38;2;" << (int)r << ";" << (int)g << ";" << (int)b << "m" << asciiCharacter << asciiCharacter;
         }
         std::cout << std::endl;
     }
@@ -130,7 +130,7 @@ int main() {
     // std::cout << "Initializing..." << std::endl;
     Input::EventManager::Init();
     // Create a renderer and a test object
-    const Vector2i resolution(80, 80);
+    const Vector2i resolution(160, 100);
     Renderer renderer(resolution);
 
     // std::cout << "Creating camera..." << std::endl;

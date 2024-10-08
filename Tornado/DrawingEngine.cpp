@@ -283,7 +283,7 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		));
 		
 		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.4;
+		constexpr double globalIllu = 0.3;
 
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
