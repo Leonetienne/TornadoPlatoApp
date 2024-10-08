@@ -2,6 +2,7 @@
 #include "TestFixture.h"
 #include "../Plato/MeshRenderer.h"
 #include "../Tornado/Material.h"
+#include "../Plato/PointLight.h"
 #include "../Plato/Camera.h"
 
 using namespace Plato;
@@ -15,5 +16,10 @@ public:
 	void Render(Renderer* renderer) override;
 
 private:
+    Components::PointLight* flashlight;
+
+    void ToggleFlashlight();
+    void TurnFlashlightOn();
+    void TurnFlashlightOff();
 };
 

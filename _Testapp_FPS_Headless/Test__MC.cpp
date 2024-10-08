@@ -53,28 +53,60 @@ Test__MC::Test__MC() : TestFixture(__FUNCTION__) // Set the test fixtures name
 
     // Create player light
     WorldObject* cameraWo = WorldObjectManager::FindObjectById("main_camera");
-    Components::PointLight* playerLight =
+    flashlight =
         WorldObjectManager::NewWorldObject("player-light", cameraWo->transform)
         ->AddComponent<Components::PointLight>(0, Color(255, 183, 140));
 
     // Create a light positioned at the ceiling light
-    WorldObjectManager::NewWorldObject("ceiling-light")
-        ->AddComponent<Components::PointLight>(15, Color(255, 183, 140))
-        ->transform->SetPosition(Vector3d(0, 1.3, -9.91571 - 5));
+    WorldObject* celingLight = WorldObjectManager::NewWorldObject("ceiling-light");
+    celingLight->SetId("ceiling-light");
+    celingLight->AddComponent<Components::PointLight>(15*0, Color(255, 220, 180));
+    celingLight->transform->SetPosition(Vector3d(0, 1.3, -9.91571 - 5));
 
     return;
 }
 
 void Test__MC::Update(double deltaTime)
 {
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::Z)) {
-        std::cout << WorldObjectManager::FindObjectById("main_camera")->transform->GetGlobalPosition() << std::endl;
-        exit(0);
+    if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::F)) {
+        ToggleFlashlight();
     }
+
+    if (rand() % 10 == 0) {
+        Components::PointLight* ceilingLight =
+            WorldObjectManager::FindObjectById("ceiling-light")->GetComponentOfType<Components::PointLight>();
+
+        // Toggle light
+        if (ceilingLight->GetIntensity() == 0) {
+            ceilingLight->SetIntensity(5);
+        }
+        else {
+            ceilingLight->SetIntensity(0);
+        }
+    }
+}
+
+void Test__MC::ToggleFlashlight()
+{
+    if (flashlight->GetIntensity() == 0) {
+        TurnFlashlightOn();
+    }
+    else {
+        TurnFlashlightOff();
+    }
+}
+
+void Test__MC::TurnFlashlightOn()
+{
+    flashlight->SetIntensity(3);
+}
+
+void Test__MC::TurnFlashlightOff()
+{
+    flashlight->SetIntensity(0);
 }
 
 void Test__MC::Render(Renderer* renderer)
 {
-	return;
 }
 

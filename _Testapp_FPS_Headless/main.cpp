@@ -59,19 +59,36 @@ int getKey() {
 
 void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
     static double frametime = 1.0/60.0;
+    static char keyLastFrame = -1;
 
     // Get the starting time point
     auto start = std::chrono::high_resolution_clock::now();
 
     // Handle key presses
     const char key = getKey();
-
+    // Was a key actually pressed?
     if (key != -1) {
-        Input::EventManager::RegisterEventKeyDown((Input::KEY_CODE)key);
-        Input::EventManager::Digest();
-        //std::cout << key << std::endl;
-        //exit(0);
+        // Yes: is it not the same character as in the last frame?
+        if (key != keyLastFrame) {
+            // Yes: Tell the event manager that the last frame key was released
+            Input::EventManager::RegisterEventKeyUp((Input::KEY_CODE)keyLastFrame);
+
+            // Also tell the event manager about the new keypress
+            Input::EventManager::RegisterEventKeyDown((Input::KEY_CODE)key);
+        }
+        /* else if (key == keyPressed) {
+         * // the key is already registered as down, and is still held down. Nothing to do.
+         * }
+        */
     }
+    else if (keyLastFrame != -1) {
+        // No key is pressed right now, but a key was just pressed in the last frame
+        // Tell the event manager that it was released
+        Input::EventManager::RegisterEventKeyUp((Input::KEY_CODE)keyLastFrame);
+    }
+
+    // Propagate the current pressed key into the last pressed key
+    keyLastFrame = key;
 
     WorldObjectManager::DeleteFlaggedObjects();
 
@@ -108,11 +125,8 @@ void Loop(Renderer& renderer, Vector2i resolution, TestFixture& fix) {
     std::cout.flush();
     usleep(15000 - std::max<double>(frametime*1000, 0));
 
-	// Digest events
-    if (key != -1) {
-        Input::EventManager::RegisterEventKeyUp((Input::KEY_CODE)key);
-	    Input::EventManager::Digest();
-    }
+    // Digest events
+    Input::EventManager::Digest();
 
     // Get the ending time point
     auto end = std::chrono::high_resolution_clock::now();
