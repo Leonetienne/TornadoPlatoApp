@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <cstdint>
 #include <iostream>
 #include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
@@ -34,6 +35,29 @@ int main(int argc, char* argv[]) {
         SDL_Quit();
         return -1;
     }
+
+    // Create an SDL renderer
+    SDL_Renderer* sdlRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!sdlRenderer) {
+        std::cerr << "Failed to create SDL renderer: " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
+
+    // Create a texture to hold pixel buffer
+    SDL_Texture* texture = SDL_CreateTexture(
+        sdlRenderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, 
+        resolution.x, resolution.y);
+    
+    if (!texture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        SDL_DestroyRenderer(sdlRenderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
+
     bool running = true;
 
     // Lock mouse to the window and make it invisible
@@ -42,24 +66,24 @@ int main(int argc, char* argv[]) {
     std::cout << "Initializing..." << std::endl;
     Input::EventManager::Init();
     // Create a renderer and a test object
-
     Renderer renderer(resolution);
 
     std::cout << "Creating camera..." << std::endl;
-	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 10);
-	cameraYPivot->worldObject->SetId("main_camera_ypiv");
-	camera->SetAsMainCamera();
-	// Let's add a CameraKeyboardControl component to the camera by default
-	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+    Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
+    Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 10);
+    cameraYPivot->worldObject->SetId("main_camera_ypiv");
+    camera->SetAsMainCamera();
+    // Let's add a CameraKeyboardControl component to the camera by default
+    camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
     // Instantiate the test scene
     Test__MC testScene;
 
     Clock frametimer;
-    double frametime = 1000.0/60.0;
+    double frametime = 1000.0 / 60.0;
     SDL_Event event;
     int mouseDeltaX = 0, mouseDeltaY = 0;
+
     while (running) {
         mouseDeltaX = 0;
         mouseDeltaY = 0;
@@ -84,6 +108,27 @@ int main(int argc, char* argv[]) {
         WorldObjectManager::CallHook__Render(&renderer);
         renderer.Render();
 
+        // Update the texture with pixel data from the renderer
+        void* pixels;
+        int pitch;
+        if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0) {
+            for (std::size_t y = 0; y < resolution.y; y++) {
+            std::memcpy(static_cast<uint8_t*>(pixels) + y * pitch, renderer.GetPixelBuffer()->GetRawData() + (resolution.y - y) * pitch, pitch);
+            }
+            SDL_UnlockTexture(texture);
+        } else {
+            std::cerr << "Failed to lock texture: " << SDL_GetError() << std::endl;
+        }
+
+        // Clear the renderer
+        SDL_RenderClear(sdlRenderer);
+
+        // Copy the texture to the renderer
+        SDL_RenderCopy(sdlRenderer, texture, nullptr, nullptr);
+
+        // Present the renderer
+        SDL_RenderPresent(sdlRenderer);
+
         Input::EventManager::Digest();
 
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
@@ -91,11 +136,10 @@ int main(int argc, char* argv[]) {
     }
 
     // Clean up
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
-    //WorldObjectManager::Free();
-    //ResourceManager::Free();
 
     return 0;
 }
