@@ -19,6 +19,7 @@ add_executable(
         BarycentricInterpolationEngine.cpp
         WorkerPool.cpp
         ProjectionProperties.cpp
+        PixelBuffer.cpp
         main.cpp
 )
 
