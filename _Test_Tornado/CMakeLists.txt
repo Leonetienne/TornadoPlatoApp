@@ -21,6 +21,7 @@ add_executable(
         ProjectionProperties.cpp
         PixelBuffer.cpp
         InterRenderVertex.cpp
+        ClippingEngine.cpp
         main.cpp
 )
 
