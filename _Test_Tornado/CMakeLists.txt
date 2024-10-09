@@ -20,6 +20,7 @@ add_executable(
         WorkerPool.cpp
         ProjectionProperties.cpp
         PixelBuffer.cpp
+        InterRenderVertex.cpp
         main.cpp
 )
 

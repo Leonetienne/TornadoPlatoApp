@@ -1,158 +1,144 @@
-#include "CppUnitTest.h"
 #include "../Tornado/InterRenderVertex.h"
-#include "../_TestingUtilities/HandyMacros.h"
+#include "../_TestingUtilities/Catch2.h"
 #include <random>
-#include <sstream>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace TorGL;
 
-void InitA(InterRenderVertex& a)
-{
-	a.pos_ws = { 0,0,0 };
-	a.pos_wsmx = { 0,0,0 };
-	a.pos_cs = { 0,0,0,0 };
-	a.pos_ndc = { 0,0,0 };
-	a.pos_ss = { 0,0,0 };
-	a.pos_uv = { 0,0 };
-	a.normal = { 0,0,0 };
+namespace {
+    void InitA(InterRenderVertex& a)
+    {
+        a.pos_ws = { 0,0,0 };
+        a.pos_wsmx = { 0,0,0 };
+        a.pos_cs = { 0,0,0,0 };
+        a.pos_ndc = { 0,0,0 };
+        a.pos_ss = { 0,0,0 };
+        a.pos_uv = { 0,0 };
+        a.normal = { 0,0,0 };
 
-	return;
+        return;
+    }
+
+    void InitB(InterRenderVertex& b)
+    {
+        b.pos_ws = { 100,100,100 };
+        b.pos_wsmx = { 100,100,100 };
+        b.pos_cs = { 100,100,100,100 };
+        b.pos_ndc = { 100,100,100 };
+        b.pos_ss = { 100,100, 100 };
+        b.pos_uv = { 100,100 };
+        b.normal = { 100,100,100 };
+
+        return;
+    }
+
+    static std::mt19937 rng = std::mt19937((std::random_device())());
 }
-void InitB(InterRenderVertex& b)
-{
-	b.pos_ws = { 100,100,100 };
-	b.pos_wsmx = { 100,100,100 };
-	b.pos_cs = { 100,100,100,100 };
-	b.pos_ndc = { 100,100,100 };
-	b.pos_ss = { 100,100, 100 };
-	b.pos_uv = { 100,100 };
-	b.normal = { 100,100,100 };
 
-	return;
+// Tests that nothing gets interpolated by default
+TEST_CASE(__FILE__"Interpolates_Nothing_By_Default", "[InterRenderVertex]")
+{
+    InterRenderVertex a;
+    InterRenderVertex b;
+    InitA(a);
+    InitB(b);
+
+    InterRenderVertex aold = a;
+
+    a.Interpolate(b, 0.25);
+
+    REQUIRE(aold.pos_ws == a.pos_ws);
+    REQUIRE(aold.pos_cs == a.pos_cs);
+    REQUIRE(aold.pos_ndc == a.pos_ndc);
+    REQUIRE(aold.pos_ss == a.pos_ss);
+    REQUIRE(aold.pos_uv == a.pos_uv);
+    REQUIRE(aold.normal == a.normal);
+
+    return;
 }
 
-namespace Rendering
+// Tests that only the correct attributes get interpolated
+TEST_CASE(__FILE__"Interpolates_Correct_Attributes", "[InterRenderVertex]")
 {
-	TEST_CLASS(_InterRenderVertex)
-	{
-	private:
-		std::mt19937 rng;
+    // Run test 100 times
 
-	public:
-		// Constructor
-		_InterRenderVertex()
-		{
-			rng = std::mt19937((std::random_device())());
-			return;
-		}
+    for (std::size_t i = 0; i < 100; i++)
+    {
+        // Decide that to interpolate
+        const bool lerp_ws = rng() % 2;
+        const bool lerp_wsmx = rng() % 2;
+        const bool lerp_cs = rng() % 2;
+        const bool lerp_nd = rng() % 2;
+        const bool lerp_ss = rng() % 2;
+        const bool lerp_uv = rng() % 2;
+        const bool lerp_nm = rng() % 2;
 
-		// Tests that nothing gets interpolated by default
-		TEST_METHOD(Interpolates_Nothing_By_Default)
-		{
-			InterRenderVertex a;
-			InterRenderVertex b;
-			InitA(a);
-			InitB(b);
+        // Generate interpolation mask
+        long long mask = 0;
+        if (lerp_ws)
+            mask |= IRV_LERP_POS_WS;
+        if (lerp_wsmx)
+            mask |= IRV_LERP_POS_WSMX;
+        if (lerp_cs)
+            mask |= IRV_LERP_POS_CS;
+        if (lerp_uv)
+            mask |= IRV_LERP_POS_UV;
+        if (lerp_nd)
+            mask |= IRV_LERP_POS_NDC;
+        if (lerp_ss)
+            mask |= IRV_LERP_POS_SS;
+        if (lerp_nm)
+            mask |= IRV_LERP_NORMAL;
 
-			InterRenderVertex aold = a;
+        // Create vertices
+        InterRenderVertex a;
+        InterRenderVertex b;
+        InitA(a);
+        InitB(b);
+        InterRenderVertex aold = a;
 
-			a.Interpolate(b, 0.25);
+        // Set interpolation mask
+        a.SetInterpolationMask(mask);
 
-			Assert::IsTrue(aold.pos_ws == a.pos_ws);
-			Assert::IsTrue(aold.pos_cs == a.pos_cs);
-			Assert::IsTrue(aold.pos_ndc == a.pos_ndc);
-			Assert::IsTrue(aold.pos_ss == a.pos_ss);
-			Assert::IsTrue(aold.pos_uv == a.pos_uv);
-			Assert::IsTrue(aold.normal == a.normal);
+        // Interpolate
+        a.Interpolate(b, 0.25);
 
-			return;
-		}
+        // Check, if only the corresponding vertices have been modified
+        if (lerp_ws)
+            REQUIRE_FALSE(aold.pos_ws == a.pos_ws);
+        else
+            REQUIRE(aold.pos_ws == a.pos_ws);
 
-		// Tests that only the correct attributes get interpolated
-		TEST_METHOD(Interpolates_Correct_Attributes)
-		{
-			// Run test 100 times
+        if (lerp_wsmx)
+            REQUIRE_FALSE(aold.pos_wsmx == a.pos_wsmx);
+        else
+            REQUIRE(aold.pos_wsmx == a.pos_wsmx);
 
-			for (std::size_t i = 0; i < 100; i++)
-			{
-				// Decide that to interpolate
-				const bool lerp_ws = rng() % 2;
-				const bool lerp_wsmx = rng() % 2;
-				const bool lerp_cs = rng() % 2;
-				const bool lerp_nd = rng() % 2;
-				const bool lerp_ss = rng() % 2;
-				const bool lerp_uv = rng() % 2;
-				const bool lerp_nm = rng() % 2;
+        if (lerp_cs)
+            REQUIRE_FALSE(aold.pos_cs == a.pos_cs);
+        else
+            REQUIRE(aold.pos_cs == a.pos_cs);
 
-				// Generate interpolation mask
-				long long mask = 0;
-				if (lerp_ws)
-					mask |= IRV_LERP_POS_WS;
-				if (lerp_wsmx)
-					mask |= IRV_LERP_POS_WSMX;
-				if (lerp_cs)
-					mask |= IRV_LERP_POS_CS;
-				if (lerp_uv)
-					mask |= IRV_LERP_POS_UV;
-				if (lerp_nd)
-					mask |= IRV_LERP_POS_NDC;
-				if (lerp_ss)
-					mask |= IRV_LERP_POS_SS;
-				if (lerp_nm)
-					mask |= IRV_LERP_NORMAL;
+        if (lerp_nd)
+            REQUIRE_FALSE(aold.pos_ndc == a.pos_ndc);
+        else
+            REQUIRE(aold.pos_ndc == a.pos_ndc);
 
-				// Create vertices
-				InterRenderVertex a;
-				InterRenderVertex b;
-				InitA(a);
-				InitB(b);
-				InterRenderVertex aold = a;
+        if (lerp_ss)
+            REQUIRE_FALSE(aold.pos_ss == a.pos_ss);
+        else
+            REQUIRE(aold.pos_ss == a.pos_ss);
 
-				// Set interpolation mask
-				a.SetInterpolationMask(mask);
+        if (lerp_uv)
+            REQUIRE_FALSE(aold.pos_uv == a.pos_uv);
+        else
+            REQUIRE(aold.pos_uv == a.pos_uv);
 
-				// Interpolate
-				a.Interpolate(b, 0.25);
+        if (lerp_nm)
+            REQUIRE_FALSE(aold.normal == a.normal);
+        else
+            REQUIRE(aold.normal == a.normal);
+    }
 
-				// Check, if only the corresponding vertices have been modified
-				if (lerp_ws)
-					Assert::IsFalse(aold.pos_ws == a.pos_ws);
-				else
-					Assert::IsTrue(aold.pos_ws == a.pos_ws);
-
-				if (lerp_wsmx)
-					Assert::IsFalse(aold.pos_wsmx == a.pos_wsmx);
-				else
-					Assert::IsTrue(aold.pos_wsmx == a.pos_wsmx);
-
-				if (lerp_cs)
-					Assert::IsFalse(aold.pos_cs == a.pos_cs);
-				else
-					Assert::IsTrue(aold.pos_cs == a.pos_cs);
-
-				if (lerp_nd)
-					Assert::IsFalse(aold.pos_ndc == a.pos_ndc);
-				else
-					Assert::IsTrue(aold.pos_ndc == a.pos_ndc);
-
-				if (lerp_ss)
-					Assert::IsFalse(aold.pos_ss == a.pos_ss);
-				else
-					Assert::IsTrue(aold.pos_ss == a.pos_ss);
-
-				if (lerp_uv)
-					Assert::IsFalse(aold.pos_uv == a.pos_uv);
-				else
-					Assert::IsTrue(aold.pos_uv == a.pos_uv);
-
-				if (lerp_nm)
-					Assert::IsFalse(aold.normal == a.normal);
-				else
-					Assert::IsTrue(aold.normal == a.normal);
-			}
-
-			return;
-		}
-	};
+    return;
 }
+
