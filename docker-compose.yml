@@ -1,9 +1,0 @@
-version: '3'
-services:
-  cpp-build:
-    image: ubuntu:latest  # Use a base image like Ubuntu
-    container_name: tornado-build-container
-    volumes:
-      - .:/src  # Mount current directory to /src in the container
-    working_dir: /src  # Set working directory inside the container
-    tty: true

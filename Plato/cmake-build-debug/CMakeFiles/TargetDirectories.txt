@@ -1,3 +1,0 @@
-/mnt/c/Daten/No Redundancy/GithubProjects/C++/TornadoPlatoApp/Plato/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/c/Daten/No Redundancy/GithubProjects/C++/TornadoPlatoApp/Plato/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Daten/No Redundancy/GithubProjects/C++/TornadoPlatoApp/Plato/cmake-build-debug/CMakeFiles/Plato.dir

@@ -1,3 +1,0 @@
-/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles/__Testapp_FPS_Headless.dir
-/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles/edit_cache.dir
-/Users/agent/private-work/TornadoPlatoApp/_Testapp_FPS_Headless/build_mac/CMakeFiles/rebuild_cache.dir
