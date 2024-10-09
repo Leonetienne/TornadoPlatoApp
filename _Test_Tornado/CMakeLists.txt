@@ -17,6 +17,7 @@ add_executable(
         Color.cpp
         Texture.cpp
         BarycentricInterpolationEngine.cpp
+        WorkerPool.cpp
         main.cpp
 )
 
