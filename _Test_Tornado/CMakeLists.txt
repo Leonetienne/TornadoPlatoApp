@@ -8,9 +8,9 @@ file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Tornado_Test ./*.cpp)
 
 add_executable(
-        Test_Tornado.out
-        ${Eule}
-        ${Tornado}
-        ${Tornado_Test}
+    Test_Tornado.out
+    ${Eule}
+    ${Tornado}
+    ${Tornado_Test}
 )
 

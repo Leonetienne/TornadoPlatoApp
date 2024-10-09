@@ -12,15 +12,15 @@ file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Plato ../Plato/*.cpp)
 
 add_executable(
-        TestappSDL2.out
+    TestappSDL2.out
 
-        ${Eule}
-        ${Tornado}
-        ${Plato}
+    ${Eule}
+    ${Tornado}
+    ${Plato}
 
-        TestFixture.cpp
-        Test__MC.cpp
-        main.cpp
+    TestFixture.cpp
+    Test__MC.cpp
+    main.cpp
 )
 
 # Include SDL2 directories

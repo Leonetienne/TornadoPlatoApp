@@ -7,8 +7,8 @@ file(GLOB Eule ../Eule/*.cpp)
 file(GLOB Eule_Test ./*.cpp)
 
 add_executable(
-        Test_Eule.out
-        ${Eule}
-        ${Eule_Test}
+    Test_Eule.out
+    ${Eule}
+    ${Eule_Test}
 )
 

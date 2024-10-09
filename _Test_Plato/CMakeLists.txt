@@ -9,10 +9,10 @@ file(GLOB Plato ../Plato/*.cpp)
 file(GLOB Plato_Test ./*.cpp)
 
 add_executable(
-        Test_Plato.out
-        ${Eule}
-        ${Tornado}
-        ${Plato}
-        ${Plato_Test}
+    Test_Plato.out
+    ${Eule}
+    ${Tornado}
+    ${Plato}
+    ${Plato_Test}
 )
 

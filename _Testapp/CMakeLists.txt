@@ -8,18 +8,18 @@ file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Plato ../Plato/*.cpp)
 
 add_executable(
-        Testapp.out
+    Testapp.out
 
-        ${Eule}
-        ${Tornado}
-        ${Plato}
+    ${Eule}
+    ${Tornado}
+    ${Plato}
 
-        TestFixture.cpp
-        Test__FPS.cpp
-        Test__Yubi.cpp
-        Test__Cube.cpp
-        Test__MC.cpp
-        main.cpp
+    TestFixture.cpp
+    Test__FPS.cpp
+    Test__Yubi.cpp
+    Test__Cube.cpp
+    Test__MC.cpp
+    main.cpp
 )
 
 # Link assets dir into build dir
