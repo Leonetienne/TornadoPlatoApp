@@ -4,7 +4,6 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/PointLight.h"
 #include "../Plato/Color.h"
-#include <iostream>
 
 using namespace Plato;
 

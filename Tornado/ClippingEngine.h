@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
-#include "Vector4.h"
 #include "InterRenderTriangle.h"
+#include "Vector4.h"
+#include <vector>
 
 namespace TorGL
 {

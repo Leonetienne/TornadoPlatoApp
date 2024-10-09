@@ -1,7 +1,7 @@
 #pragma once
+#include "Color.h"
 #include "Vector2.h"
 #include "Vector3.h"
-#include "Color.h"
 
 namespace TorGL
 {
@@ -14,3 +14,4 @@ namespace TorGL
 		Vector3d normal;
 	};
 }
+

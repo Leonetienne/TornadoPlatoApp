@@ -1,7 +1,6 @@
 //#include "Test__FPS.h"
-#include "../Eule/Eule/Vector2.h"
+#include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
-#include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "TestFixture.h"

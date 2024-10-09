@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include <Eule/Eule/Collider.h>
+#include "../Eule/Collider.h"
 
 namespace Plato
 {

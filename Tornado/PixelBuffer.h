@@ -1,10 +1,10 @@
 #pragma once
+#include "Endian.h"
+#include "Vector2.h"
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
 #include <cstring>
-#include "Vector2.h"
-#include "Endian.h"
 
 namespace TorGL
 {

@@ -1,7 +1,6 @@
 #include "OBJParser.h"
-#include <sstream>
-#include <fstream>
 #include "Util.h"
+#include <sstream>
 
 using namespace Plato;
 

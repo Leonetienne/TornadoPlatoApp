@@ -1,5 +1,4 @@
 #include "TrapazoidalPrismCollider.h"
-#include "WorldObjectManager.h"
 #include "Camera.h"
 
 using namespace Plato;

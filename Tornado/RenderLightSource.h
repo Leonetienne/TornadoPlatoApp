@@ -1,8 +1,8 @@
 #pragma once
-#include <Eule/Eule/Collider.h>
-#include "Vector3.h"
 #include "Color.h"
 #include "InterRenderTriangle.h"
+#include "Vector3.h"
+#include "../Eule/Collider.h"
 #include <vector>
 
 namespace TorGL

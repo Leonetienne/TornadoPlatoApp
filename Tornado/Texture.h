@@ -1,7 +1,7 @@
 #pragma once
-#include "Vector2.h"
 #include "PixelBuffer.h"
 #include "Color.h"
+#include "Vector2.h"
 
 namespace TorGL
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "Collider.h"
-#include <Eule/Eule/TrapazoidalPrismCollider.h>
+#include "../Eule/TrapazoidalPrismCollider.h"
 
 namespace Plato
 {

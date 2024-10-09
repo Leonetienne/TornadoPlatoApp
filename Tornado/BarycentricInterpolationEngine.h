@@ -1,6 +1,6 @@
 #pragma once
-#include "InterRenderTriangle.h"
 #include "Vector2.h"
+#include "InterRenderTriangle.h"
 
 namespace TorGL
 {

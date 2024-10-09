@@ -2,7 +2,7 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/PointLight.h"
-#include "../Eule/Eule/Vector3.h"
+#include "../Plato/Vector.h"
 #include "../Plato/Color.h"
 #include "../Plato/Keyboard.h"
 #include "Cube.h"

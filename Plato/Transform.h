@@ -1,9 +1,9 @@
 #pragma once
-#include <unordered_set>
-#include <mutex>
 #include "Quaternion.h"
 #include "Matrix4x4.h"
 #include "Vector.h"
+#include <unordered_set>
+#include <mutex>
 
 namespace Plato
 {

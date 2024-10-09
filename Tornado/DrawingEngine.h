@@ -2,8 +2,8 @@
 #include "PixelBuffer.h"
 #include "WorkerPool.h"
 #include "InterRenderTriangle.h"
-#include <Eule/Eule/Rect.h>
 #include "LightingEngine.h"
+#include "../Eule/Rect.h"
 
 namespace TorGL
 {

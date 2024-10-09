@@ -1,9 +1,8 @@
 #include "Test__Yubi.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
-#include "../Plato/Keyboard.h"
 #include "../Plato/PointLight.h"
-#include "../Eule/Eule/Vector3.h"
+#include "../Plato/Vector.h"
 #include "../Plato/Color.h"
 #include <iostream>
 #include <sstream>

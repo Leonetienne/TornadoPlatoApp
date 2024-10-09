@@ -1,11 +1,11 @@
 #pragma once
-#include <vector>
+#include "Color.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
-#include "Color.h"
+#include <vector>
 
-#define IRV_LERP_POS_WS		  (1<<0)
+#define IRV_LERP_POS_WS       (1<<0)
 #define IRV_LERP_POS_WSMX     (1<<1)
 #define IRV_LERP_POS_CS       (1<<2)
 #define IRV_LERP_POS_NDC      (1<<3)

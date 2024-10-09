@@ -1,5 +1,4 @@
 #include "Tornado.h"
-#include "RenderPointLight.h"
 
 using namespace TorGL;
 

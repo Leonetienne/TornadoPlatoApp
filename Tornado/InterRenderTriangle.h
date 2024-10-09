@@ -1,7 +1,7 @@
 #pragma once
-#include "Vector3.h"
 #include "InterRenderVertex.h"
 #include "Material.h"
+#include "Vector3.h"
 
 namespace TorGL
 {

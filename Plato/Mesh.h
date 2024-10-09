@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include "Vector.h"
+#include <vector>
 
 namespace Plato
 {

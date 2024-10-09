@@ -5,7 +5,7 @@
 // within the game engine. Much more convenient to just include "Math.h".
 // Also, when using the game engine, one should ideally not have to directly interact with the maths engine at all.
 
-#include "Eule/Math.h"
+#include "../Eule/Math.h"
 
 namespace Plato
 {

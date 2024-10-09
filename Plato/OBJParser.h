@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include "Mesh.h"
+#include <string>
 
 namespace Plato
 {

@@ -1,5 +1,7 @@
 #pragma once
-#include <Eule/Eule/Rect.h>
+#include "../Eule/Rect.h"
+
+using namespace Eule;
 
 namespace Plato
 {

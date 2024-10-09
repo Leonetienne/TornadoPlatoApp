@@ -1,6 +1,6 @@
 #include "DrawingEngine.h"
 #include "BarycentricInterpolationEngine.h"
-#include <Eule/Eule/Math.h>
+#include "../Eule/Math.h"
 #include <cstddef>
 
 using namespace TorGL;
