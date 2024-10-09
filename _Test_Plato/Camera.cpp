@@ -154,7 +154,8 @@ TEST_CASE(__FILE__"/First_Camera_Is_Main_Camera", "[Camera]")
     return;
 }
 
-#undef DUMMY_CAM_ARGUMENTS #undef TEST_START
+#undef DUMMY_CAM_ARGUMENTS
+#undef TEST_START
 #undef TEST_START
 #undef TEST_END
 
