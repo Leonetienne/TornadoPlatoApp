@@ -15,6 +15,7 @@ add_executable(
         ${Tornado}
         #${Torado_Test}
         Color.cpp
+        Texture.cpp
         BarycentricInterpolationEngine.cpp
         main.cpp
 )
