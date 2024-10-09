@@ -22,7 +22,6 @@ add_executable(
         main.cpp
 )
 
-
 # Link assets dir into build dir
 add_custom_command(
     TARGET Testapp.out POST_BUILD
