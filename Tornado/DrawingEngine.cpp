@@ -295,10 +295,9 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			brightness.b = lightingIntensity.b / 255.0;
 		
 			// Apply global illumination
-			// This could overflow the int!!! FIX THIS
-			brightness.r += globalIllumination;
-			brightness.g += globalIllumination;
-			brightness.b += globalIllumination;
+			brightness.r += Math::Min(globalIllumination, 1.0);
+			brightness.g += Math::Min(globalIllumination, 1.0);
+			brightness.b += Math::Min(globalIllumination, 1.0);
 		}
 
         // Is the pixel marked as transparent?
