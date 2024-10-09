@@ -4,6 +4,7 @@
 class Testutil
 {
 public:
+    // Computes a standard derivation
 	template <typename T>
 	static double Stddev(const std::vector<T>& distribution)
 	{

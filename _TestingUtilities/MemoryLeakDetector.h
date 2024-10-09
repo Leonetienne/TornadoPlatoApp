@@ -1,6 +1,7 @@
 #pragma once
 #include <crtdbg.h>
 
+// IIRC this works on windows visual c++ only
 // Don't even allow compilation in release mode unless handled correctly.
 // This class ONLY WORKS IN DEBUG MODE!!!
 #ifdef _DEBUG
