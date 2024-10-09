@@ -30,7 +30,10 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 		double a2 = EdgeFunction(tri.c.pos_ss, pos, tri.a.pos_ss);
 		double a3 = EdgeFunction(tri.b.pos_ss, tri.a.pos_ss, pos);
 
-		if ((a1 >= 0) && (a2 >= 0) && (a3 >= 0))
+        // If all values are positive or zero, the point lies either inside the triangle, or exactly on an edge.
+        // Due to floating point inaccuracies, pos being either exact point (a,b or c) of tri, could result in minute
+        // negative values. Let's still allow values like -0.00001 to pass as "positive or zero"...
+		if ((a1 >= -10e-6) && (a2 >= -10e-6) && (a3 >= -10e-6))
 		{
 			// The 1 over z is NOT to convert back to clipping space (because z already is), but because
 			// we are pre-calculating a division by it.
