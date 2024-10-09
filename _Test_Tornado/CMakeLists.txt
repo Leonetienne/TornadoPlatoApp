@@ -13,15 +13,6 @@ add_executable(
         Test_Tornado.out
         ${Eule}
         ${Tornado}
-        #${Torado_Test}
-        Color.cpp
-        Texture.cpp
-        BarycentricInterpolationEngine.cpp
-        WorkerPool.cpp
-        ProjectionProperties.cpp
-        PixelBuffer.cpp
-        InterRenderVertex.cpp
-        ClippingEngine.cpp
-        main.cpp
+        ${Tornado_Test}
 )
 
