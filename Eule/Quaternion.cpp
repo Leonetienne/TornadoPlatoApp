@@ -2,12 +2,6 @@
 #include "Constants.h"
 #include <cmath>
 
-//#define _EULE_NO_INTRINSICS_
-#ifndef _EULE_NO_INTRINSICS_
-#include <immintrin.h>
-#include "gcccompat.h"
-#endif
-
 namespace Eule {
 
     Quaternion::Quaternion()
@@ -32,53 +26,6 @@ namespace Eule {
     {
         Vector3d eulerRad = eulerAngles * Deg2Rad;
 
-        #ifndef _EULE_NO_INTRINSICS_
-
-        // Calculate sine and cos values
-        __m256d __vec = _mm256_set_pd(0, eulerRad.z, eulerRad.y, eulerRad.x);
-        __vec = _mm256_mul_pd(__vec, _mm256_set1_pd(0.5));
-        __m256d __cos;
-        __m256d __sin = _mm256_sincos_pd(&__cos, __vec);
-
-        // Create multiplication vectors
-        double sin[4];
-        double cos[4];
-
-        _mm256_storeu_pd(sin, __sin);
-        _mm256_storeu_pd(cos, __cos);
-
-        __m256d __a = _mm256_set_pd(cos[0], cos[0], sin[0], cos[0]);
-        __m256d __b = _mm256_set_pd(cos[1], sin[1], cos[1], cos[1]);
-        __m256d __c = _mm256_set_pd(sin[2], cos[2], cos[2], cos[2]);
-
-        __m256d __d = _mm256_set_pd(sin[0], sin[0], cos[0], sin[0]);
-        __m256d __e = _mm256_set_pd(sin[1], cos[1], sin[1], sin[1]);
-        __m256d __f = _mm256_set_pd(cos[2], sin[2], sin[2], sin[2]);
-
-        // Multiply them
-        __m256d __abc;
-        __abc = _mm256_mul_pd(__a, __b);
-        __abc = _mm256_mul_pd(__abc, __c);
-
-        __m256d __def;
-        __def = _mm256_mul_pd(__d, __e);
-        __def = _mm256_mul_pd(__def, __f);
-
-        // Extract results
-        double abc[4];
-        double def[4];
-
-        _mm256_storeu_pd(abc, __abc);
-        _mm256_storeu_pd(def, __def);
-
-        // Sum them up
-        v.w = abc[0] + def[0];
-        v.x = abc[1] - def[1];
-        v.y = abc[2] + def[2];
-        v.z = abc[3] - def[3];
-
-        #else
-
         const double cy = cos(eulerRad.z * 0.5);
         const double sy = sin(eulerRad.z * 0.5);
         const double cp = cos(eulerRad.y * 0.5);
@@ -90,8 +37,6 @@ namespace Eule {
         v.x = sr * cp * cy - cr * sp * sy;
         v.y = cr * sp * cy + sr * cp * sy;
         v.z = cr * cp * sy - sr * sp * cy;
-
-        #endif
 
         return;
     }
@@ -340,3 +285,4 @@ namespace Eule {
 		return os;
 	}
 }
+

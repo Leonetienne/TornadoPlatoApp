@@ -3,8 +3,6 @@ project(Tests_Tornado)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_compile_definitions(_EULE_NO_INTRINSICS_)
-
 file(GLOB Eule ../Eule/*.cpp)
 file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Tornado_Test ./*.cpp)

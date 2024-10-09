@@ -1,22 +1,7 @@
 #include "Vector4.h"
 #include "Vector2.h"
 #include "Vector3.h"
-
 #include "Math.h"
-
-//#define _EULE_NO_INTRINSICS_
-#ifndef _EULE_NO_INTRINSICS_
-#include <immintrin.h>
-#endif
-
-/*
-	NOTE:
-	Here you will find bad, unoptimized methods for T=int.
-	This is because the compiler needs a method for each type in each instantiation of the template!
-	I can't generalize the methods when heavily optimizing for doubles.
-	These functions will get called VERY rarely, if ever at all, for T=int, so it's ok.
-	The T=int instantiation only exists to store a value-pair of two ints. Not so-much as a vector in terms of vector calculus.
-*/
 
 namespace Eule {
 
@@ -57,55 +42,16 @@ namespace Eule {
         return sqrt(SqrMagnitude());
     }
 
-
-    template<>
-    Vector4<double> Vector4<double>::VectorScale(const Vector4<double>& scalar) const
+    template<typename T>
+    Vector4<T> Vector4<T>::VectorScale(const Vector4<T>& scalar) const
     {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Load vectors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __vector_scalar = _mm256_set_pd(scalar.w, scalar.z, scalar.y, scalar.x);
-
-	// Multiply them
-	__m256d __product = _mm256_mul_pd(__vector_self, __vector_scalar);
-
-	// Retrieve result
-	double result[4];
-	_mm256_storeu_pd(result, __product);
-
-	// Return value
-	return Vector4<double>(
-		result[0],
-		result[1],
-		result[2],
-		result[3]
-		);
-
-#else
-
-        return Vector4<double>(
-                x * scalar.x,
-                y * scalar.y,
-                z * scalar.z,
-                w * scalar.w
-        );
-#endif
-    }
-
-
-    template<>
-    Vector4<int> Vector4<int>::VectorScale(const Vector4<int>& scalar) const
-    {
-        return Vector4<int>(
+        return Vector4<T>(
                 x * scalar.x,
                 y * scalar.y,
                 z * scalar.z,
                 w * scalar.w
         );
     }
-
-
 
     template<typename T>
     Vector4<double> Vector4<T>::Normalize() const
@@ -116,7 +62,7 @@ namespace Eule {
         return norm;
     }
 
-// Method to normalize a Vector4d
+    // Method to normalize a Vector4d
     template<>
     void Vector4<double>::NormalizeSelf()
     {
@@ -132,32 +78,10 @@ namespace Eule {
         }
         else
         {
-#ifndef _EULE_NO_INTRINSICS_
-
-            // Load vector and length into registers
-		__m256d __vec = _mm256_set_pd(w, z, y, x);
-		__m256d __len = _mm256_set1_pd(length);
-
-		// Divide
-		__m256d __prod = _mm256_div_pd(__vec, __len);
-
-		// Extract and set values
-		double prod[4];
-		_mm256_storeu_pd(prod, __prod);
-
-		x = prod[0];
-		y = prod[1];
-		z = prod[2];
-		w = prod[3];
-
-#else
-
             x /= length;
             y /= length;
             z /= length;
             w /= length;
-
-#endif
         }
 
         return;
@@ -176,17 +100,15 @@ namespace Eule {
         return;
     }
 
-
-
     template<typename T>
     bool Vector4<T>::Similar(const Vector4<T>& other, double epsilon) const
     {
         return
-                (::Eule::Math::Similar(x, other.x, epsilon)) &&
-                (::Eule::Math::Similar(y, other.y, epsilon)) &&
-                (::Eule::Math::Similar(z, other.z, epsilon)) &&
-                (::Eule::Math::Similar(w, other.w, epsilon))
-                ;
+            (::Eule::Math::Similar(x, other.x, epsilon)) &&
+            (::Eule::Math::Similar(y, other.y, epsilon)) &&
+            (::Eule::Math::Similar(z, other.z, epsilon)) &&
+            (::Eule::Math::Similar(w, other.w, epsilon))
+        ;
     }
 
     template<typename T>
@@ -244,40 +166,10 @@ namespace Eule {
     void Vector4<double>::LerpSelf(const Vector4<double>& other, double t)
     {
         const double it = 1.0 - t; // Inverse t
-
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __vector_other = _mm256_set_pd(other.w, other.z, other.y, other.x);
-	__m256d __t = _mm256_set1_pd(t);
-	__m256d __it = _mm256_set1_pd(it); // Inverse t
-
-	// Procedure:
-	// (__vector_self * __it) + (__vector_other * __t)
-
-	__m256d __sum = _mm256_set1_pd(0); // this will hold the sum of the two multiplications
-
-	__sum = _mm256_fmadd_pd(__vector_self, __it, __sum);
-	__sum = _mm256_fmadd_pd(__vector_other, __t, __sum);
-
-	// Retrieve result, and apply it
-	double sum[4];
-	_mm256_storeu_pd(sum, __sum);
-
-	x = sum[0];
-	y = sum[1];
-	z = sum[2];
-	w = sum[3];
-
-#else
-
         x = it * x + t * other.x;
         y = it * y + t * other.y;
         z = it * z + t * other.z;
         w = it * w + t * other.w;
-
-#endif
 
         return;
     }
@@ -318,40 +210,6 @@ namespace Eule {
 
 
 
-    template<>
-    Vector4<double> Vector4<double>::operator+(const Vector4<double>& other) const
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __vector_other = _mm256_set_pd(other.w, other.z, other.y, other.x);
-
-	// Add the components
-	__m256d __sum = _mm256_add_pd(__vector_self, __vector_other);
-
-	// Retrieve and return these values
-	double sum[4];
-	_mm256_storeu_pd(sum, __sum);
-
-	return Vector4<double>(
-			sum[0],
-			sum[1],
-			sum[2],
-			sum[3]
-		);
-
-#else
-
-        return Vector4<double>(
-                x + other.x,
-                y + other.y,
-                z + other.z,
-                w + other.w
-        );
-#endif
-    }
-
     template<typename T>
     Vector4<T> Vector4<T>::operator+(const Vector4<T>& other) const
     {
@@ -361,41 +219,6 @@ namespace Eule {
                 z + other.z,
                 w + other.w
         );
-    }
-
-
-
-    template<>
-    void Vector4<double>::operator+=(const Vector4<double>& other)
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __vector_other = _mm256_set_pd(other.w, other.z, other.y, other.x);
-
-	// Add the components
-	__m256d __sum = _mm256_add_pd(__vector_self, __vector_other);
-
-	// Retrieve and apply these values
-	double sum[4];
-	_mm256_storeu_pd(sum, __sum);
-
-	x = sum[0];
-	y = sum[1];
-	z = sum[2];
-	w = sum[3];
-
-#else
-
-        x += other.x;
-        y += other.y;
-        z += other.z;
-        w += other.w;
-
-#endif
-
-        return;
     }
 
     template<typename T>
@@ -408,86 +231,15 @@ namespace Eule {
         return;
     }
 
-
-
-    template<>
-    Vector4<double> Vector4<double>::operator-(const Vector4<double>& other) const
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __vector_other = _mm256_set_pd(other.w, other.z, other.y, other.x);
-
-	// Subtract the components
-	__m256d __diff = _mm256_sub_pd(__vector_self, __vector_other);
-
-	// Retrieve and return these values
-	double diff[4];
-	_mm256_storeu_pd(diff, __diff);
-
-	return Vector4<double>(
-			diff[0],
-			diff[1],
-			diff[2],
-			diff[3]
-		);
-
-#else
-
-        return Vector4<double>(
-                x - other.x,
-                y - other.y,
-                z - other.z,
-                w - other.w
-        );
-#endif
-    }
-
     template<typename T>
     Vector4<T> Vector4<T>::operator-(const Vector4<T>& other) const
     {
         return Vector4<T>(
-                x - other.x,
-                y - other.y,
-                z - other.z,
-                w - other.w
+            x - other.x,
+            y - other.y,
+            z - other.z,
+            w - other.w
         );
-    }
-
-
-
-    template<>
-    void Vector4<double>::operator-=(const Vector4<double>& other)
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __vector_other = _mm256_set_pd(other.w, other.z, other.y, other.x);
-
-	// Subtract the components
-	__m256d __diff = _mm256_sub_pd(__vector_self, __vector_other);
-
-	// Retrieve and apply these values
-	double diff[4];
-	_mm256_storeu_pd(diff, __diff);
-
-	x = diff[0];
-	y = diff[1];
-	z = diff[2];
-	w = diff[3];
-
-#else
-
-        x -= other.x;
-        y -= other.y;
-        z -= other.z;
-        w -= other.w;
-
-#endif
-
-        return;
     }
 
     template<typename T>
@@ -500,87 +252,15 @@ namespace Eule {
         return;
     }
 
-
-
-    template<>
-    Vector4<double> Vector4<double>::operator*(const double scale) const
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __scalar = _mm256_set1_pd(scale);
-
-	// Multiply the components
-	__m256d __prod = _mm256_mul_pd(__vector_self, __scalar);
-
-	// Retrieve and return these values
-	double prod[4];
-	_mm256_storeu_pd(prod, __prod);
-
-	return Vector4<double>(
-			prod[0],
-			prod[1],
-			prod[2],
-			prod[3]
-		);
-
-#else
-
-        return Vector4<double>(
-                x * scale,
-                y * scale,
-                z * scale,
-                w * scale
-        );
-
-#endif
-    }
-
     template<typename T>
     Vector4<T> Vector4<T>::operator*(const T scale) const
     {
         return Vector4<T>(
-                x * scale,
-                y * scale,
-                z * scale,
-                w * scale
+            x * scale,
+            y * scale,
+            z * scale,
+            w * scale
         );
-    }
-
-
-
-    template<>
-    void Vector4<double>::operator*=(const double scale)
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __scalar = _mm256_set1_pd(scale);
-
-	// Multiply the components
-	__m256d __prod = _mm256_mul_pd(__vector_self, __scalar);
-
-	// Retrieve and apply these values
-	double prod[4];
-	_mm256_storeu_pd(prod, __prod);
-
-	x = prod[0];
-	y = prod[1];
-	z = prod[2];
-	w = prod[3];
-
-#else
-
-        x *= scale;
-        y *= scale;
-        z *= scale;
-        w *= scale;
-
-#endif
-
-        return;
     }
 
     template<typename T>
@@ -593,86 +273,15 @@ namespace Eule {
         return;
     }
 
-
-
-    template<>
-    Vector4<double> Vector4<double>::operator/(const double scale) const
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __scalar = _mm256_set1_pd(scale);
-
-	// Divide the components
-	__m256d __prod = _mm256_div_pd(__vector_self, __scalar);
-
-	// Retrieve and return these values
-	double prod[4];
-	_mm256_storeu_pd(prod, __prod);
-
-	return Vector4<double>(
-		prod[0],
-		prod[1],
-		prod[2],
-		prod[3]
-	);
-
-#else
-
-        return Vector4<double>(
-                x / scale,
-                y / scale,
-                z / scale,
-                w / scale
-        );
-
-#endif
-    }
-
     template<typename T>
     Vector4<T> Vector4<T>::operator/(const T scale) const
     {
         return Vector4<T>(
-                x / scale,
-                y / scale,
-                z / scale,
-                w / scale
+            x / scale,
+            y / scale,
+            z / scale,
+            w / scale
         );
-    }
-
-
-
-    template<>
-    void Vector4<double>::operator/=(const double scale)
-    {
-#ifndef _EULE_NO_INTRINSICS_
-
-        // Move vector components and factors into registers
-	__m256d __vector_self = _mm256_set_pd(w, z, y, x);
-	__m256d __scalar = _mm256_set1_pd(scale);
-
-	// Divide the components
-	__m256d __prod = _mm256_div_pd(__vector_self, __scalar);
-
-	// Retrieve and apply these values
-	double prod[4];
-	_mm256_storeu_pd(prod, __prod);
-
-	x = prod[0];
-	y = prod[1];
-	z = prod[2];
-	w = prod[3];
-
-#else
-
-        x /= scale;
-        y /= scale;
-        z /= scale;
-        w /= scale;
-
-#endif
-        return;
     }
 
     template<typename T>
@@ -685,8 +294,6 @@ namespace Eule {
         return;
     }
 
-
-
     template<typename T>
     bool Vector4<T>::operator==(const Vector4<T>& other) const
     {
@@ -696,8 +303,6 @@ namespace Eule {
                 (z == other.z) &&
                 (w == other.w);
     }
-
-
 
     // Good, optimized chad version for doubles
     template<>
@@ -725,10 +330,10 @@ namespace Eule {
         newVec.w = (mat[3][0] * x) + (mat[3][1] * y) + (mat[3][2] * z) + (mat[3][3] * w);
 
         return Vector4<int>(
-                (int)newVec.x,
-                (int)newVec.y,
-                (int)newVec.z,
-                (int)newVec.w
+            (int)newVec.x,
+            (int)newVec.y,
+            (int)newVec.z,
+            (int)newVec.w
         );
     }
 
@@ -754,10 +359,10 @@ namespace Eule {
     Vector4<T> Vector4<T>::operator-() const
     {
         return Vector4<T>(
-                -x,
-                -y,
-                -z,
-                -w
+            -x,
+            -y,
+            -z,
+            -w
         );
     }
 
@@ -830,3 +435,4 @@ namespace Eule {
     template <>
     const Vector4<double> Vector4<double>::zero(0, 0, 0, 0);
 }
+
