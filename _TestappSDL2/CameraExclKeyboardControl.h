@@ -12,6 +12,7 @@ using namespace Plato;
 /**
     Exclusive keyboard controls for camera movement. No mouse!
     WASDQE for movement, HJKL for looking.
+    1 and 2 for FOV
 * */
 class CameraExclKeyboardControl : public Component
 {

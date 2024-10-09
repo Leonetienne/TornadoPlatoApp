@@ -113,6 +113,14 @@ private:
 		// Esc to exit
 		if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::ESCAPE))
 			Input::Application::Exit();
+  
+		// Fov keys 1, and 2
+        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_1)) {
+            cameraComponent->SetFov(cameraComponent->GetFov() + 0.1 * deltaTime);
+        }
+        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_2)) {
+            cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * deltaTime);
+        }
 
 		// Fov by mousewheel
 		const double mouseDelta = Input::Mouse::GetMousewheelDelta();

@@ -58,7 +58,7 @@ Test__MC::Test__MC() : TestFixture(__FUNCTION__) // Set the test fixtures name
     // Create a light positioned at the ceiling light
     WorldObject* celingLight = WorldObjectManager::NewWorldObject("ceiling-light");
     celingLight->SetId("ceiling-light");
-    celingLight->AddComponent<Components::PointLight>(15*0, Color(255, 220, 180));
+    celingLight->AddComponent<Components::PointLight>(3, Color(255, 220, 180));
     celingLight->transform->SetPosition(Vector3d(0, 1.3, -9.91571 - 5));
 
     return;
@@ -75,33 +75,33 @@ void Test__MC::Update(double deltaTime)
             WorldObjectManager::FindObjectById("ceiling-light")->GetComponentOfType<Components::PointLight>();
 
         // Toggle light
-        if (ceilingLight->GetIntensity() == 0) {
-            ceilingLight->SetIntensity(5);
+        if (ceilingLight->GetIsEnabled()) {
+            ceilingLight->Disable();
         }
         else {
-            ceilingLight->SetIntensity(0);
+            ceilingLight->Enable();
         }
     }
 }
 
 void Test__MC::ToggleFlashlight()
 {
-    if (flashlight->GetIntensity() == 0) {
-        TurnFlashlightOn();
+    if (flashlight->GetIsEnabled()) {
+        TurnFlashlightOff();
     }
     else {
-        TurnFlashlightOff();
+        TurnFlashlightOn();
     }
 }
 
 void Test__MC::TurnFlashlightOn()
 {
-    flashlight->SetIntensity(3);
+    flashlight->Enable();
 }
 
 void Test__MC::TurnFlashlightOff()
 {
-    flashlight->SetIntensity(0);
+    flashlight->Disable();
 }
 
 void Test__MC::Render(Renderer* renderer)

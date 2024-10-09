@@ -18,7 +18,7 @@
 #include <fcntl.h>
 
 int main(int argc, char* argv[]) {
-    const Vector2i resolution(800, 600);
+    const Vector2i resolution(800*2, 600*2);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
@@ -102,6 +102,14 @@ int main(int argc, char* argv[]) {
                 Input::EventManager::RegisterEventMouseDelta(mouseDelta);
                 Input::EventManager::RegisterEventMousePosition(mousePos, mousePos);
             }
+            else if (event.type == SDL_KEYDOWN) {
+                SDL_KeyboardEvent* keyEvent = &event.key;
+                Input::EventManager::RegisterEventKeyDown((Input::KEY_CODE)keyEvent->keysym.sym);
+            }
+            else if (event.type == SDL_KEYUP) {
+                SDL_KeyboardEvent* keyEvent = &event.key;
+                Input::EventManager::RegisterEventKeyUp((Input::KEY_CODE)keyEvent->keysym.sym);
+            }
         }
 
         WorldObjectManager::DeleteFlaggedObjects();
@@ -118,7 +126,7 @@ int main(int argc, char* argv[]) {
         int pitch;
         if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0) {
             for (std::size_t y = 0; y < resolution.y; y++) {
-            std::memcpy(static_cast<uint8_t*>(pixels) + y * pitch, renderer.GetPixelBuffer()->GetRawData() + (resolution.y - y) * pitch, pitch);
+                std::memcpy(static_cast<uint8_t*>(pixels) + y * pitch, renderer.GetPixelBuffer()->GetRawData() + (resolution.y - y) * pitch, pitch);
             }
             SDL_UnlockTexture(texture);
         } else {
@@ -138,6 +146,8 @@ int main(int argc, char* argv[]) {
 
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
         frametimer.Reset();
+
+        std::cout << "FPS: " << 1000.0 / frametime << std::endl;
     }
 
     // Clean up
