@@ -2,6 +2,12 @@
 
 This is still under heavy development. It's just public for the fun in it.
 
+## TOC
+* Eule: Does maths
+* Tornado: Does le graphics
+* Plato: Does le game engine things
+* Testapp_x: Actual applications
+
 ## How2cook
 1. Haf cmake installed
 2. `cd _Testapp`
