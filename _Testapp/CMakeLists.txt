@@ -5,11 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_compile_definitions(_EULE_NO_INTRINSICS_)
 
-include_directories(..)
-
-FILE(GLOB Eule ../Eule/Eule/*.cpp)
-FILE(GLOB Tornado ../Tornado/*.cpp)
-FILE(GLOB Plato ../Plato/*.cpp)
+file(GLOB Eule ../Eule/*.cpp)
+file(GLOB Tornado ../Tornado/*.cpp)
+file(GLOB Plato ../Plato/*.cpp)
 
 add_executable(
         Testapp.out
@@ -24,5 +22,13 @@ add_executable(
         Test__Cube.cpp
         Test__MC.cpp
         main.cpp
+)
+
+
+# Link assets dir into build dir
+add_custom_command(
+    TARGET Testapp.out POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
+    COMMENT "Linking assets directory to build directory."
 )
 
