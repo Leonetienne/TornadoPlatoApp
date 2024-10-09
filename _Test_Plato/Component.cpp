@@ -1,18 +1,10 @@
-#include "CppUnitTest.h"
+#include "../_TestingUtilities/Catch2.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/WorldObject.h"
 #include "../Plato/Component.h"
-#include "../Plato/Math.h"
-#include "../_TestingUtilities/HandyMacros.h"
-#include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
-#include <sstream>
-#include <thread>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Plato;
-
-typedef std::chrono::milliseconds ms;
 
 class TestComponent_ : public Component
 {
@@ -21,7 +13,7 @@ public:
 	void Update(double) override
 	{
 		if (failAtHookCall)
-			Assert::Fail(L"Update-hook got called!");
+			FAIL("Update-hook got called!");
 
 		return;
 	}
@@ -29,7 +21,7 @@ public:
 	void LateUpdate(double) override
 	{
 		if (failAtHookCall)
-			Assert::Fail(L"LateUpdate-hook got called!");
+			FAIL("LateUpdate-hook got called!");
 
 		return;
 	}
@@ -37,7 +29,7 @@ public:
 	void Render(Renderer*) override
 	{
 		if (failAtHookCall)
-			Assert::Fail(L"Render-hook got called!");
+			FAIL("Render-hook got called!");
 
 		return;
 	}
@@ -45,7 +37,7 @@ public:
 	void OnDestroy() override
 	{
 		if (failAtHookCall)
-			Assert::Fail(L"OnDestroy-hook got called!");
+			FAIL("OnDestroy-hook got called!");
 	}
 
 private:
@@ -62,185 +54,167 @@ private:
 	friend class WorldObject;
 };
 
-namespace WorldObjects
+// Tests that any component is enabled by default
+TEST_CASE(__FILE__"/Enabled_By_Default", "[Component]")
 {
-	TEST_CLASS(_Component)
-	{
-	private:
-		std::mt19937 rng;
+    // Setup, Exercise
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
 
-	public:
-		// Constructor
-		_Component()
-		{
-			rng = std::mt19937((std::random_device())());
-			return;
-		}
+    // Verify
+    REQUIRE(comp->GetIsEnabled());
 
-		// Tests that any component is enabled by default
-		TEST_METHOD(Enabled_By_Default)
-		{
-			// Setup, Exercise
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Verify
-			Assert::IsTrue(comp->GetIsEnabled());
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that any component is globally enabled by default
+TEST_CASE(__FILE__"/Globally_Enabled_By_Default", "[Component]")
+{
+    // Setup, Exercise
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
 
-			return;
-		}
+    // Verify
+    REQUIRE(comp->GetIsGloballyEnabled());
 
-		// Tests that any component is globally enabled by default
-		TEST_METHOD(Globally_Enabled_By_Default)
-		{
-			// Setup, Exercise
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Verify
-			Assert::IsTrue(comp->GetIsGloballyEnabled());
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that any component is globally disabled by default, if instanciated on disabled world object
+TEST_CASE(__FILE__"/Globally_Disabled_By_Default_If_Instanciated_On_Disabled_Wobject", "[Component]")
+{
+    // Setup, Exercise
+    WorldObject* wo = WorldObjectManager::NewWorldObject();
+    wo->Disable();
+    Component* comp = wo->AddComponent<TestComponent_>(false);
 
-			return;
-		}
+    // Verify
+    REQUIRE_FALSE(comp->GetIsGloballyEnabled());
 
-		// Tests that any component is globally disabled by default, if instanciated on disabled world object
-		TEST_METHOD(Globally_Disabled_By_Default_If_Instanciated_On_Disabled_Wobject)
-		{
-			// Setup, Exercise
-			WorldObject* wo = WorldObjectManager::NewWorldObject();
-			wo->Disable();
-			Component* comp = wo->AddComponent<TestComponent_>(false);
+    // Teardown
+    WorldObjectManager::Free();
+    return;
+}
 
-			// Verify
-			Assert::IsFalse(comp->GetIsGloballyEnabled());
+// Tests that a component can be disabled
+TEST_CASE(__FILE__"/Can_Disable_Component", "[Component]")
+{
+    // Setup
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
 
-			// Teardown
-			WorldObjectManager::Free();
-			return;
-		}
+    // Excersise
+    comp->Disable();
 
-		// Tests that a component can be disabled
-		TEST_METHOD(Can_Disable_Component)
-		{
-			// Setup
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
+    // Verify
+    REQUIRE_FALSE(comp->GetIsEnabled());
 
-			// Excersise
-			comp->Disable();
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Verify
-			Assert::IsFalse(comp->GetIsEnabled());
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that a component can be enabled again
+TEST_CASE(__FILE__"/Can_Enable_Component", "[Component]")
+{
+    // Setup
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
 
-			return;
-		}
+    // Excersise
+    comp->Disable();
+    comp->Enable();
 
-		// Tests that a component can be enabled again
-		TEST_METHOD(Can_Enable_Component)
-		{
-			// Setup
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
+    // Verify
+    REQUIRE(comp->GetIsEnabled());
 
-			// Excersise
-			comp->Disable();
-			comp->Enable();
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Verify
-			Assert::IsTrue(comp->GetIsEnabled());
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that disabling a component locally will also disable it globally
+TEST_CASE(__FILE__"/Disabling_Locally_Also_Disables_Globally", "[Component]")
+{
+    // Setup
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
 
-			return;
-		}
+    // Excersise
+    comp->Disable();
 
-		// Tests that disabling a component locally will also disable it globally
-		TEST_METHOD(Disabling_Locally_Also_Disables_Globally)
-		{
-			// Setup
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
+    // Verify
+    REQUIRE_FALSE(comp->GetIsGloballyEnabled());
 
-			// Excersise
-			comp->Disable();
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Verify
-			Assert::IsFalse(comp->GetIsGloballyEnabled());
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that disabling the components world object also disables it globally
+TEST_CASE(__FILE__"/Disabling_WorldObject_Also_Disables_Component_Globally", "[Component]")
+{
+    // Setup
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
 
-			return;
-		}
+    // Excersise
+    comp->worldObject->Disable();
 
-		// Tests that disabling the components world object also disables it globally
-		TEST_METHOD(Disabling_WorldObject_Also_Disables_Component_Globally)
-		{
-			// Setup
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(false);
+    // Verify
+    REQUIRE_FALSE(comp->GetIsGloballyEnabled());
 
-			// Excersise
-			comp->worldObject->Disable();
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Verify
-			Assert::IsFalse(comp->GetIsGloballyEnabled());
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that no hooks get called when an object is disabled.
+TEST_CASE(__FILE__"/No_Hook_When_Disabled", "[Component]")
+{
+    // Setup
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(true);
 
-			return;
-		}
+    // Exercise
+    comp->Disable();
 
-		// Tests that no hooks get called when an object is disabled.
-		TEST_METHOD(No_Hook_When_Disabled)
-		{
-			// Setup
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(true);
+    comp->worldObject->Destroy(); // This will cause the WOM to delete it, calling OnDestroy
+    WorldObjectManager::CallHook__Update(1);
+    WorldObjectManager::CallHook__LateUpdate(1);
+    WorldObjectManager::CallHook__Render(nullptr);
+    WorldObjectManager::DeleteFlaggedObjects();
 
-			// Exercise
-			comp->Disable();
+    // Assert::Fail() is called in the components hooks!
 
-			comp->worldObject->Destroy(); // This will cause the WOM to delete it, calling OnDestroy
-			WorldObjectManager::CallHook__Update(1);
-			WorldObjectManager::CallHook__LateUpdate(1);
-			WorldObjectManager::CallHook__Render(nullptr);
-			WorldObjectManager::DeleteFlaggedObjects();
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Assert::Fail() is called in the components hooks!
+    return;
+}
 
-			// Teardown
-			WorldObjectManager::Free();
+// Tests that a component will not receive any hook calls if just globally disabled (not locally)
+TEST_CASE(__FILE__"/No_Hook_When_Globally_Disabled", "[Component]")
+{
+    // Setup
+    Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(true);
 
-			return;
-		}
+    // Exercise
+    comp->worldObject->Disable();
 
-		// Tests that a component will not receive any hook calls if just globally disabled (not locally)
-		TEST_METHOD(No_Hook_When_Globally_Disabled)
-		{
-			// Setup
-			Component* comp = WorldObjectManager::NewWorldObject()->AddComponent<TestComponent_>(true);
+    comp->worldObject->Destroy(); // This will cause the WOM to delete it, calling OnDestroy
+    WorldObjectManager::CallHook__Update(1);
+    WorldObjectManager::CallHook__LateUpdate(1);
+    WorldObjectManager::CallHook__Render(nullptr);
+    WorldObjectManager::DeleteFlaggedObjects();
 
-			// Exercise
-			comp->worldObject->Disable();
+    // Assert::Fail() is called in the components hooks!
 
-			comp->worldObject->Destroy(); // This will cause the WOM to delete it, calling OnDestroy
-			WorldObjectManager::CallHook__Update(1);
-			WorldObjectManager::CallHook__LateUpdate(1);
-			WorldObjectManager::CallHook__Render(nullptr);
-			WorldObjectManager::DeleteFlaggedObjects();
+    // Teardown
+    WorldObjectManager::Free();
 
-			// Assert::Fail() is called in the components hooks!
-
-			// Teardown
-			WorldObjectManager::Free();
-
-			return;
-		}
-
-	};
+    return;
 }

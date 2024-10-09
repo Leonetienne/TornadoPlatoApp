@@ -1,124 +1,82 @@
-#include "CppUnitTest.h"
+#include "../_TestingUtilities/Catch2.h"
 #include "../Plato/Clock.h"
 #include "../Plato/Math.h"
-#include "../_TestingUtilities/HandyMacros.h"
-#include "../_TestingUtilities/MemoryLeakDetector.h"
 #include <random>
-#include <sstream>
 #include <thread>
-#include <iomanip>
 #include <chrono>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Plato;
 
-typedef std::chrono::milliseconds ms;
+namespace {
+    static std::mt19937 rng = std::mt19937((std::random_device())());
+    typedef std::chrono::milliseconds ms;
+}
 
-namespace Misc
+// Tests that a new clock has as elapsed time of ~0
+TEST_CASE(__FILE__"/New_Clock_Elapsed_Time_0", "[Clock]")
 {
-	TEST_CLASS(_Clock)
-	{
-	private:
-		std::mt19937 rng;
+    // Setup
+    Clock clock;
 
-	public:
-		// Constructor
-		_Clock()
-		{
-			rng = std::mt19937((std::random_device())());
-			return;
-		}
+    // Excersise
+    const double se = clock.GetElapsedTime().AsSeconds();
 
-		// Tests that a new clock has as elapsed time of ~0
-		TEST_METHOD(New_Clock_Elapsed_Time_0)
-		{
-			// Setup
-			Clock clock;
+    // Verify
+    REQUIRE(Math::Similar(se, 0));
+    return;
+}
 
-			// Excersise
-			const double se = clock.GetElapsedTime().AsSeconds();
+// Tests that a clock started before a Sleep() matches the sleep duration
+TEST_CASE(__FILE__"/Elapsed_Time_Matches_Sleep", "[Clock]")
+{
+    // Setup
+    Clock clock;
 
-			// Verify
-			Assert::IsTrue(Math::Similar(se, 0));
-			return;
-		}
+    // Excersise
+    std::this_thread::sleep_for(ms(269));
+    const double se = clock.GetElapsedTime().AsSeconds();
 
-		// Tests that a clock started before a Sleep() matches the sleep duration
-		TEST_METHOD(Elapsed_Time_Matches_Sleep)
-		{
-			// Setup
-			Clock clock;
+    // Verify
+    REQUIRE(Math::Similar(se, 269e-3, 10));
+    return;
+}
 
-			// Excersise
-			std::this_thread::sleep_for(ms(269));
-			const double se = clock.GetElapsedTime().AsSeconds();
+// Tests that the elapsed time is 0 directly after resetting the clock
+TEST_CASE(__FILE__"/Elapsed_Time_Is_0_After_Reset", "[Clock]")
+{
+    // Setup
+    Clock clock;
 
-			// Verify
-			// Generate debug message
-			std::wstringstream wss;
-			wss << "Elapsed time according to SUT: " << std::setprecision(100) << se << std::endl
-			<< "Elapsed time according to calculations: " << 269e-3 << std::endl;
-			Assert::IsTrue(Math::Similar(se, 269e-3, 10), wss.str().c_str());
-			return;
-		}
+    // Excersise
+    std::this_thread::sleep_for(ms(269));
+    clock.Reset();
+    const double se = clock.GetElapsedTime().AsSeconds();
 
-		// Tests that the elapsed time is 0 directly after resetting the clock
-		TEST_METHOD(Elapsed_Time_Is_0_After_Reset)
-		{
-			// Setup
-			Clock clock;
+    // Verify
+    REQUIRE(Math::Similar(se, 0));
 
-			// Excersise
-			std::this_thread::sleep_for(ms(269));
-			clock.Reset();
-			const double se = clock.GetElapsedTime().AsSeconds();
+    return;
+}
 
-			// Verify
-			// Generate debug message
-			std::wstringstream wss;
-			wss << "Elapsed time accordint to SUT: " << std::setprecision(100) << se << std::endl;
-			Assert::IsTrue(Math::Similar(se, 0), wss.str().c_str());
+// Tests that the measurements between seconds, milliseconds and microseconds are accurate
+TEST_CASE(__FILE__"/Unit_Conversion_Works", "[Clock]")
+{
+    // Setup
+    Clock clock;
 
-			return;
-		}
+    // Excersise
+    std::this_thread::sleep_for(ms(2069)); // Sleep relatively long because we are going to compare SECONDS to NANOSECONDS! Yikes! We're going to need some big values for this!
+    Clock::Duration dur = clock.GetElapsedTime(); // We have to cache the duration object, because fetching the individual durations would cost time itself, influencing the test result...
 
-		// Tests that the measurements between seconds, milliseconds and microseconds are accurate
-		TEST_METHOD(Unit_Conversion_Works)
-		{
-			// Setup
-			Clock clock;
+    const double se = dur.AsSeconds();
+    const double ms = dur.AsMilliseconds();
+    const double us = dur.AsMicroseconds();
+    const double ns = dur.AsNanoseconds();
 
-			// Excersise
-			std::this_thread::sleep_for(ms(2069)); // Sleep relatively long because we are going to compare SECONDS to NANOSECONDS! Yikes! We're going to need some big values for this!
-			Clock::Duration dur = clock.GetElapsedTime(); // We have to cache the duration object, because fetching the individual durations would cost time itself, influencing the test result...
-
-			const double se = dur.AsSeconds();
-			const double ms = dur.AsMilliseconds();
-			const double us = dur.AsMicroseconds();
-			const double ns = dur.AsNanoseconds();
-
-			// Verify
-			// Generate debug message
-			std::wstringstream wss;
-			wss << "Elapsed time units according to SUT: " << std::setprecision(100) << std::endl
-				<< "SE: " << se << std::endl
-				<< "MS: " << ms << std::endl
-				<< "US: " << us << std::endl
-				<< "NS: " << ns << std::endl
-
-				<< "Elapsed time units according to calculations: " << std::endl
-				<< "SE: " << 2069e-3 << std::endl
-				<< "MS: " << 2069e+0 << std::endl
-				<< "US: " << 2069e+3 << std::endl
-				<< "NS: " << 2069e+6 << std::endl
-
-				<< std::endl;
-
-			Assert::IsTrue(Math::Similar(2069e-3, se, 10e-3), (wss.str() + L"Failed seconds!").c_str());
-			Assert::IsTrue(Math::Similar(2069e+0, ms, 10e+0), (wss.str() + L"Failed milliseconds!").c_str());
-			Assert::IsTrue(Math::Similar(2069e+3, us, 10e+3), (wss.str() + L"Failed microseconds!").c_str());
-			Assert::IsTrue(Math::Similar(2069e+6, ns, 10e+6), (wss.str() + L"Failed nanoseconds!").c_str());
-			return;
-		}
-	};
+    // Verify
+    REQUIRE(Math::Similar(2069e-3, se, 10e-3));
+    REQUIRE(Math::Similar(2069e+0, ms, 10e+0));
+    REQUIRE(Math::Similar(2069e+3, us, 10e+3));
+    REQUIRE(Math::Similar(2069e+6, ns, 10e+6));
+    return;
 }
