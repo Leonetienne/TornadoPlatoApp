@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(_Testapp_FPS_Headless)
+project(Testapp)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -12,7 +12,7 @@ FILE(GLOB Tornado ../Tornado/*.cpp)
 FILE(GLOB Plato ../Plato/*.cpp)
 
 add_executable(
-        __Testapp_FPS_Headless
+        Testapp.out
 
         ${Eule}
         ${Tornado}
