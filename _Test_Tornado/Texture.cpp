@@ -1,4 +1,3 @@
-
 #include "../Tornado/Texture.h"
 #include "../_TestingUtilities/Catch2.h"
 #include "../_TestingUtilities/HandyMacros.h"

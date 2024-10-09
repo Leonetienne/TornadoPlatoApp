@@ -1,4 +1,3 @@
-
 #include "../_TestingUtilities/Catch2.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include "../Tornado/BarycentricInterpolationEngine.h"

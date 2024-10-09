@@ -1,6 +1,5 @@
 #include "../_TestingUtilities/Catch2.h"
 #include "../Tornado/PixelBuffer.h"
-#include "../Eule/Math.h"
 #include "../_TestingUtilities/HandyMacros.h"
 #include <random>
 

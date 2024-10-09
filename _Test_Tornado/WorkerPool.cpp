@@ -1,4 +1,3 @@
-
 #include "../_TestingUtilities/Catch2.h"
 #include "../Tornado/WorkerPool.h"
 #include <random>

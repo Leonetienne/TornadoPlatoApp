@@ -1,6 +1,4 @@
 #include "../_TestingUtilities/Catch2.h"
-#include "../_TestingUtilities/Testutil.h"
-#include "../_TestingUtilities/HandyMacros.h"
 #include "../Tornado/Color.h"
 #include <sstream>
 
