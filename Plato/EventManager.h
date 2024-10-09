@@ -38,6 +38,9 @@ namespace Plato
 			//! Will register a new cursor position.  
 			//! If no value for localPos is supplied, it will be deduced by the client area.
 			static void RegisterEventMousePosition(const Vector2i& globalPos, const Vector2i& localPos = Vector2i(-1, -1));
+    //
+			//! Will register a new cursor delta.  
+			static void RegisterEventMouseDelta(const Vector2i& mouseDelta);
 
 			//! Will register any change in the window rect, such as a window movement or resizing.
 			static void RegisterEventNewWindowRect(const Eule::Rect& windowRect);
@@ -62,6 +65,9 @@ namespace Plato
 			//! Will return the absolute mouse position
 			static const Vector2i& GetGlobalMousePosition();
 
+			//! Will return the mouse delta
+			static const Vector2i& GetMouseDelta();
+
 			//! Will return the window rectangle
 			static const Eule::Rect& GetWindowRect();
 
@@ -81,6 +87,7 @@ namespace Plato
 
 			static Vector2i localMousePosition;
 			static Vector2i globalMousePosition;
+			static Vector2i mouseDeltaPosition;
 			static Eule::Rect windowRect;
 			static double mousewheelDelta;
 

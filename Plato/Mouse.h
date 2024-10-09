@@ -16,6 +16,9 @@ namespace Plato
 			//! Will return the local mouse cursor position (relative to topleft of this window)
 			static const Vector2i& GetLocalMousePosition();
 
+			//! Will return the mouse delta position
+			static const Vector2i& GetMouseDelta();
+
 			//! Will return the delta-rotation of the mouse wheel
 			static double GetMousewheelDelta();
 

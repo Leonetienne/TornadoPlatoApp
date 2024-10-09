@@ -14,6 +14,11 @@ const Vector2i& Mouse::GetLocalMousePosition()
 	return EventManager::GetLocalMousePosition();
 }
 
+const Vector2i& Mouse::GetMouseDelta()
+{
+	return EventManager::GetMouseDelta();
+}
+
 double Mouse::GetMousewheelDelta()
 {
 	return EventManager::GetMousewheelDelta();

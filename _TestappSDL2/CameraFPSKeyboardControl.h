@@ -9,7 +9,11 @@
 
 using namespace Plato;
 
-class CameraKeyboardControl : public Component
+/**
+    FPS keyboard controls for camera movement. With mouse!
+    WASDQE for movement, Mouse for looking.
+* */
+class CameraFPSKeyboardControl : public Component
 {
 public:
 	void Update(double deltaTime)
@@ -119,7 +123,7 @@ private:
 	}
 
 private:
-	CameraKeyboardControl(WorldObject* worldObject, Transform* camera_yPivot, Transform* camera, double movementSpeed, double lookingSpeed, double shiftModifier)
+	CameraFPSKeyboardControl(WorldObject* worldObject, Transform* camera_yPivot, Transform* camera, double movementSpeed, double lookingSpeed, double shiftModifier)
 		:
 		Component(worldObject),
 		movementSpeed { movementSpeed },

@@ -68,6 +68,17 @@ void EventManager::RegisterEventMousePosition(const Vector2i& globalPos, const V
 	return;
 }
 
+void EventManager::RegisterEventMouseDelta(const Vector2i& mouseDelta)
+{
+	// Don't apply the event right now, but rather at the end of the frame.
+	eventQueue.push_back([mouseDelta]() {
+
+		mouseDeltaPosition = mouseDelta;
+
+	});
+	return;
+}
+
 void EventManager::RegisterEventNewWindowRect(const Rect& windowRect)
 {
 	// Don't apply the event right now, but rather at the end of the frame.
@@ -127,6 +138,11 @@ const Vector2i& EventManager::GetGlobalMousePosition()
 	return globalMousePosition;
 }
 
+const Vector2i& EventManager::GetMouseDelta()
+{
+	return mouseDeltaPosition;
+}
+
 const Rect& EventManager::GetWindowRect()
 {
 	return windowRect;
@@ -159,6 +175,9 @@ void EventManager::Tick()
 
 	// Clear mouse wheel data
 	mousewheelDelta = 0.0;
+
+	// Clear mouse data
+	mouseDeltaPosition = Vector2i(0,0);
 
 	return;
 }
@@ -341,6 +360,7 @@ std::unordered_map<KEY_CODE, char> EventManager::keycode_char_mapping;
 std::unordered_map<char, KEY_CODE> EventManager::char_keycode_mapping;
 Vector2i EventManager::localMousePosition;
 Vector2i EventManager::globalMousePosition;
+Vector2i EventManager::mouseDeltaPosition;
 Rect EventManager::windowRect;
 double EventManager::mousewheelDelta;
 std::unordered_map<REVERSE_EVENT_CALLBACK, std::function<void(std::vector<double>)>> EventManager::reverseEventCallbacks;

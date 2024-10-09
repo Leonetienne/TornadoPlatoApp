@@ -24,56 +24,75 @@ public:
 	}
 
 private:
-	const double internalMultiplier = 1 * 0.03;
-	const double viewSensitivity = 3.3 * 0.06;
+	const double internalMultiplier = 0.05;
 
 	void MovementControl(double deltaTime)
 	{
+		// This is just experimental code.
+		// Moves the viewport as the window moves.
+		{
+			static Vector2d lastPos = Input::Application::GetWindowRect().pos;
+			static bool skipFirst = false;
+
+			Vector2d dPos = Input::Application::GetWindowRect().pos - lastPos;
+
+			if (skipFirst)
+			{
+				camera_yPivot->Move(camera->GetGlobalRotation() *
+					(
+						(
+							Vector3d::left *
+							movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.x * -0.05
+							)
+						+
+						(
+							Vector3d::up *
+							movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.y * -0.05
+							)
+						)
+				);
+			}
+
+			if (dPos.SqrMagnitude() > 0)
+				skipFirst = true;
+
+			lastPos = Input::Application::GetWindowRect().pos;
+		}
+
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::A))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d(-1,0,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::D))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d(1,0,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::W))
-			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d(0,0,1) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::S))
-			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d(0,0,-1) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::Q))
-			camera_yPivot->Move(Vector3d(0,-1,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
 		if (Input::Keyboard::GetKey(Input::KEY_CODE::E))
-			camera_yPivot->Move(Vector3d(0,1,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
 	}
 
 	void ViewControl(double deltaTime)
 	{
-		// Use mouse for all camera movement
-        Vector2d emulatedDeltaMouse(0, 0);
-
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::K)) {
-            emulatedDeltaMouse.y -= 100.0 * viewSensitivity;
-        }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::J)) {
-            emulatedDeltaMouse.y += 100.0 * viewSensitivity;
-        }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::H)) {
-            emulatedDeltaMouse.x -= 100.0 * viewSensitivity;
-        }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::L)) {
-            emulatedDeltaMouse.x += 100.0 * viewSensitivity;
-        }
+		// Initialize delta mouse position
+		const Vector2d halfWinSize = Input::Application::GetWindowRect().size / 2.0;
+		static Vector2d lastMousePos = Input::Mouse::GetLocalMousePosition().ToDouble();
+		const Vector2d deltaMouse = Input::Mouse::GetLocalMousePosition().ToDouble() - halfWinSize.ToInt().ToDouble();
 
 		// Handle y rotation
-		const double mx = (emulatedDeltaMouse.x / 100.0) * lookingSpeed;
+		const double mx = (deltaMouse.x / 100.0) * lookingSpeed;
 		camera_yPivot->Rotate(Quaternion(Vector3d(0, mx * deltaTime, 0)));
 
 		// Handle x rotation
-		const double my = (emulatedDeltaMouse.y / 100.0) * lookingSpeed;
+		const double my = (deltaMouse.y / 100.0) * lookingSpeed;
 		static double totalXRot = 0;
 		totalXRot += my * deltaTime;
 		
@@ -82,6 +101,12 @@ private:
 
 		// Now hard-set this x rot
 		camera->SetRotation(Quaternion(Vector3d(totalXRot, 0, 0)));
+
+		// Lock mouse at center
+		Input::Mouse::SetLocalMousePosition(
+			halfWinSize.ToInt()
+		);
+		lastMousePos = Input::Mouse::GetLocalMousePosition().ToDouble();
 
 		return;
 	}
@@ -92,13 +117,7 @@ private:
 		if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::ESCAPE))
 			Input::Application::Exit();
 
-		// Fov keys 1, and 2
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_1)) {
-            cameraComponent->SetFov(cameraComponent->GetFov() + 0.1 * deltaTime);
-        }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_2)) {
-            cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * deltaTime);
-        }
+		// Fov by mousewheel
 		const double mouseDelta = Input::Mouse::GetMousewheelDelta();
 		if (mouseDelta != 0)
 			cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * mouseDelta * shiftFactor * deltaTime * internalMultiplier);

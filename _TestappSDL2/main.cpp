@@ -9,7 +9,7 @@
 #include "../Plato/Clock.h"
 #include "TestFixture.h"
 #include "Test__MC.h"
-#include "CameraKeyboardControl.h"
+#include "CameraFPSKeyboardControl.h"
 #include <algorithm>
 #include <cstring>
 #include <iostream>
@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
     cameraYPivot->worldObject->SetId("main_camera_ypiv");
     camera->SetAsMainCamera();
     // Let's add a CameraKeyboardControl component to the camera by default
-    camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+    camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
     // Instantiate the test scene
     Test__MC testScene;
@@ -82,11 +82,11 @@ int main(int argc, char* argv[]) {
     Clock frametimer;
     double frametime = 1000.0 / 60.0;
     SDL_Event event;
-    int mouseDeltaX = 0, mouseDeltaY = 0;
+    Vector2i mouseDelta;
+    Vector2i mousePos;
 
     while (running) {
-        mouseDeltaX = 0;
-        mouseDeltaY = 0;
+        mouseDelta = Vector2i(0,0);
 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -94,8 +94,13 @@ int main(int argc, char* argv[]) {
             }
             else if (event.type == SDL_MOUSEMOTION) {
                 // Capture the relative mouse movement
-                mouseDeltaX = event.motion.xrel;
-                mouseDeltaY = event.motion.yrel;
+                mouseDelta.x = event.motion.xrel;
+                mouseDelta.y = event.motion.yrel;
+                mousePos.x = event.motion.x;
+                mousePos.y = event.motion.y;
+
+                Input::EventManager::RegisterEventMouseDelta(mouseDelta);
+                Input::EventManager::RegisterEventMousePosition(mousePos, mousePos);
             }
         }
 
