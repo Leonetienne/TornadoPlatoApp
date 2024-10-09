@@ -1,6 +1,5 @@
 
 #include "../_TestingUtilities/Catch2.h"
-#include "../_TestingUtilities/HandyMacros.h"
 #include "../Tornado/WorkerPool.h"
 #include <random>
 #include <chrono>

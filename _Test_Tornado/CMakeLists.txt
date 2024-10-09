@@ -18,6 +18,7 @@ add_executable(
         Texture.cpp
         BarycentricInterpolationEngine.cpp
         WorkerPool.cpp
+        ProjectionProperties.cpp
         main.cpp
 )
 

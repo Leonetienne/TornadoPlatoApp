@@ -1,181 +1,138 @@
-#include "CppUnitTest.h"
+#include "../_TestingUtilities/Catch2.h"
 #include "../Tornado/ProjectionProperties.h"
-#include "../_TestingUtilities/HandyMacros.h"
-#include "Eule/Math.h"
+#include "../Eule/Math.h"
 #include <random>
-#include <sstream>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace TorGL;
 using Eule::Math;
 
-namespace Rendering
-{
-	TEST_CLASS(_ProjectionProperties)
-	{
-	private:
-		std::mt19937 rng;
+TEST_CASE("_ProjectionProperties Tests", "[projection]") {
+    std::mt19937 rng((std::random_device())());
 
-	public:
-		// Constructor
-		_ProjectionProperties()
-		{
-			rng = std::mt19937((std::random_device())());
-			return;
-		}
+    SECTION("Constructor_Values_Match") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-		// Tests if it sets the correct constructor values
-		TEST_METHOD(Constructor_Values_Match)
-		{
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
+        REQUIRE(props.GetResolution().x == 1920);
+        REQUIRE(props.GetResolution().y == 1080);
+        REQUIRE(props.GetAspectRatio() == Approx(1920.0 / 1080.0));
+        REQUIRE(props.GetFov() == Approx(90.0));
+        REQUIRE(props.GetFarclip() == Approx(100.0));
+        REQUIRE(props.GetSqrFarclip() == 10000.0l);
+        REQUIRE(props.GetHalfResolution() == Vector2d(960, 540));
+        REQUIRE(props.GetNearclip() == Approx(2.0));
+    }
 
-			Assert::AreEqual(1920, props.GetResolution().x);
-			Assert::AreEqual(1080, props.GetResolution().y);
-			Assert::AreEqual(1920.0 / 1080.0, props.GetAspectRatio());
-			Assert::AreEqual(90.0, props.GetFov());
-			Assert::AreEqual(100.0, props.GetFarclip());
-			Assert::IsTrue(10000.0l == props.GetSqrFarclip());
-			Assert::IsTrue(Vector2d(960, 540) == props.GetHalfResolution());
-			Assert::AreEqual(2.0, props.GetNearclip());
+    SECTION("Can_Set_Resolution") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-			return;
-		}
+        props.SetResolution({ 3840, 1440 });
 
-		// Tests if the resolution can be set afterwards
-		TEST_METHOD(Can_Set_Resolution)
-		{
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
+        REQUIRE(props.GetResolution().x == 3840);
+        REQUIRE(props.GetResolution().y == 1440);
+        REQUIRE(props.GetAspectRatio() == Approx(3840.0 / 1440.0));
+        REQUIRE(props.GetHalfResolution() == Vector2d(1920, 720));
+    }
 
-			props.SetResolution({ 3840, 1440 });
+    SECTION("Can_Set_Fov") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-			Assert::AreEqual(3840, props.GetResolution().x);
-			Assert::AreEqual(1440, props.GetResolution().y);
-			Assert::AreEqual(3840.0 / 1440.0, props.GetAspectRatio());
-			Assert::IsTrue(Vector2d(1920, 720) == props.GetHalfResolution());
+        props.SetFov(65);
 
-			return;
-		}
+        REQUIRE(props.GetFov() == Approx(65.0));
+    }
 
-		// Tests if the fov can be set afterwards
-		TEST_METHOD(Can_Set_Fov)
-		{
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
+    SECTION("Can_Set_Nearclip") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-			props.SetFov(65);
+        props.SetNearclip(6);
 
-			Assert::AreEqual(65.0, props.GetFov());
+        REQUIRE(props.GetNearclip() == Approx(6.0));
+    }
 
-			return;
-		}
+    SECTION("Can_Set_Farclip") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-		// Tests if the nearclip can be set afterwards
-		TEST_METHOD(Can_Set_Nearclip)
-		{
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
+        props.SetFarclip(200);
 
-			props.SetNearclip(6);
+        REQUIRE(props.GetFarclip() == Approx(200.0));
+        REQUIRE(props.GetSqrFarclip() == 40000.0l);
+    }
 
-			Assert::AreEqual(6.0, props.GetNearclip());
+    SECTION("Is_ProjectionMatrix_Correct") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-			return;
-		}
+        Matrix4x4 comparison;
+        comparison[0] = { 0.5625, 0,            0,            0 };
+        comparison[1] = {      0, 1,            0,            0 };
+        comparison[2] = {      0, 0, -1.040816327, -4.081632653 };
+        comparison[3] = {      0, 0,           -1,            1 };
 
-		// Tests if the farclip can be set afterwards
-		TEST_METHOD(Can_Set_Farclip)
-		{
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
+        for (std::size_t y = 0; y < 4; y++) {
+            for (std::size_t x = 0; x < 4; x++) {
+                REQUIRE(Math::Similar(comparison[y][x], props.GetProjectionMatrix()[y][x]));
+            }
+        }
+    }
 
-			props.SetFarclip(200);
+    SECTION("Setting_Anything_Updates_Matrix") {
+        ProjectionProperties props(
+            Vector2i(1920, 1080),
+            90,
+            2,
+            100
+        );
 
-			Assert::AreEqual(200.0, props.GetFarclip());
-			Assert::IsTrue(40000.0l == props.GetSqrFarclip());
+        Matrix4x4 origMat;
 
-			return;
-		}
+        // Change resolution
+        origMat = props.GetProjectionMatrix();
+        props.SetResolution({ 800, 600 });
+        REQUIRE_FALSE(origMat == props.GetProjectionMatrix());
 
-		// Tests if the generation projection matrix is correct
-		TEST_METHOD(Is_ProjectionMatrix_Correct)
-		{
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
+        // Change fov
+        origMat = props.GetProjectionMatrix();
+        props.SetFov(60);
+        REQUIRE_FALSE(origMat == props.GetProjectionMatrix());
 
-			Matrix4x4 comparison;
-			comparison[0] = { 0.5625, 0,            0,            0 };
-			comparison[1] = {      0, 1,            0,            0 };
-			comparison[2] = {      0, 0, -1.040816327, -4.081632653 };
-			comparison[3] = {      0, 0,           -1,            1 };
+        // Change nearclip
+        origMat = props.GetProjectionMatrix();
+        props.SetNearclip(99);
+        REQUIRE_FALSE(origMat == props.GetProjectionMatrix());
 
-			for (std::size_t y = 0; y < 4; y++)
-				for (std::size_t x = 0; x < 4; x++)
-				{
-					Assert::IsTrue(Math::Similar(comparison[y][x], props.GetProjectionMatrix()[y][x]));
-				}
-
-			return;
-		}
-
-		// Tests that setting ANY value updates the projection matrix
-		TEST_METHOD(Setting_Anything_Updates_Matrix)
-		{
-			// Prepare original data
-			ProjectionProperties props(
-				{ 1920, 1080 },
-				90,
-				2,
-				100
-			);
-			Matrix4x4 origMat;
-
-			// Change resolution
-			origMat = props.GetProjectionMatrix();
-			props.SetResolution({ 800, 600 });
-			Assert::IsFalse(origMat == props.GetProjectionMatrix(), L"Failed at resolution");
-
-			// Change fov
-			origMat = props.GetProjectionMatrix();
-			props.SetFov(60);
-			Assert::IsFalse(origMat == props.GetProjectionMatrix(), L"Failed at fov");
-
-			// Change nearclip
-			origMat = props.GetProjectionMatrix();
-			props.SetNearclip(99);
-			Assert::IsFalse(origMat == props.GetProjectionMatrix(), L"Failed at nearclip");
-
-			// Change farclip
-			origMat = props.GetProjectionMatrix();
-			props.SetFarclip(8888);
-			Assert::IsFalse(origMat == props.GetProjectionMatrix(), L"Failed at farclip");
-
-			return;
-		}
-	};
+        // Change farclip
+        origMat = props.GetProjectionMatrix();
+        props.SetFarclip(8888);
+        REQUIRE_FALSE(origMat == props.GetProjectionMatrix());
+    }
 }
+
