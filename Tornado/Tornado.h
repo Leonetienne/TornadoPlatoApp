@@ -13,7 +13,7 @@ namespace TorGL
 	class Tornado
 	{
 	public:
-		Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads);
+		Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads, double globalIllumination = 0);
 		~Tornado();
 
 		//! Will initialize the rendering of a new frame.

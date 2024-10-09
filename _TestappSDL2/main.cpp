@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Initializing..." << std::endl;
     Input::EventManager::Init();
     // Create a renderer and a test object
-    Renderer renderer(resolution);
+    Renderer renderer(resolution, 0, 0);
 
     std::cout << "Creating camera..." << std::endl;
     Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation

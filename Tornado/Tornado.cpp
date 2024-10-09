@@ -2,13 +2,13 @@
 
 using namespace TorGL;
 
-Tornado::Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads)
+Tornado::Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads, double globalIllumination)
 {
 	workerPool = new WorkerPool(numRenderthreads);
 	backfaceCullingEngine = new BackfaceCullingEngine(workerPool);
 	projectionEngine = new ProjectionEngine(workerPool);
 	pixelBuffer = new PixelBuffer<3>(renderTargetSize);
-	drawingEngine = new DrawingEngine(pixelBuffer, workerPool);
+	drawingEngine = new DrawingEngine(pixelBuffer, workerPool, globalIllumination);
 
 	return;
 }

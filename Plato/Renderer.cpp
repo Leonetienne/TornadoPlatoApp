@@ -4,10 +4,10 @@ using namespace Plato;
 using namespace Plato::Components;
 using namespace TorGL;
 
-Renderer::Renderer(const Vector2i& renderResolution, std::size_t numThreads)
+Renderer::Renderer(const Vector2i& renderResolution, std::size_t numThreads, double globalIllumination)
 	:
 	renderResolution { renderResolution },
-	tornado(renderResolution, numThreads),
+	tornado(renderResolution, numThreads, globalIllumination),
 	mainCamera { nullptr },
 	workerPool(numThreads)
 {

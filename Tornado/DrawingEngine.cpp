@@ -6,14 +6,14 @@
 using namespace TorGL;
 using namespace Eule;
 
-DrawingEngine::DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool)
+DrawingEngine::DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool, const double globalIllumination)
 	:
 	workerPool {workerPool},
-	renderTarget {renderTarget}
+	renderTarget {renderTarget},
+    globalIllumination{globalIllumination}
 
 {
 	numPixels = (std::size_t)renderTarget->GetDimensions().x * (std::size_t)renderTarget->GetDimensions().y;
-
 	zBuffer = new double[numPixels];
 
 	return;
@@ -282,9 +282,6 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			(int)((1.0 - uv_coords.y) * (text_size.y - 1)) // Uv-coordinates are top-left == (0,1)
 		));
 		
-		// Set global illumination (minimum brightness)
-		constexpr double globalIllu = 0.1;
-
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
 		if (!ird->material->noShading)
@@ -299,9 +296,9 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 		
 			// Apply global illumination
 			// This could overflow the int!!! FIX THIS
-			brightness.r += globalIllu;
-			brightness.g += globalIllu;
-			brightness.b += globalIllu;
+			brightness.r += globalIllumination;
+			brightness.g += globalIllumination;
+			brightness.b += globalIllumination;
 		}
 
         // Is the pixel marked as transparent?

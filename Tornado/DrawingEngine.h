@@ -13,7 +13,7 @@ namespace TorGL
 	class DrawingEngine
 	{
 	public:
-		DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool);
+		DrawingEngine(PixelBuffer<3>* renderTarget, WorkerPool* workerPool, const double globalIllumination = 0);
 		~DrawingEngine();
 
 		//! Will initialize the new drawing sequence
@@ -52,5 +52,7 @@ namespace TorGL
 		double* zBuffer;
 		std::size_t numPixels;
 		std::vector<const InterRenderTriangle*> registeredTriangles;
+
+        const double globalIllumination;
 	};
 }
