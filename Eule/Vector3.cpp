@@ -58,7 +58,7 @@ namespace Eule {
 #endif
     }
 
-// Slow, lame version for intcels
+    // Slow, lame version for intcels
     template<>
     double Vector3<int>::DotProduct(const Vector3<int>& other) const
     {
@@ -93,7 +93,7 @@ namespace Eule {
     }
 
 
-// Good, optimized chad version for doubles
+    // Good, optimized chad version for doubles
     template<>
     double Vector3<double>::SqrMagnitude() const
     {
@@ -101,7 +101,7 @@ namespace Eule {
         return DotProduct(*this);
     }
 
-// Slow, lame version for intcels
+    // Slow, lame version for intcels
     template<>
     double Vector3<int>::SqrMagnitude() const
     {
@@ -172,7 +172,7 @@ namespace Eule {
         return norm;
     }
 
-// Method to normalize a Vector3d
+    // Method to normalize a Vector3d
     template<>
     void Vector3<double>::NormalizeSelf()
     {
@@ -216,8 +216,8 @@ namespace Eule {
         return;
     }
 
-// You can't normalize an int vector, ffs!
-// But we need an implementation for T=int
+    // You can't normalize an int vector, ffs!
+    // But we need an implementation for T=int
     template<>
     void Vector3<int>::NormalizeSelf()
     {
@@ -286,7 +286,7 @@ namespace Eule {
 
 
 
-// Good, optimized chad version for doubles
+    // Good, optimized chad version for doubles
     template<>
     void Vector3<double>::LerpSelf(const Vector3<double>& other, double t)
     {
@@ -329,7 +329,7 @@ namespace Eule {
 
 
 
-// Slow, lame version for intcels
+    // Slow, lame version for intcels
     template<>
     void Vector3<int>::LerpSelf(const Vector3<int>& other, double t)
     {
@@ -706,7 +706,7 @@ namespace Eule {
     }
 
 
-// Good, optimized chad version for doubles
+    // Good, optimized chad version for doubles
     template<>
     Vector3<double> Vector3<double>::operator*(const Matrix4x4& mat) const
     {
@@ -785,7 +785,7 @@ namespace Eule {
 
 
 
-// Good, optimized chad version for doubles
+    // Good, optimized chad version for doubles
     template<>
     void Vector3<double>::operator*=(const Matrix4x4& mat)
     {
@@ -867,7 +867,7 @@ namespace Eule {
         return;
     }
 
-// Slow, lame version for intcels
+    // Slow, lame version for intcels
     template<>
     void Vector3<int>::operator*=(const Matrix4x4& mat)
     {
