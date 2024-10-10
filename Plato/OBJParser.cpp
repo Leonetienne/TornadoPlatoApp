@@ -324,7 +324,7 @@ Mesh OBJParser::AssembleSubmeshes()
 
 	for (const Mesh& submesh : submeshes)
 	{
-		if (submesh.tris.size() == 0)
+		if (submesh.v_vertices.size() == 0)
 			continue;
 
 		// Merge submesh vertex vectors into main mesh vectors
