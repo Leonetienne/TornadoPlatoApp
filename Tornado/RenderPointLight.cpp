@@ -7,25 +7,25 @@ using namespace Eule;
 Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const
 {
 	const Vector3d deltaPos = position - point;
-	const double sqrDistance = deltaPos.SqrMagnitude();
+	const double distance = deltaPos.Magnitude();
 
 	// Bounding box check
 	if ((useDomains) && (!DoDomainsContainPoint(point)))
 		return Color::black;
 
 	// Too far away.
-	if (intensityTimes255 <= sqrDistance)
+	if (intensityTimes255 <= distance)
 		return Color::black;
 
 	// Too close
-	if (sqrDistance == 0)
+	if (distance == 0)
 		return color;
 
 	// Angle of the face towards the point light
 	const double dot = (deltaPos.Normalize()).DotProduct(normal);
 
 	// Brightness factor based purely on intensity and distance
-	const double invSqrCoefficient = intensity / sqrDistance;
+	const double invSqrCoefficient = intensity / distance;
 
 	// Calculate brightness factor including face angle and soft/hardness
 	double fac;
