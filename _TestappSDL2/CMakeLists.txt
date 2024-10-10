@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(TestappSDL2)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-Ofast")
+set(CMAKE_CXX_FLAGS "-Ofast -funroll-loops")
 
 # Find SDL2
 find_package(SDL2 REQUIRED)
@@ -20,6 +20,7 @@ add_executable(
 
     TestFixture.cpp
     Test__MC.cpp
+    Test__Benchmarkscene.cpp
     main.cpp
 )
 

@@ -9,6 +9,7 @@
 #include "../Plato/Clock.h"
 #include "TestFixture.h"
 #include "Test__MC.h"
+#include "Test__Benchmarkscene.h"
 #include "CameraFPSKeyboardControl.h"
 #include <algorithm>
 #include <cstring>
@@ -66,7 +67,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Initializing..." << std::endl;
     Input::EventManager::Init();
     // Create a renderer and a test object
-    Renderer renderer(resolution, 0, 0);
+    Renderer renderer(resolution, 0, 0.0);
 
     std::cout << "Creating camera..." << std::endl;
     Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
@@ -77,7 +78,7 @@ int main(int argc, char* argv[]) {
     camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
     // Instantiate the test scene
-    Test__MC testScene;
+    Test__Benchmarkscene testScene;
 
     Clock frametimer;
     double frametime = 1000.0 / 60.0;

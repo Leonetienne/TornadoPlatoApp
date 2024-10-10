@@ -28,7 +28,7 @@ public:
 	}
 
 private:
-	const double internalMultiplier = 0.05;
+	const double internalMultiplier = 0.05 * 7;
 
 	void MovementControl(double deltaTime)
 	{
