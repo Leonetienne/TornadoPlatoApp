@@ -87,9 +87,10 @@ Test__Benchmarkscene::Test__Benchmarkscene() : TestFixture(__FUNCTION__) // Set 
     for (const Vector3d& v : lampPoints->v_vertices) {
         ss.str("Hanging Light - ");
         ss << i++;
-        WorldObjectManager::NewWorldObject(ss.str())
-            ->AddComponent<Components::PointLight>(7, Color(100, 65, 31))
-            ->transform->SetPosition(v);
+        Components::LightSource* ls = WorldObjectManager::NewWorldObject(ss.str())
+            ->AddComponent<Components::PointLight>(5, Color(100, 65, 31));
+        ls->SetSoftness(0.1);
+        ls->transform->SetPosition(v);
     }
 
     // Populate camera waypoints
