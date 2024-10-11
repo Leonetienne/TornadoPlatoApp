@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
     // Set up an SDL2 window
     RenderWindow renderWindow(resolution, "SDL-Player", renderer.GetPixelBuffer());
     renderWindow.EnableMouseCameraControlMode();
+    RenderWindow* renderWindowPointer = &renderWindow; // Dumb workaroud for lambda function
 
     // Init plato event manager
     Input::EventManager::Init();
@@ -38,6 +39,16 @@ int main(int argc, char* argv[]) {
     camera->SetAsMainCamera();
     // Let's add a CameraKeyboardControl component to the camera by default
     camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+
+    // Register logic for plato to close the render window
+    Input::EventManager::RegisterReverseEventCallback(
+        Input::REVERSE_EVENT_CALLBACK::EXIT, 
+		[renderWindowPointer](const std::vector<double>& params)
+		{
+			renderWindowPointer->Close();
+		}
+    );
+
 
     // Instantiate a scene
     Test__Benchmarkscene testScene;

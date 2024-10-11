@@ -3,6 +3,7 @@
 #include "../Plato/ResourceManager.h"
 #include "../Plato/PointLight.h"
 #include "../Plato/Color.h"
+#include "../Plato/Application.h"
 #include <iostream>
 #include <sstream>
 #include <cmath>
@@ -141,7 +142,7 @@ void Test__Benchmarkscene::SetNextCameraWaypoint()
     nextCameraWaypoint++;
     if (nextCameraWaypoint >= cameraWaypoints.size()) {
         nextCameraWaypoint = std::string::npos;
-        exit(0);
+        Input::Application::Exit();
     }
 }
 
