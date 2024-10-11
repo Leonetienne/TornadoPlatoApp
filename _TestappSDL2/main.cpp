@@ -19,7 +19,7 @@
 #include <fcntl.h>
 
 int main(int argc, char* argv[]) {
-    const Vector2i resolution(800*2, 600*2);
+    const Vector2i resolution(800*2, 600*1.5);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Initializing..." << std::endl;
     Input::EventManager::Init();
     // Create a renderer and a test object
-    Renderer renderer(resolution, 0, 0.0);
+    Renderer renderer(resolution, 0);
 
     std::cout << "Creating camera..." << std::endl;
     Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
         frametimer.Reset();
 
-        std::cout << "FPS: " << 1000.0 / frametime << std::endl;
+        //std::cout << "FPS: " << 1000.0 / frametime << std::endl;
     }
 
     // Clean up

@@ -3,9 +3,9 @@
 #include "../Plato/ResourceManager.h"
 #include "../Plato/PointLight.h"
 #include "../Plato/Color.h"
-#include "../Plato/Keyboard.h"
 #include <iostream>
 #include <sstream>
+#include <cmath>
 
 using namespace Plato;
 
@@ -21,9 +21,10 @@ Test__Benchmarkscene::Test__Benchmarkscene() : TestFixture(__FUNCTION__) // Set 
 	ResourceManager::LoadMeshFromObj("cones", "assets/benchmark-scene/cones.obj");
 	ResourceManager::LoadMeshFromObj("lamps", "assets/benchmark-scene/lamps.obj");
 	ResourceManager::LoadMeshFromObj("lamps-cable", "assets/benchmark-scene/lamp-cable.obj");
-	Mesh* lampPoints = ResourceManager::LoadMeshFromObj("lamp-points", "assets/benchmark-scene/lamp-points.obj");
 	ResourceManager::LoadMeshFromObj("plants", "assets/benchmark-scene/plants.obj");
 	ResourceManager::LoadMeshFromObj("water", "assets/benchmark-scene/water.obj");
+	Mesh* lampPoints = ResourceManager::LoadMeshFromObj("lamp-points", "assets/benchmark-scene/lamp-points.obj");
+	Mesh* cameraPath = ResourceManager::LoadMeshFromObj("camera-path", "assets/benchmark-scene/camera-path.obj");
 
 	// Load texture files
 	ResourceManager::LoadTextureFromBmp("cave", "assets/benchmark-scene/cave-color.png.bmp");
@@ -91,12 +92,57 @@ Test__Benchmarkscene::Test__Benchmarkscene() : TestFixture(__FUNCTION__) // Set 
             ->transform->SetPosition(v);
     }
 
+    // Populate camera waypoints
+    cameraWaypoints = cameraPath->v_vertices;
+
+    // Create a new main camera (screw the existing one)
+    Components::Camera* existingMainCam = Components::Camera::GetMainCamera();
+    camera = WorldObjectManager::NewWorldObject("benchmark main camera")
+        ->AddComponent<Components::Camera>(existingMainCam->GetRenderResolution(), existingMainCam->GetFov(), existingMainCam->GetNearclip(), existingMainCam->GetFarclip());
+    camera->SetAsMainCamera();
+    camera->transform->SetPosition(cameraWaypoints[nextCameraWaypoint]);
+
     return;
 }
 
 void Test__Benchmarkscene::Update(double deltaTime)
 {
+    // If we have a next waypoint, move the camera to it, and make it look at it
+    constexpr double cameraSpeed = 250;
+    if (nextCameraWaypoint != std::string::npos) {
+        // Are we close enough to the next waypoint? If yes, set it
+        if (camera->transform->GetPosition().Similar(cameraWaypoints[nextCameraWaypoint], 1)) {
+            SetNextCameraWaypoint();
+        }
 
+        // Move the camera
+        // Smoothely apply the movement via gradual lerp
+        const Vector3d direction = (cameraWaypoints[nextCameraWaypoint] - camera->transform->GetPosition()).Normalize();
+        const Vector3d targetPosition = camera->transform->GetPosition() + direction * cameraSpeed;
+        camera->transform->SetPosition(camera->transform->GetPosition().Lerp(targetPosition, 0.0001 * deltaTime));
+
+        // Rotate the camera
+        double pitch = std::asin(direction.z);  // Y-axis (up/down)
+        double yaw = std::atan2(direction.z, direction.x) * Rad2Deg + 90;  // XZ plane (left/right)
+
+        // Smoothely apply the rotation via gradual lerp
+        camera->transform->SetRotation(
+            camera->transform->GetRotation().Lerp(
+                Eule::Quaternion(Vector3d(pitch, yaw, 0)),
+                0.00001 * cameraSpeed * deltaTime
+            )
+        );
+    }
+
+}
+
+void Test__Benchmarkscene::SetNextCameraWaypoint()
+{
+    nextCameraWaypoint++;
+    if (nextCameraWaypoint >= cameraWaypoints.size()) {
+        nextCameraWaypoint = std::string::npos;
+        exit(0);
+    }
 }
 
 void Test__Benchmarkscene::Render(Renderer* renderer)

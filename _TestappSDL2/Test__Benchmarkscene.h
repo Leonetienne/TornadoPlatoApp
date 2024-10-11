@@ -16,5 +16,10 @@ public:
 	void Render(Renderer* renderer) override;
 
 private:
+    std::vector<Eule::Vector3d> cameraWaypoints;
+    std::size_t nextCameraWaypoint = 0;
+    Components::Camera* camera;
+
+    void SetNextCameraWaypoint();
 };
 
