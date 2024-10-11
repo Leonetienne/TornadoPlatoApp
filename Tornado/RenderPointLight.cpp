@@ -1,5 +1,6 @@
 #include "RenderPointLight.h"
 #include "../Eule/Math.h"
+#include <cmath>
 
 using namespace TorGL;
 using namespace Eule;
@@ -7,14 +8,17 @@ using namespace Eule;
 Color RenderPointLight::GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const
 {
 	const Vector3d deltaPos = position - point;
-	const double distance = deltaPos.Magnitude();
+	const double sqrDistance = deltaPos.SqrMagnitude(); // Not using Magnitude() directly saves an additional multiplication call, because we need both sqr and non-square distance...
+    const double distance = std::sqrt(distance);
 
 	// Bounding box check
 	if ((useDomains) && (!DoDomainsContainPoint(point)))
 		return Color::black;
 
 	// Too far away.
-	if (intensityTimes255 <= distance)
+    // This would usually compare sqrt(intensityTimes255) < distance, but this faster.
+    // Iirc this check is just a tried-and-tested value...
+	if (intensityTimes255 <= sqrDistance)
 		return Color::black;
 
 	// Too close
