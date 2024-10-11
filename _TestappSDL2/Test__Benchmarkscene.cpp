@@ -123,8 +123,8 @@ void Test__Benchmarkscene::Update(double deltaTime)
         camera->transform->SetPosition(camera->transform->GetPosition().Lerp(targetPosition, 0.0001 * deltaTime));
 
         // Rotate the camera
-        double pitch = std::asin(direction.z);  // Y-axis (up/down)
-        double yaw = std::atan2(direction.z, direction.x) * Rad2Deg + 90;  // XZ plane (left/right)
+        const double pitch = std::asin(direction.z) * Rad2Deg + 90;
+        const double yaw = std::atan2(direction.z, direction.x) * Rad2Deg + 90;  // XZ plane (left/right)
 
         // Smoothely apply the rotation via gradual lerp
         camera->transform->SetRotation(
