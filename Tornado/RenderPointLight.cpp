@@ -1,6 +1,5 @@
 #include "RenderPointLight.h"
 #include "../Eule/Math.h"
-#include <cmath>
 
 using namespace TorGL;
 using namespace Eule;

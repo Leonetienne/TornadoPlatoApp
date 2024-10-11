@@ -87,9 +87,8 @@ int main(int argc, char* argv[]) {
     }
 
     // Clean up
-    // Crashes for some reason
-    //WorldObjectManager::Free();
-    //ResourceManager::Free();
+    WorldObjectManager::Free();
+    ResourceManager::Free();
 
     return 0;
 }
