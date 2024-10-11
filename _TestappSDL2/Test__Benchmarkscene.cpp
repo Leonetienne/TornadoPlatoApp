@@ -134,7 +134,6 @@ void Test__Benchmarkscene::Update(double deltaTime)
             )
         );
     }
-
 }
 
 void Test__Benchmarkscene::SetNextCameraWaypoint()

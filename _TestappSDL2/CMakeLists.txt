@@ -18,6 +18,7 @@ add_executable(
     ${Tornado}
     ${Plato}
 
+    RenderWindow.cpp
     TestFixture.cpp
     Test__MC.cpp
     Test__Benchmarkscene.cpp
