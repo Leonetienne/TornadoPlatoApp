@@ -13,6 +13,6 @@ void TorGL::cpSleep(std::size_t ms)
 		Sleep((DWORD)ms);
 	#else
 		sleep(ms);
-	#endif;
+	#endif
 	return;
 }
