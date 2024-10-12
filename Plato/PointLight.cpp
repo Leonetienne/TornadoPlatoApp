@@ -17,7 +17,7 @@ PointLight::PointLight(WorldObject* worldObject, double intensity, const Color& 
 
 PointLight::~PointLight()
 {
-	delete (RenderPointLight*)(tornadoLightSource);
+	delete tornadoLightSource;
 	tornadoLightSource = nullptr;
 	
 	return;

@@ -13,6 +13,8 @@ namespace TorGL
 	class RenderLightSource
 	{
 	public:
+        virtual ~RenderLightSource() {};
+
 		//! Will return color multipliers/factors (r,g,b only) for this light source, given an InterRenderTriangle, a normal, and a worldspace point.  
 		//! Multiply the raw color values with these factors to get the shaded color (for this light)
 		virtual Color GetColorIntensityFactors(const InterRenderTriangle* ird, const Vector3d& point, const Vector3d& normal) const = 0;
