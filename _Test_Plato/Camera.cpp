@@ -6,7 +6,7 @@
 using namespace Plato;
 using namespace Plato::Components;
 
-#define DUMMY_CAM_ARGUMENTS Vector2i(10,10), 90, 0.1, 100
+#define DUMMY_CAM_ARGUMENTS 90, 0.1, 100
 
 #define TEST_START WorldObjectManager::Free();
 #define TEST_END WorldObjectManager::Free();

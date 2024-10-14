@@ -12,12 +12,6 @@ namespace Plato
 		class Camera : public Component
 		{
 		public:
-			//! Will set the rendering resolution
-			void SetRenderResolution(const Vector2i& resolution);
-
-			//! Will return the render resolution
-			const Vector2i& GetRenderResolution() const;
-
 			//! Will set the field of view, in degrees
 			void SetFov(double fov);
 
@@ -39,7 +33,8 @@ namespace Plato
 			//! Will return the square of the farclip
 			double GetSqrFarclip() const;
 
-			//! Will return the projection matrix
+			//! Will return the projection matrix. NO RESOLUTION IS SET!!
+            //! They HAVE to be set before being passed to tornado!!!
 			const TorGL::ProjectionProperties& GetProjectionProperties() const;
 
 			//! Will set the current camera as the new main camera
@@ -55,7 +50,7 @@ namespace Plato
 			~Camera();
 
 		private:
-			Camera(WorldObject* worldObject, const Vector2i& renderResolution, double fov, double nearclip, double farclip);
+			Camera(WorldObject* worldObject, double fov, double nearclip, double farclip);
 			TorGL::ProjectionProperties projectionProperties;
 
 			friend WorldObject;

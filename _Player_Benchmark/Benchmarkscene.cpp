@@ -11,6 +11,7 @@
 using namespace Plato;
 
 /*
+ * Camera flight through cave
 */
 namespace {
 }
@@ -99,7 +100,7 @@ Benchmarkscene::Benchmarkscene()
 
     // Create a new main camera (screw the existing one)
     camera = WorldObjectManager::NewWorldObject("benchmark main camera")
-        ->AddComponent<Components::Camera>(Vector2i(800*2, 600*1.5), 90, 0.001, 10);
+        ->AddComponent<Components::Camera>(90, 0.001, 10);
     camera->SetAsMainCamera();
     camera->transform->SetPosition(cameraWaypoints[nextCameraWaypoint]);
 

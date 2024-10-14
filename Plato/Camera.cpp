@@ -5,9 +5,9 @@ using namespace Plato;
 using namespace Plato::Components;
 using namespace TorGL;
 
-Camera::Camera(WorldObject* worldObject, const Vector2i& renderResolution, double fov, double nearclip, double farclip) :
+Camera::Camera(WorldObject* worldObject, double fov, double nearclip, double farclip) :
 	Component(worldObject),
-	projectionProperties(renderResolution, fov, nearclip, farclip)
+    projectionProperties(Vector2i(0,0), fov, nearclip, farclip)
 {
 	// If there is no main camera, set myself as the new main camera
 	if (mainCamera == nullptr)
@@ -63,17 +63,6 @@ Vector3d Camera::WorldSpaceToCameraSpace(const Vector3d& worldSpacePoint) const
 Camera* Camera::GetMainCamera()
 {
 	return mainCamera;
-}
-
-void Camera::SetRenderResolution(const Vector2i& resolution)
-{
-	projectionProperties.SetResolution(resolution);
-	return;
-}
-
-const Vector2i& Camera::GetRenderResolution() const
-{
-	return projectionProperties.GetResolution();
 }
 
 void Camera::SetFov(double fov)

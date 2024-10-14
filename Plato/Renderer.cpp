@@ -38,9 +38,6 @@ void Renderer::BeginFrame()
 	mainCamera = Camera::GetMainCamera();
 	hasCamera = mainCamera != nullptr;
 
-	if (hasCamera)
-		mainCamera->SetRenderResolution(renderResolution);
-
 	meshRenderers.clear();
 	lightSourceComponents.clear();
 
@@ -113,7 +110,9 @@ void Renderer::Render()
     #ifdef _BENCHMARK_CONTEXT
         perfTimer.Reset();
     #endif
-	tornado.Render(mainCamera->GetProjectionProperties(), worldMatrix);
+    ProjectionProperties projectionProperties = mainCamera->GetProjectionProperties();
+    projectionProperties.SetResolution(renderResolution);
+	tornado.Render(projectionProperties, worldMatrix);
     #ifdef _BENCHMARK_CONTEXT
         _benchmark_tornadoRenderTime = perfTimer.GetElapsedTime().AsMilliseconds();
     #endif
