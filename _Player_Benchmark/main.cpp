@@ -1,4 +1,3 @@
-#include <cstdint>
 #include <iostream>
 #include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
@@ -6,9 +5,7 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/Clock.h"
-#include "TestFixture.h"
-#include "Test__MC.h"
-#include "CameraFPSKeyboardControl.h"
+#include "Benchmarkscene.h"
 #include "RenderWindow.h"
 #include <cstring>
 #include <iostream>
@@ -23,21 +20,12 @@ int main(int argc, char* argv[]) {
     Renderer renderer(resolution, 0, 0);
 
     // Set up an SDL2 window
-    RenderWindow renderWindow(resolution, "SDL-Player", renderer.GetPixelBuffer());
+    RenderWindow renderWindow(resolution, "TornadoPlato Benchmark", renderer.GetPixelBuffer());
     renderWindow.EnableMouseCameraControlMode();
     RenderWindow* renderWindowPointer = &renderWindow; // Dumb workaroud for lambda function
 
     // Init plato event manager
     Input::EventManager::Init();
-
-    // Set up an FPS camera
-    std::cout << "Creating camera..." << std::endl;
-    Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-    Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 10);
-    cameraYPivot->worldObject->SetId("main_camera_ypiv");
-    camera->SetAsMainCamera();
-    // Let's add a CameraKeyboardControl component to the camera by default
-    camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
     // Register logic for plato to close the render window
     Input::EventManager::RegisterReverseEventCallback(
@@ -48,9 +36,8 @@ int main(int argc, char* argv[]) {
 		}
     );
 
-
-    // Instantiate a scene
-    Test__MC testScene;
+    // Instantiate benchmark scene
+    Benchmarkscene BenchmarkScene;
 
     // Set up the main loop
     Clock frametimer;
@@ -67,7 +54,7 @@ int main(int argc, char* argv[]) {
         WorldObjectManager::DeleteFlaggedObjects();
 
         // Tick update hooks
-        testScene.Update(frametime);
+        BenchmarkScene.Update(frametime);
         WorldObjectManager::CallHook__Update(frametime);
         WorldObjectManager::CallHook__LateUpdate(frametime);
 

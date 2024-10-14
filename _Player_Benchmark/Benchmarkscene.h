@@ -1,5 +1,4 @@
 #pragma once
-#include "TestFixture.h"
 #include "../Plato/MeshRenderer.h"
 #include "../Plato/Material.h"
 #include "../Plato/PointLight.h"
@@ -7,13 +6,13 @@
 
 using namespace Plato;
 
-class Test__Benchmarkscene : public TestFixture
+class Benchmarkscene
 {
 public:
-	Test__Benchmarkscene();
+	Benchmarkscene();
 
-	void Update(double deltaTime) override;
-	void Render(Renderer* renderer) override;
+	void Update(double deltaTime);
+	void Render(Renderer* renderer);
 
 private:
     std::vector<Eule::Vector3d> cameraWaypoints;

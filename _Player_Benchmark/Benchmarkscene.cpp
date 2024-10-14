@@ -1,4 +1,4 @@
-#include "Test__Benchmarkscene.h"
+#include "Benchmarkscene.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/PointLight.h"
@@ -15,25 +15,25 @@ using namespace Plato;
 namespace {
 }
 
-Test__Benchmarkscene::Test__Benchmarkscene() : TestFixture(__FUNCTION__) // Set the test fixtures name
+Benchmarkscene::Benchmarkscene()
 {
 	// Load mesh files
-	ResourceManager::LoadMeshFromObj("cave", "assets/benchmark-scene/cave.obj");
-	ResourceManager::LoadMeshFromObj("cones", "assets/benchmark-scene/cones.obj");
-	ResourceManager::LoadMeshFromObj("lamps", "assets/benchmark-scene/lamps.obj");
-	ResourceManager::LoadMeshFromObj("lamps-cable", "assets/benchmark-scene/lamp-cable.obj");
-	ResourceManager::LoadMeshFromObj("plants", "assets/benchmark-scene/plants.obj");
-	ResourceManager::LoadMeshFromObj("water", "assets/benchmark-scene/water.obj");
-	Mesh* lampPoints = ResourceManager::LoadMeshFromObj("lamp-points", "assets/benchmark-scene/lamp-points.obj");
-	Mesh* cameraPath = ResourceManager::LoadMeshFromObj("camera-path", "assets/benchmark-scene/camera-path.obj");
+	ResourceManager::LoadMeshFromObj("cave", "assets/cave.obj");
+	ResourceManager::LoadMeshFromObj("cones", "assets/cones.obj");
+	ResourceManager::LoadMeshFromObj("lamps", "assets/lamps.obj");
+	ResourceManager::LoadMeshFromObj("lamps-cable", "assets/lamp-cable.obj");
+	ResourceManager::LoadMeshFromObj("plants", "assets/plants.obj");
+	ResourceManager::LoadMeshFromObj("water", "assets/water.obj");
+	Mesh* lampPoints = ResourceManager::LoadMeshFromObj("lamp-points", "assets/lamp-points.obj");
+	Mesh* cameraPath = ResourceManager::LoadMeshFromObj("camera-path", "assets/camera-path.obj");
 
 	// Load texture files
-	ResourceManager::LoadTextureFromBmp("cave", "assets/benchmark-scene/cave-color.png.bmp");
-	ResourceManager::LoadTextureFromBmp("cones", "assets/benchmark-scene/cones-color.png.bmp");
-	ResourceManager::LoadTextureFromBmp("lamps", "assets/benchmark-scene/lamp-color.png.bmp");
-	ResourceManager::LoadTextureFromBmp("lamps-cable", "assets/benchmark-scene/cable-texture.png.bmp");
-	ResourceManager::LoadTextureFromBmp("plants", "assets/benchmark-scene/vine-texture.png.bmp");
-	ResourceManager::LoadTextureFromBmp("water", "assets/benchmark-scene/water-color.png.bmp");
+	ResourceManager::LoadTextureFromBmp("cave", "assets/cave-color.png.bmp");
+	ResourceManager::LoadTextureFromBmp("cones", "assets/cones-color.png.bmp");
+	ResourceManager::LoadTextureFromBmp("lamps", "assets/lamp-color.png.bmp");
+	ResourceManager::LoadTextureFromBmp("lamps-cable", "assets/cable-texture.png.bmp");
+	ResourceManager::LoadTextureFromBmp("plants", "assets/vine-texture.png.bmp");
+	ResourceManager::LoadTextureFromBmp("water", "assets/water-color.png.bmp");
 
 	// Create materials
 	ResourceManager::NewMaterial("cave")->texture = ResourceManager::FindTexture("cave");
@@ -98,16 +98,15 @@ Test__Benchmarkscene::Test__Benchmarkscene() : TestFixture(__FUNCTION__) // Set 
     cameraWaypoints = cameraPath->v_vertices;
 
     // Create a new main camera (screw the existing one)
-    Components::Camera* existingMainCam = Components::Camera::GetMainCamera();
     camera = WorldObjectManager::NewWorldObject("benchmark main camera")
-        ->AddComponent<Components::Camera>(existingMainCam->GetRenderResolution(), existingMainCam->GetFov(), existingMainCam->GetNearclip(), existingMainCam->GetFarclip());
+        ->AddComponent<Components::Camera>(Vector2i(800*2, 600*1.5), 90, 0.001, 10);
     camera->SetAsMainCamera();
     camera->transform->SetPosition(cameraWaypoints[nextCameraWaypoint]);
 
     return;
 }
 
-void Test__Benchmarkscene::Update(double deltaTime)
+void Benchmarkscene::Update(double deltaTime)
 {
     // If we have a next waypoint, move the camera to it, and make it look at it
     constexpr double cameraSpeed = 250;
@@ -137,7 +136,7 @@ void Test__Benchmarkscene::Update(double deltaTime)
     }
 }
 
-void Test__Benchmarkscene::SetNextCameraWaypoint()
+void Benchmarkscene::SetNextCameraWaypoint()
 {
     nextCameraWaypoint++;
     if (nextCameraWaypoint >= cameraWaypoints.size()) {
@@ -146,7 +145,7 @@ void Test__Benchmarkscene::SetNextCameraWaypoint()
     }
 }
 
-void Test__Benchmarkscene::Render(Renderer* renderer)
+void Benchmarkscene::Render(Renderer* renderer)
 {
 
 }
