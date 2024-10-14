@@ -17,11 +17,18 @@ namespace Plato
 	public:
         // If numThreads is 0, std::thread::hardware_concurrency() will be used to determine
         // the max number of threads of the system automatically
-		Renderer(const Vector2i& renderResolution, const std::size_t numThreads = 0, double globalIllumination = 0);
+        Renderer(
+            const Vector2i& renderResolution,
+            const std::size_t numThreads = 0,
+            double globalIllumination = 0,
+            Components::Camera const* camera = nullptr
+        );
 
 		void BeginFrame();
 		void RegisterLightSource(const Components::LightSource* lr);
 		void RegisterMeshRenderer(const Components::MeshRenderer* mr);
+        Components::Camera const* GetCamera() const;
+        void SetCamera(Components::Camera const* camera);
 		void Render();
 
 		const TorGL::PixelBuffer<3>* GetPixelBuffer() const;
@@ -52,8 +59,7 @@ namespace Plato
 
 		Eule::Matrix4x4 worldMatrix;
 		const Vector2i& renderResolution;
-		Components::Camera* mainCamera;
-		bool hasCamera = false;
+		Components::Camera const* camera;
 
 		std::mutex vecMutex;
 

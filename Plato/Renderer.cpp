@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Camera.h"
 
 using namespace Plato;
 using namespace Plato::Components;
@@ -12,11 +13,16 @@ namespace {
 }
 #endif
 
-Renderer::Renderer(const Vector2i& renderResolution, std::size_t numThreads, double globalIllumination)
+Renderer::Renderer(
+    const Vector2i& renderResolution,
+    std::size_t numThreads,
+    double globalIllumination,
+    Components::Camera const* camera
+)
 	:
 	renderResolution { renderResolution },
 	tornado(renderResolution, numThreads, globalIllumination),
-	mainCamera { nullptr },
+	camera { camera },
 	workerPool(numThreads)
 {
 	
@@ -35,8 +41,15 @@ void Renderer::BeginFrame()
         perfTimer.Reset();
     #endif
 
-	mainCamera = Camera::GetMainCamera();
-	hasCamera = mainCamera != nullptr;
+    // If no camera is explicitly set, fetch the main camera
+    if (camera == nullptr) {
+        SetCamera(Camera::GetMainCamera());
+
+        // If the camera is still null, error out
+        if (camera == nullptr) {
+            throw std::runtime_error("Attempted to initialize a renderer (BeginFrame()) without having a camera set, or a camera with id 'main_camera' in scene!");
+        }
+    }
 
 	meshRenderers.clear();
 	lightSourceComponents.clear();
@@ -68,9 +81,10 @@ void Renderer::RegisterMeshRenderer(const MeshRenderer* mr)
 
 void Renderer::Render()
 {
-	// Don't render without a camera!
-	if (!hasCamera)
-		return;
+    // If the camera is null, error out
+    if (camera == nullptr) {
+        throw std::runtime_error("Attempted to perform a render (Render()) without having a camera set, or a camera with id 'main_camera' in scene!");
+    }
 
     // TORNADO BEGIN FRAME
     #ifdef _BENCHMARK_CONTEXT
@@ -110,7 +124,7 @@ void Renderer::Render()
     #ifdef _BENCHMARK_CONTEXT
         perfTimer.Reset();
     #endif
-    ProjectionProperties projectionProperties = mainCamera->GetProjectionProperties();
+    ProjectionProperties projectionProperties = camera->GetProjectionProperties();
     projectionProperties.SetResolution(renderResolution);
 	tornado.Render(projectionProperties, worldMatrix);
     #ifdef _BENCHMARK_CONTEXT
@@ -208,17 +222,17 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 
 		// Transform vertices from object space to camera space
 		rd.a.pos_worldSpace = 
-			mainCamera->WorldSpaceToCameraSpace(
+			camera->WorldSpaceToCameraSpace(
 				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 0].v])
 			);
 
 		rd.b.pos_worldSpace = 
-			mainCamera->WorldSpaceToCameraSpace(
+			camera->WorldSpaceToCameraSpace(
 				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 1].v])
 			);
 
 		rd.c.pos_worldSpace = 
-			mainCamera->WorldSpaceToCameraSpace(
+			camera->WorldSpaceToCameraSpace(
 				mr->transform->ObjectSpaceToWorldSpace(mesh->v_vertices[idx[i*3 + 2].v])
 			);
 
@@ -234,7 +248,7 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 
 
 		// Apply object- and camera rotation to the vertex normals
-		const Matrix4x4 normalTransMat = mr->transform->GetGlobalTransformationMatrix().DropTranslationComponents() * mainCamera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
+		const Matrix4x4 normalTransMat = mr->transform->GetGlobalTransformationMatrix().DropTranslationComponents() * camera->transform->GetGlobalRotation().Inverse().ToRotationMatrix();
 		rd.a.normal *= normalTransMat;
 		rd.b.normal *= normalTransMat;
 		rd.c.normal *= normalTransMat;
@@ -257,3 +271,14 @@ const PixelBuffer<3>* Renderer::GetPixelBuffer() const
 {
 	return tornado.GetPixelBuffer();
 }
+
+Camera const* Renderer::GetCamera() const
+{
+    return camera;
+}
+
+void Renderer::SetCamera(Camera const* camera)
+{
+    this->camera = camera;
+}
+
