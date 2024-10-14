@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Camera.h"
+#include "MeshRenderer.h"
 
 using namespace Plato;
 using namespace Plato::Components;
@@ -79,7 +80,6 @@ void Renderer::RegisterMeshRenderer(const MeshRenderer* mr)
 	return;
 }
 
-#include <iostream>
 void Renderer::Render()
 {
     // If the camera is null, error out
@@ -266,6 +266,24 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 	renderTriangles.insert(renderTriangles.end(), resultCache.begin(), resultCache.end());
 
 	return;
+}
+
+std::size_t Renderer::GetNumActiveVertices() const
+{
+    std::size_t numVertices = 0;
+    for (const MeshRenderer* mr : meshRenderers) {
+        numVertices += mr->GetMesh()->v_vertices.size();
+    }
+    return numVertices;
+}
+
+std::size_t Renderer::GetNumActiveTris() const
+{
+    std::size_t numTris = 0;
+    for (const MeshRenderer* mr : meshRenderers) {
+        numTris += mr->GetMesh()->tris.size();
+    }
+    return numTris;
 }
 
 const PixelBuffer<3>* Renderer::GetPixelBuffer() const

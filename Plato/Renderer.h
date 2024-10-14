@@ -30,11 +30,15 @@ namespace Plato
         Components::Camera const* GetCamera() const;
         void SetCamera(Components::Camera const* camera);
 		void Render();
+        // Will return how many vertices are active (i.e. passed to the tornado). MUST (!) be called after registering them!!
+        std::size_t GetNumActiveVertices() const;
+
+        // Will return how many triangles are active (i.e. passed to the tornado). MUST (!) be called after registering them!!
+        std::size_t GetNumActiveTris() const;
 
 		const TorGL::PixelBuffer<3>* GetPixelBuffer() const;
 
 	private:
-
 		// Will translate plato light sources to tornado light sources
 		void ResolveLightSources();
 

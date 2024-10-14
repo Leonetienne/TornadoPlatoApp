@@ -1,4 +1,3 @@
-#define _BENCHMARK_CONTEXT
 #include "../Plato/Renderer.h"
 #include "RenderWindow.h"
 #include "PerformanceMetric.h"
@@ -29,6 +28,7 @@ class BenchmarkPlayer
         // Will first transform the mean value back to the average sum of individual values, then add a new value, and perform the mean-division again
         double AddValueToMean(double oldMean, double newVal);
 
+        void UpdateWindowTitle();
 
         Renderer renderer;
         RenderWindow renderWindow;
@@ -39,5 +39,9 @@ class BenchmarkPlayer
         PerformanceMetric currentMetric;
         // How many performance metrics have been averaged since the last insertion into performanceMetrics
         std::size_t numMetricsAddedSinceInterval = 0;
+
+        // Just some stats fetched in the rendering loop to display
+        std::size_t numTris = 0;
+        std::size_t numVertices = 0;
 };
 

@@ -43,6 +43,7 @@ void BenchmarkPlayer::Run()
     Clock perfTimer;
     Clock statsCaptureTimer;
     constexpr double statsCaptureIntervalMs = 100.0;
+    bool justSetVertTrisCount = false;
 
     // Frametime variables
     Clock frametimer;
@@ -70,6 +71,14 @@ void BenchmarkPlayer::Run()
         renderer.BeginFrame();
         currentBenchmarkScene->Render(&renderer);
         WorldObjectManager::CallHook__Render(&renderer);
+
+        if (!numTris) {
+            justSetVertTrisCount = true;
+            numTris = renderer.GetNumActiveTris();
+            numVertices = renderer.GetNumActiveVertices();
+            std::cout << "Scene \"" << currentBenchmarkScene->GetName() << "\" has " << numVertices << " verts and " << numTris << " tris!" << std::endl;
+        }
+
         renderer.Render();
         const double platoRenderTime = perfTimer.GetElapsedTime().AsMilliseconds();
 
@@ -111,6 +120,11 @@ void BenchmarkPlayer::Run()
         // If the current scene has finished (or the user pressed SPACE), advance to the next scene
         if (!currentBenchmarkScene->GetIsRunning() || Input::Keyboard::GetKeyDown(Input::KEY_CODE::SPACE)) {
             AdvanceBenchmarkScene();
+        }
+
+        // If the window title has not yet been set
+        if (justSetVertTrisCount) {
+            UpdateWindowTitle();
         }
 
         // Reset the frame timer clock
@@ -159,6 +173,10 @@ bool BenchmarkPlayer::AdvanceBenchmarkScene()
 
         // Unset the current camera in the renderer, as it belongs to the benchmark scene (which just got deleted lol)...
         renderer.SetCamera(nullptr);
+
+        // Unset vertices/tris count
+        numVertices = 0;
+        numTris = 0;
     }
 
     // Handle initialization of the index value
@@ -180,7 +198,7 @@ bool BenchmarkPlayer::AdvanceBenchmarkScene()
     currentBenchmarkScene = benchmarkScenes[currentBenchmarkSceneIndex];
 
     // Update the window title
-    renderWindow.SetWindowTitle(windowBaseTitle + " - " + currentBenchmarkScene->GetName());
+    UpdateWindowTitle();
 
     // Initialize the new scene
     currentBenchmarkScene->Start();
@@ -264,10 +282,28 @@ void BenchmarkPlayer::DumpSceneMetrics()
         }
         csvFs.flush();
         csvFs.close();
-        std::cout << "Successfully written performance metrics to \"" << metricsFile << "\"!" << std::endl;
     }
     else {
         std::cerr << "Failed to open filestream for write of " << metricsFile << "! Ignoring..." << std::endl;
     }
+}
+
+void BenchmarkPlayer::UpdateWindowTitle()
+{
+    // Add base name
+    std::stringstream ss;
+    ss << windowBaseTitle;
+
+    // If we have a scene set, add that
+    if (currentBenchmarkScene) {
+        ss << " - " << currentBenchmarkScene->GetName();
+    }
+
+    // If we have a vertices/tris count, add that
+    if (numVertices) {
+        ss << " (" << numVertices << " verts / " << numTris << " tris)";
+    }
+
+    renderWindow.SetWindowTitle(ss.str());
 }
 
