@@ -8,6 +8,7 @@
 #include "../Plato/Clock.h"
 #include "TestFixture.h"
 #include "Test__MC.h"
+#include "Test__Cube.h"
 #include "CameraFPSKeyboardControl.h"
 #include "RenderWindow.h"
 #include <cstring>
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]) {
     const Vector2i resolution(800*2, 600*1.5);
 
     // Set up a plato renderer
-    Renderer renderer(resolution, 0, 0);
+    Renderer renderer(resolution, 0, 0.4);
 
     // Set up an SDL2 window
     RenderWindow renderWindow(resolution, "SDL-Player", renderer.GetPixelBuffer());
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]) {
 
 
     // Instantiate a scene
-    Test__MC testScene;
+    Test__Cube testScene;
 
     // Set up the main loop
     Clock frametimer;

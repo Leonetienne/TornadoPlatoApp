@@ -21,6 +21,7 @@ add_executable(
     RenderWindow.cpp
     TestFixture.cpp
     Test__MC.cpp
+    Test__Cube.cpp
     main.cpp
 )
 
