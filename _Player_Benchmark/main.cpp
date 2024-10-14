@@ -9,6 +9,8 @@
 #include "RenderWindow.h"
 #include <cstring>
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
@@ -39,8 +41,13 @@ int main(int argc, char* argv[]) {
     // Instantiate benchmark scene
     Benchmarkscene BenchmarkScene;
 
+    // Set up a csv stream for performance metrics
+    std::stringstream fpsCsvSs;
+
     // Set up the main loop
     Clock frametimer;
+    Clock statsCaptureTimer;
+    double statsCaptureIntervalMs = 100.0;
     double frametime = 1000.0 / 60.0;
 
     while (renderWindow.IsRunning()) {
@@ -66,15 +73,30 @@ int main(int argc, char* argv[]) {
         // Display the frame
         renderWindow.RedrawWindow();
 
-        // Calculate how long the frame took to display
+        // Capture performance metrics every set time intervals
+        if (statsCaptureTimer.GetElapsedTime().AsMilliseconds() >= statsCaptureIntervalMs) {
+            statsCaptureTimer.Reset();
+            fpsCsvSs << (int)(1000.0 / frametime + 0.5) << ",";
+        }
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
         frametimer.Reset();
-        std::cout << "FPS: " << 1000.0 / frametime << std::endl;
     }
 
     // Clean up
     WorldObjectManager::Free();
     ResourceManager::Free();
+
+    // Write performance metrics
+    std::ofstream fpsCsvFs("last-run-fps.csv", std::ofstream::out);
+    if (fpsCsvFs.good()) {
+        std::cout << "Writing fps stats to ./last-run-fps.csv..." << std::endl;
+        fpsCsvFs << fpsCsvSs.str().substr(0,fpsCsvSs.str().length()-1); // Omit last comma separator
+        fpsCsvFs.flush();
+        fpsCsvFs.close();
+    }
+    else {
+        std::cerr << "Failed to open filestream for write of ./last-run-fps.csv! Ignoring..." << std::endl;
+    }
 
     return 0;
 }
