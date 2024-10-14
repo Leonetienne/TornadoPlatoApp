@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
+#include <filesystem>
 
 int main(int argc, char* argv[]) {
     const Vector2i resolution(800*2, 600*1.5);
@@ -48,7 +49,7 @@ int main(int argc, char* argv[]) {
     Clock frametimer;
     Clock statsCaptureTimer;
     double statsCaptureIntervalMs = 100.0;
-    double frametime = 1000.0 / 60.0;
+    double frametime = 1000.0 / 10.0;
 
     while (renderWindow.IsRunning()) {
         // Poll the SDL2 windows events
@@ -73,13 +74,15 @@ int main(int argc, char* argv[]) {
         // Display the frame
         renderWindow.RedrawWindow();
 
+        // Reset frame timer
+        frametime = frametimer.GetElapsedTime().AsMilliseconds();
+        frametimer.Reset();
+
         // Capture performance metrics every set time intervals
         if (statsCaptureTimer.GetElapsedTime().AsMilliseconds() >= statsCaptureIntervalMs) {
             statsCaptureTimer.Reset();
-            fpsCsvSs << (int)(1000.0 / frametime + 0.5) << ",";
+            fpsCsvSs << (int)(frametime + 0.5) << ",";
         }
-        frametime = frametimer.GetElapsedTime().AsMilliseconds();
-        frametimer.Reset();
     }
 
     // Clean up
@@ -87,15 +90,17 @@ int main(int argc, char* argv[]) {
     ResourceManager::Free();
 
     // Write performance metrics
-    std::ofstream fpsCsvFs("last-run-fps.csv", std::ofstream::out);
+    const std::string metricsDir = "./dataplotter/performance-metrics";
+    std::filesystem::create_directories(metricsDir);
+    std::ofstream fpsCsvFs(metricsDir + "/last-run-fps.csv", std::ofstream::out);
     if (fpsCsvFs.good()) {
-        std::cout << "Writing fps stats to ./last-run-fps.csv..." << std::endl;
+        std::cout << "Writing fps stats to " << metricsDir << "/last-run-fps.csv..." << std::endl;
         fpsCsvFs << fpsCsvSs.str().substr(0,fpsCsvSs.str().length()-1); // Omit last comma separator
         fpsCsvFs.flush();
         fpsCsvFs.close();
     }
     else {
-        std::cerr << "Failed to open filestream for write of ./last-run-fps.csv! Ignoring..." << std::endl;
+        std::cerr << "Failed to open filestream for write of " << metricsDir << " /last-run-fps.csv! Ignoring..." << std::endl;
     }
 
     return 0;
