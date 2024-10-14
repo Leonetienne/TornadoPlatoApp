@@ -1,24 +1,32 @@
 #pragma once
-#include "../Plato/MeshRenderer.h"
-#include "../Plato/Material.h"
-#include "../Plato/PointLight.h"
 #include "../Plato/Camera.h"
 
 using namespace Plato;
 
-class Benchmarkscene
+class BenchmarkScene
 {
 public:
-	Benchmarkscene();
+	virtual void Update(double deltaTime) {};
+	virtual void Render(Renderer* renderer) {};
 
-	void Update(double deltaTime);
-	void Render(Renderer* renderer);
+    bool GetIsRunning() const;
 
-private:
-    std::vector<Eule::Vector3d> cameraWaypoints;
-    std::size_t nextCameraWaypoint = 0;
+    // DONT override this! This sets running to true!
+    void Start();
+
+    // Feel free to override this
+    virtual void Teardown() {};
+
+    virtual std::string GetName() const {return "nA";};
+
+protected:
+    // Will stop the scene and make the player go to the next
+    void Stop();
+
+    // Feel free to override this
+    virtual void Setup() {};
+
     Components::Camera* camera;
-
-    void SetNextCameraWaypoint();
+    bool running = false;
 };
 

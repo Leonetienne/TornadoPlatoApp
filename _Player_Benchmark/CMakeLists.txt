@@ -21,7 +21,9 @@ add_executable(
     ${Plato}
 
     RenderWindow.cpp
-    Benchmarkscene.cpp
+    BenchmarkScene.cpp
+    CaveCamFlightScene.cpp
+    HighResModelScene.cpp
     main.cpp
 )
 

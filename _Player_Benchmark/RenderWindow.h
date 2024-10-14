@@ -16,6 +16,7 @@ public:
     bool IsRunning() const;
     void PollEvents();
     void RedrawWindow();
+    void SetWindowTitle(const std::string& title);
 
     //! Will lock and hide the mouse cursor and enable relative mouse position mode
     void EnableMouseCameraControlMode();

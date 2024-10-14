@@ -1,3 +1,4 @@
+#include "HighResModelScene.h"
 #define _BENCHMARK_CONTEXT
 
 #include <iostream>
@@ -7,8 +8,11 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/Clock.h"
-#include "Benchmarkscene.h"
+#include "../Plato/Application.h"
 #include "RenderWindow.h"
+#include "BenchmarkScene.h"
+#include "CaveCamFlightScene.h"
+#include "HighResModelScene.h"
 #include <cstring>
 #include <iostream>
 #include <sstream>
@@ -52,6 +56,15 @@ int main(int argc, char* argv[]) {
     // Init plato event manager
     Input::EventManager::Init();
 
+    // Instantiate benchmark scenes
+    std::vector<BenchmarkScene*> benchmarkScenes ({
+        new HighResModelScene(),
+        new CaveCamFlightScene()
+    });
+    std::size_t currentBenchmarkSceneIndex = 0;
+    benchmarkScenes[currentBenchmarkSceneIndex]->Start();
+    renderWindow.SetWindowTitle(std::string("TornadoPlato Benchmark - ") + benchmarkScenes[currentBenchmarkSceneIndex]->GetName());
+
     // Register logic for plato to close the render window
     Input::EventManager::RegisterReverseEventCallback(
         Input::REVERSE_EVENT_CALLBACK::EXIT, 
@@ -60,9 +73,6 @@ int main(int argc, char* argv[]) {
 			renderWindowPointer->Close();
 		}
     );
-
-    // Instantiate benchmark scene
-    Benchmarkscene BenchmarkScene;
 
     std::vector<PerformanceMetric> performanceMetrics;
     performanceMetrics.reserve(3000);
@@ -84,19 +94,23 @@ int main(int argc, char* argv[]) {
         renderWindow.PollEvents();
 
         // Digest plato events
+        //std::cout << "Digesting events" << std::endl;
         Input::EventManager::Digest();
 
         // Delete objects that were flagged to be deleted
+        //std::cout << "Deleting flagged objects" << std::endl;
         WorldObjectManager::DeleteFlaggedObjects();
 
         // Tick update hooks
+        //std::cout << "Ticking update hooks" << std::endl;
         perfTimer.Reset();
-        BenchmarkScene.Update(frametime);
+        benchmarkScenes[currentBenchmarkSceneIndex]->Update(frametime);
         WorldObjectManager::CallHook__Update(frametime);
         WorldObjectManager::CallHook__LateUpdate(frametime);
         const double updateHooksTime = perfTimer.GetElapsedTime().AsMilliseconds();
 
         // Render the frame
+        //std::cout << "Rendering the frame" << std::endl;
         perfTimer.Reset();
         renderer.BeginFrame();
         WorldObjectManager::CallHook__Render(&renderer);
@@ -104,6 +118,7 @@ int main(int argc, char* argv[]) {
         const double platoRenderTime = perfTimer.GetElapsedTime().AsMilliseconds();
 
         // Display the frame
+        //std::cout << "Drawing the frame" << std::endl;
         perfTimer.Reset();
         renderWindow.RedrawWindow();
         const double sdlDrawTime = perfTimer.GetElapsedTime().AsMilliseconds();
@@ -113,6 +128,7 @@ int main(int argc, char* argv[]) {
 
         // Update current metrics values
         // If it already has values, update its means
+        //std::cout << "Saving metrics" << std::endl;
         if (numMetricsSinceLastInterval) {
             currentMetric = {
                 .totalFrameTime                             = addValueToMean(currentMetric.totalFrameTime, frametime, numMetricsSinceLastInterval),
@@ -158,57 +174,86 @@ int main(int argc, char* argv[]) {
             numMetricsSinceLastInterval = 0; // This will make the new values to be hardset in the next frame
         }
 
+        // If the current benchmark scene has finished, carry on to the next
+        if (!benchmarkScenes[currentBenchmarkSceneIndex]->GetIsRunning()) {
+
+            // Write performance metrics
+            const std::string metricsDir = "./dataplotter/performance-metrics";
+            const std::string metricsFile = metricsDir + "/" + benchmarkScenes[currentBenchmarkSceneIndex]->GetName() + ".csv";
+
+            std::filesystem::create_directories(metricsDir);
+            std::ofstream csvFs(metricsFile, std::ofstream::out);
+            if (csvFs.good()) {
+                std::stringstream metricsCsvSs;
+                std::cout << "Writing performance metrics to " << metricsFile << "..." << std::endl;
+                csvFs <<
+                    "total frametime,"
+                    "updateHooks,"
+                    //"platoRender,"
+                    "platoRender_beginFrame,"
+                    "platoRender_resolveCameraSpaceVertices,"
+                    "platoRender_registerTornadoObjects,"
+                    "platoRender_tornadoRender_beginFrame,"
+                    //"platoRender_tornadoRender_render,"
+                    "platoRender_tornadoRender_render_perspectiveProjection,"
+                    "platoRender_tornadoRender_render_backfaceCulling,"
+                    "platoRender_tornadoRender_render_drawTriangles,"
+                    "sdlDraw"
+                << std::endl;
+                for (const PerformanceMetric& it : performanceMetrics) {
+                    csvFs
+                        << it.totalFrameTime << ','
+                        << it.uptateHooks << ','
+                        //<< it.render << ','
+                        << it.platorender_beginFrame << ','
+                        << it.platorender_resolveCameraSpaceVertices << ','
+                        << it.platorender_registerTornadoObjects << ','
+                        << it.tornadorender_beginFrame << ','
+                        //<< it.tornadorender_render << ','
+                        << it.tornadorender_render_perspectiveProjection << ','
+                        << it.tornadorender_render_cullBackfaces << ','
+                        << it.tornadorender_render_drawTriangles << ','
+                        << it.sdlDraw
+                        << std::endl;
+                }
+                csvFs.flush();
+                csvFs.close();
+            }
+            else {
+                std::cerr << "Failed to open filestream for write of " << metricsFile << "! Ignoring..." << std::endl;
+            }
+
+            // Flush performance metrics
+            performanceMetrics.clear();
+            performanceMetrics.reserve(3000);
+            numMetricsSinceLastInterval = 0;  // Will clear current metric in the next frame
+
+            // Shut down the current benchmark scene
+            benchmarkScenes[currentBenchmarkSceneIndex]->Teardown();
+            delete benchmarkScenes[currentBenchmarkSceneIndex];
+            benchmarkScenes[currentBenchmarkSceneIndex] = nullptr;
+
+            // Delete all world objects and resources
+            WorldObjectManager::Free();
+            ResourceManager::Free();
+
+            // Unset the current camera in the renderer, as it belongs to the benchmark scene (which just got geleted lol)...
+            renderer.SetCamera(nullptr);
+
+            // Initialize the next scene
+            currentBenchmarkSceneIndex++;
+            if (currentBenchmarkSceneIndex >= benchmarkScenes.size()) {
+                Input::Application::Exit();
+            }
+            else {
+                renderWindow.SetWindowTitle(std::string("TornadoPlato Benchmark - ") + benchmarkScenes[currentBenchmarkSceneIndex]->GetName());
+                benchmarkScenes[currentBenchmarkSceneIndex]->Start();
+            }
+        }
+
         // Only reset the frame timer now to exclude the time it takes
         // to record the new performance metrics struct from the frametimer value
         frametimer.Reset();
-    }
-
-    // Clean up
-    WorldObjectManager::Free();
-    ResourceManager::Free();
-
-    // Write performance metrics
-    const std::string metricsDir = "./dataplotter/performance-metrics";
-    std::filesystem::create_directories(metricsDir);
-    std::ofstream csvFs(metricsDir + "/last-run.csv", std::ofstream::out);
-    if (csvFs.good()) {
-        std::stringstream metricsCsvSs;
-        std::cout << "Writing performance metrics to " << metricsDir << "/last-run-fps.csv..." << std::endl;
-        csvFs <<
-            "total frametime,"
-            "updateHooks,"
-            //"platoRender,"
-            "platoRender_beginFrame,"
-            "platoRender_resolveCameraSpaceVertices,"
-            "platoRender_registerTornadoObjects,"
-            "platoRender_tornadoRender_beginFrame,"
-            //"platoRender_tornadoRender_render,"
-            "platoRender_tornadoRender_render_perspectiveProjection,"
-            "platoRender_tornadoRender_render_backfaceCulling,"
-            "platoRender_tornadoRender_render_drawTriangles,"
-            "sdlDraw"
-        << std::endl;
-        for (const PerformanceMetric& it : performanceMetrics) {
-            csvFs
-                << it.totalFrameTime << ','
-                << it.uptateHooks << ','
-                //<< it.render << ','
-                << it.platorender_beginFrame << ','
-                << it.platorender_resolveCameraSpaceVertices << ','
-                << it.platorender_registerTornadoObjects << ','
-                << it.tornadorender_beginFrame << ','
-                //<< it.tornadorender_render << ','
-                << it.tornadorender_render_perspectiveProjection << ','
-                << it.tornadorender_render_cullBackfaces << ','
-                << it.tornadorender_render_drawTriangles << ','
-                << it.sdlDraw
-                << std::endl;
-        }
-        csvFs.flush();
-        csvFs.close();
-    }
-    else {
-        std::cerr << "Failed to open filestream for write of " << metricsDir << " /last-run-fps.csv! Ignoring..." << std::endl;
     }
 
     return 0;

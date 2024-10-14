@@ -109,6 +109,10 @@ void RenderWindow::RedrawWindow()
     // Present the renderer
     SDL_RenderPresent(sdlRenderer);
 }
+void RenderWindow::SetWindowTitle(const std::string& title)
+{
+    SDL_SetWindowTitle(sdlWindow, title.c_str());
+}
 
 void RenderWindow::Close()
 {

@@ -79,6 +79,7 @@ void Renderer::RegisterMeshRenderer(const MeshRenderer* mr)
 	return;
 }
 
+#include <iostream>
 void Renderer::Render()
 {
     // If the camera is null, error out
