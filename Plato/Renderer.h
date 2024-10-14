@@ -56,5 +56,32 @@ namespace Plato
 		bool hasCamera = false;
 
 		std::mutex vecMutex;
+
+        // Benchmarking stuff
+        #ifdef _BENCHMARK_CONTEXT
+        double _benchmark_beginFrameTime;
+        double _benchmark_resolveCameraSpaceVerticesTime;
+        double _benchmark_registerTornadoObjects;
+        double _benchmark_tornadoBeginFrameTime;
+        double _benchmark_tornadoRenderTime;
+
+        public:
+        const inline double _benchmark_GetBeginFrameTime() {
+            return _benchmark_beginFrameTime;
+        }
+        const inline double _benchmark_GetResolveCameraSpaceVerticesTime() {
+            return _benchmark_resolveCameraSpaceVerticesTime;
+        }
+        const inline double _benchmark_RegisterTornadoObjectsTime() {
+            return _benchmark_registerTornadoObjects;
+        }
+        const inline double _benchmark_GetTornadoBeginFrameTime() {
+            return _benchmark_tornadoBeginFrameTime;
+        }
+        const inline double _benchmark_GetTornadoRenderTime() {
+            return _benchmark_tornadoRenderTime;
+        }
+        private:
+        #endif
 	};
 }

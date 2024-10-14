@@ -4,6 +4,14 @@ using namespace Plato;
 using namespace Plato::Components;
 using namespace TorGL;
 
+#ifdef _BENCHMARK_CONTEXT
+// If we are in a benchmarking context, create a timer used to capture runtimes of inidividual methods
+#include "Clock.h"
+namespace {
+    Plato::Clock perfTimer;
+}
+#endif
+
 Renderer::Renderer(const Vector2i& renderResolution, std::size_t numThreads, double globalIllumination)
 	:
 	renderResolution { renderResolution },
@@ -23,6 +31,10 @@ Renderer::Renderer(const Vector2i& renderResolution, std::size_t numThreads, dou
 
 void Renderer::BeginFrame()
 {
+    #ifdef _BENCHMARK_CONTEXT
+        perfTimer.Reset();
+    #endif
+
 	mainCamera = Camera::GetMainCamera();
 	hasCamera = mainCamera != nullptr;
 
@@ -37,6 +49,10 @@ void Renderer::BeginFrame()
 
 	tornadoLightSources.clear();
 	tornadoLightSources.reserve(10);
+
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_beginFrameTime = perfTimer.GetElapsedTime().AsMilliseconds();
+    #endif
 
 	return;
 }
@@ -59,20 +75,48 @@ void Renderer::Render()
 	if (!hasCamera)
 		return;
 
+    // TORNADO BEGIN FRAME
+    #ifdef _BENCHMARK_CONTEXT
+        perfTimer.Reset();
+    #endif
 	tornado.BeginFrame();
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_tornadoBeginFrameTime = perfTimer.GetElapsedTime().AsMilliseconds();
+    #endif
 	
+    // RESOLVE CAMERA SPACE VERTICES
+    #ifdef _BENCHMARK_CONTEXT
+        perfTimer.Reset();
+    #endif
 	ResolveRenderTriangles();
 	ResolveLightSources();
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_resolveCameraSpaceVerticesTime = perfTimer.GetElapsedTime().AsMilliseconds();
+    #endif
 	
-	// Register light sources
-	for (const RenderLightSource* lr : tornadoLightSources)
+	// TORNADO REGISTER OBJECTS
+    #ifdef _BENCHMARK_CONTEXT
+        perfTimer.Reset();
+    #endif
+	for (const RenderLightSource* lr : tornadoLightSources) {
 		tornado.RegisterRender(lr);
-
+    }
 	// Register render triangles
-	for (const RenderTriangle3D& rd : renderTriangles)
+	for (const RenderTriangle3D& rd : renderTriangles) {
 		tornado.RegisterRender(&rd);
+    }
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_registerTornadoObjects = perfTimer.GetElapsedTime().AsMilliseconds();
+    #endif
 	
+    // TORNADO RENDER
+    #ifdef _BENCHMARK_CONTEXT
+        perfTimer.Reset();
+    #endif
 	tornado.Render(mainCamera->GetProjectionProperties(), worldMatrix);
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_tornadoRenderTime = perfTimer.GetElapsedTime().AsMilliseconds();
+    #endif
 
 	return;
 }

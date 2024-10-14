@@ -7,6 +7,8 @@ set(CMAKE_CXX_FLAGS "-Ofast -funroll-loops")
 # Find SDL2
 find_package(SDL2 REQUIRED)
 
+add_compile_definitions('_BENCHMARK_CONTEXT')
+
 file(GLOB Eule ../Eule/*.cpp)
 file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Plato ../Plato/*.cpp)
@@ -35,7 +37,6 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
     COMMENT "Linking assets directory to build directory."
 )
-
 # Link python plotter dir into build dir
 add_custom_command(
     TARGET Benchmark.out POST_BUILD
