@@ -134,18 +134,18 @@ int main(int argc, char* argv[]) {
         // Else, pupulate it initially
         else {
             currentMetric = {
-                .totalFrameTime = frametime,
-                .uptateHooks = updateHooksTime,
-                .render = platoRenderTime,
-                .platorender_beginFrame = renderer._benchmark_GetBeginFrameTime(),
-                .platorender_resolveCameraSpaceVertices = renderer._benchmark_GetResolveCameraSpaceVerticesTime(),
-                .platorender_registerTornadoObjects = renderer._benchmark_RegisterTornadoObjectsTime(),
-                .tornadorender_beginFrame = renderer._benchmark_GetTornadoBeginFrameTime(),
-                .tornadorender_render = renderer._benchmark_GetTornadoRenderTime(),
+                .totalFrameTime                             = frametime,
+                .uptateHooks                                = updateHooksTime,
+                .render                                     = platoRenderTime,
+                .platorender_beginFrame                     = renderer._benchmark_GetBeginFrameTime(),
+                .platorender_resolveCameraSpaceVertices     = renderer._benchmark_GetResolveCameraSpaceVerticesTime(),
+                .platorender_registerTornadoObjects         = renderer._benchmark_RegisterTornadoObjectsTime(),
+                .tornadorender_beginFrame                   = renderer._benchmark_GetTornadoBeginFrameTime(),
+                .tornadorender_render                       = renderer._benchmark_GetTornadoRenderTime(),
                 .tornadorender_render_perspectiveProjection = renderer._benchmark_GetTornadoRenderPerspectiveProjectionTime(),
-                .tornadorender_render_cullBackfaces = renderer._benchmark_GetTornadoRenderCullBackfacesTime(),
-                .tornadorender_render_drawTriangles = renderer._benchmark_GetTornadoRenderDrawTrianglesTime(),
-                .sdlDraw = sdlDrawTime,
+                .tornadorender_render_cullBackfaces         = renderer._benchmark_GetTornadoRenderCullBackfacesTime(),
+                .tornadorender_render_drawTriangles         = renderer._benchmark_GetTornadoRenderDrawTrianglesTime(),
+                .sdlDraw                                    = sdlDrawTime,
             };
 
             numMetricsSinceLastInterval = 1;
@@ -175,31 +175,33 @@ int main(int argc, char* argv[]) {
         std::stringstream metricsCsvSs;
         std::cout << "Writing performance metrics to " << metricsDir << "/last-run-fps.csv..." << std::endl;
         csvFs <<
-            "frametime,"
+            "total frametime,"
             "updateHooks,"
-            "platoRender,"
+            //"platoRender,"
             "platoRender_beginFrame,"
             "platoRender_resolveCameraSpaceVertices,"
             "platoRender_registerTornadoObjects,"
             "platoRender_tornadoRender_beginFrame,"
-            "platoRender_tornadoRender_render,"
+            //"platoRender_tornadoRender_render,"
             "platoRender_tornadoRender_render_perspectiveProjection,"
             "platoRender_tornadoRender_render_backfaceCulling,"
-            "platoRender_tornadoRender_render_drawTriangles"
+            "platoRender_tornadoRender_render_drawTriangles,"
+            "sdlDraw"
         << std::endl;
         for (const PerformanceMetric& it : performanceMetrics) {
             csvFs
                 << it.totalFrameTime << ','
                 << it.uptateHooks << ','
-                << it.render << ','
+                //<< it.render << ','
                 << it.platorender_beginFrame << ','
                 << it.platorender_resolveCameraSpaceVertices << ','
                 << it.platorender_registerTornadoObjects << ','
                 << it.tornadorender_beginFrame << ','
-                << it.tornadorender_render << ','
+                //<< it.tornadorender_render << ','
                 << it.tornadorender_render_perspectiveProjection << ','
                 << it.tornadorender_render_cullBackfaces << ','
-                << it.tornadorender_render_drawTriangles
+                << it.tornadorender_render_drawTriangles << ','
+                << it.sdlDraw
                 << std::endl;
         }
         csvFs.flush();
