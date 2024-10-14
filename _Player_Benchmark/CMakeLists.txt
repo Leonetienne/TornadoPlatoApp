@@ -22,6 +22,7 @@ add_executable(
 
     RenderWindow.cpp
     BenchmarkScene.cpp
+    BenchmarkPlayer.cpp
     CaveCamFlightScene.cpp
     HighResModelScene.cpp
     main.cpp

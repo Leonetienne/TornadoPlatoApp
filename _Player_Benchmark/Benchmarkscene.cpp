@@ -3,7 +3,7 @@
 
 void BenchmarkScene::Start() {
     running = true;
-    std::cout << "Now running benchmark scene \"" << GetName() << '"' << std::endl;
+    std::cout << "Now running benchmark scene \"" << GetName() << "\"... Press [SPACE] to skip..." << std::endl;
     Setup();
 }
 
