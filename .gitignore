@@ -3,7 +3,5 @@ cmake-build-debug/
 .DS_Store
 *.out
 *.o
-*Benchmark*/**/*.csv
 venv/
-performance-plots/*.png
 
