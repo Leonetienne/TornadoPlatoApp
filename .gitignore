@@ -3,5 +3,5 @@ cmake-build-debug/
 .DS_Store
 *.out
 *.o
-*Benchmark*/*.csv
+*Benchmark*/**/*.csv
 venv/

@@ -19,19 +19,24 @@
 #include <filesystem>
 
 struct PerformanceMetric {
-    int totalFrameTime;
-    int uptateHooks;
-    int render;
-    int platorender_beginFrame;
-    int platorender_resolveCameraSpaceVertices;
-    int platorender_registerTornadoObjects;
-    int tornadorender_beginFrame;
-    int tornadorender_render;
-    int tornadorender_render_perspectiveProjection;
-    int tornadorender_render_cullBackfaces;
-    int tornadorender_render_drawTriangles;
-    int sdlDraw;
+    double totalFrameTime;
+    double uptateHooks;
+    double render;
+    double platorender_beginFrame;
+    double platorender_resolveCameraSpaceVertices;
+    double platorender_registerTornadoObjects;
+    double tornadorender_beginFrame;
+    double tornadorender_render;
+    double tornadorender_render_perspectiveProjection;
+    double tornadorender_render_cullBackfaces;
+    double tornadorender_render_drawTriangles;
+    double sdlDraw;
 };
+
+// Will first transform the mean value back to the average sum of individual values, then add a new value, and perform the mean-division again
+double addValueToMean(double oldMean, double newVal, std::size_t old_n) {
+    return ((oldMean * (double)old_n) + newVal) / (old_n + 1);
+}
 
 int main(int argc, char* argv[]) {
     const Vector2i resolution(800*2, 600*1.5);
@@ -70,6 +75,8 @@ int main(int argc, char* argv[]) {
     // Set up performance timers
     Clock statsCaptureTimer;
     Clock perfTimer;
+    std::size_t numMetricsSinceLastInterval = 0;
+    PerformanceMetric currentMetric;
 
 
     while (renderWindow.IsRunning()) {
@@ -104,23 +111,51 @@ int main(int argc, char* argv[]) {
         // Capture how long the frame took to complete
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
 
+        // Update current metrics values
+        // If it already has values, update its means
+        if (numMetricsSinceLastInterval) {
+            currentMetric = {
+                .totalFrameTime                             = addValueToMean(currentMetric.totalFrameTime, frametime, numMetricsSinceLastInterval),
+                .uptateHooks                                = addValueToMean(currentMetric.uptateHooks, updateHooksTime, numMetricsSinceLastInterval),
+                .render                                     = addValueToMean(currentMetric.render, platoRenderTime, numMetricsSinceLastInterval),
+                .platorender_beginFrame                     = addValueToMean(currentMetric.platorender_beginFrame, renderer._benchmark_GetBeginFrameTime(), numMetricsSinceLastInterval),
+                .platorender_resolveCameraSpaceVertices     = addValueToMean(currentMetric.platorender_resolveCameraSpaceVertices, renderer._benchmark_GetResolveCameraSpaceVerticesTime(), numMetricsSinceLastInterval),
+                .platorender_registerTornadoObjects         = addValueToMean(currentMetric.platorender_registerTornadoObjects, renderer._benchmark_RegisterTornadoObjectsTime(), numMetricsSinceLastInterval),
+                .tornadorender_beginFrame                   = addValueToMean(currentMetric.tornadorender_beginFrame, renderer._benchmark_GetTornadoBeginFrameTime(), numMetricsSinceLastInterval),
+                .tornadorender_render                       = addValueToMean(currentMetric.tornadorender_render, renderer._benchmark_GetTornadoRenderTime(), numMetricsSinceLastInterval),
+                .tornadorender_render_perspectiveProjection = addValueToMean(currentMetric.tornadorender_render_perspectiveProjection, renderer._benchmark_GetTornadoRenderPerspectiveProjectionTime(), numMetricsSinceLastInterval),
+                .tornadorender_render_cullBackfaces         = addValueToMean(currentMetric.tornadorender_render_cullBackfaces, renderer._benchmark_GetTornadoRenderCullBackfacesTime(), numMetricsSinceLastInterval),
+                .tornadorender_render_drawTriangles         = addValueToMean(currentMetric.tornadorender_render_drawTriangles, renderer._benchmark_GetTornadoRenderDrawTrianglesTime(), numMetricsSinceLastInterval),
+                .sdlDraw                                    = addValueToMean(currentMetric.sdlDraw, sdlDrawTime, numMetricsSinceLastInterval)
+            };
+
+            numMetricsSinceLastInterval++;
+        }
+        // Else, pupulate it initially
+        else {
+            currentMetric = {
+                .totalFrameTime = frametime,
+                .uptateHooks = updateHooksTime,
+                .render = platoRenderTime,
+                .platorender_beginFrame = renderer._benchmark_GetBeginFrameTime(),
+                .platorender_resolveCameraSpaceVertices = renderer._benchmark_GetResolveCameraSpaceVerticesTime(),
+                .platorender_registerTornadoObjects = renderer._benchmark_RegisterTornadoObjectsTime(),
+                .tornadorender_beginFrame = renderer._benchmark_GetTornadoBeginFrameTime(),
+                .tornadorender_render = renderer._benchmark_GetTornadoRenderTime(),
+                .tornadorender_render_perspectiveProjection = renderer._benchmark_GetTornadoRenderPerspectiveProjectionTime(),
+                .tornadorender_render_cullBackfaces = renderer._benchmark_GetTornadoRenderCullBackfacesTime(),
+                .tornadorender_render_drawTriangles = renderer._benchmark_GetTornadoRenderDrawTrianglesTime(),
+                .sdlDraw = sdlDrawTime,
+            };
+
+            numMetricsSinceLastInterval = 1;
+        }
+
         // Capture performance metrics every set time intervals
         if (statsCaptureTimer.GetElapsedTime().AsMilliseconds() >= statsCaptureIntervalMs) {
             statsCaptureTimer.Reset();
-            performanceMetrics.push_back({
-                .totalFrameTime = (int)frametime,
-                .uptateHooks = (int)updateHooksTime,
-                .render = (int)platoRenderTime,
-                .platorender_beginFrame = (int)renderer._benchmark_GetBeginFrameTime(),
-                .platorender_resolveCameraSpaceVertices = (int)renderer._benchmark_GetResolveCameraSpaceVerticesTime(),
-                .platorender_registerTornadoObjects = (int)renderer._benchmark_RegisterTornadoObjectsTime(),
-                .tornadorender_beginFrame = (int)renderer._benchmark_GetTornadoBeginFrameTime(),
-                .tornadorender_render = (int)renderer._benchmark_GetTornadoRenderTime(),
-                .tornadorender_render_perspectiveProjection = (int)renderer._benchmark_GetTornadoRenderPerspectiveProjectionTime(),
-                .tornadorender_render_cullBackfaces = (int)renderer._benchmark_GetTornadoRenderCullBackfacesTime(),
-                .tornadorender_render_drawTriangles = (int)renderer._benchmark_GetTornadoRenderDrawTrianglesTime(),
-                .sdlDraw = (int)sdlDrawTime,
-            });
+            performanceMetrics.push_back(currentMetric);
+            numMetricsSinceLastInterval = 0; // This will make the new values to be hardset in the next frame
         }
 
         // Only reset the frame timer now to exclude the time it takes
