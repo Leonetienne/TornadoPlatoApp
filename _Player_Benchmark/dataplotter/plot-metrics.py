@@ -26,7 +26,7 @@ def plot_data(data):
     # Create time points for x-axis (100ms intervals)
     time = [i * 0.1 for i in range(len(data[next(iter(data))]))]  # Use the first key to get length
 
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(16, 10))
 
     # Plot each metric
     for key in data.keys():

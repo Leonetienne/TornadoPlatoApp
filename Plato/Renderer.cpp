@@ -118,6 +118,13 @@ void Renderer::Render()
         _benchmark_tornadoRenderTime = perfTimer.GetElapsedTime().AsMilliseconds();
     #endif
 
+    // If benchmarking, carry over tornado metrics
+    #ifdef _BENCHMARK_CONTEXT
+    _benchmark_tornado_perspectiveProjectionTime = tornado._benchmark_GetPerspectiveProjectionTime();
+    _benchmark_tornado_cullBackfacesTime = tornado._benchmark_GetCullBackfacesTime();
+    _benchmark_tornado_drawTrianglesTime = tornado._benchmark_GetDrawTrianglesTime();
+    #endif
+
 	return;
 }
 

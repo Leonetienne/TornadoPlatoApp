@@ -65,6 +65,11 @@ namespace Plato
         double _benchmark_tornadoBeginFrameTime;
         double _benchmark_tornadoRenderTime;
 
+        // Tornado carried metrics
+        double _benchmark_tornado_perspectiveProjectionTime;
+        double _benchmark_tornado_cullBackfacesTime;
+        double _benchmark_tornado_drawTrianglesTime;
+
         public:
         const inline double _benchmark_GetBeginFrameTime() {
             return _benchmark_beginFrameTime;
@@ -80,6 +85,17 @@ namespace Plato
         }
         const inline double _benchmark_GetTornadoRenderTime() {
             return _benchmark_tornadoRenderTime;
+        }
+
+        // Tornado carried metrics
+        const inline double _benchmark_GetTornadoRenderPerspectiveProjectionTime() {
+            return _benchmark_tornado_perspectiveProjectionTime;
+        }
+        const inline double _benchmark_GetTornadoRenderCullBackfacesTime() {
+            return _benchmark_tornado_cullBackfacesTime;
+        }
+        const inline double _benchmark_GetTornadoRenderDrawTrianglesTime() {
+            return _benchmark_tornado_drawTrianglesTime;
         }
         private:
         #endif

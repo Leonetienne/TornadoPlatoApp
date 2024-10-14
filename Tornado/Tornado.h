@@ -40,5 +40,24 @@ namespace TorGL
 
 		std::vector<const RenderTriangle3D*> registeredTriangles;
 		std::vector<const RenderLightSource*> registeredLightsources;
+
+        // Benchmarking stuff
+        #ifdef _BENCHMARK_CONTEXT
+        double _benchmark_perspectiveProjectionTime;
+        double _benchmark_cullBackfacesTime;
+        double _benchmark_drawTrianglesTime;
+
+        public:
+        const inline double _benchmark_GetPerspectiveProjectionTime() {
+            return _benchmark_perspectiveProjectionTime;
+        }
+        const inline double _benchmark_GetCullBackfacesTime() {
+            return _benchmark_cullBackfacesTime;
+        }
+        const inline double _benchmark_GetDrawTrianglesTime() {
+            return _benchmark_drawTrianglesTime;
+        }
+        private:
+        #endif
 	};
 }

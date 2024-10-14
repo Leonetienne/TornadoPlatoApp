@@ -2,6 +2,21 @@
 
 using namespace TorGL;
 
+#ifdef _BENCHMARK_CONTEXT
+// If we are in a benchmarking context, create a timer used to capture runtimes of inidividual methods
+#include <chrono>
+namespace {
+    std::chrono::high_resolution_clock clock;
+    std::chrono::high_resolution_clock::time_point begin;
+    double clock_getElapsedTimeMs() {
+        return (double)(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - begin).count());
+    }
+    void clock_reset() {
+	    begin = std::chrono::high_resolution_clock::now();
+    }
+}
+#endif
+
 Tornado::Tornado(const Vector2i& renderTargetSize, std::size_t numRenderthreads, double globalIllumination)
 {
 	workerPool = new WorkerPool(numRenderthreads);
@@ -57,6 +72,11 @@ void Tornado::RegisterRender(const RenderLightSource* lightSource)
 
 void Tornado::Render(const ProjectionProperties& projectionProperties, const Matrix4x4 worldMatrix)
 {
+    /// PERSPECTIVE PROJECTION
+    #ifdef _BENCHMARK_CONTEXT
+        clock_reset();
+    #endif
+
 	// Project triangles
 	projectionEngine->BeginBatch(registeredTriangles.size());
 
@@ -67,9 +87,16 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	projectionEngine->Project(projectionProperties, worldMatrix);
 	std::vector<InterRenderTriangle>& projectedTriangles = projectionEngine->Finish();
 
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_perspectiveProjectionTime = clock_getElapsedTimeMs();
+    #endif
 
 
-	// Cull backfaces
+    /// BACKFACE CULLING
+    #ifdef _BENCHMARK_CONTEXT
+        clock_reset();
+    #endif
+
 	backfaceCullingEngine->BeginBatch(registeredTriangles.size());
 
 	for (const InterRenderTriangle& ird : projectedTriangles)
@@ -78,6 +105,9 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	backfaceCullingEngine->Cull();
 	std::vector<const InterRenderTriangle*>& culledTriangles = backfaceCullingEngine->Finish();
 
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_cullBackfacesTime = clock_getElapsedTimeMs();
+    #endif
 
 
 	// Init LightingEngine
@@ -87,12 +117,16 @@ void Tornado::Render(const ProjectionProperties& projectionProperties, const Mat
 	LightingEngine::HardsetLightsources(std::move(registeredLightsources));
 
 
-
 	// Draw triangles
+    #ifdef _BENCHMARK_CONTEXT
+        clock_reset();
+    #endif
 	drawingEngine->BeginBatch(projectedTriangles.size());
 	drawingEngine->HardsetInterRenderTriangles(std::move(culledTriangles));
-
 	drawingEngine->Draw();
+    #ifdef _BENCHMARK_CONTEXT
+        _benchmark_drawTrianglesTime = clock_getElapsedTimeMs();
+    #endif
 
 	return;
 }

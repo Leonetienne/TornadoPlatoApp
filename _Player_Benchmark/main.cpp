@@ -27,6 +27,9 @@ struct PerformanceMetric {
     int platorender_registerTornadoObjects;
     int tornadorender_beginFrame;
     int tornadorender_render;
+    int tornadorender_render_perspectiveProjection;
+    int tornadorender_render_cullBackfaces;
+    int tornadorender_render_drawTriangles;
     int sdlDraw;
 };
 
@@ -113,6 +116,9 @@ int main(int argc, char* argv[]) {
                 .platorender_registerTornadoObjects = (int)renderer._benchmark_RegisterTornadoObjectsTime(),
                 .tornadorender_beginFrame = (int)renderer._benchmark_GetTornadoBeginFrameTime(),
                 .tornadorender_render = (int)renderer._benchmark_GetTornadoRenderTime(),
+                .tornadorender_render_perspectiveProjection = (int)renderer._benchmark_GetTornadoRenderPerspectiveProjectionTime(),
+                .tornadorender_render_cullBackfaces = (int)renderer._benchmark_GetTornadoRenderCullBackfacesTime(),
+                .tornadorender_render_drawTriangles = (int)renderer._benchmark_GetTornadoRenderDrawTrianglesTime(),
                 .sdlDraw = (int)sdlDrawTime,
             });
         }
@@ -141,7 +147,10 @@ int main(int argc, char* argv[]) {
             "platoRender_resolveCameraSpaceVertices,"
             "platoRender_registerTornadoObjects,"
             "platoRender_tornadoRender_beginFrame,"
-            "platoRender_tornadoRender_render"
+            "platoRender_tornadoRender_render,"
+            "platoRender_tornadoRender_render_perspectiveProjection,"
+            "platoRender_tornadoRender_render_backfaceCulling,"
+            "platoRender_tornadoRender_render_drawTriangles"
         << std::endl;
         for (const PerformanceMetric& it : performanceMetrics) {
             csvFs
@@ -152,7 +161,10 @@ int main(int argc, char* argv[]) {
                 << it.platorender_resolveCameraSpaceVertices << ','
                 << it.platorender_registerTornadoObjects << ','
                 << it.tornadorender_beginFrame << ','
-                << it.tornadorender_render
+                << it.tornadorender_render << ','
+                << it.tornadorender_render_perspectiveProjection << ','
+                << it.tornadorender_render_cullBackfaces << ','
+                << it.tornadorender_render_drawTriangles
                 << std::endl;
         }
         csvFs.flush();
