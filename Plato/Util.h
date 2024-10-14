@@ -14,7 +14,7 @@ namespace Plato
             ifs.open(filepath);
             if (!ifs.good())
             {
-                throw std::runtime_error("No such file");
+                throw std::runtime_error(std::string("No such file \"") + filepath + "\"");
                 std::terminate();
             }
             std::string buf;
