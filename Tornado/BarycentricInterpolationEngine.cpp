@@ -55,6 +55,17 @@ double BarycentricInterpolationEngine::PerspectiveCorrect__CachedValues(const In
 			aw1 *= iaws; // Pre-calculate division by iaws
 			aw2 *= iaws;
 			aw3 *= iaws;
+
+            /*
+             * // USE THIS if you want texture warping (to appease the boomers)
+			aw1 = a1 * tri.ss_iarea;
+			aw2 = a2 * tri.ss_iarea;
+			aw3 = a3 * tri.ss_iarea;
+			iaws = 1.0 / (aw1 + aw2 + aw3); // Pre-calculate division
+			//aw1 *= iaws; // Pre-calculate division by iaws
+			//aw2 *= iaws;
+			//aw3 *= iaws;
+            */
 		}
 	}
 
