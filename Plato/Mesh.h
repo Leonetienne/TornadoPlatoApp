@@ -1,6 +1,8 @@
 #pragma once
 #include "Vector.h"
+#include "Material.h"
 #include <vector>
+#include <unordered_map>
 
 namespace Plato
 {
@@ -25,5 +27,7 @@ namespace Plato
 		std::vector<Vector2d> uv_vertices;
 		std::vector<Vector3d> normals;
 		std::vector<MeshVertexIndices> tris;
+        std::unordered_map<std::size_t, Material*> trisMaterialIndices;
 	};
 }
+

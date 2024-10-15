@@ -1,5 +1,6 @@
 #pragma once
 #include "Mesh.h"
+#include "Material.h"
 #include <string>
 
 namespace Plato
@@ -10,7 +11,7 @@ namespace Plato
 	{
 	public:
 		//! Will parse a wavefront (.obj) file to a Mesh
-		Mesh ParseObj(const std::string& filepath);
+		Mesh ParseObj(const std::string& filepath, bool applyTrisMaterials = false);
 
 	private:
 		//! Will interpret any line in a wavefront file
@@ -31,6 +32,9 @@ namespace Plato
 		//! Will interpret f-lines in a wavefront file
 		void Interpret_f(const std::string& line);
 
+		//! Will interpret usemtl-lines in a wavefront file
+		void Interpret_usemtl(const std::string& line);
+
 		//! Will clean a submesh, f.e. add placeholder values for unsupplied values
 		void CleanSubmesh();
 
@@ -48,6 +52,8 @@ namespace Plato
 
 		std::vector<Mesh> submeshes;
 		Mesh curSubmesh;
+        Material* currentMaterial = nullptr;
+        bool applyTrisMaterials = false;
 	};
 
 }

@@ -64,7 +64,7 @@ Texture* ResourceManager::LoadTextureFromBmp(const std::string& name, const std:
 
 	bmp.ConvertTo(BMP::COLOR_MODE::RGBA);
 
-	Texture* text = new Texture(Color::black);
+	Texture* text = new Texture(Color::green);
 	text->GetPixelBuffer().Refit(bmp.GetPixelBuffer(),
 		Vector2i(
 			(int)bmp.GetWidth(),

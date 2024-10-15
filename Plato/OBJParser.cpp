@@ -1,11 +1,13 @@
 #include "OBJParser.h"
 #include "Util.h"
+#include "ResourceManager.h"
 #include <sstream>
 
 using namespace Plato;
 
-Mesh OBJParser::ParseObj(const std::string& filepath)
+Mesh OBJParser::ParseObj(const std::string& filepath, bool applyTrisMaterials)
 {
+    this->applyTrisMaterials = applyTrisMaterials;
 	std::stringstream ss(Util::ReadFile(filepath));
 
 	std::string line;
@@ -52,6 +54,17 @@ void OBJParser::InterpretLine(const std::string& line)
 	// Forward to vn (vertex-normal)
 	else if (linetype == "vn")
 		return Interpret_vn(line);
+
+    // Line could be usemtl line
+    if (applyTrisMaterials) {
+        const std::string usemtl = "usemtl";
+        if (line.length() > usemtl.length()) {
+            const std::string linetype = line.substr(0, usemtl.length());
+            if (linetype == usemtl) {
+                return Interpret_usemtl(line);
+            }
+        }
+    }
 
 	return;
 }
@@ -252,10 +265,23 @@ void OBJParser::Interpret_f(const std::string& line)
 		}
 
 		curSubmesh.tris.push_back(newVertexIndices);
+        // If we are interpreting tris materials, and have a material, push it back
+        if (applyTrisMaterials && currentMaterial) {
+            curSubmesh.trisMaterialIndices[curSubmesh.tris.size()-1] = currentMaterial;
+        }
 		//std::cout << "f: " << Vector3i(newVertexIndices.v, newVertexIndices.uv, newVertexIndices.vn) << std::endl;
 	}
 
 	return;
+}
+
+void OBJParser::Interpret_usemtl(const std::string& line)
+{
+    // Extract material name
+    const std::string materialName = line.substr(std::string("usemtl ").length());
+
+    // Fetch the material to use for coming faces
+    currentMaterial = ResourceManager::FindMaterial(materialName);
 }
 
 void OBJParser::CleanSubmesh()
@@ -320,8 +346,13 @@ Mesh OBJParser::AssembleSubmeshes()
 		toRet.uv_vertices.reserve(numTotal_uv);
 		toRet.normals.reserve(numTotal_vn);
 		toRet.tris.reserve(numTotal_tris);
+
+        if (applyTrisMaterials) {
+		    toRet.trisMaterialIndices.reserve(numTotal_tris);
+        }
 	}
 
+    std::size_t currentTrisOffset = 0;
 	for (const Mesh& submesh : submeshes)
 	{
 		if (submesh.v_vertices.size() == 0)
@@ -345,6 +376,15 @@ Mesh OBJParser::AssembleSubmeshes()
 			submesh.normals.begin(),
 			submesh.normals.end()
 		);
+
+        // Have to add tris material indices manually
+        if (applyTrisMaterials) {
+            for (auto it : submesh.trisMaterialIndices) {
+                toRet.trisMaterialIndices[it.first + currentTrisOffset] = it.second;
+            }
+            currentTrisOffset += submesh.tris.size();
+        }
+
 
 		// Merge offset-adjusted tris indices into main mesh tris vector
 		for (const MeshVertexIndices& mvi : submesh.tris)

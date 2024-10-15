@@ -1,5 +1,6 @@
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
 #include "../Scenes/Fun/MC_Furnace/MC_FurnaceScene.h"
+#include "../Scenes/Fun/Dust2/Dust2Scene.h"
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Frontend/RenderWindow.h"
@@ -18,7 +19,7 @@ int main(int argc, char* argv[]) {
     const Vector2i resolution(800*2, 600*1.5);
 
     // Set up a plato renderer
-    Renderer renderer(resolution, 0, 0.4);
+    Renderer renderer(resolution, 0, 0.2);
 
     // Set up an SDL2 window
     SDL2RenderWindow renderWindow(resolution, "SDL-Player", renderer.GetPixelBuffer());
@@ -42,7 +43,7 @@ int main(int argc, char* argv[]) {
     );
 
     // Instantiate a scene
-    Scene* scene = new MC_FurnaceScene;
+    Scene* scene = new Dust2Scene;
 
     // Set up the main loop
     Clock frametimer;

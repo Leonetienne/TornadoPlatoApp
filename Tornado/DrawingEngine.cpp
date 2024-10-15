@@ -186,6 +186,7 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 	return;
 }
 
+#include <iostream>
 bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z)
 {
 	Vector2d uv_coords(
@@ -273,14 +274,17 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			ird->material->texture->GetPixelBuffer().GetDimensions().y
 		);
 
-		// Clamp to 0 <= n <= 1 to compensate for floating point inaccuracies
-		uv_coords.x = Math::Clamp(uv_coords.x, 0.0, 1.0);
-		uv_coords.y = Math::Clamp(uv_coords.y, 0.0, 1.0);
+        // Scale uv coords to texture space
+        uv_coords.x *= (text_size.x);
+        uv_coords.y *= (text_size.y);
 
-		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(Vector2i(
-			(int)((uv_coords.x) * (text_size.x - 1)),
-			(int)((1.0 - uv_coords.y) * (text_size.y - 1)) // Uv-coordinates are top-left == (0,1)
-		));
+        uv_coords.y = (text_size.y) - uv_coords.y;
+
+        // Modulo them to the texture space (it seems like they should repeat, if they're out-of-bounds?!)
+        uv_coords.x = Math::Mod(uv_coords.x, text_size.x - 1);
+        uv_coords.y = Math::Mod(uv_coords.y, text_size.y - 1);
+
+		uint8_t* text_pixel = ird->material->texture->GetPixelBuffer().GetPixel(uv_coords.ToInt());
 		
 		// Calculate brightness (if we should shade)
 		Color brightness = Color(1,1,1);
@@ -295,9 +299,9 @@ bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* 
 			brightness.b = lightingIntensity.b / 255.0;
 		
 			// Apply global illumination
-			brightness.r += Math::Min(globalIllumination, 1.0);
-			brightness.g += Math::Min(globalIllumination, 1.0);
-			brightness.b += Math::Min(globalIllumination, 1.0);
+			brightness.r += Math::Min(brightness.r + globalIllumination, 1.0);
+			brightness.g += Math::Min(brightness.g + globalIllumination, 1.0);
+			brightness.b += Math::Min(brightness.b + globalIllumination, 1.0);
 		}
 
         // Is the pixel marked as transparent?

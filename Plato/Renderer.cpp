@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Camera.h"
+#include "Mesh.h"
 #include "MeshRenderer.h"
 
 using namespace Plato;
@@ -216,10 +217,24 @@ void Renderer::Thread__ResolveMeshRenderer_RenderTriangle(
 	std::vector<RenderTriangle3D> resultCache;
 	resultCache.reserve(numTris);
 
+    // Index of the first triangle this thread is processing
+    std::size_t baseTriangleIndex = idx - mesh->tris.data();
+
 	for (std::size_t i = 0; i < numTris; i++)
 	{
 		RenderTriangle3D rd;
-		rd.material = mr->GetMaterial();
+        
+        // Does our mesh define a material for this specific face?
+        if (auto trisMatPair = mesh->trisMaterialIndices.find(baseTriangleIndex + i * 3); trisMatPair != mesh->trisMaterialIndices.end()) {
+            // Yes, a material is defined for this face...
+            // Set it.
+            rd.material = trisMatPair->second;
+        }
+        else {
+            // No, no material is defined for this face...
+            // Use the mesh renderer material instead...
+            rd.material = mr->GetMaterial();
+        }
 
 		// Transform vertices from object space to camera space
 		rd.a.pos_worldSpace = 

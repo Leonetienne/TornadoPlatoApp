@@ -19,6 +19,7 @@ add_executable(
 
     ../Scenes/Fun/MC_House/MC_HouseScene.cpp
     ../Scenes/Fun/MC_Furnace/MC_FurnaceScene.cpp
+    ../Scenes/Fun/Dust2/Dust2Scene.cpp
 
     main.cpp
 )

@@ -3,6 +3,7 @@
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
 #include "../Scenes/Fun/MC_Furnace/MC_FurnaceScene.h"
+#include "../Scenes/Fun/Dust2/Dust2Scene.h"
 #include "../Plato/Clock.h"
 #include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
@@ -16,7 +17,7 @@ using namespace Eule;
 int main() {
     // Create a renderer
     const Vector2i resolution(160, 100);
-    Renderer renderer(resolution, 0, 0);
+    Renderer renderer(resolution, 0, 1);
 
     // Create a render window
     TerminalBlockCharacterRenderWindow renderWindow(resolution, "", renderer.GetPixelBuffer());
@@ -28,7 +29,7 @@ int main() {
     (FPSCameraPrefab(FPSCameraPrefab::CONTROL_TYPE::LOOK_HJKL)).Instantiate();
 
     // Instantiate the test scene
-    Scene* scene = new MC_HouseScene;
+    Scene* scene = new Dust2Scene;
 
     // Render the main loop
     Clock frametimer;
