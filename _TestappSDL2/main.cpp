@@ -7,7 +7,6 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/Clock.h"
-#include <cstdio>
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
