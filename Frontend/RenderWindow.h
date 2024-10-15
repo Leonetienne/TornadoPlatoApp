@@ -7,7 +7,6 @@ class RenderWindow
     public:
         RenderWindow(const Plato::Vector2i& resolution, const std::string& name, const TorGL::PixelBuffer<3>* renderResultPixelBuffer);
 
-
         // Implement these!
         virtual void Close(); // Call me too!
         virtual void PollEvents() {};
