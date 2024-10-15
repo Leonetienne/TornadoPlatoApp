@@ -20,7 +20,7 @@ inline double Clamp(double v, double min, double max)
 */
 
 Test__FPS::Test__FPS() :
-	TestFixture(__FUNCTION__) // Set the test fixtures name
+	Scene(__FUNCTION__) // Set the test fixtures name
 {
 	// Configure camera
 	trCamera = WorldObjectManager::FindObjectById("main_camera")->transform;

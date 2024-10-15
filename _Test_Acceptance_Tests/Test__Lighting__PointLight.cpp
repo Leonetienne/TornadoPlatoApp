@@ -14,7 +14,7 @@ using namespace Plato;
 */
 
 Test__Lighting__PointLight::Test__Lighting__PointLight() :
-	TestFixture(__FUNCTION__) // Set the test fixtures name
+	Scene(__FUNCTION__) // Set the test fixtures name
 {
 	// Create plane mesh
 	Mesh* mPlane = ResourceManager::NewMesh("plane");

@@ -1,5 +1,5 @@
 #include "Test__TransformHierarchy__ClearParent.h"
-#include "Cube.h"
+#include "../StaticMeshClasses/Cube.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Keyboard.h"
@@ -32,7 +32,7 @@ Transform* Test__TransformHierarchy__ClearParent::CreateLink(Transform* parent)
 }
 
 Test__TransformHierarchy__ClearParent::Test__TransformHierarchy__ClearParent() :
-	TestFixture(__FUNCTION__) // Set the test fixtures name equal to the specialized class name (constructor function)
+	Scene(__FUNCTION__) // Set the test fixtures name equal to the specialized class name (constructor function)
 {
 	// Reposition camera to a more fitting place
 	{

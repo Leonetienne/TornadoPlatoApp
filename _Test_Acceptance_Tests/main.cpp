@@ -6,7 +6,7 @@
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/Vector.h"
-#include "TestFixture.h"
+#include "../Plato/Scene.h"
 #include <iostream>
 
 // Include test cases
@@ -36,7 +36,7 @@ using Input::REVERSE_EVENT_CALLBACK;
 
 Clock frameTimeClock;
 
-void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window);
+void Loop(Scene* scene, Renderer* renderer, RenderWindow* window);
 void RegisterReverseEventCallbacks(RenderWindow* window);
 
 int main()
@@ -64,15 +64,15 @@ int main()
     camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
 	// Create test fixture. Change that to the fixture you want to use (in the macro definition)
-	TEST_TO_RUN testFixture;
+	TEST_TO_RUN scene;
 
 	// Adjust window name to test name
-	if (testFixture.GetTestName().length() > 0)
-        renderWindow.SetWindowTitle(testFixture.GetTestName());
+	if (scene.GetSceneName().length() > 0)
+        renderWindow.SetWindowTitle(scene.GetSceneName());
 
 	// Poll test fixture whilst window is open
     while (renderWindow.IsRunning())
-		Loop(&testFixture , &renderer, &renderWindow);
+		Loop(&scene , &renderer, &renderWindow);
 
 	// Release memory
 	WorldObjectManager::Free();
@@ -80,7 +80,7 @@ int main()
 	return 0;
 }
 
-void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
+void Loop(Scene* scene, Renderer* renderer, RenderWindow* window)
 {
 	// Get elapsed time for last frame
 	const double elapsedTime = frameTimeClock.GetElapsedTime().AsMilliseconds();
@@ -98,15 +98,16 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	WorldObjectManager::DeleteFlaggedObjects();
 
 	// Update test fixture
-	tf->Update(elapsedTime);
+	scene->Update(elapsedTime);
 	WorldObjectManager::CallHook__Update(elapsedTime);
+	scene->LateUpdate(elapsedTime);
 	WorldObjectManager::CallHook__LateUpdate(elapsedTime);
 
 	// Clear frame
 	renderer->BeginFrame();
 
 	// Render test fixture
-	tf->Render(renderer);
+	scene->Render(renderer);
 	WorldObjectManager::CallHook__Render(renderer);
 
 	// Render frame
@@ -118,7 +119,7 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 
 	// Add fps to title
 	std::stringstream ss;
-	ss << tf->GetTestName() << " - FPS: " << (int)(1000.0 / elapsedTime);
+	ss << scene->GetSceneName() << " - FPS: " << (int)(1000.0 / elapsedTime);
 	window->SetWindowTitle(ss.str());
 
 	// Limit fps to 120
@@ -143,3 +144,4 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 
 	return;
 }
+

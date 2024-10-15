@@ -1,10 +1,11 @@
 #pragma once
-#include "TestFixture.h"
-#include "../Plato/MeshRenderer.h"
+#include "../Plato/Scene.h"
+#include "../Plato/Mesh.h"
 #include "../Plato/Material.h"
+#include "../Plato/WorldObject.h"
 #include "../Plato/Texture.h"
 
-class Test__TextureProjectionWorks : public TestFixture
+class Test__TextureProjectionWorks : public Plato::Scene
 {
 public:
 	Test__TextureProjectionWorks();
@@ -12,8 +13,8 @@ public:
 	void Update(double frametime);
 
 private:
-	Mesh mesh_coob;
-	WorldObject* wo_coob;
-	Texture txt_coob;
-	Material mat_coob;
+    Plato::Mesh* mesh_coob;
+	Plato::WorldObject* wo_coob;
+	Plato::Texture* txt_coob;
+	Plato::Material* mat_coob;
 };

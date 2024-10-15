@@ -9,7 +9,7 @@ using namespace Plato;
 */
 
 Test__OBJParser__Load::Test__OBJParser__Load() :
-	TestFixture(__FUNCTION__) // Set the test fixtures name
+	Scene(__FUNCTION__) // Set the test fixtures name
 {
 	// Load mesh files
 	ResourceManager::LoadMeshFromObj("cube", "cube.obj");

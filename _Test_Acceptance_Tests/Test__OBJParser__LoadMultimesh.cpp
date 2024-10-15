@@ -1,4 +1,3 @@
-#pragma once
 #include "Test__OBJParser__LoadMultimesh.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
@@ -11,7 +10,7 @@ using namespace Plato;
 */
 
 Test__OBJParser__LoadMultimesh::Test__OBJParser__LoadMultimesh() :
-	TestFixture(__FUNCTION__) // Set the test fixtures name
+	Scene(__FUNCTION__) // Set the test fixtures name
 {
 	// Load mesh files
 	ResourceManager::LoadMeshFromObj("monke", "monke.obj");

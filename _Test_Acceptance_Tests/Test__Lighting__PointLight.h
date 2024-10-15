@@ -1,5 +1,5 @@
 #pragma once
-#include "TestFixture.h"
+#include "../Plato/Scene.h"
 #include "../Plato/MeshRenderer.h"
 #include "../Tornado/Material.h"
 #include "../Plato/Camera.h"
@@ -7,7 +7,7 @@
 
 using namespace Plato;
 
-class Test__Lighting__PointLight : public TestFixture
+class Test__Lighting__PointLight : public Scene
 {
 public:
 	Test__Lighting__PointLight();

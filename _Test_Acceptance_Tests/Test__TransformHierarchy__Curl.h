@@ -1,9 +1,9 @@
 #pragma once
-#include "TestFixture.h"
+#include "../Plato/Scene.h"
 #include "../Plato/MeshRenderer.h"
 #include "../Tornado/Material.h"
 
-class Test__TransformHierarchy__Curl : public TestFixture
+class Test__TransformHierarchy__Curl : public Plato::Scene
 {
 public:
 	Test__TransformHierarchy__Curl();
@@ -11,9 +11,9 @@ public:
 	void Update(double frametime);
 
 private:
-	Transform* CreateLink(Transform* parent);
+    Plato::Transform* CreateLink(Plato::Transform* parent);
 
-	WorldObject* wo_coob;
+    Plato::WorldObject* wo_coob;
 
-	Transform* jointRoot;
+    Plato::Transform* jointRoot;
 };
