@@ -11,6 +11,7 @@ using namespace Plato;
 
 	Press U to parent all objects to a new parent.
 	All objects were in a relatively deep transform hierarchy before.
+    Press SPACE to apply a local rotation to all joint objects.
 
 	Expected behaviour: The objects do not move, scale, or rotate.
 */
