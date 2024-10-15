@@ -1,5 +1,3 @@
-#include "../Scenes/Fun/MC_House/MC_HouseScene.h"
-#include "../Scenes/Fun/MC_Furnace/MC_FurnaceScene.h"
 #include "../Scenes/Fun/Dust2/Dust2Scene.h"
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Frontend/SDL2RenderWindow.h"
@@ -9,6 +7,7 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/Clock.h"
+#include <cstdio>
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
@@ -52,31 +51,27 @@ int main(int argc, char* argv[]) {
     while (renderWindow.IsRunning()) {
         // Poll the SDL2 windows events
         renderWindow.PollEvents();
-
         // Digest plato events
         Input::EventManager::Digest();
 
         // Delete objects that were flagged to be deleted
         WorldObjectManager::DeleteFlaggedObjects();
-
         // Tick update hooks
         scene->Update(frametime);
         WorldObjectManager::CallHook__Update(frametime);
         scene->LateUpdate(frametime);
         WorldObjectManager::CallHook__LateUpdate(frametime);
-
         // Render the frame
         renderer.BeginFrame();
         scene->Render(&renderer);
         WorldObjectManager::CallHook__Render(&renderer);
         renderer.Render();
-
         // Display the frame
         renderWindow.RedrawWindow();
-
         // Calculate how long the frame took to display
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
         frametimer.Reset();
+    
         std::cout << "FPS: " << 1000.0 / frametime << std::endl;
     }
 

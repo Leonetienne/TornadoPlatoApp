@@ -88,8 +88,10 @@ void SDL2RenderWindow::RedrawWindow()
     int pitch;
     if (SDL_LockTexture(sdlTexture, nullptr, &pixels, &pitch) == 0) {
         // SDLs pixel row order is reversed...
+        // starts with one so we can use memcpy correctly (range now from [0; resolution.y - 1])
         for (std::size_t y = 1; y <= resolution.y; y++) {
             std::memcpy(
+              //y-1 so we can start from 0 for the dest
               static_cast<uint8_t*>(pixels) + (y-1) * pitch, //dest
                 renderResultPixelBuffer->GetRawData() + (resolution.y - y) * pitch, //src
                 pitch // count
