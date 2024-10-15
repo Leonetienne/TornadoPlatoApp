@@ -1,11 +1,8 @@
 #include "Test__TransformHierarchy__Curl.h"
 #include "Cube.h"
-#include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
-#include "../Plato/bmplib.h"
 #include "../Plato/ResourceManager.h"
-#include "Rotator.h"
-#include "Util.h"
+#include "../Plato/Keyboard.h"
 
 using namespace Plato;
 
@@ -16,7 +13,9 @@ using namespace Plato;
 	Then it applies a local rotation to all cubes. They should curl in like a finger.
 
 	Expected behaviour:
-	The stack of objects should curl like a finger. The objects inside-the-curl faces should always face inside the curl.
+	When pressing SPACE, the stack of objects should curl like a finger. The objects inside-the-curl faces should always face inside the curl.
+    The stack should be hardcoded-randomly rotated initially. This is because we dont want a clean rotation to start with. That's too easy.
+    Presssing [U] roates the entire stack.
 */
 
 Transform* Test__TransformHierarchy__Curl::CreateLink(Transform* parent)
@@ -45,7 +44,7 @@ Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
 
 	// Create and load assets
 	*ResourceManager::NewMesh("cube") = Cube();
-	ResourceManager::LoadTextureFromBmp("cube", "../Plato/Cube_furnace_gitignore_.bmp");
+	ResourceManager::LoadTextureFromBmp("cube", "../furnace.bmp");
 	ResourceManager::NewMaterial("cube")->texture = ResourceManager::FindTexture("cube");
 
 	// Create a root transform (for positioning and rotation)
@@ -63,11 +62,11 @@ Test__TransformHierarchy__Curl::Test__TransformHierarchy__Curl() :
 
 void Test__TransformHierarchy__Curl::Update(double frametime)
 {
-	if (GetAsyncKeyState(VK_SPACE))
+	if (Input::Keyboard::GetKey(Input::KEY_CODE::SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
 			wo->transform->Rotate(Quaternion(Vector3d::right * 0.07));
 
-	if (GetAsyncKeyState('U'))
+	if (Input::Keyboard::GetKey(Input::KEY_CODE::U))
 		jointRoot->Rotate(Quaternion(Vector3d(-2.5, -2, -8) * 0.1));
 
 	return;

@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.16)
+project(StaticTestFixture)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-Ofast -funroll-loops")
+
+# Find SDL2
+find_package(SDL2 REQUIRED)
+
+file(GLOB Eule ../Eule/*.cpp)
+file(GLOB Tornado ../Tornado/*.cpp)
+file(GLOB Plato ../Plato/*.cpp)
+file(GLOB Frontend ../Frontend/*.cpp)
+file(GLOB StaticTestFixture  *.cpp)
+
+add_executable(
+    StaticTestFixture.out
+
+    ${Eule}
+    ${Tornado}
+    ${Plato}
+    ${Frontend}
+    ${StaticTestFixture}
+)
+
+# Include SDL2 directories
+target_include_directories(StaticTestFixture.out PRIVATE ${SDL2_INCLUDE_DIRS})
+
+# Link SDL2 to the executable
+target_link_libraries(StaticTestFixture.out PRIVATE SDL2::SDL2)
+
+# Link assets dir into build dir
+add_custom_command(
+    TARGET StaticTestFixture.out POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
+    COMMENT "Linking assets directory to build directory."
+)
+

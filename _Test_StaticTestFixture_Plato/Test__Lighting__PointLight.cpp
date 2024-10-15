@@ -2,11 +2,7 @@
 #include "Test__Lighting__PointLight.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
-#include "../Plato/Keyboard.h"
 #include "../Plato/Math.h"
-#include "../Plato/TrapazoidalPrismCollider.h"
-#include "Rotator.h"
-#include <iostream>
 
 using namespace Plato;
 

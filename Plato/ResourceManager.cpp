@@ -60,7 +60,7 @@ Texture* ResourceManager::LoadTextureFromBmp(const std::string& name, const std:
 	BMP bmp;
 
 	if (!bmp.Read(filename))
-		throw std::runtime_error("Unable to open file " + name + " for reading");
+		throw std::runtime_error("Unable to open file " + filename + " for reading");
 
 	bmp.ConvertTo(BMP::COLOR_MODE::RGBA);
 

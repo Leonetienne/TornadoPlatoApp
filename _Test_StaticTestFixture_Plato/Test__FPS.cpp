@@ -3,8 +3,6 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Keyboard.h"
-#include "Rotator.h"
-#include <iostream>
 
 using namespace Plato;
 

@@ -1,4 +1,5 @@
 #include "Test__Cube.h"
+#include "../HandyComponents/Rotator.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/PointLight.h"
@@ -30,11 +31,12 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
 	ResourceManager::NewMaterial("furnace")->texture = ResourceManager::FindTexture("furnace");
 
 	// Create Cube
-    this->cube = WorldObjectManager::NewWorldObject("Cube")
+    cube = WorldObjectManager::NewWorldObject("Cube")
         ->AddComponent<Components::MeshRenderer>(
             cubeMesh,
             ResourceManager::FindMaterial("furnace")
     )->worldObject;
+    cube->AddComponent<Rotator>();
 
     // Tilt camera down
     WorldObjectManager::FindObjectById("main_camera")->transform->Rotate(Vector3d(30, 0, 0));
@@ -47,45 +49,15 @@ Test__Cube::Test__Cube() : TestFixture(__FUNCTION__) // Set the test fixtures na
     light = furnaceLight->worldObject;
 
     // Move cube
-    this->cube->transform->Move(Vector3d(0, -2.5, -5));
-    this->cube->transform->Rotate(Vector3d(0, 0, 0));
-    this->cube->transform->Scale(Vector3d::one * 5);
+    cube->transform->Move(Vector3d(0, -2.5, -5));
+    cube->transform->Rotate(Vector3d(0, 0, 0));
+    cube->transform->Scale(Vector3d::one * 5);
 
     return;
 }
 
 void Test__Cube::Update(double deltaTime)
 {
-    static Vector3d speedFac = Vector3d::zero;
-
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::I)) {
-        speedFac.x += 0.005 * deltaTime;
-    }
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::K)) {
-        speedFac.x -=  0.005 * deltaTime;
-    }
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::L)) {
-        speedFac.z += 0.005 * deltaTime;
-    }
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::J)) {
-        speedFac.z -=  0.005 * deltaTime;
-    }
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::U)) {
-        speedFac.y += 0.005 * deltaTime;
-    }
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::O)) {
-        speedFac.y -=  0.005 * deltaTime;
-    }
-
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::SPACE)) {
-        speedFac = Vector3d::zero;
-    }
-
-    this->cube->transform->Rotate(Vector3d(
-        0.025 * speedFac.x * deltaTime,
-        0.025 * speedFac.y * deltaTime,
-        0.025 * speedFac.z * deltaTime
-    ));
 	return;
 }
 

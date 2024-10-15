@@ -1,8 +1,6 @@
 #include "Test__OBJParser__Load.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
-#include "Rotator.h"
-#include <iostream>
 
 using namespace Plato;
 

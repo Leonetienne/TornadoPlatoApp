@@ -1,12 +1,12 @@
-#include "RenderWindow.h"
-#include "TestFixture.h"
-#include "CameraKeyboardControl.h"
+#include "../Frontend/SDL2RenderWindow.h"
+#include "../HandyComponents/CameraFPSKeyboardControl.h"
 #include "../Plato/Clock.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/Vector.h"
+#include "TestFixture.h"
 #include <iostream>
 
 // Include test cases
@@ -19,7 +19,7 @@
 #include "Test__Lighting__PointLight.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__OBJParser__LoadMultimesh
+#define TEST_TO_RUN Test__TransformHierarchy__Curl
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -49,30 +49,30 @@ int main()
 	
 
 	// Create important objects, such as the Window and the Renderer, including Camera
-	RenderWindow window(resolution, "Plato Static Test Fixture");
+	Renderer renderer(resolution, 0, 0.8);
+	SDL2RenderWindow renderWindow(resolution, "Plato Static Test Fixture", renderer.GetPixelBuffer());
+    renderWindow.EnableMouseCameraControlMode();
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(resolution, 90, 0.001, 10);
+	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(90, 0.001, 10);
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->SetAsMainCamera();
-	Renderer renderer(resolution);
-	window.SetPixelBuffer(renderer.GetPixelBuffer());
 
 	// Register reverse-event callbacks
-	RegisterReverseEventCallbacks(&window);
+	RegisterReverseEventCallbacks(&renderWindow);
 
 	// Let's add a CameraKeyboardControl component to the camera by default
-	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+    camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
 	// Create test fixture. Change that to the fixture you want to use (in the macro definition)
 	TEST_TO_RUN testFixture;
 
 	// Adjust window name to test name
 	if (testFixture.GetTestName().length() > 0)
-		window.SetTitle(testFixture.GetTestName());
+        renderWindow.SetWindowTitle(testFixture.GetTestName());
 
 	// Poll test fixture whilst window is open
-	while (window.GetIsOpen())
-		Loop(&testFixture , &renderer, &window);
+    while (renderWindow.IsRunning())
+		Loop(&testFixture , &renderer, &renderWindow);
 
 	// Release memory
 	WorldObjectManager::Free();
@@ -88,6 +88,13 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	// Reset frametime clock
 	frameTimeClock.Reset();
 
+    // Poll RenderWindow events
+    window->PollEvents();
+
+	// Digest events
+	Input::EventManager::Digest();
+
+    // Deleet flagged objects
 	WorldObjectManager::DeleteFlaggedObjects();
 
 	// Update test fixture
@@ -106,15 +113,13 @@ void Loop(TestFixture* tf, Renderer* renderer, RenderWindow* window)
 	renderer->Render();
 
 	// Update render window pixel buffer
-	window->UpdateBgrPixelBuffer();
+	window->RedrawWindow();
 
-	// Digest events
-	Input::EventManager::Digest();
 
 	// Add fps to title
 	std::stringstream ss;
 	ss << tf->GetTestName() << " - FPS: " << (int)(1000.0 / elapsedTime);
-	window->SetTitle(ss.str());
+	window->SetWindowTitle(ss.str());
 
 	// Limit fps to 120
 	//std::this_thread::sleep_for(std::chrono::milliseconds((long long)
@@ -132,37 +137,6 @@ void RegisterReverseEventCallbacks(RenderWindow* window)
 		[window](const std::vector<double>& params)
 		{
 			window->Close();
-			return;
-		}
-	);
-
-	// Callback to set global mouse position
-	Input::EventManager::RegisterReverseEventCallback(
-		Input::REVERSE_EVENT_CALLBACK::SET_GLOBAL_MOUSE_POSITION,
-		[](const std::vector<double>& params)
-		{
-			const int x = (int)params[0];
-			const int y = (int)params[1];
-			SetCursorPos(x, y);
-			return;
-		}
-	);
-
-	// Callback to set local mouse position
-	EventManager::RegisterReverseEventCallback(
-		REVERSE_EVENT_CALLBACK::SET_LOCAL_MOUSE_POSITION,
-		[window](const std::vector<double>& params)
-		{
-			POINT p;
-			p.x = (LONG)params[0];
-			p.y = (LONG)params[1];
-
-			// Translate relative position to global position
-			ClientToScreen(window->GetSystemWindowHandle(), &p);
-
-			// Set global position
-			SetCursorPos(p.x, p.y);
-
 			return;
 		}
 	);

@@ -1,11 +1,8 @@
 #include "Test__TransformHierarchy__ChangeParent.h"
 #include "Cube.h"
-#include "../Plato/Renderer.h"
 #include "../Plato/WorldObjectManager.h"
-#include "../Plato/bmplib.h"
 #include "../Plato/ResourceManager.h"
-#include "Rotator.h"
-#include "Util.h"
+#include "../Plato/Keyboard.h"
 
 using namespace Plato;
 
@@ -46,7 +43,7 @@ Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent()
 
 	// Create and load assets
 	*ResourceManager::NewMesh("cube") = Cube();
-	ResourceManager::LoadTextureFromBmp("cube", "../Plato/Cube_furnace_gitignore_.bmp");
+	ResourceManager::LoadTextureFromBmp("cube", "../furnace.bmp");
 	ResourceManager::NewMaterial("cube")->texture = ResourceManager::FindTexture("cube");
 
 	// Create a future parent
@@ -72,17 +69,17 @@ Test__TransformHierarchy__ChangeParent::Test__TransformHierarchy__ChangeParent()
 
 void Test__TransformHierarchy__ChangeParent::Update(double frametime)
 {
-	if (GetAsyncKeyState('U'))
+	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::U))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
 			//if (wo->GetTransform()->GetParent() != newParent)
 				wo->transform->SetParent(newParent);
 
 	// Some fun-control. Will rotate all objects (locally)
-	if (GetAsyncKeyState(VK_SPACE))
+	if (Input::Keyboard::GetKey(Input::KEY_CODE::SPACE))
 		for (WorldObject* wo : WorldObjectManager::FindObjectsByTag("joint"))
 			wo->transform->Rotate(Quaternion(Vector3d::right * 0.03));
 
-	if (GetAsyncKeyState('R'))
+	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::R))
 		jointRoot->Rotate(Vector3d(0, 0.1, 0));
 
 	return;
