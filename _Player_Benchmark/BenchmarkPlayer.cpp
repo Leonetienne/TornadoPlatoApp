@@ -14,6 +14,8 @@
 
 using namespace Plato;
 
+//#define INCLUDE_CUMULATIVE_STATS
+
 namespace {
     const std::string windowBaseTitle = "TornadoPlato Benchmark";
 }
@@ -253,12 +255,16 @@ void BenchmarkPlayer::DumpSceneMetrics()
         csvFs <<
             "total frametime,"
             "updateHooks,"
-            //"platoRender,"
+            #ifdef INCLUDE_CUMULATIVE_STATS
+            "platoRender,"
+            #endif
             "platoRender_beginFrame,"
             "platoRender_resolveCameraSpaceVertices,"
             "platoRender_registerTornadoObjects,"
             "platoRender_tornadoRender_beginFrame,"
-            //"platoRender_tornadoRender_render,"
+            #ifdef INCLUDE_CUMULATIVE_STATS
+            "platoRender_tornadoRender_render,"
+            #endif
             "platoRender_tornadoRender_render_perspectiveProjection,"
             "platoRender_tornadoRender_render_backfaceCulling,"
             "platoRender_tornadoRender_render_drawTriangles,"
@@ -268,12 +274,16 @@ void BenchmarkPlayer::DumpSceneMetrics()
             csvFs
                 << it.totalFrameTime << ','
                 << it.uptateHooks << ','
-                //<< it.render << ','
+                #ifdef INCLUDE_CUMULATIVE_STATS
+                << it.render << ','
+                #endif
                 << it.platorender_beginFrame << ','
                 << it.platorender_resolveCameraSpaceVertices << ','
                 << it.platorender_registerTornadoObjects << ','
                 << it.tornadorender_beginFrame << ','
-                //<< it.tornadorender_render << ','
+                #ifdef INCLUDE_CUMULATIVE_STATS
+                << it.tornadorender_render << ','
+                #endif
                 << it.tornadorender_render_perspectiveProjection << ','
                 << it.tornadorender_render_cullBackfaces << ','
                 << it.tornadorender_render_drawTriangles << ','
