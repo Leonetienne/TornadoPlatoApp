@@ -1,6 +1,7 @@
 #include "SDL2RenderWindow.h"
 #include "RenderWindow.h"
 #include "../Plato/EventManager.h"
+#include <cstdio>
 #include <iostream>
 
 SDL2RenderWindow::SDL2RenderWindow(const Eule::Vector2i& resolution, const std::string& name, const TorGL::PixelBuffer<3>* renderResultPixelBuffer) :
@@ -87,25 +88,22 @@ void SDL2RenderWindow::RedrawWindow()
     int pitch;
     if (SDL_LockTexture(sdlTexture, nullptr, &pixels, &pitch) == 0) {
         // SDLs pixel row order is reversed...
-        for (std::size_t y = 0; y < resolution.y; y++) {
+        for (std::size_t y = 1; y <= resolution.y; y++) {
             std::memcpy(
-                static_cast<uint8_t*>(pixels) + y * pitch,
-                renderResultPixelBuffer->GetRawData() + (resolution.y - y) * pitch,
-                pitch
-            );
+              static_cast<uint8_t*>(pixels) + (y-1) * pitch, //dest
+                renderResultPixelBuffer->GetRawData() + (resolution.y - y) * pitch, //src
+                pitch // count
+                       );
         }
         SDL_UnlockTexture(sdlTexture);
     }
     else {
         std::cerr << "Failed to lock texture: " << SDL_GetError() << std::endl;
     }
-
     // Clear the renderer
     SDL_RenderClear(sdlRenderer);
-
-    // Copy the texture to the renderer
+    // Copy the texture to t  he renderer
     SDL_RenderCopy(sdlRenderer, sdlTexture, nullptr, nullptr);
-
     // Present the renderer
     SDL_RenderPresent(sdlRenderer);
 }
