@@ -186,7 +186,6 @@ void DrawingEngine::Thread_Draw(const InterRenderTriangle* ird, const Rect& boun
 	return;
 }
 
-#include <iostream>
 bool DrawingEngine::Thread_PixelShader(const InterRenderTriangle* ird, uint8_t* pixelBase, const Vector2d& pixelPosition, std::array<double, 5>* berp_cache, double z)
 {
 	Vector2d uv_coords(
