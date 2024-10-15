@@ -7,11 +7,13 @@
 using namespace Plato;
 
 /*
-	Tests that clearing an objects parent does not affect its global position
+	Tests that clearing an objects parent does not affect its global position, rotation, or scale.
 
 	Press U to unparent all objects.
+    Press SPACE to apply a local rotation to all joint objects.
 
 	Expected behaviour: The objects do not move, scale, or rotate.
+    Yes, the ovens are that wiiiiiide.
 */
 
 Transform* Test__TransformHierarchy__ClearParent::CreateLink(Transform* parent)
