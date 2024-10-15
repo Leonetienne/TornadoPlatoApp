@@ -41,7 +41,6 @@ int main(int argc, char* argv[]) {
 		}
     );
 
-
     // Instantiate a scene
     Scene* scene = new MC_FurnaceScene;
 

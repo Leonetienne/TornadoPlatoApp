@@ -17,7 +17,6 @@
 using namespace Plato;
 using namespace Eule;
 
-
 int main() {
     // Create a renderer
     const Vector2i resolution(160, 100);
