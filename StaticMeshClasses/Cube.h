@@ -35,6 +35,7 @@ public:
 			Vector2d(0.625, 1.00),
 			Vector2d(0.875, 0.75)
 		};
+
 		normals = {
 			Vector3d(-1,  0,  0),
 			Vector3d(0,  0, -1),
