@@ -9,10 +9,6 @@
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
-#include <cstring>
-#include <unistd.h>
-#include <termios.h>
-#include <fcntl.h>
 
 using namespace Plato;
 using namespace Eule;
