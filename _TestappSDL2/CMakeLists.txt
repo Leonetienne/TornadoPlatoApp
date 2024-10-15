@@ -21,9 +21,8 @@ add_executable(
     ../Frontend/RenderWindow.cpp
     ../Frontend/SDL2RenderWindow.cpp
 
-    TestFixture.cpp
-    Test__MC.cpp
-    Test__Cube.cpp
+    ../Scenes/Fun/MC_House/MC_HouseScene.cpp
+
     main.cpp
 )
 

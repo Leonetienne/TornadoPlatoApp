@@ -1,3 +1,4 @@
+#include "../Scenes/Fun/MC_House/MC_HouseScene.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Frontend/RenderWindow.h"
 #include "../HandyComponents/CameraFPSKeyboardControl.h"
@@ -6,12 +7,9 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/Clock.h"
-#include "TestFixture.h"
-#include "Test__MC.h"
-#include "Test__Cube.h"
+//#include "Test__Cube.h"
 #include <cstring>
 #include <iostream>
-#include <memory>
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
@@ -50,7 +48,7 @@ int main(int argc, char* argv[]) {
 
 
     // Instantiate a scene
-    Test__Cube testScene;
+    Scene* scene = new MC_HouseScene;
 
     // Set up the main loop
     Clock frametimer;
@@ -67,12 +65,14 @@ int main(int argc, char* argv[]) {
         WorldObjectManager::DeleteFlaggedObjects();
 
         // Tick update hooks
-        testScene.Update(frametime);
+        scene->Update(frametime);
         WorldObjectManager::CallHook__Update(frametime);
+        scene->LateUpdate(frametime);
         WorldObjectManager::CallHook__LateUpdate(frametime);
 
         // Render the frame
         renderer.BeginFrame();
+        scene->Render(&renderer);
         WorldObjectManager::CallHook__Render(&renderer);
         renderer.Render();
 
@@ -88,6 +88,8 @@ int main(int argc, char* argv[]) {
     // Clean up
     WorldObjectManager::Free();
     ResourceManager::Free();
+    delete scene;
+    scene = nullptr;
 
     return 0;
 }
