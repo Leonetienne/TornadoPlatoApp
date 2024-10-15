@@ -10,7 +10,6 @@ find_package(SDL2 REQUIRED)
 file(GLOB Eule ../Eule/*.cpp)
 file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Plato ../Plato/*.cpp)
-file(GLOB Frontend ../Frontend/*.cpp)
 file(GLOB StaticTestFixture  *.cpp)
 
 add_executable(
@@ -19,7 +18,10 @@ add_executable(
     ${Eule}
     ${Tornado}
     ${Plato}
-    ${Frontend}
+
+    ../Frontend/RenderWindow.cpp
+    ../Frontend/SDL2RenderWindow.cpp
+
     ${StaticTestFixture}
 )
 

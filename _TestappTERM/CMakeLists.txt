@@ -14,6 +14,9 @@ add_executable(
     ${Tornado}
     ${Plato}
 
+    ../Frontend/RenderWindow.cpp
+    ../Frontend/TerminalBLockCharacterRenderWindow.cpp
+
     TestFixture.cpp
     Test__FPS.cpp
     Test__Yubi.cpp
