@@ -2,15 +2,13 @@
 #include "../Frontend/TerminalBlockCharacterRenderWindow.h"
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
+#include "../Scenes/Fun/MC_Furnace/MC_FurnaceScene.h"
 #include "../Plato/Clock.h"
 #include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
-//#include "Test__FPS.h"
-//#include "Test__Yubi.h"
-//#include "Test__Cube.h"
 #include <cstring>
 #include <unistd.h>
 #include <termios.h>
@@ -35,7 +33,7 @@ int main() {
     (FPSCameraPrefab(FPSCameraPrefab::CONTROL_TYPE::LOOK_HJKL)).Instantiate();
 
     // Instantiate the test scene
-    Scene* scene = new MC_HouseScene;
+    Scene* scene = new MC_FurnaceScene;
 
     // Render the main loop
     Clock frametimer;

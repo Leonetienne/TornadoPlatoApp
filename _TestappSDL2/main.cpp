@@ -1,4 +1,5 @@
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
+#include "../Scenes/Fun/MC_Furnace/MC_FurnaceScene.h"
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Frontend/RenderWindow.h"
@@ -7,7 +8,6 @@
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
 #include "../Plato/Clock.h"
-//#include "Test__Cube.h"
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
 
     // Instantiate a scene
-    Scene* scene = new MC_HouseScene;
+    Scene* scene = new MC_FurnaceScene;
 
     // Set up the main loop
     Clock frametimer;

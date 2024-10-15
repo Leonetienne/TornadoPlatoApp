@@ -13,7 +13,7 @@ using namespace Plato;
     Rotation control for the object this component is attached to.
     LJ for Z, -Z
     IK for X, -X
-    UO for Y, -Y
+    OU for Y, -Y
 * */
 class Rotator : public Component
 {
@@ -33,10 +33,10 @@ public:
         if (Input::Keyboard::GetKey(Input::KEY_CODE::J)) {
             speedFac.z -=  0.005 * deltaTime;
         }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::U)) {
+        if (Input::Keyboard::GetKey(Input::KEY_CODE::O)) {
             speedFac.y += 0.005 * deltaTime;
         }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::O)) {
+        if (Input::Keyboard::GetKey(Input::KEY_CODE::U)) {
             speedFac.y -=  0.005 * deltaTime;
         }
 

@@ -22,6 +22,7 @@ add_executable(
     ../Frontend/SDL2RenderWindow.cpp
 
     ../Scenes/Fun/MC_House/MC_HouseScene.cpp
+    ../Scenes/Fun/MC_Furnace/MC_FurnaceScene.cpp
 
     main.cpp
 )
