@@ -49,10 +49,11 @@ Every build needs cmake. Install that. Some need SDL2 for presentation aswell.
 
 ### How2cook visual acceptance tests
 1. `cd _Test_Acceptance_Tests`
-2. `cmake -B build`
-3. `cd build`
-4. `make`
-5. `./AcceptanceTest.out`
+2. Select test to run in main.cpp
+3. `cmake -B build`
+4. `cd build`
+5. `make`
+6. `./AcceptanceTest.out`
 
 ### How2cook unit tests
 1. `cd _Test_All`
