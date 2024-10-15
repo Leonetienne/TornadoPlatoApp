@@ -10,6 +10,7 @@ class SDL2RenderWindow : public RenderWindow
 {
 public:
     SDL2RenderWindow(const Vector2i& resolution, const std::string& name, const TorGL::PixelBuffer<3>* renderResultPixelBuffer);
+    ~SDL2RenderWindow();
 
     void Close() override;
 

@@ -47,6 +47,14 @@ RenderWindow(resolution, name, renderResultPixelBuffer)
     }
 }
 
+SDL2RenderWindow::~SDL2RenderWindow()
+{
+    SDL_DestroyTexture(sdlTexture);
+    SDL_DestroyRenderer(sdlRenderer);
+    SDL_DestroyWindow(sdlWindow);
+    SDL_Quit();
+}
+
 void SDL2RenderWindow::PollEvents()
 {
     static Vector2i mouseDelta(0,0);
@@ -117,10 +125,6 @@ void SDL2RenderWindow::SetWindowTitle(const std::string& title)
 void SDL2RenderWindow::Close()
 {
     RenderWindow::Close();
-    SDL_DestroyTexture(sdlTexture);
-    SDL_DestroyRenderer(sdlRenderer);
-    SDL_DestroyWindow(sdlWindow);
-    SDL_Quit();
 }
 
 void SDL2RenderWindow::EnableMouseCameraControlMode()
