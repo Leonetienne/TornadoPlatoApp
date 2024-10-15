@@ -13,6 +13,9 @@ This is still under heavy development. It's just public for the fun in it.
 * `_TestingUtilitites/`: Helpers for catch2 unit tests
 * `Frontend/`: Defines different implementations of render windows
 * `HandyComponents/`: Useful in-game components, such as FPS camera controls
+* `Prefabs/`: Prefab definitions. So-to-speak, predefined more complex game object structures
+* `Scenes/`: Scenes definitions.
+* `StaticMeshClasses/`: If a mesh is simple enough to be hardcoded, it can be defined here.
 * `LegacyCode/`: Old implementations such as a windows window
 
 ## How2cook
