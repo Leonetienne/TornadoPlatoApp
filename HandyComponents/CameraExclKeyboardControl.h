@@ -6,6 +6,7 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/Mouse.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace Plato;
 
@@ -13,6 +14,7 @@ using namespace Plato;
     Exclusive keyboard controls for camera movement. No mouse!
     WASDQE for movement, HJKL for looking.
     1 and 2 for FOV
+    Press Z to dump the camera position and rotation.
 * */
 class CameraExclKeyboardControl : public Component
 {
@@ -24,6 +26,11 @@ public:
 		MovementControl(deltaTime);
 		ViewControl(deltaTime);
 		AdditionalControls(deltaTime);
+
+        if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::Z)) {
+            std::cout << "CAMERA POSITION: " << transform->GetGlobalPosition() << std::endl;
+            std::cout << "CAMERA ROTATION: " << transform->GetGlobalRotation().ToEulerAngles() << std::endl;
+        }
 
 		return;
 	}

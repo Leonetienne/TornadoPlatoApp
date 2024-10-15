@@ -6,6 +6,7 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/Mouse.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace Plato;
 
@@ -23,6 +24,11 @@ public:
 		MovementControl(deltaTime);
 		ViewControl(deltaTime);
 		AdditionalControls(deltaTime);
+
+        if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::Z)) {
+            std::cout << "CAMERA POSITION: " << transform->GetGlobalPosition() << std::endl;
+            std::cout << "CAMERA ROTATION: " << transform->GetGlobalRotation().ToEulerAngles() << std::endl;
+        }
 
 		return;
 	}
