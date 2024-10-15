@@ -33,7 +33,7 @@ int main() {
     (FPSCameraPrefab(FPSCameraPrefab::CONTROL_TYPE::LOOK_HJKL)).Instantiate();
 
     // Instantiate the test scene
-    Scene* scene = new MC_FurnaceScene;
+    Scene* scene = new MC_HouseScene;
 
     // Render the main loop
     Clock frametimer;
