@@ -88,7 +88,7 @@ void BenchmarkPlayer::Run()
             justSetVertTrisCount = true;
             numTris = renderer.GetNumActiveTris();
             numVertices = renderer.GetNumActiveVertices();
-            std::cout << "Scene \"" << currentBenchmarkScene->GetName() << "\" has " << numVertices << " verts and " << numTris << " tris!" << std::endl;
+            std::cout << "Scene \"" << currentBenchmarkScene->GetSceneName() << "\" has " << numVertices << " verts and " << numTris << " tris!" << std::endl;
         }
 
         renderer.Render();
@@ -255,7 +255,7 @@ void BenchmarkPlayer::DigestNewMetrics(const PerformanceMetric& newMetric)
 void BenchmarkPlayer::DumpSceneMetrics()
 {
     const std::string metricsDir = "./dataplotter/performance-metrics";
-    const std::string metricsFile = metricsDir + "/" + currentBenchmarkScene->GetName() + ".csv";
+    const std::string metricsFile = metricsDir + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
 
     std::filesystem::create_directories(metricsDir);
     std::ofstream csvFs(metricsFile, std::ofstream::out);
@@ -316,7 +316,7 @@ void BenchmarkPlayer::UpdateWindowTitle()
 
     // If we have a scene set, add that
     if (currentBenchmarkScene) {
-        ss << " - " << currentBenchmarkScene->GetName();
+        ss << " - " << currentBenchmarkScene->GetSceneName();
     }
 
     // If we have a vertices/tris count, add that

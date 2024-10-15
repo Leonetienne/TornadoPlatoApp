@@ -3,7 +3,8 @@
 
 using namespace Plato;
 
-Scene::Scene(const std::string& name)
+Scene::Scene(const std::string& sceneName):
+    sceneName{sceneName}
 {
 
 }

@@ -1,17 +1,16 @@
 //#include "Test__FPS.h"
 #include "../Frontend/TerminalBlockCharacterRenderWindow.h"
-#include "../HandyComponents/CameraExclKeyboardControl.h"
+#include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
+#include "../Scenes/Fun/MC_House/MC_HouseScene.h"
 #include "../Plato/Clock.h"
 #include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/Renderer.h"
-#include "TestFixture.h"
-#include "Test__FPS.h"
-#include "Test__Yubi.h"
-#include "Test__Cube.h"
-#include "Test__MC.h"
+//#include "Test__FPS.h"
+//#include "Test__Yubi.h"
+//#include "Test__Cube.h"
 #include <cstring>
 #include <unistd.h>
 #include <termios.h>
@@ -32,15 +31,11 @@ int main() {
     // Init the event manager
     Input::EventManager::Init();
 
-	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(90, 0.001, 10);
-	cameraYPivot->worldObject->SetId("main_camera_ypiv");
-	camera->SetAsMainCamera();
-	// Let's add a CameraKeyboardControl component to the camera by default
-	camera->worldObject->AddComponent<CameraExclKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+    // Instantiate a main camera
+    (FPSCameraPrefab(FPSCameraPrefab::CONTROL_TYPE::LOOK_HJKL)).Instantiate();
 
     // Instantiate the test scene
-    Test__MC testScene;
+    Scene* scene = new MC_HouseScene;
 
     // Render the main loop
     Clock frametimer;
@@ -56,12 +51,14 @@ int main() {
         WorldObjectManager::DeleteFlaggedObjects();
 
         // Tick update hooks
-        testScene.Update(frametime);
+        scene->Update(frametime);
         WorldObjectManager::CallHook__Update(frametime);
+        scene->LateUpdate(frametime);
         WorldObjectManager::CallHook__LateUpdate(frametime);
 
         // Render the frame
         renderer.BeginFrame();
+        scene->Render(&renderer);
         WorldObjectManager::CallHook__Render(&renderer);
         renderer.Render();
 
@@ -76,6 +73,8 @@ int main() {
     // Free memory (segfaulting on mac qwq)
     WorldObjectManager::Free();
     ResourceManager::Free();
+    delete scene;
+    scene = nullptr;
 
     return 0;
 }

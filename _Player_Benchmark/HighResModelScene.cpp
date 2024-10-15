@@ -4,19 +4,17 @@
 #include "../Plato/MeshRenderer.h"
 #include "../Plato/Material.h"
 #include "../Plato/Camera.h"
+#include "BenchmarkScene.h"
 
 using namespace Plato;
 
 /*
- * Camera flight through cave
+ * Displays a high resolution character model, spinning, for five seconds.
 */
-namespace {
-}
 
-std::string HighResModelScene::GetName() const
-{
-    return "high-res-model";
-}
+
+HighResModelScene::HighResModelScene():
+    BenchmarkScene(__FUNCTION__) {};
 
 void HighResModelScene::Setup()
 {

@@ -10,11 +10,9 @@ using namespace Plato;
 class CaveCamFlightScene : public BenchmarkScene
 {
 public:
+    CaveCamFlightScene();
     void Setup() override;
 	void Update(double deltaTime) override;
-	void Render(Renderer* renderer) override;
-	void Teardown() override;
-    std::string GetName() const override;
 
 private:
     std::vector<Eule::Vector3d> cameraWaypoints;

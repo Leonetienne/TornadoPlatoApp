@@ -3,6 +3,7 @@
 #include "../Plato/ResourceManager.h"
 #include "../Plato/PointLight.h"
 #include "../Plato/Color.h"
+#include "BenchmarkScene.h"
 #include <iostream>
 #include <sstream>
 #include <cmath>
@@ -12,13 +13,9 @@ using namespace Plato;
 /*
  * Camera flight through cave
 */
-namespace {
-}
 
-std::string CaveCamFlightScene::GetName() const
-{
-    return "cave-cam-flight";
-}
+CaveCamFlightScene::CaveCamFlightScene() :
+    BenchmarkScene(__FUNCTION__) {};
 
 void CaveCamFlightScene::Setup()
 {
@@ -152,10 +149,3 @@ void CaveCamFlightScene::SetNextCameraWaypoint()
     }
 }
 
-void CaveCamFlightScene::Render(Renderer* renderer)
-{
-}
-
-void CaveCamFlightScene::Teardown()
-{
-}

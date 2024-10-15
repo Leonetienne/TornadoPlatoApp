@@ -17,11 +17,8 @@ add_executable(
     ../Frontend/RenderWindow.cpp
     ../Frontend/TerminalBLockCharacterRenderWindow.cpp
 
-    TestFixture.cpp
-    Test__FPS.cpp
-    Test__Yubi.cpp
-    Test__Cube.cpp
-    Test__MC.cpp
+    ../Scenes/Fun/MC_House/MC_HouseScene.cpp
+
     main.cpp
 )
 

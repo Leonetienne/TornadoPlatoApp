@@ -2,7 +2,6 @@
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Frontend/RenderWindow.h"
-#include "../HandyComponents/CameraFPSKeyboardControl.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
