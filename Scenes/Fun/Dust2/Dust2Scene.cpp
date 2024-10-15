@@ -46,6 +46,13 @@ Dust2Scene::Dust2Scene() : Scene(__FUNCTION__) // Set the test fixtures name
     WorldObjectManager::NewWorldObject("player-light", cameraWo->transform)
         ->AddComponent<Components::PointLight>(15, Color(255, 183, 140));
 
+    // Position main camera
+    WorldObject* fpsCameraParent = WorldObjectManager::FindObjectById("main_camera_ypiv");
+    if (fpsCameraParent) {
+        fpsCameraParent->transform->SetPosition(Vector3d(-99.3422, 63.5574, 210.063));
+        fpsCameraParent->transform->SetRotation(Vector3d(17.86, 60.58, 15.67));
+    }
+
     return;
 }
 
