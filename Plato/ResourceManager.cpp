@@ -130,6 +130,28 @@ Mesh* ResourceManager::FindMesh(const std::string& name)
 	return found->second;
 }
 
+Texture* ResourceManager::FindTextureOrLoadFromBmp(const std::string &name, const std::string &filename)
+{
+    Texture* texture = FindTexture(name);
+
+    if (!texture) {
+        texture = LoadTextureFromBmp(name, filename);
+    }
+
+    return texture;
+}
+
+Mesh* ResourceManager::FindMeshOrLoadFromObj(const std::string &name, const std::string &filename)
+{
+    Mesh* mesh = FindMesh(name);
+
+    if (!mesh) {
+        mesh = LoadMeshFromObj(name, filename);
+    }
+
+    return mesh;
+}
+
 void ResourceManager::Free()
 {
 	for (std::pair<std::string, Material*> m : materials)

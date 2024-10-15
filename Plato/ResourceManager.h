@@ -47,6 +47,14 @@ namespace Plato
 		//! Nullptr if not found
 		static Mesh* FindMesh(const std::string& name);
 
+		//! Will search for a texture and return it.  
+        //! Will load and create it if not found
+        static Texture* FindTextureOrLoadFromBmp(const std::string& name, const std::string& filename);
+
+		//! Will search for a mesh and return it.  
+        //! Will load and create it if not found
+        static Mesh* FindMeshOrLoadFromObj(const std::string& name, const std::string& filename);
+
 		static void Free();
 
 	private:

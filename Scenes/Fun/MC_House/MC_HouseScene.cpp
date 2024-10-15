@@ -1,7 +1,9 @@
 #include "MC_HouseScene.h"
+#include "../../../Prefabs/Skybox/SkyboxPrefab.h"
 #include "../../../Plato/WorldObjectManager.h"
 #include "../../../Plato/ResourceManager.h"
 #include "../../../Plato/PointLight.h"
+#include "../../../Plato/Material.h"
 #include "../../../Plato/Color.h"
 #include "../../../Plato/Keyboard.h"
 
@@ -17,34 +19,25 @@ MC_HouseScene::MC_HouseScene() : Scene(__FUNCTION__) // Set the test fixtures na
 {
     const std::string assetsDir = "../../Scenes/Fun/MC_House/assets";
 
-	// Load mesh files
-	ResourceManager::LoadMeshFromObj("mc_world", assetsDir+"/mc_world.obj");
-	ResourceManager::LoadMeshFromObj("skybox", assetsDir+"/skybox.obj");
-
 	// Load texture files
-	ResourceManager::LoadTextureFromBmp("mc_world", assetsDir+"/mc_world_tran.bmp");
-	ResourceManager::LoadTextureFromBmp("skybox", assetsDir+"/example_skybox.bmp");
+    Texture* texture = ResourceManager::FindTextureOrLoadFromBmp("mc_world", assetsDir+"/mc_world_tran.bmp");
+
+	// Load mesh files
+    Mesh* mesh = ResourceManager::FindMeshOrLoadFromObj("mc_world", assetsDir+"/mc_world.obj");
 
 	// Create materials
-	ResourceManager::NewMaterial("mc_world")->texture = ResourceManager::FindTexture("mc_world");
-	Material* matSkybox = ResourceManager::NewMaterial("skybox");
-	matSkybox->texture = ResourceManager::FindTexture("skybox");
-	matSkybox->noShading = false;
-
-	// Create the skybox worlds object
-	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
-	skybox->AddComponent<Components::MeshRenderer>(
-		ResourceManager::FindMesh("skybox"),
-		ResourceManager::FindMaterial("skybox")
-		);
-	skybox->transform->Scale(Vector3d::one * 50);
+    Material* mat = ResourceManager::NewMaterial("mc_world");
+    mat->texture = texture;
 
 	// Create the mc world object
     WorldObject* mc = WorldObjectManager::NewWorldObject("mc_world")
         ->AddComponent<Components::MeshRenderer>(
-            ResourceManager::FindMesh("mc_world"),
-            ResourceManager::FindMaterial("mc_world")
+            mesh,
+            mat
     )->worldObject;
+
+    // Create a skybox
+    (SkyboxPrefab()).Instantiate();
 
     // Move it, to position the player infront of it
     mc->transform->Rotate(Quaternion(Vector3d(0, 90, 0)));
