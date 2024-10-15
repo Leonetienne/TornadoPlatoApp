@@ -29,6 +29,8 @@ private:
 	double fovAim = 60;
 	double fovHip = 80;
 	double targetFov = fovHip;
+	Quaternion targetRot = gunHolderRot_hip;
+	Vector3d targetPos = gunHolderPos_hip;
 	double deltaTime = 0;
 
 	WorldObject* gunHolder;

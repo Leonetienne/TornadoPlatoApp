@@ -14,7 +14,9 @@ inline double Clamp(double v, double min, double max)
 
 /*
 	Expected behaviour: We are loading two models (the monkey, and the hat) from one obj file
+    Also a gun and and a skybox should load.
 	No materials / textures supplied
+    Pressing NUM_3 should aim your gun.
 */
 
 Test__FPS::Test__FPS() :
@@ -25,14 +27,14 @@ Test__FPS::Test__FPS() :
 	camera = trCamera->worldObject->GetComponentOfType<Components::Camera>();
 
 	// Load mesh files
-	ResourceManager::LoadMeshFromObj("gun", "gun.obj");
-	ResourceManager::LoadMeshFromObj("monke", "monke.obj");
-	ResourceManager::LoadMeshFromObj("skybox", "skybox.obj");
+	ResourceManager::LoadMeshFromObj("gun", "../gun.obj");
+	ResourceManager::LoadMeshFromObj("monke", "../monke.obj");
+	ResourceManager::LoadMeshFromObj("skybox", "../skybox.obj");
 
 	// Load texture files
-	ResourceManager::LoadTextureFromBmp("gun", "gun.bmp");
-	ResourceManager::LoadTextureFromBmp("monke", "monke.bmp");
-	ResourceManager::LoadTextureFromBmp("skybox", "example_skybox.bmp");
+	ResourceManager::LoadTextureFromBmp("gun", "../gun.bmp");
+	ResourceManager::LoadTextureFromBmp("monke", "../monke.bmp");
+	ResourceManager::LoadTextureFromBmp("skybox", "../example_skybox.bmp");
 
 
 	// Create materials
@@ -55,11 +57,10 @@ Test__FPS::Test__FPS() :
 		"gun holder",
 		WorldObjectManager::FindObjectById("main_camera")->transform
 	);
-	gunHolder->transform->SetRotation(Quaternion(Vector3d(-5, 90, 0)));
-	gunHolder->transform->SetPosition(Vector3d(2, -1, -4));
+	gunHolder->transform->SetRotation(Quaternion(Vector3d(0, 90, 0)));
 	
 	// Create gun
-	gun = WorldObjectManager::NewWorldObject("gun");
+	gun = WorldObjectManager::NewWorldObject("gun", gunHolder->transform);
 	gun->transform->SetScale(Vector3d::one * 0.5);
 
 	gun->AddComponent<Components::MeshRenderer>(
@@ -76,11 +77,11 @@ Test__FPS::Test__FPS() :
 	skybox->transform->Scale(Vector3d::one * 50);
 
 	// Set gun points
-	gunHolderPos_hip = Vector3d(2, -1, -4) * 0.75;
-	gunHolderRot_hip = Quaternion(Vector3d(-5, 90, 0));
+	gunHolderPos_hip = Vector3d(-4, -0.5, -2);
+	gunHolderRot_hip = Quaternion(Vector3d(-5, 0, 0));
 
-	gunHolderPos_aim = Vector3d(0, -1.0, -4) * 0.75;
-	gunHolderRot_aim = Quaternion(Vector3d(0, 90, 0));
+	gunHolderPos_aim = Vector3d(-4, -0.75, 0);
+	gunHolderRot_aim = Quaternion(Vector3d(0, 0, 0));
 
 	// Set gun to hip
 	SetGunHip();
@@ -90,10 +91,9 @@ Test__FPS::Test__FPS() :
 
 void Test__FPS::Update(double deltaTime)
 {
-	return;
 	this->deltaTime = deltaTime;
 	// Handle user input
-	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::MOUSE_R))
+	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::NUM_3))
 	{
 		isAimed = !isAimed;
 
@@ -103,27 +103,22 @@ void Test__FPS::Update(double deltaTime)
 			SetGunHip();
 	}
 
-	return;
-}
-
-void Test__FPS::Render(Renderer*)
-{
-	constexpr double lerpPosSpeed = 0.07;
-	constexpr double lerpRotSpeed = 0.04;
-	constexpr double lerpFovSpeed = 0.05;
+	constexpr double lerpPosSpeed = 0.01;
+	constexpr double lerpRotSpeed = 0.008;
+	constexpr double lerpFovSpeed = 0.01;
 
 	// Lerp gun position
 	gun->transform->SetPosition(
-		gun->transform->GetGlobalPosition().Lerp(
-			gunHolder->transform->GetGlobalPosition(),
+		gun->transform->GetPosition().Lerp(
+			targetPos,
 			Clamp(lerpPosSpeed * deltaTime, 0, 1)
 		)
 	);
 
 	// Lerp gun rotation
 	gun->transform->SetRotation(
-		gun->transform->GetGlobalRotation().Lerp(
-			gunHolder->transform->GetGlobalRotation(),
+		gun->transform->GetRotation().Lerp(
+			targetRot,
 			Clamp(lerpRotSpeed * deltaTime, 0, 1)
 		)
 	);
@@ -140,10 +135,15 @@ void Test__FPS::Render(Renderer*)
 	return;
 }
 
+void Test__FPS::Render(Renderer*)
+{
+	return;
+}
+
 void Test__FPS::SetGunAimed()
 {
-	gunHolder->transform->SetPosition(gunHolderPos_aim);
-	gunHolder->transform->SetRotation(gunHolderRot_aim);
+    targetRot = gunHolderRot_aim;
+    targetPos = gunHolderPos_aim;
 	targetFov = fovAim;
 
 	return;
@@ -151,8 +151,8 @@ void Test__FPS::SetGunAimed()
 
 void Test__FPS::SetGunHip()
 {
-	gunHolder->transform->SetPosition(gunHolderPos_hip);
-	gunHolder->transform->SetRotation(gunHolderRot_hip);
+    targetRot = gunHolderRot_hip;
+    targetPos = gunHolderPos_hip;
 	targetFov = fovHip;
 
 	return;
