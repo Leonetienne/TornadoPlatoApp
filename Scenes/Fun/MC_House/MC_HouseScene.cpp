@@ -6,6 +6,7 @@
 #include "../../../Plato/Material.h"
 #include "../../../Plato/Color.h"
 #include "../../../Plato/Keyboard.h"
+#include <stdexcept>
 
 using namespace Plato;
 
@@ -45,6 +46,9 @@ MC_HouseScene::MC_HouseScene() : Scene(__FUNCTION__) // Set the test fixtures na
 
     // Create player light
     WorldObject* cameraWo = WorldObjectManager::FindObjectById("main_camera");
+    if (!cameraWo) {
+        throw std::runtime_error(std::string("Attempted to initialize scene ") + GetSceneName() + " without having a any camera loaded! But that is required!");
+    }
     flashlight =
         WorldObjectManager::NewWorldObject("player-light", cameraWo->transform)
         ->AddComponent<Components::PointLight>(3, Color(255, 183, 140));

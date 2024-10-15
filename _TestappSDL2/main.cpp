@@ -1,4 +1,5 @@
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
+#include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Frontend/RenderWindow.h"
 #include "../HandyComponents/CameraFPSKeyboardControl.h"
@@ -29,12 +30,8 @@ int main(int argc, char* argv[]) {
     Input::EventManager::Init();
 
     // Set up an FPS camera
-    Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-    Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(90, 0.001, 10);
-    cameraYPivot->worldObject->SetId("main_camera_ypiv");
-    camera->SetAsMainCamera();
-    // Let's add a CameraKeyboardControl component to the camera by default
-    camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+    (FPSCameraPrefab(FPSCameraPrefab::CONTROL_TYPE::LOOK_MOUSE)).Instantiate();
+
 
     // Register logic for plato to close the render window
     Input::EventManager::RegisterReverseEventCallback(
