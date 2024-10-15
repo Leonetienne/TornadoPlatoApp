@@ -1,4 +1,5 @@
 #include "../Scenes/Fun/Dust2/Dust2Scene.h"
+#include "../Scenes/Fun/MC_House/MC_HouseScene.h"
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Frontend/RenderWindow.h"
