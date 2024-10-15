@@ -1,6 +1,6 @@
 #include "SDL2RenderWindow.h"
-#include "../Plato/EventManager.h"
 #include "RenderWindow.h"
+#include "../Plato/EventManager.h"
 #include <iostream>
 
 SDL2RenderWindow::SDL2RenderWindow(const Eule::Vector2i& resolution, const std::string& name, const TorGL::PixelBuffer<3>* renderResultPixelBuffer) :
