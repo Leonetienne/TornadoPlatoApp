@@ -1,11 +1,12 @@
 #include "BenchmarkPlayer.h"
-#include "RenderWindow.h"
+#include "../Frontend/SDL2RenderWindow.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Application.h"
 #include "../Plato/Keyboard.h"
 #include "../Plato/Clock.h"
+#include "BenchmarkScene.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -21,11 +22,14 @@ namespace {
 }
 
 BenchmarkPlayer::BenchmarkPlayer(const Vector2i& resolution) :
-renderer(resolution, 0, 0),
-renderWindow(RenderWindow(resolution, windowBaseTitle, renderer.GetPixelBuffer()))
+renderer(resolution, 0, 0)
 {
-    // Init Plato and RenderWindow
-    renderWindow.EnableMouseCameraControlMode();
+    // Init Plato and RenderWindow as SDL2 render window
+    SDL2RenderWindow* sdl2RenderWindow = new SDL2RenderWindow(resolution, windowBaseTitle, renderer.GetPixelBuffer());
+    sdl2RenderWindow->EnableMouseCameraControlMode();
+    renderWindow = sdl2RenderWindow;
+
+
     RegisterPlatoCallbacks();
     Input::EventManager::Init();
 
@@ -37,6 +41,12 @@ renderWindow(RenderWindow(resolution, windowBaseTitle, renderer.GetPixelBuffer()
 
     // Advance to the first scene
     AdvanceBenchmarkScene();
+}
+
+BenchmarkPlayer::~BenchmarkPlayer()
+{
+    delete renderWindow;
+    renderWindow = nullptr;
 }
 
 void BenchmarkPlayer::Run()
@@ -51,9 +61,9 @@ void BenchmarkPlayer::Run()
     Clock frametimer;
     double frametime = 1000.0 / 60.0;
 
-    while (renderWindow.IsRunning()) {
+    while (renderWindow->IsRunning()) {
         // Poll the SDL2 windows events
-        renderWindow.PollEvents();
+        renderWindow->PollEvents();
 
         // Digest plato events
         Input::EventManager::Digest();
@@ -86,7 +96,7 @@ void BenchmarkPlayer::Run()
 
         // Display the frame
         perfTimer.Reset();
-        renderWindow.RedrawWindow();
+        renderWindow->RedrawWindow();
         const double sdlDrawTime = perfTimer.GetElapsedTime().AsMilliseconds();
 
         // Capture how long the frame took to complete
@@ -136,7 +146,7 @@ void BenchmarkPlayer::Run()
 
 void BenchmarkPlayer::RegisterPlatoCallbacks()
 {
-    RenderWindow* pRenderWindow = &renderWindow;
+    RenderWindow* pRenderWindow = renderWindow;
 
     // Register logic for plato to close the render window
     Input::EventManager::RegisterReverseEventCallback(
@@ -314,6 +324,6 @@ void BenchmarkPlayer::UpdateWindowTitle()
         ss << " (" << numVertices << " verts / " << numTris << " tris)";
     }
 
-    renderWindow.SetWindowTitle(ss.str());
+    renderWindow->SetWindowTitle(ss.str());
 }
 

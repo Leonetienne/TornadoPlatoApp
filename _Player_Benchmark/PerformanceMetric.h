@@ -1,3 +1,4 @@
+#pragma once
 struct PerformanceMetric {
     double totalFrameTime;
     double uptateHooks;

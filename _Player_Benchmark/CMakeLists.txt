@@ -12,6 +12,7 @@ add_compile_definitions('_BENCHMARK_CONTEXT')
 file(GLOB Eule ../Eule/*.cpp)
 file(GLOB Tornado ../Tornado/*.cpp)
 file(GLOB Plato ../Plato/*.cpp)
+file(GLOB Frontend ../Frontend/*.cpp)
 
 add_executable(
     Benchmark.out
@@ -19,8 +20,8 @@ add_executable(
     ${Eule}
     ${Tornado}
     ${Plato}
+    ${Frontend}
 
-    RenderWindow.cpp
     BenchmarkScene.cpp
     BenchmarkPlayer.cpp
     CaveCamFlightScene.cpp

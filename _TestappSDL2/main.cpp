@@ -1,6 +1,6 @@
-#include <cstdint>
-#include <iostream>
-#include "../Plato/Vector.h"
+#include "../Frontend/SDL2RenderWindow.h"
+#include "../Frontend/RenderWindow.h"
+#include "../HandyComponents/CameraFPSKeyboardControl.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
@@ -9,10 +9,9 @@
 #include "TestFixture.h"
 #include "Test__MC.h"
 #include "Test__Cube.h"
-#include "CameraFPSKeyboardControl.h"
-#include "RenderWindow.h"
 #include <cstring>
 #include <iostream>
+#include <memory>
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
@@ -24,9 +23,9 @@ int main(int argc, char* argv[]) {
     Renderer renderer(resolution, 0, 0.4);
 
     // Set up an SDL2 window
-    RenderWindow renderWindow(resolution, "SDL-Player", renderer.GetPixelBuffer());
+    SDL2RenderWindow renderWindow(resolution, "SDL-Player", renderer.GetPixelBuffer());
     renderWindow.EnableMouseCameraControlMode();
-    RenderWindow* renderWindowPointer = &renderWindow; // Dumb workaroud for lambda function
+    RenderWindow* pRenderWindow = (RenderWindow*)(&renderWindow); // Dumb workaroud for lambda function
 
     // Init plato event manager
     Input::EventManager::Init();
@@ -43,9 +42,9 @@ int main(int argc, char* argv[]) {
     // Register logic for plato to close the render window
     Input::EventManager::RegisterReverseEventCallback(
         Input::REVERSE_EVENT_CALLBACK::EXIT, 
-		[renderWindowPointer](const std::vector<double>& params)
+		[pRenderWindow](const std::vector<double>& params)
 		{
-			renderWindowPointer->Close();
+			pRenderWindow->Close();
 		}
     );
 

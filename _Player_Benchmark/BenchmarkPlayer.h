@@ -1,5 +1,6 @@
+#pragma once
+#include "../Frontend/RenderWindow.h"
 #include "../Plato/Renderer.h"
-#include "RenderWindow.h"
 #include "PerformanceMetric.h"
 #include "BenchmarkScene.h"
 #include "CaveCamFlightScene.h"
@@ -10,6 +11,7 @@ class BenchmarkPlayer
 {
     public:
         BenchmarkPlayer(const Plato::Vector2i& resolution);
+        ~BenchmarkPlayer();
 
         // Run the main app
         void Run();
@@ -31,7 +33,7 @@ class BenchmarkPlayer
         void UpdateWindowTitle();
 
         Renderer renderer;
-        RenderWindow renderWindow;
+        RenderWindow* renderWindow;
         std::vector<BenchmarkScene*> benchmarkScenes;
         std::size_t currentBenchmarkSceneIndex = std::string::npos;
         BenchmarkScene* currentBenchmarkScene = nullptr;

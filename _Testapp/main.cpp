@@ -1,4 +1,5 @@
 //#include "Test__FPS.h"
+#include "../HandyComponents/CameraExclKeyboardControl.h"
 #include "../Plato/Vector.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/EventManager.h"
@@ -8,7 +9,6 @@
 #include "Test__Yubi.h"
 #include "Test__Cube.h"
 #include "Test__MC.h"
-#include "CameraKeyboardControl.h"
 #include <algorithm>
 #include <cstring>
 #include <iostream>
@@ -148,7 +148,7 @@ int main() {
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->SetAsMainCamera();
 	// Let's add a CameraKeyboardControl component to the camera by default
-	camera->worldObject->AddComponent<CameraKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+	camera->worldObject->AddComponent<CameraExclKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
 
     // Instantiate the test scene
     Test__MC testScene;

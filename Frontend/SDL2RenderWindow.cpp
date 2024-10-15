@@ -1,10 +1,10 @@
-#include "RenderWindow.h"
+#include "SDL2RenderWindow.h"
 #include "../Plato/EventManager.h"
+#include "RenderWindow.h"
 #include <iostream>
 
-RenderWindow::RenderWindow(const Eule::Vector2i& resolution, const std::string& name, const TorGL::PixelBuffer<3>* renderResultPixelBuffer) :
-    resolution{resolution},
-    renderResultPixelBuffer{renderResultPixelBuffer}
+SDL2RenderWindow::SDL2RenderWindow(const Eule::Vector2i& resolution, const std::string& name, const TorGL::PixelBuffer<3>* renderResultPixelBuffer) :
+RenderWindow(resolution, name, renderResultPixelBuffer)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
@@ -46,7 +46,7 @@ RenderWindow::RenderWindow(const Eule::Vector2i& resolution, const std::string& 
     }
 }
 
-void RenderWindow::PollEvents()
+void SDL2RenderWindow::PollEvents()
 {
     static Vector2i mouseDelta(0,0);
     static Vector2i mousePos(0,0);
@@ -80,7 +80,7 @@ void RenderWindow::PollEvents()
     }
 }
 
-void RenderWindow::RedrawWindow()
+void SDL2RenderWindow::RedrawWindow()
 {
     // Copy the tornado pixel buffer to the sdl2 texture
     void* pixels;
@@ -109,27 +109,21 @@ void RenderWindow::RedrawWindow()
     // Present the renderer
     SDL_RenderPresent(sdlRenderer);
 }
-
-void RenderWindow::Close()
+void SDL2RenderWindow::SetWindowTitle(const std::string& title)
 {
-    running = false;
+    SDL_SetWindowTitle(sdlWindow, title.c_str());
+}
+
+void SDL2RenderWindow::Close()
+{
+    RenderWindow::Close();
     SDL_DestroyTexture(sdlTexture);
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
 }
 
-const Vector2i& RenderWindow::GetResolution() const
-{
-    return resolution;
-}
-
-bool RenderWindow::IsRunning() const
-{
-    return running;
-}
-
-void RenderWindow::EnableMouseCameraControlMode()
+void SDL2RenderWindow::EnableMouseCameraControlMode()
 {
     // Lock mouse to the window and make it invisible
     SDL_SetRelativeMouseMode(SDL_TRUE); // Lock mouse and capture mouse delta
