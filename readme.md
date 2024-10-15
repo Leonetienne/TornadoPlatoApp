@@ -16,7 +16,7 @@ This is still under heavy development. It's just public for the fun in it.
 * `LegacyCode/`: Old implementations such as a windows window
 
 ## How2cook
-Every build needs cmake. Install that. Some need SDL2 aswell.
+Every build needs cmake. Install that. Some need SDL2 for presentation aswell.
 
 ### How2cook terminal player
 1. `cd _TestappTERM`
