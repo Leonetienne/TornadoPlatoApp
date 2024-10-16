@@ -1,4 +1,3 @@
-#pragma once
 #include "Scene.h"
 
 using namespace Plato;
