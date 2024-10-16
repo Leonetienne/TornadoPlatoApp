@@ -10,5 +10,7 @@ pkgs.llvmPackages.stdenv.mkDerivation {
 	SDL2_sound
 	SDL2_mixer
 	SDL2_image
+    ocl-icd
+    opencl-headers
   ];
 } 
