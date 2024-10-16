@@ -15,7 +15,7 @@ RenderWindow(resolution, name, renderResultPixelBuffer)
 
     // Create an SDL window
     sdlWindow = SDL_CreateWindow(
-        "FPS Camera", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+        name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
         resolution.x, resolution.y, SDL_WINDOW_SHOWN);
 
     if (!sdlWindow) {
