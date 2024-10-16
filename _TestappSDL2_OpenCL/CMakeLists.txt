@@ -40,6 +40,7 @@ target_include_directories(TestappSDL2OpenCL.out PRIVATE ${OpenCL_INCLUDE_DIRS})
 # Link SDL2 to the executable
 target_link_libraries(TestappSDL2OpenCL.out PRIVATE SDL2::SDL2 OpenCL::OpenCL)
 
+# optional? Sets the version to 1.0.0, did according to docs from OpenCL
 target_compile_definitions(TestappSDL2OpenCL.out PRIVATE CL_TARGET_OPENCL_VERSION=100)
 
 # Link assets dir into build dir
