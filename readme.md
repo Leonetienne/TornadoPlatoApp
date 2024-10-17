@@ -31,7 +31,7 @@ Some (will soon) need OpenCL for non-laggy running. Install that. (`opencl-heade
 5. `./_TestappTERM.out`
 
 ### How2cook SDL2 player
-1. Haf SDL2 installed2. 
+1. Haf SDL2 installed. 
 2. `cd _TestappSDL2`
 3. `cmake -B build`
 4. `cd build`
@@ -48,7 +48,7 @@ Some (will soon) need OpenCL for non-laggy running. Install that. (`opencl-heade
 7. `./_TestappSDL2OpenCL.out`
 
 ### How2cook benchmarks and results
-1. Haf SDL2 installed (`libsdl2-dev`)
+1. Haf SDL2 installed
 2. Haf python installed
 3. `cd _Player_Benchmark`
 4. `cmake -B build`
