@@ -1,12 +1,12 @@
 #include "BenchmarkPlayer.h"
-#include "../Frontend/SDL2RenderWindow.h"
-#include "../Plato/EventManager.h"
-#include "../Plato/WorldObjectManager.h"
-#include "../Plato/ResourceManager.h"
-#include "../Plato/Application.h"
-#include "../Plato/Keyboard.h"
-#include "../Plato/Clock.h"
 #include "BenchmarkScene.h"
+#include "../Frontend/SDL2RenderWindow.h"
+#include "../Plato/Application.h"
+#include "../Plato/Clock.h"
+#include "../Plato/EventManager.h"
+#include "../Plato/Keyboard.h"
+#include "../Plato/ResourceManager.h"
+#include "../Plato/WorldObjectManager.h"
 #include <ctime>
 #include <iostream>
 #include <iomanip>
@@ -15,6 +15,8 @@
 #include <fstream>
 #include <filesystem>
 #include <vector>
+#include <ctime>
+
 
 using namespace Plato;
 

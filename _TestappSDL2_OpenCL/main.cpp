@@ -253,7 +253,7 @@ int main(int argc, char* argv[]) {
         }
         #endif
 
-        renderWindow.RedrawWindow();
+        ///renderWindow.RedrawWindow();
         // Calculate how long the frame took to display
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
         frametimer.Reset();
