@@ -19,7 +19,9 @@ This is still under heavy development. It's just public for the fun in it.
 * `LegacyCode/`: Old implementations such as a windows window
 
 ## How2cook
-Every build needs cmake. Install that. Some need SDL2 for presentation aswell.
+Every build needs cmake. Install that. 
+Some need SDL2 for presentation aswell. Install that. (`libsdl2-dev`)
+Some (will soon) need OpenCL for non-laggy running. Install that. (`opencl-headers ocl-icd-opencl-dev`)
 
 ### How2cook terminal player
 1. `cd _TestappTERM`
@@ -29,15 +31,24 @@ Every build needs cmake. Install that. Some need SDL2 for presentation aswell.
 5. `./_TestappTERM.out`
 
 ### How2cook SDL2 player
-1. Haf SDL2 installed
+1. Haf SDL2 installed2. 
 2. `cd _TestappSDL2`
 3. `cmake -B build`
 4. `cd build`
 5. `make`
 6. `./_TestappSDL2.out`
 
+### How2cook OpenCL with SDL2 player
+1. Haf OpenCL installed 
+2. Haf SDL2 installed 
+3. `cd _TestappSDL2_OpenCL`
+4. `cmake -B build`
+5. `cd build`
+6. `make`
+7. `./_TestappSDL2OpenCL.out`
+
 ### How2cook benchmarks and results
-1. Haf SDL2 installed
+1. Haf SDL2 installed (`libsdl2-dev`)
 2. Haf python installed
 3. `cd _Player_Benchmark`
 4. `cmake -B build`
@@ -65,3 +76,8 @@ Every build needs cmake. Install that. Some need SDL2 for presentation aswell.
 4. `make`
 5. `./Test_All.out`
 
+## How2SetScene
+If you want to set a scene you have to write
+`Scene* scene = new (SceneName)`
+in the `main.cpp` file in order to initiate it. Scenes can be found at 
+`./Scenes/`. 
