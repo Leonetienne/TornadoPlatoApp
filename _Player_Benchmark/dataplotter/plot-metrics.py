@@ -5,6 +5,12 @@ import os
 import argparse
 import numpy as np
 
+"""
+SYNOPSIS:
+./plot-metrics.py ./performance-metrics/2024-10-17/20-55-44
+./plot-metrics.py ./performance-metrics/2024-10-17/20-55-44 --compare-to ./performance-metrics/2024-10-17/20-40-22
+"""
+
 def read_data(file_path):
     # Initialize a dictionary to store each column's data
     data = {}
