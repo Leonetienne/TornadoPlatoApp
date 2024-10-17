@@ -1,4 +1,5 @@
 #include "BenchmarkPlayer.h"
+#include "BenchmarkScene.h"
 #include "../Frontend/SDL2RenderWindow.h"
 #include "../Plato/EventManager.h"
 #include "../Plato/WorldObjectManager.h"
@@ -6,7 +7,6 @@
 #include "../Plato/Application.h"
 #include "../Plato/Keyboard.h"
 #include "../Plato/Clock.h"
-#include "BenchmarkScene.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
