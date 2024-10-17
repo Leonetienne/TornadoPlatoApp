@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import csv
 import os
+import argparse
 
 def read_data(file_path):
     # Initialize a dictionary to store each column's data
@@ -48,16 +49,23 @@ def plot_data(data, output_file):
     plt.close()  # Close the figure after saving
 
 def main():
-    input_dir = './performance-metrics/'
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description="Process CSV files and generate plots.")
+    parser.add_argument('input_dir', type=str, help="Directory containing CSV files.")
+
+    # Parse arguments
+    args = parser.parse_args()
+
+    # Define output directory
     output_dir = './performance-plots/'
 
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
 
     # Iterate over all CSV files in the input directory
-    for file_name in os.listdir(input_dir):
+    for file_name in os.listdir(args.input_dir):
         if file_name.endswith('.csv'):
-            file_path = os.path.join(input_dir, file_name)
+            file_path = os.path.join(args.input_dir, file_name)
             output_file = os.path.join(output_dir, file_name.replace('.csv', '.png'))
             
             # Read the CSV data
@@ -68,4 +76,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
