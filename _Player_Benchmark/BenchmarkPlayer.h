@@ -30,7 +30,7 @@ class BenchmarkPlayer
         // Will first transform the mean value back to the average sum of individual values, then add a new value, and perform the mean-division again
         double AddValueToMean(double oldMean, double newVal);
 
-        void UpdateWindowTitle();
+        void UpdateWindowTitle(float fps = -1);
 
         Renderer renderer;
         RenderWindow* renderWindow;

@@ -139,10 +139,8 @@ void BenchmarkPlayer::Run()
             AdvanceBenchmarkScene();
         }
 
-        // If the window title has not yet been set
-        if (justSetVertTrisCount) {
-            UpdateWindowTitle();
-        }
+        // Update window title for FPS and vert/tris count
+        UpdateWindowTitle(1000.0 / frametime);
 
         // Reset the frame timer clock
         frametimer.Reset();
@@ -263,7 +261,7 @@ void BenchmarkPlayer::DumpSceneMetrics()
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
     std::ostringstream ss;
-    ss << "./dataplotter/performance-metrics/" << std::put_time(&tm, "%Y_%m_%d/%H_%M");
+    ss << "./dataplotter/performance-metrics/" << std::put_time(&tm, "%Y-%m-%d/%H-%M");
     const std::string metricsDir = ss.str();
     const std::string metricsFile = metricsDir + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
 
@@ -318,7 +316,7 @@ void BenchmarkPlayer::DumpSceneMetrics()
     }
 }
 
-void BenchmarkPlayer::UpdateWindowTitle()
+void BenchmarkPlayer::UpdateWindowTitle(float fps)
 {
     // Add base name
     std::stringstream ss;
@@ -332,6 +330,11 @@ void BenchmarkPlayer::UpdateWindowTitle()
     // If we have a vertices/tris count, add that
     if (numVertices) {
         ss << " (" << numVertices << " verts / " << numTris << " tris)";
+    }
+
+    // If we have an fps value, add that
+    if (fps >= 0) {
+        ss << " / " << std::setprecision(1) << std::fixed << fps << " FPS";
     }
 
     renderWindow->SetWindowTitle(ss.str());
