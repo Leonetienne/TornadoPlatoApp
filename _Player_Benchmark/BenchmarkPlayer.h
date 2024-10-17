@@ -41,6 +41,7 @@ class BenchmarkPlayer
         PerformanceMetric currentMetric;
         // How many performance metrics have been averaged since the last insertion into performanceMetrics
         std::size_t numMetricsAddedSinceInterval = 0;
+        std::string performanceMetricsSaveDir;
 
         // Just some stats fetched in the rendering loop to display
         std::size_t numTris = 0;

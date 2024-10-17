@@ -34,6 +34,13 @@ renderer(resolution, 0, 0)
     sdl2RenderWindow->EnableMouseCameraControlMode();
     renderWindow = sdl2RenderWindow;
 
+    // Set csv dir path (the time must be the same for all, so it cant be set each time writing a csv!)
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    std::ostringstream ss;
+    ss << "./dataplotter/performance-metrics/" << std::put_time(&tm, "%Y-%m-%d/%H-%M-%S") << '/';
+    performanceMetricsSaveDir = ss.str();
+
 
     RegisterPlatoCallbacks();
     Input::EventManager::Init();
@@ -257,15 +264,10 @@ void BenchmarkPlayer::DigestNewMetrics(const PerformanceMetric& newMetric)
 
 void BenchmarkPlayer::DumpSceneMetrics()
 {   
-    // Derive directory- and filename
-    auto t = std::time(nullptr);
-    auto tm = *std::localtime(&t);
-    std::ostringstream ss;
-    ss << "./dataplotter/performance-metrics/" << std::put_time(&tm, "%Y-%m-%d/%H-%M");
-    const std::string metricsDir = ss.str();
-    const std::string metricsFile = metricsDir + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
+    // Derive csv filename
+    const std::string metricsFile = performanceMetricsSaveDir + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
 
-    std::filesystem::create_directories(metricsDir);
+    std::filesystem::create_directories(performanceMetricsSaveDir);
     std::ofstream csvFs(metricsFile, std::ofstream::out);
     if (csvFs.good()) {
         std::stringstream metricsCsvSs;
