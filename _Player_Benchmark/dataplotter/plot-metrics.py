@@ -36,7 +36,7 @@ def interpolate_data(data, target_length):
     x_new = np.linspace(0, 1, target_length)
     return np.interp(x_new, x_old, data)
 
-def plot_data(data1, output_file, data2=None):
+def plot_data(data1, output_file, title, data2=None):
     # Create time points for x-axis (100ms intervals)
     time1 = [i * 0.1 for i in range(len(data1[next(iter(data1))]))]  # Use the first key to get length
 
@@ -57,9 +57,9 @@ def plot_data(data1, output_file, data2=None):
                 plt.plot(time1, interpolated_data2, label=f"compared run: {key}", alpha=0.25)
 
     # Add titles and labels
-    plt.title('Performance Metrics Over Time')
+    plt.title(title)
     plt.xlabel('Time (seconds)')
-    plt.ylabel('Time (ms)')
+    plt.ylabel('Time (ms) (lower is better)')
     
     # Adjust legend location and size
     plt.legend(loc='upper left', bbox_to_anchor=(1, 1), fontsize='small', title="Metrics")
@@ -101,7 +101,11 @@ def main():
                     data2 = read_data(file_path2)
 
             # Plot and save to file (with comparison if data2 exists)
-            plot_data(data1, output_file, data2)
+            if args.compare_to:
+                plotTitle = f'Compare run\n"{file_path1}"\nwith\n"{file_path2}" (faded out)'
+            else:
+                plotTitle = f'Inspect run\n{file_path1}"'
+            plot_data(data1, output_file, plotTitle, data2)
 
 if __name__ == "__main__":
     main()
