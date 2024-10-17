@@ -259,13 +259,13 @@ void BenchmarkPlayer::DigestNewMetrics(const PerformanceMetric& newMetric)
 
 void BenchmarkPlayer::DumpSceneMetrics()
 {   
+    // Derive directory- and filename
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
-    std::ostringstream dir_oss;
-    dir_oss << std::put_time(&tm, "%Y_%m_%d/%H_%M");
-    auto dirDateTime = dir_oss.str();
-    const std::string metricsDir = "./dataplotter/performance-metrics";
-    const std::string metricsFile = metricsDir + "/" + dirDateTime + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
+    std::ostringstream ss;
+    ss << "./dataplotter/performance-metrics/" << std::put_time(&tm, "%Y_%m_%d/%H_%M");
+    const std::string metricsDir = ss.str();
+    const std::string metricsFile = metricsDir + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
 
     std::filesystem::create_directories(metricsDir);
     std::ofstream csvFs(metricsFile, std::ofstream::out);
