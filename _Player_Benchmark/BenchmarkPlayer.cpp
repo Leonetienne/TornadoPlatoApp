@@ -7,7 +7,10 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/Clock.h"
 #include "BenchmarkScene.h"
+#include <ctime>
 #include <iostream>
+#include <iomanip>
+#include <ostream>
 #include <sstream>
 #include <fstream>
 #include <filesystem>
@@ -253,9 +256,14 @@ void BenchmarkPlayer::DigestNewMetrics(const PerformanceMetric& newMetric)
 }
 
 void BenchmarkPlayer::DumpSceneMetrics()
-{
+{   
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    std::ostringstream dir_oss;
+    dir_oss << std::put_time(&tm, "%Y_%m_%d/%H_%M");
+    auto dirDateTime = dir_oss.str();
     const std::string metricsDir = "./dataplotter/performance-metrics";
-    const std::string metricsFile = metricsDir + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
+    const std::string metricsFile = metricsDir + "/" + dirDateTime + "/" + currentBenchmarkScene->GetSceneName() + ".csv";
 
     std::filesystem::create_directories(metricsDir);
     std::ofstream csvFs(metricsFile, std::ofstream::out);
