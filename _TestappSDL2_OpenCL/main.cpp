@@ -13,12 +13,17 @@
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
+
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else
 #include <CL/cl.h>
+#endif
 
 #define GPU
 
 int main(int argc, char* argv[]) {
-    const Vector2i resolution(800*2.5, 600*2);
+    const Vector2i resolution(800, 600);
 
     // Set up an SDL2 window
     TorGL::PixelBuffer<3> pixelBuffer(resolution);
@@ -112,7 +117,7 @@ int main(int argc, char* argv[]) {
 
             int index = (resolution_x * y + x) * 3;
 
-            uchar* texel = &pixelBuffer[index];
+            __global uchar* texel = &pixelBuffer[index];
             uchar r, g, b;
 
             r = (x+y-*fc)%255;
@@ -248,7 +253,7 @@ int main(int argc, char* argv[]) {
         }
         #endif
 
-        //renderWindow.RedrawWindow();
+        renderWindow.RedrawWindow();
         // Calculate how long the frame took to display
         frametime = frametimer.GetElapsedTime().AsMilliseconds();
         frametimer.Reset();
