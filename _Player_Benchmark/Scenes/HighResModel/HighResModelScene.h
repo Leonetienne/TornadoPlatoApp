@@ -1,8 +1,6 @@
 #pragma once
-#include "BenchmarkScene.h"
-#include "../Plato/Clock.h"
-
-using namespace Plato;
+#include "../../BenchmarkScene.h"
+#include "../../../Plato/Clock.h"
 
 class HighResModelScene : public BenchmarkScene
 {

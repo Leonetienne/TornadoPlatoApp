@@ -1,11 +1,9 @@
 #pragma once
-#include "BenchmarkScene.h"
-#include "../Plato/MeshRenderer.h"
-#include "../Plato/Material.h"
-#include "../Plato/PointLight.h"
-#include "../Plato/Camera.h"
-
-using namespace Plato;
+#include "../../BenchmarkScene.h"
+#include "../../../Plato/MeshRenderer.h"
+#include "../../../Plato/Material.h"
+#include "../../../Plato/PointLight.h"
+#include "../../../Plato/Camera.h"
 
 class CaveCamFlightScene : public BenchmarkScene
 {

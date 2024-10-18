@@ -3,8 +3,9 @@
 #include "../Plato/Renderer.h"
 #include "PerformanceMetric.h"
 #include "BenchmarkScene.h"
-#include "CaveCamFlightScene.h"
-#include "HighResModelScene.h"
+#include "Scenes/HighResModel/HighResModelScene.h"
+#include "Scenes/CaveCamFlight/CaveCamFlightScene.h"
+#include "Scenes/Dust2/Dust2Scene.h"
 #include <vector>
 
 class BenchmarkPlayer
