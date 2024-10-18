@@ -67,10 +67,14 @@ Dust2Scene::~Dust2Scene()
 void Dust2Scene::Update(double deltaTime)
 {
     // Rotate the camera to create *some* movement
-    camera->transform->Rotate(Vector3d(0,0.005 * deltaTime, 0));
+    const double deltaRot = 0.005 * deltaTime;
+    static double totalRot = 0;
+    totalRot += deltaRot;
 
-    // Terminat after 15 seconds
-    if (clock.GetElapsedTime().AsSeconds() >= 15.0) {
+    camera->transform->Rotate(Vector3d(0, deltaRot,0));
+
+    // Terminate after the camera made a full rotation
+    if (totalRot >= 360.0) {
         Stop();
     }
 }
