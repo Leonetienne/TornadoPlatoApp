@@ -1,8 +1,8 @@
 #include "Dust2Scene.h"
 #include "../../../Prefabs/Skybox/SkyboxPrefab.h"
-#include "../../../Plato/MTLParser.h"
 #include "../../../Plato/PointLight.h"
 #include "../../../Plato/WorldObjectManager.h"
+#include "../../../Plato/ResourceManager.h"
 #include "../../../Plato/MeshRenderer.h"
 
 using namespace Plato;
@@ -18,16 +18,9 @@ Dust2Scene::Dust2Scene() : Scene(__FUNCTION__) // Set the test fixtures name
     // Create skybox
     (SkyboxPrefab()).Instantiate();
 
+    // Load Dust2 assets
     const std::string assetsDir = "../../Scenes/Fun/Dust2/assets";
-
-    // Load dust2 materials
-    MTLParser mtlParser;
-    mtlParser.ParseMtl(assetsDir+"/dust2.mtl", assetsDir);
-
-    // Load dust2 model
-    OBJParser OBJParser;
-    dust2Mesh = new Mesh;
-    *dust2Mesh = OBJParser.ParseObj(assetsDir+"/dust2.obj", true);
+    Mesh* dust2Mesh = ResourceManager::LoadMeshFromObj("dust2", assetsDir+"/dust2.obj", true);
 
     // Create the dust2 map world object
     WorldObject* dust2Wo = WorldObjectManager::NewWorldObject("dust2 map");

@@ -31,7 +31,11 @@ namespace Plato
 		static Texture* LoadTextureFromBmp(const std::string& name, const std::string& filename);
 
 		//! Will attempt to load a mesh from a wavefront (.obj) file
-		static Mesh* LoadMeshFromObj(const std::string& name, const std::string& filename);
+        //! If loadMtlFile is true, it will extract the mtl filename from the
+        //! obj file, attempt to load it (emit a warning if it doesnt exist),
+        //! which creates textures and materials from this mtl, and will assign these materials
+        //! to individual faces of the loaded mesh, as defined in the obj file.
+		static Mesh* LoadMeshFromObj(const std::string& name, const std::string& filename, bool loadMtlFile = false);
 
 
 
@@ -53,7 +57,11 @@ namespace Plato
 
 		//! Will search for a mesh and return it.  
         //! Will load and create it if not found
-        static Mesh* FindMeshOrLoadFromObj(const std::string& name, const std::string& filename);
+        //! If loadMtlFile is true, it will extract the mtl filename from the
+        //! obj file, attempt to load it (emit a warning if it doesnt exist),
+        //! which creates textures and materials from this mtl, and will assign these materials
+        //! to individual faces of the loaded mesh, as defined in the obj file.
+        static Mesh* FindMeshOrLoadFromObj(const std::string& name, const std::string& filename, bool loadMtlFile = false);
 
 		static void Free();
 
