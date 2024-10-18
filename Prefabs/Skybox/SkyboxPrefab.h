@@ -20,7 +20,7 @@ public:
             mat = Plato::ResourceManager::NewMaterial("skybox");
         }
         mat->texture = texture;
-        mat->noShading = false;
+        mat->noShading = true;
 
         // Create world object
         Plato::WorldObject* skybox = Plato::WorldObjectManager::NewWorldObject("skybox", parent);
