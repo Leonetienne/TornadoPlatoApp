@@ -2,7 +2,7 @@
 
 ## Create performance metrics
 1. Compile as usual (SDL2 required): `cmake -B build && cd build && make`.
-2. Run benchmark: `cd build && ./Benchmark.out`
+2. Run benchmark: `./Benchmark.out`
 
 If you want to skip a benchmark, press SPACE to advance to the next benchmarking scene.
 
