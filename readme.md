@@ -47,20 +47,6 @@ Some (will soon) need OpenCL for non-laggy running. Install that. (`opencl-heade
 6. `make`
 7. `./_TestappSDL2OpenCL.out`
 
-### How2cook benchmarks and results
-1. Haf SDL2 installed
-2. Haf python installed
-3. `cd _Player_Benchmark`
-4. `cmake -B build`
-5. `cd build`
-6. `make`
-7. `./Bechmark.out`
-8. `cd dataplotter`
-9. `source ./venv/bin/activate`
-10. `python -m pip -r Reqiurements.txt`
-11. `./plot-metrics.py`
-12. Enjoy performance graphs as png images in `./performance-plots/`
-
 ### How2cook visual acceptance tests
 1. `cd _Test_Acceptance_Tests`
 2. Select test to run in main.cpp
