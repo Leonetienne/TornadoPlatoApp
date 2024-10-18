@@ -8,9 +8,10 @@ If you want to skip a benchmark, press SPACE to advance to the next benchmarking
 
 ## Inspect benchmark results
 Compile them with python...
-1. Install all requirements in `Reqiurements.txt` with pip.
-2. Run `./plot-metrics.py ./performance-plot/2024-12-31/19-31-59`
-3. `open performance-plots` to view created png graphs
+1. `cd dataplotter`
+2. Install all requirements in `Reqiurements.txt` with pip.
+3. Run `./plot-metrics.py ./performance-plot/2024-12-31/19-31-59`
+4. `open performance-plots` to view created png graphs
 
 ## Compare benchmark results
 Compile them with python...
