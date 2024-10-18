@@ -1,10 +1,10 @@
 #include "HighResModelScene.h"
-#include "../Plato/WorldObjectManager.h"
-#include "../Plato/ResourceManager.h"
-#include "../Plato/MeshRenderer.h"
-#include "../Plato/Material.h"
-#include "../Plato/Camera.h"
-#include "BenchmarkScene.h"
+#include "../../../Prefabs/Skybox/SkyboxPrefab.h"
+#include "../../../Plato/WorldObjectManager.h"
+#include "../../../Plato/ResourceManager.h"
+#include "../../../Plato/MeshRenderer.h"
+#include "../../../Plato/Material.h"
+#include "../../../Plato/Camera.h"
 
 using namespace Plato;
 
@@ -14,27 +14,24 @@ using namespace Plato;
 
 
 HighResModelScene::HighResModelScene():
-    BenchmarkScene(__FUNCTION__) {};
+    BenchmarkScene(__FUNCTION__) {}; //Set the benchmark scenes name
 
 void HighResModelScene::Setup()
 {
-    const std::string assetsDir = "./assets/high-res-model";
+    // Create skybox
+    (SkyboxPrefab()).Instantiate();
+
+    const std::string assetsDir = "../Scenes/HighResModel/assets";
 
 	// Load mesh files
 	ResourceManager::LoadMeshFromObj("bk", assetsDir + "/bk.obj");
-	ResourceManager::LoadMeshFromObj("skybox", "./assets/general-assets/skybox.obj");
 
 	// Load texture files
 	ResourceManager::LoadTextureFromBmp("bk", assetsDir + "/bk.bmp");
-	ResourceManager::LoadTextureFromBmp("skybox", "./assets/general-assets/example_skybox.bmp");
 
 	// Create materials
 	Material* matBricks = ResourceManager::NewMaterial("bk");
 	matBricks->texture = ResourceManager::FindTexture("bk");
-	matBricks->noShading = true;
-	Material* matSkybox = ResourceManager::NewMaterial("skybox");
-	matSkybox->texture = ResourceManager::FindTexture("skybox");
-	matSkybox->noShading = true;
 
 	// Create world objects
     woBk = WorldObjectManager::NewWorldObject("bk")
@@ -43,15 +40,7 @@ void HighResModelScene::Setup()
             ResourceManager::FindMaterial("bk")
     )->worldObject;
 
-	// Create skybox
-	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
-	skybox->AddComponent<Components::MeshRenderer>(
-		ResourceManager::FindMesh("skybox"),
-		ResourceManager::FindMaterial("skybox")
-		);
-	skybox->transform->Scale(Vector3d::one * 50);
-
-    // Create a new main camera (screw the existing one)
+    // Create a new main camera
     camera = WorldObjectManager::NewWorldObject("benchmark main camera")
         ->AddComponent<Components::Camera>(90, 0.001, 10);
     camera->SetAsMainCamera();
@@ -69,8 +58,8 @@ void HighResModelScene::Update(double deltaTime)
     // Rotate the highpoly mesh
     woBk->transform->Rotate(Vector3d(0, 0.1 * deltaTime, 0));
 
-    // Terminat after five seconds
-    if (clock.GetElapsedTime().AsSeconds() >= 5.0) {
+    // Terminat after 15 seconds
+    if (clock.GetElapsedTime().AsSeconds() >= 15.0) {
         Stop();
     }
 }

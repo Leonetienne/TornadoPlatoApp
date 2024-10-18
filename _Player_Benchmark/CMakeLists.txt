@@ -25,8 +25,11 @@ add_executable(
 
     BenchmarkScene.cpp
     BenchmarkPlayer.cpp
-    CaveCamFlightScene.cpp
-    HighResModelScene.cpp
+
+    ./Scenes/CaveCamFlight/CaveCamFlightScene.cpp
+    ./Scenes/HighResModel/HighResModelScene.cpp
+    ./Scenes/Dust2/Dust2Scene.cpp
+
     main.cpp
 )
 

@@ -27,7 +27,7 @@ namespace {
 }
 
 BenchmarkPlayer::BenchmarkPlayer(const Vector2i& resolution) :
-renderer(resolution, 0, 0)
+renderer(resolution, 0, 0.5)
 {
     // Init Plato and RenderWindow as SDL2 render window
     SDL2RenderWindow* sdl2RenderWindow = new SDL2RenderWindow(resolution, windowBaseTitle, renderer.GetPixelBuffer());
@@ -41,7 +41,8 @@ renderer(resolution, 0, 0)
     // Instantiate benchmark scenes
     benchmarkScenes = std::vector<BenchmarkScene*>({
         new HighResModelScene(),
-        new CaveCamFlightScene()
+        new CaveCamFlightScene(),
+        new Dust2Scene()
     });
 
     // Advance to the first scene

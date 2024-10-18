@@ -1,9 +1,8 @@
 #include "CaveCamFlightScene.h"
-#include "../Plato/WorldObjectManager.h"
-#include "../Plato/ResourceManager.h"
-#include "../Plato/PointLight.h"
-#include "../Plato/Color.h"
-#include "BenchmarkScene.h"
+#include "../../../Plato/Color.h"
+#include "../../../Plato/PointLight.h"
+#include "../../../Plato/ResourceManager.h"
+#include "../../../Plato/WorldObjectManager.h"
 #include <iostream>
 #include <sstream>
 #include <cmath>
@@ -15,11 +14,11 @@ using namespace Plato;
 */
 
 CaveCamFlightScene::CaveCamFlightScene() :
-    BenchmarkScene(__FUNCTION__) {};
+    BenchmarkScene(__FUNCTION__) {}; //Set the benchmark scenes name
 
 void CaveCamFlightScene::Setup()
 {
-    const std::string assetsDir = "./assets/cave-cam-flight";
+    const std::string assetsDir = "../Scenes/CaveCamFlight/assets";
 
 	// Load mesh files
 	ResourceManager::LoadMeshFromObj("cave", assetsDir + "/cave.obj");
