@@ -18,7 +18,9 @@ namespace Plato
         //! Will parse a wavefront (.mtl) file to a Mesh
         //! The textures and materials will be available in the ResourceManager afterwards,
         //! but it will still return a vector of them
-        std::vector<Material*> ParseMtl(const std::string& filepath, const std::string& textureBasePath);
+        std::vector<Material*> ParseMtl(const std::string& filepath, const std::string& textureBasePath, const std::string& resourceNamePrefix);
+
+        static std::string DeriveMaterialName(const std::string& resourceNamePrefix, const std::string& materialName);
 
 	private:
 		//! Will interpret any line in a wavefront file
@@ -41,6 +43,7 @@ namespace Plato
         std::string currentMaterialName = "";
         std::string textureBasePath = "";
         std::string curMatTexturePath = "";
+        std::string resourceNamePrefix = "";
 	};
 
 }

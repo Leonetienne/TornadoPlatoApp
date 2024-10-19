@@ -85,7 +85,7 @@ Mesh* ResourceManager::LoadMeshFromObj(const std::string& name, const std::strin
 	if (meshes.find(name) != meshes.end())
 		throw std::runtime_error("Name already taken!");
 
-	Mesh* mesh = new Mesh(OBJParser().ParseObj(filename, loadMtlFile));
+	Mesh* mesh = new Mesh(OBJParser().ParseObj(filename, loadMtlFile, name));
 
 	meshes.insert(
 		std::pair<std::string, Mesh*>(name, mesh)

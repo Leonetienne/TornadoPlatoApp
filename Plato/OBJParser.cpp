@@ -8,9 +8,15 @@
 
 using namespace Plato;
 
-Mesh OBJParser::ParseObj(const std::string& filepath, bool loadMtlFile)
+Mesh OBJParser::ParseObj(
+    const std::string& filepath,
+    bool loadMtlFile,
+    const std::string& mtlResourceNamePrefix
+)
 {
     this->loadMtl = loadMtlFile;
+    this->mtlResourceNamePrefix = mtlResourceNamePrefix;
+
 	std::stringstream ss(Util::ReadFile(filepath));
     curObjFilePath = filepath;
 
@@ -292,7 +298,7 @@ void OBJParser::Interpret_f(const std::string& line)
 void OBJParser::Interpret_usemtl(const std::string& line)
 {
     // Extract material name
-    const std::string materialName = line.substr(std::string("usemtl ").length());
+    const std::string materialName = MTLParser::DeriveMaterialName(mtlResourceNamePrefix, line.substr(std::string("newmtl ").length()));
 
     // Fetch the material to use for coming faces
     currentMaterial = ResourceManager::FindMaterial(materialName);
@@ -322,7 +328,7 @@ void OBJParser::Interpret_mtllib(const std::string& line)
     std::string textureBasePath = Util::FilePathToDirPath(mtlFilePath) + "/";
 
     try {
-        (MTLParser()).ParseMtl(mtlFilePath, textureBasePath);
+        (MTLParser()).ParseMtl(mtlFilePath, textureBasePath, mtlResourceNamePrefix);
     }
     catch (std::runtime_error &e) {
         std::cerr << "[WARNING] [OBJParser]: An exception occured while reading mtl file \""
