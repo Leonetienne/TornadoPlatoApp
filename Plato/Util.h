@@ -25,5 +25,19 @@ namespace Plato
             }
             return content.str();
         }
+
+        //! Will return the path to the directory of a file
+        inline std::string FilePathToDirPath(const std::string& filepath)
+        {
+            // Delete the last file path segment of filepath
+            // Reverse-Advance to the last occurence of /, or index 0
+            std::size_t i = filepath.length() - 1;
+            for (; filepath[i] != '/' && i >= 0; i--) {
+                continue;
+            }
+
+            // Cut the string: translate ./test/file.obj to ./test
+            return filepath.substr(0, i);
+        }
     }
 }

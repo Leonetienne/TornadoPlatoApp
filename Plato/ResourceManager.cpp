@@ -79,13 +79,13 @@ Texture* ResourceManager::LoadTextureFromBmp(const std::string& name, const std:
 	return text;
 }
 
-Mesh* ResourceManager::LoadMeshFromObj(const std::string& name, const std::string& filename)
+Mesh* ResourceManager::LoadMeshFromObj(const std::string& name, const std::string& filename, bool loadMtlFile)
 {
 	// Name already taken!
 	if (meshes.find(name) != meshes.end())
 		throw std::runtime_error("Name already taken!");
 
-	Mesh* mesh = new Mesh(OBJParser().ParseObj(filename));
+	Mesh* mesh = new Mesh(OBJParser().ParseObj(filename, loadMtlFile, name));
 
 	meshes.insert(
 		std::pair<std::string, Mesh*>(name, mesh)
@@ -141,12 +141,12 @@ Texture* ResourceManager::FindTextureOrLoadFromBmp(const std::string &name, cons
     return texture;
 }
 
-Mesh* ResourceManager::FindMeshOrLoadFromObj(const std::string &name, const std::string &filename)
+Mesh* ResourceManager::FindMeshOrLoadFromObj(const std::string &name, const std::string &filename, bool loadMtlFile)
 {
     Mesh* mesh = FindMesh(name);
 
     if (!mesh) {
-        mesh = LoadMeshFromObj(name, filename);
+        mesh = LoadMeshFromObj(name, filename, loadMtlFile);
     }
 
     return mesh;

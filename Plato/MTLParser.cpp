@@ -9,9 +9,14 @@
 
 using namespace Plato;
 
- std::vector<Material*> MTLParser::ParseMtl(const std::string& filepath, const std::string& textureBasePath)
+ std::vector<Material*> MTLParser::ParseMtl(
+    const std::string& filepath,
+    const std::string& textureBasePath,
+    const std::string& resourceNamePrefix
+)
 {
     this->textureBasePath = textureBasePath;
+    this->resourceNamePrefix = resourceNamePrefix;
 
 	std::stringstream ss(Util::ReadFile(filepath));
 
@@ -63,7 +68,7 @@ void MTLParser::Interpret_newmtl(const std::string& line)
     }
 
     // Extract material name
-    const std::string materialName = line.substr(std::string("newmtl ").length());
+    const std::string materialName = DeriveMaterialName(resourceNamePrefix, line.substr(std::string("newmtl ").length()));
 
     // Create material
     currentMaterial = ResourceManager::NewMaterial(materialName);
@@ -76,9 +81,16 @@ void MTLParser::Interpret_map_Kd(const std::string& line)
     const std::string texturePath = line.substr(std::string("map_Kd ").length());
     const std::string combinedPath = textureBasePath + '/' + texturePath;
 
+    // Derive texture resource name
+    // The materialName already contains the resourceNamePrefix, and the currentMaterialName,
+    // so it is most likely unique (given that the mesh name is unique). 
+    const std::string textureName = currentMaterialName + "--" + "colormap";
+
     // Load it
-    const std::string textureName = currentMaterialName + "-colormap";
-    Texture* texture = ResourceManager::FindTextureOrLoadFromBmp(textureName, combinedPath);
+    Texture* texture = ResourceManager::FindTextureOrLoadFromBmp(
+        textureName,
+        combinedPath
+    );
 
     // Bind it to the material
     currentMaterial->texture = texture;
@@ -95,5 +107,14 @@ void MTLParser::Reset()
     textureBasePath = "";
     currentMaterial = nullptr;
     currentMaterialName = "";
+}
+
+std::string MTLParser::DeriveMaterialName(
+    const std::string& resourceNamePrefix,
+    const std::string& materialName
+) {
+    return std::string("mtl-generated--") +
+          resourceNamePrefix + "--" +
+          materialName;
 }
 

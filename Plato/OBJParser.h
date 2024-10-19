@@ -11,7 +11,11 @@ namespace Plato
 	{
 	public:
 		//! Will parse a wavefront (.obj) file to a Mesh
-		Mesh ParseObj(const std::string& filepath, bool applyTrisMaterials = false);
+        //! If loadMtlFile is true, it will extract the mtl filename from the
+        //! obj file, attempt to load it (emit a warning if it doesnt exist),
+        //! which creates textures and materials from this mtl, and will assign these materials
+        //! to individual faces of the loaded mesh, as defined in the obj file.
+		Mesh ParseObj(const std::string& filepath, bool loadMtlFile = false, const std::string& mtlResourceNamePrefix = "xxx-this-should-really-be-set!!!---");
 
 	private:
 		//! Will interpret any line in a wavefront file
@@ -35,6 +39,9 @@ namespace Plato
 		//! Will interpret usemtl-lines in a wavefront file
 		void Interpret_usemtl(const std::string& line);
 
+		//! Will interpret mtllib-lines in a wavefront file
+		void Interpret_mtllib(const std::string& line);
+
 		//! Will clean a submesh, f.e. add placeholder values for unsupplied values
 		void CleanSubmesh();
 
@@ -53,7 +60,9 @@ namespace Plato
 		std::vector<Mesh> submeshes;
 		Mesh curSubmesh;
         Material* currentMaterial = nullptr;
-        bool applyTrisMaterials = false;
+        bool loadMtl = false;
+        std::string curObjFilePath;
+        std::string mtlResourceNamePrefix;
 	};
 
 }

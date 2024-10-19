@@ -1,14 +1,24 @@
 #include "OBJParser.h"
+#include "MTLParser.h"
 #include "Util.h"
 #include "ResourceManager.h"
+#include <filesystem>
+#include <iostream>
 #include <sstream>
 
 using namespace Plato;
 
-Mesh OBJParser::ParseObj(const std::string& filepath, bool applyTrisMaterials)
+Mesh OBJParser::ParseObj(
+    const std::string& filepath,
+    bool loadMtlFile,
+    const std::string& mtlResourceNamePrefix
+)
 {
-    this->applyTrisMaterials = applyTrisMaterials;
+    this->loadMtl = loadMtlFile;
+    this->mtlResourceNamePrefix = mtlResourceNamePrefix;
+
 	std::stringstream ss(Util::ReadFile(filepath));
+    curObjFilePath = filepath;
 
 	std::string line;
 	while (std::getline(ss, line))
@@ -55,13 +65,23 @@ void OBJParser::InterpretLine(const std::string& line)
 	else if (linetype == "vn")
 		return Interpret_vn(line);
 
-    // Line could be usemtl line
-    if (applyTrisMaterials) {
+    // MTL-Specifica
+    if (loadMtl) {
+        // Line could be usemtl line
         const std::string usemtl = "usemtl";
         if (line.length() > usemtl.length()) {
             const std::string linetype = line.substr(0, usemtl.length());
             if (linetype == usemtl) {
                 return Interpret_usemtl(line);
+            }
+        }
+
+        // Line could be mtllib line
+        const std::string mtllib = "mtllib";
+        if (line.length() > mtllib.length()) {
+            const std::string linetype = line.substr(0, mtllib.length());
+            if (linetype == mtllib) {
+                return Interpret_mtllib(line);
             }
         }
     }
@@ -266,7 +286,7 @@ void OBJParser::Interpret_f(const std::string& line)
 
 		curSubmesh.tris.push_back(newVertexIndices);
         // If we are interpreting tris materials, and have a material, push it back
-        if (applyTrisMaterials && currentMaterial) {
+        if (loadMtl && currentMaterial) {
             curSubmesh.trisMaterialIndices[curSubmesh.tris.size()-1] = currentMaterial;
         }
 		//std::cout << "f: " << Vector3i(newVertexIndices.v, newVertexIndices.uv, newVertexIndices.vn) << std::endl;
@@ -278,10 +298,52 @@ void OBJParser::Interpret_f(const std::string& line)
 void OBJParser::Interpret_usemtl(const std::string& line)
 {
     // Extract material name
-    const std::string materialName = line.substr(std::string("usemtl ").length());
+    const std::string materialName = MTLParser::DeriveMaterialName(mtlResourceNamePrefix, line.substr(std::string("newmtl ").length()));
 
     // Fetch the material to use for coming faces
     currentMaterial = ResourceManager::FindMaterial(materialName);
+}
+
+void OBJParser::Interpret_mtllib(const std::string& line)
+{
+    // Extract mtl filename (it is the relative file path to the directory of the obj file)
+    const std::string mtlFilePathRelativeToObj = line.substr(std::string("mtllib ").length());
+
+    // Derive MTL file path
+    const std::string mtlFilePath = Util::FilePathToDirPath(curObjFilePath) + "/" + mtlFilePathRelativeToObj;
+
+    // Does it exist?
+    if (!std::filesystem::exists(mtlFilePath)) {
+        std::cerr << "[WARNING] [OBJParser]: Attempted to load mtl file \""
+            << mtlFilePath
+            << "\" for obj file \""
+            << curObjFilePath
+            << "\" but it does not exist!"
+            << std::endl;
+        return;
+    }
+
+    // Load the mtl file
+    // Derive the directory path of the mtl file
+    std::string textureBasePath = Util::FilePathToDirPath(mtlFilePath) + "/";
+
+    try {
+        (MTLParser()).ParseMtl(mtlFilePath, textureBasePath, mtlResourceNamePrefix);
+    }
+    catch (std::runtime_error &e) {
+        std::cerr << "[WARNING] [OBJParser]: An exception occured while reading mtl file \""
+            << mtlFilePath
+            << "\" for obj file \""
+            << curObjFilePath
+            << "\": "
+            << e.what()
+            << "... Ignoring the entire MTL for this mesh!!!"
+            << std::endl;
+
+        // Don't assign mtl-defined materials for this mesh anymore!
+        this->loadMtl = false;
+        return;
+    }
 }
 
 void OBJParser::CleanSubmesh()
@@ -347,7 +409,7 @@ Mesh OBJParser::AssembleSubmeshes()
 		toRet.normals.reserve(numTotal_vn);
 		toRet.tris.reserve(numTotal_tris);
 
-        if (applyTrisMaterials) {
+        if (loadMtl) {
 		    toRet.trisMaterialIndices.reserve(numTotal_tris);
         }
 	}
@@ -378,7 +440,7 @@ Mesh OBJParser::AssembleSubmeshes()
 		);
 
         // Have to add tris material indices manually
-        if (applyTrisMaterials) {
+        if (loadMtl) {
             for (auto it : submesh.trisMaterialIndices) {
                 toRet.trisMaterialIndices[it.first + currentTrisOffset] = it.second;
             }

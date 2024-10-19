@@ -2,10 +2,12 @@
 #include "../../../Plato/Application.h"
 #include "../../../Plato/Keyboard.h"
 #include "../../../Plato/MTLParser.h"
-#include "../../../Plato/MeshRenderer.h"
+#include "../../../Plato/PointLight.h"
+#include "../../../Prefabs/Skybox/SkyboxPrefab.h"
 #include "../../../Plato/PointLight.h"
 #include "../../../Plato/WorldObjectManager.h"
-#include "../../../Prefabs/Skybox/SkyboxPrefab.h"
+#include "../../../Plato/ResourceManager.h"
+#include "../../../Plato/MeshRenderer.h"
 
 using namespace Plato;
 
@@ -21,16 +23,9 @@ Dust2Scene::Dust2Scene()
   // Create skybox
   (SkyboxPrefab()).Instantiate();
 
-  const std::string assetsDir = "../../Scenes/Fun/Dust2/assets";
-
-  // Load dust2 materials
-  MTLParser mtlParser;
-  mtlParser.ParseMtl(assetsDir + "/dust2.mtl", assetsDir);
-
-  // Load dust2 model
-  OBJParser OBJParser;
-  dust2Mesh = new Mesh;
-  *dust2Mesh = OBJParser.ParseObj(assetsDir + "/dust2.obj", true);
+    // Load Dust2 assets
+    const std::string assetsDir = "../../Scenes/Fun/Dust2/assets";
+    Mesh* dust2Mesh = ResourceManager::LoadMeshFromObj("dust2", assetsDir+"/dust2.obj", true);
 
   // Create the dust2 map world object
   WorldObject *dust2Wo = WorldObjectManager::NewWorldObject("dust2 map");
