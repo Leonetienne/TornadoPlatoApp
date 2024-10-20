@@ -6,8 +6,9 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
-#include "../Tornado/PixelBuffer.h"
 #include "../Plato/Clock.h"
+#include "../Tornado/PixelBuffer.h"
+#include "../Keybinds.h"
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
@@ -210,6 +211,9 @@ int main(int argc, char* argv[]) {
         renderWindow.PollEvents();
         // Digest plato events
         Input::EventManager::Digest();
+
+        if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
+            Input::Application::Exit();
 
         // Draw a fun image using CPU
         // About 170 fps (without redrawing the window)

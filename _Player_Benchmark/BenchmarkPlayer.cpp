@@ -7,6 +7,7 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/WorldObjectManager.h"
+#include "../Keybinds.h"
 #include <ctime>
 #include <iostream>
 #include <iomanip>
@@ -143,9 +144,14 @@ void BenchmarkPlayer::Run()
         }
 
         // If the current scene has finished (or the user pressed SPACE), advance to the next scene
-        if (!currentBenchmarkScene->GetIsRunning() || Input::Keyboard::GetKeyDown(Input::KEY_CODE::SPACE)) {
+        if (!currentBenchmarkScene->GetIsRunning() || Input::Keyboard::GetKeyDown(KB_BENCHMKPLAYER_SKIP)) {
             AdvanceBenchmarkScene();
         }
+
+        // Quit, if the user wants to
+        if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
+            Input::Application::Exit();
+
 
         // Update window title for FPS and vert/tris count
         UpdateWindowTitle(1000.0 / frametime);

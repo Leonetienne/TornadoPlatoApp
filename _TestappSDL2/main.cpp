@@ -8,6 +8,7 @@
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Scenes/Fun/Dust2/Dust2Scene.h"
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
+#include "../Keybinds.h"
 #include <cstring>
 #include <fcntl.h>
 #include <iostream>
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]) {
     // Delete objects that were flagged to be deleted
     WorldObjectManager::DeleteFlaggedObjects();
 
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::ESCAPE))
+    if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
       Input::Application::Exit();
 
     // Tick update hooks

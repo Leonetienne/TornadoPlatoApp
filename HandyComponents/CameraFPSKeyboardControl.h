@@ -6,19 +6,11 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/Mouse.h"
 #include "../Plato/Math.h"
+#include "../Keybinds.h"
 #include <algorithm>
 #include <iostream>
 
 using namespace Plato;
-
-#define KEY_FORWARD         Input::KEY_CODE::W
-#define KEY_BACKWARD        Input::KEY_CODE::R
-#define KEY_STRAFE_LEFT     Input::KEY_CODE::A
-#define KEY_STRAFE_RIGHT    Input::KEY_CODE::S
-#define KEY_DOWN            Input::KEY_CODE::Q
-#define KEY_UP              Input::KEY_CODE::F
-#define KEY_SPRINT          Input::KEY_CODE::LSHIFT
-#define KEY_DUMP_COORDS     Input::KEY_CODE::Z
 
 /**
     FPS keyboard controls for camera movement. With mouse!
@@ -29,13 +21,13 @@ class CameraFPSKeyboardControl : public Component
 public:
 	void Update(double deltaTime)
 	{
-        shiftFactor = Input::Keyboard::GetKey(KEY_SPRINT) ? shiftModifier : 1;
+        shiftFactor = Input::Keyboard::GetKey(KB_FPSCAM_SPRINT) ? shiftModifier : 1;
 
 		MovementControl(deltaTime);
 		ViewControl(deltaTime);
 		AdditionalControls(deltaTime);
 
-        if (Input::Keyboard::GetKeyDown(KEY_DUMP_COORDS)) {
+        if (Input::Keyboard::GetKeyDown(KB_FPSCAM_DUMP_COORDS)) {
             std::cout << "CAMERA POSITION: " << transform->GetGlobalPosition() << std::endl;
             std::cout << "CAMERA ROTATION: " << transform->GetGlobalRotation().ToEulerAngles() << std::endl;
         }
@@ -48,22 +40,22 @@ private:
 
 	void MovementControl(double deltaTime)
 	{
-        if (Input::Keyboard::GetKey(KEY_STRAFE_LEFT))
+        if (Input::Keyboard::GetKey(KB_FPSCAM_STRAFE_LEFT))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-        if (Input::Keyboard::GetKey(KEY_STRAFE_RIGHT))
+        if (Input::Keyboard::GetKey(KB_FPSCAM_STRAFE_RIGHT))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-        if (Input::Keyboard::GetKey(KEY_FORWARD))
+        if (Input::Keyboard::GetKey(KB_FPSCAM_FORWARD))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-        if (Input::Keyboard::GetKey(KEY_BACKWARD))
+        if (Input::Keyboard::GetKey(KB_FPSCAM_BACKWARD))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-        if (Input::Keyboard::GetKey(KEY_DOWN))
+        if (Input::Keyboard::GetKey(KB_FPSCAM_DOWN))
 			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-        if (Input::Keyboard::GetKey(KEY_UP))
+        if (Input::Keyboard::GetKey(KB_FPSCAM_UP))
 			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		return;

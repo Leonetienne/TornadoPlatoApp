@@ -5,6 +5,7 @@
 #include "../Plato/Application.h"
 #include "../Plato/Keyboard.h"
 #include "../Plato/Mouse.h"
+#include "../Keybinds.h"
 #include <algorithm>
 #include <iostream>
 
@@ -21,13 +22,13 @@ class CameraExclKeyboardControl : public Component
 public:
 	void Update(double deltaTime)
 	{
-		shiftFactor = Input::Keyboard::GetKey(Input::KEY_CODE::LSHIFT) ? shiftModifier : 1;
+		shiftFactor = Input::Keyboard::GetKey(KB_FPSCAM_SPRINT) ? shiftModifier : 1;
 
 		MovementControl(deltaTime);
 		ViewControl(deltaTime);
 		AdditionalControls(deltaTime);
 
-        if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::Z)) {
+        if (Input::Keyboard::GetKeyDown(KB_FPSCAM_DUMP_COORDS)) {
             std::cout << "CAMERA POSITION: " << transform->GetGlobalPosition() << std::endl;
             std::cout << "CAMERA ROTATION: " << transform->GetGlobalRotation().ToEulerAngles() << std::endl;
         }
@@ -41,23 +42,23 @@ private:
 
 	void MovementControl(double deltaTime)
 	{
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::A))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d(-1,0,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+        if (Input::Keyboard::GetKey(KB_FPSCAM_STRAFE_LEFT))
+			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::D))
-			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d(1,0,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+        if (Input::Keyboard::GetKey(KB_FPSCAM_STRAFE_RIGHT))
+			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::W))
-			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d(0,0,1) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+        if (Input::Keyboard::GetKey(KB_FPSCAM_FORWARD))
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::S))
-			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d(0,0,-1) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+        if (Input::Keyboard::GetKey(KB_FPSCAM_BACKWARD))
+			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::Q))
-			camera_yPivot->Move(Vector3d(0,-1,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+        if (Input::Keyboard::GetKey(KB_FPSCAM_DOWN))
+			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::E))
-			camera_yPivot->Move(Vector3d(0,1,0) * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
+        if (Input::Keyboard::GetKey(KB_FPSCAM_UP))
+			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
 	}
@@ -67,16 +68,16 @@ private:
 		// Use mouse for all camera movement
         Vector2d emulatedDeltaMouse(0, 0);
 
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::K)) {
+        if (Input::Keyboard::GetKey(KB_FPSCAM_LOOK_UP)) {
             emulatedDeltaMouse.y -= 100.0 * viewSensitivity;
         }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::J)) {
+        if (Input::Keyboard::GetKey(KB_FPSCAM_LOOK_DOWN)) {
             emulatedDeltaMouse.y += 100.0 * viewSensitivity;
         }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::H)) {
+        if (Input::Keyboard::GetKey(KB_FPSCAM_LOOK_LEFT)) {
             emulatedDeltaMouse.x -= 100.0 * viewSensitivity;
         }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::L)) {
+        if (Input::Keyboard::GetKey(KB_FPSCAM_LOOK_RIGHT)) {
             emulatedDeltaMouse.x += 100.0 * viewSensitivity;
         }
 
@@ -100,15 +101,11 @@ private:
 
 	void AdditionalControls(double deltaTime)
 	{
-		// Esc to exit
-		if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::ESCAPE))
-			Input::Application::Exit();
-
 		// Fov keys 1, and 2
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_1)) {
+        if (Input::Keyboard::GetKey(KB_FPSCAM_INCREASE_FOV)) {
             cameraComponent->SetFov(cameraComponent->GetFov() + 0.1 * deltaTime);
         }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_2)) {
+        if (Input::Keyboard::GetKey(KB_FPSCAM_DECREASE_FOV)) {
             cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * deltaTime);
         }
 		const double mouseDelta = Input::Mouse::GetMousewheelDelta();

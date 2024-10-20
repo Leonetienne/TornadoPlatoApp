@@ -9,7 +9,7 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
-#include "../Plato/Renderer.h"
+#include "../Keybinds.h"
 
 using namespace Plato;
 using namespace Eule;
@@ -51,6 +51,9 @@ int main() {
         WorldObjectManager::CallHook__LateUpdate(frametime);
 
         // Render the frame
+        if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
+            Input::Application::Exit();
+
         renderer.BeginFrame();
         scene->Render(&renderer);
         WorldObjectManager::CallHook__Render(&renderer);
