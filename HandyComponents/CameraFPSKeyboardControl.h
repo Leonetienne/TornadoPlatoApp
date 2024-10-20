@@ -5,10 +5,20 @@
 #include "../Plato/Application.h"
 #include "../Plato/Keyboard.h"
 #include "../Plato/Mouse.h"
+#include "../Plato/Math.h"
 #include <algorithm>
 #include <iostream>
 
 using namespace Plato;
+
+#define KEY_FORWARD         Input::KEY_CODE::W
+#define KEY_BACKWARD        Input::KEY_CODE::R
+#define KEY_STRAFE_LEFT     Input::KEY_CODE::A
+#define KEY_STRAFE_RIGHT    Input::KEY_CODE::S
+#define KEY_DOWN            Input::KEY_CODE::Q
+#define KEY_UP              Input::KEY_CODE::F
+#define KEY_SPRINT          Input::KEY_CODE::LSHIFT
+#define KEY_DUMP_COORDS     Input::KEY_CODE::Z
 
 /**
     FPS keyboard controls for camera movement. With mouse!
@@ -19,13 +29,13 @@ class CameraFPSKeyboardControl : public Component
 public:
 	void Update(double deltaTime)
 	{
-		shiftFactor = Input::Keyboard::GetKey(Input::KEY_CODE::LSHIFT) ? shiftModifier : 1;
+        shiftFactor = Input::Keyboard::GetKey(KEY_SPRINT) ? shiftModifier : 1;
 
 		MovementControl(deltaTime);
 		ViewControl(deltaTime);
 		AdditionalControls(deltaTime);
 
-        if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::Z)) {
+        if (Input::Keyboard::GetKeyDown(KEY_DUMP_COORDS)) {
             std::cout << "CAMERA POSITION: " << transform->GetGlobalPosition() << std::endl;
             std::cout << "CAMERA ROTATION: " << transform->GetGlobalRotation().ToEulerAngles() << std::endl;
         }
@@ -38,53 +48,22 @@ private:
 
 	void MovementControl(double deltaTime)
 	{
-		// This is just experimental code.
-		// Moves the viewport as the window moves.
-		{
-			static Vector2d lastPos = Input::Application::GetWindowRect().pos;
-			static bool skipFirst = false;
-
-			Vector2d dPos = Input::Application::GetWindowRect().pos - lastPos;
-
-			if (skipFirst)
-			{
-				camera_yPivot->Move(camera->GetGlobalRotation() *
-					(
-						(
-							Vector3d::left *
-							movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.x * -0.05
-							)
-						+
-						(
-							Vector3d::up *
-							movementSpeed * shiftFactor * deltaTime * internalMultiplier * dPos.y * -0.05
-							)
-						)
-				);
-			}
-
-			if (dPos.SqrMagnitude() > 0)
-				skipFirst = true;
-
-			lastPos = Input::Application::GetWindowRect().pos;
-		}
-
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::A))
+        if (Input::Keyboard::GetKey(KEY_STRAFE_LEFT))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::left * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::D))
+        if (Input::Keyboard::GetKey(KEY_STRAFE_RIGHT))
 			camera_yPivot->Move(camera->GetGlobalRotation() * Vector3d::right * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::W))
+        if (Input::Keyboard::GetKey(KEY_FORWARD))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::forward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::S))
+        if (Input::Keyboard::GetKey(KEY_BACKWARD))
 			camera_yPivot->Move(camera->GetGlobalRotation() * -Vector3d::backward * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::Q))
+        if (Input::Keyboard::GetKey(KEY_DOWN))
 			camera_yPivot->Move(Vector3d::down * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 		
-		if (Input::Keyboard::GetKey(Input::KEY_CODE::E))
+        if (Input::Keyboard::GetKey(KEY_UP))
 			camera_yPivot->Move(Vector3d::up * movementSpeed * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
@@ -106,7 +85,7 @@ private:
 		totalXRot += my * deltaTime;
 		
 		// now clamp xrot to -89.5 to 89.5
-		totalXRot = std::max<double>(std::min<double>(totalXRot, 89.5), -89.5);
+        totalXRot = Math::Clamp(totalXRot, -89.5, 89.5);
 
 		// Now hard-set this x rot
 		camera->SetRotation(Quaternion(Vector3d(totalXRot, 0, 0)));
@@ -116,28 +95,23 @@ private:
 
 	void AdditionalControls(double deltaTime)
 	{
-		// Esc to exit
-		if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::ESCAPE))
-			Input::Application::Exit();
-  
-		// Fov keys 1, and 2
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_1)) {
-            cameraComponent->SetFov(cameraComponent->GetFov() + 0.1 * deltaTime);
-        }
-        if (Input::Keyboard::GetKey(Input::KEY_CODE::NUM_2)) {
-            cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * deltaTime);
-        }
-
 		// Fov by mousewheel
 		const double mouseDelta = Input::Mouse::GetMousewheelDelta();
 		if (mouseDelta != 0)
-			cameraComponent->SetFov(cameraComponent->GetFov() - 0.1 * mouseDelta * shiftFactor * deltaTime * internalMultiplier);
+			cameraComponent->SetFov(cameraComponent->GetFov() - 0.4 * mouseDelta * shiftFactor * deltaTime * internalMultiplier);
 
 		return;
 	}
 
 private:
-	CameraFPSKeyboardControl(WorldObject* worldObject, Transform* camera_yPivot, Transform* camera, double movementSpeed, double lookingSpeed, double shiftModifier)
+	CameraFPSKeyboardControl(
+        WorldObject* worldObject,
+        Transform* camera_yPivot,
+        Transform* camera,
+        double movementSpeed,
+        double lookingSpeed,
+        double shiftModifier
+    )
 		:
 		Component(worldObject),
 		movementSpeed { movementSpeed },
