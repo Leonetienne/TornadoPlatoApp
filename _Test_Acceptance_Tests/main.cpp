@@ -19,7 +19,7 @@
 #include "Test__Lighting__PointLight.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__FPS
+#define TEST_TO_RUN Test__Lighting__PointLight
 
 /*
 	This project is another testing project for the GameEngine Plato.
@@ -53,7 +53,12 @@ int main()
 	SDL2RenderWindow renderWindow(resolution, "Plato Static Test Fixture", renderer.GetPixelBuffer());
     renderWindow.EnableMouseCameraControlMode();
 	Transform* cameraYPivot = WorldObjectManager::NewWorldObject()->transform; // Necessary for camera rotation
-	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)->AddComponent<Components::Camera>(90, 0.001, 10);
+	Components::Camera* camera = WorldObjectManager::NewWorldObject("Main Camera", cameraYPivot)
+        ->AddComponent<Components::Camera>(
+            90,
+            0.001,
+            10
+    );
 	cameraYPivot->worldObject->SetId("main_camera_ypiv");
 	camera->SetAsMainCamera();
 
@@ -61,7 +66,13 @@ int main()
 	RegisterReverseEventCallbacks(&renderWindow);
 
 	// Let's add a CameraKeyboardControl component to the camera by default
-    camera->worldObject->AddComponent<CameraFPSKeyboardControl>(cameraYPivot, camera->transform, 0.2, 0.6, 4);
+    camera->worldObject->AddComponent<CameraFPSKeyboardControl>(
+        cameraYPivot,
+        camera->transform,
+        0.1,
+        2,
+        4
+    );
 
 	// Create test fixture. Change that to the fixture you want to use (in the macro definition)
 	TEST_TO_RUN scene;
@@ -94,10 +105,13 @@ void Loop(Scene* scene, Renderer* renderer, RenderWindow* window)
 	// Digest events
 	Input::EventManager::Digest();
 
-    // Deleet flagged objects
+    // Delete flagged objects
 	WorldObjectManager::DeleteFlaggedObjects();
 
 	// Update test fixture
+    if (Input::Keyboard::GetKey(Input::KEY_CODE::ESCAPE))
+      Input::Application::Exit();
+
 	scene->Update(elapsedTime);
 	WorldObjectManager::CallHook__Update(elapsedTime);
 	scene->LateUpdate(elapsedTime);
