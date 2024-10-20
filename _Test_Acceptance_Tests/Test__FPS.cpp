@@ -1,5 +1,5 @@
-#pragma once
 #include "Test__FPS.h"
+#include "../Prefabs/Skybox/SkyboxPrefab.h"
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/Keyboard.h"
@@ -16,7 +16,7 @@ inline double Clamp(double v, double min, double max)
 	Expected behaviour: We are loading two models (the monkey, and the hat) from one obj file
     Also a gun and and a skybox should load.
 	No materials / textures supplied
-    Pressing NUM_3 should aim your gun.
+    Pressing mouse right should aim your gun.
 */
 
 Test__FPS::Test__FPS() :
@@ -26,23 +26,24 @@ Test__FPS::Test__FPS() :
 	trCamera = WorldObjectManager::FindObjectById("main_camera")->transform;
 	camera = trCamera->worldObject->GetComponentOfType<Components::Camera>();
 
+    // Create skybox
+    SkyboxPrefab().Instantiate();
+
+    // Load resources
+    const std::string assetsDir = "./assets";
+
 	// Load mesh files
-	ResourceManager::LoadMeshFromObj("gun", "../gun.obj");
-	ResourceManager::LoadMeshFromObj("monke", "../monke.obj");
-	ResourceManager::LoadMeshFromObj("skybox", "../skybox.obj");
+    ResourceManager::LoadMeshFromObj("gun", assetsDir+"/gun.obj");
+    ResourceManager::LoadMeshFromObj("monke", assetsDir+"/monke.obj");
 
 	// Load texture files
-	ResourceManager::LoadTextureFromBmp("gun", "../gun.bmp");
-	ResourceManager::LoadTextureFromBmp("monke", "../monke.bmp");
-	ResourceManager::LoadTextureFromBmp("skybox", "../example_skybox.bmp");
+    ResourceManager::LoadTextureFromBmp("gun", assetsDir+"/gun.bmp");
+    ResourceManager::LoadTextureFromBmp("monke", assetsDir+"/monke.bmp");
 
 
 	// Create materials
 	ResourceManager::NewMaterial("gun")->texture = ResourceManager::FindTexture("gun");
 	ResourceManager::NewMaterial("monke")->texture = ResourceManager::FindTexture("monke");
-	Material* matSkybox = ResourceManager::NewMaterial("skybox");
-	matSkybox->texture = ResourceManager::FindTexture("skybox");
-	matSkybox->noShading = true;
 
 	// Create monkey
 	WorldObject* monke = WorldObjectManager::NewWorldObject("monke");
@@ -68,14 +69,6 @@ Test__FPS::Test__FPS() :
 		ResourceManager::FindMaterial("gun")
 	);
 
-	// Create skybox
-	WorldObject* skybox = WorldObjectManager::NewWorldObject("skybox");
-	skybox->AddComponent<Components::MeshRenderer>(
-		ResourceManager::FindMesh("skybox"),
-		ResourceManager::FindMaterial("skybox")
-		);
-	skybox->transform->Scale(Vector3d::one * 50);
-
 	// Set gun points
 	gunHolderPos_hip = Vector3d(-4, -0.5, -2);
 	gunHolderRot_hip = Quaternion(Vector3d(-5, 0, 0));
@@ -93,7 +86,7 @@ void Test__FPS::Update(double deltaTime)
 {
 	this->deltaTime = deltaTime;
 	// Handle user input
-	if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::NUM_3))
+    if (Input::Keyboard::GetKeyDown(Input::KEY_CODE::MOUSE_R))
 	{
 		isAimed = !isAimed;
 

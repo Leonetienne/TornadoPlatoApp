@@ -19,7 +19,7 @@
 #include "Test__Lighting__PointLight.h"
 
 // Set your test-class you want to run. Must inherit from TestFixture!
-#define TEST_TO_RUN Test__Lighting__PointLight
+#define TEST_TO_RUN Test__FPS
 
 /*
 	This project is another testing project for the GameEngine Plato.
