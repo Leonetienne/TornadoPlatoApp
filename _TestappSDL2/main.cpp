@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 
     if (Input::Keyboard::GetKey(Input::KEY_CODE::ESCAPE))
       Input::Application::Exit();
+
     // Tick update hooks
     scene->Update(frametime);
     WorldObjectManager::CallHook__Update(frametime);
