@@ -23,7 +23,8 @@ public:
     void EnableMouseCameraControlMode();
 
 protected:
-    static Plato::Input::KEY_CODE SDLKeysym2PlatoKey(const SDL_Keysym& sdlkey);
+    static Plato::Input::KEY_CODE SDLKeyCode2PlatoKey(SDL_KeyCode sdlkey);
+    static Plato::Input::KEY_CODE SDLMouseButton2PlatoKey(Uint8 sdlkey);
 
     SDL_Window* sdlWindow;
     SDL_Renderer* sdlRenderer;

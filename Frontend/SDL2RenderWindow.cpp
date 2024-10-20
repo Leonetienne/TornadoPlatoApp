@@ -68,6 +68,8 @@ void SDL2RenderWindow::PollEvents()
         if (sdlEvent.type == SDL_QUIT) {
             Close();
         }
+
+        // Handle mouse motion
         else if (sdlEvent.type == SDL_MOUSEMOTION) {
             // Capture the relative mouse movement
             mouseDelta.x = sdlEvent.motion.xrel;
@@ -78,22 +80,40 @@ void SDL2RenderWindow::PollEvents()
             Input::EventManager::RegisterEventMouseDelta(mouseDelta);
             Input::EventManager::RegisterEventMousePosition(mousePos, mousePos);
         }
+
+        // Handle mouse wheel scroll
         else if (sdlEvent.type == SDL_MOUSEWHEEL) {
             double mouseWheelDelta = sdlEvent.wheel.y; // y is vertical scrolling, x is horizontal scrolling
             Input::EventManager::RegisterEventMousewheelDelta(mouseWheelDelta);
         }
-        else if (sdlEvent.type == SDL_KEYDOWN) {
-            SDL_KeyboardEvent* keyEvent = &sdlEvent.key;
-            // TODO: remap more complex keys like shift
+
+        // Handle mouse click down
+        else if (sdlEvent.type == SDL_MOUSEBUTTONDOWN) {
             Input::EventManager::RegisterEventKeyDown(
-                SDLKeysym2PlatoKey(keyEvent->keysym)
+                SDLMouseButton2PlatoKey(sdlEvent.button.button)
             );
         }
+
+        // Handle mouse click up
+        else if (sdlEvent.type == SDL_MOUSEBUTTONUP) {
+            Input::EventManager::RegisterEventKeyUp(
+                SDLMouseButton2PlatoKey(sdlEvent.button.button)
+            );
+        }
+
+        // Handle key down
+        else if (sdlEvent.type == SDL_KEYDOWN) {
+            SDL_KeyboardEvent* keyEvent = &sdlEvent.key;
+            Input::EventManager::RegisterEventKeyDown(
+                SDLKeyCode2PlatoKey((SDL_KeyCode)keyEvent->keysym.sym)
+            );
+        }
+
+        // Handle key up
         else if (sdlEvent.type == SDL_KEYUP) {
             SDL_KeyboardEvent* keyEvent = &sdlEvent.key;
-            // TODO: remap more complex keys like shift
             Input::EventManager::RegisterEventKeyUp(
-                SDLKeysym2PlatoKey(keyEvent->keysym)
+                SDLKeyCode2PlatoKey((SDL_KeyCode)keyEvent->keysym.sym)
             );
         }
     }
@@ -143,10 +163,10 @@ void SDL2RenderWindow::EnableMouseCameraControlMode()
     SDL_SetRelativeMouseMode(SDL_TRUE); // Lock mouse and capture mouse delta
 }
 
-Input::KEY_CODE SDL2RenderWindow::SDLKeysym2PlatoKey(const SDL_Keysym& sdlkey)
+Input::KEY_CODE SDL2RenderWindow::SDLKeyCode2PlatoKey(SDL_KeyCode sdlkey)
 {
     // https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_keycode.h
-    switch (sdlkey.sym) {
+    switch (sdlkey) {
         // LETTERS
         case SDLK_a:
             return Input::KEY_CODE::A;
@@ -368,6 +388,26 @@ Input::KEY_CODE SDL2RenderWindow::SDLKeysym2PlatoKey(const SDL_Keysym& sdlkey)
             return Input::KEY_CODE::PAGE_DOWN;
         case SDLK_END:
             return Input::KEY_CODE::END;
+
+        // If not defined, stay safe and do nothing.
+        default:
+            return Input::KEY_CODE::NONE;
+    }
+}
+
+Input::KEY_CODE SDL2RenderWindow::SDLMouseButton2PlatoKey(Uint8 sdlkey)
+{
+    switch (sdlkey) {
+        case SDL_BUTTON_LEFT:
+            return Input::KEY_CODE::MOUSE_L;
+        case SDL_BUTTON_RIGHT:
+            return Input::KEY_CODE::MOUSE_R;
+        case SDL_BUTTON_MIDDLE:
+            return Input::KEY_CODE::MOUSE_M;
+        case SDL_BUTTON_X1: // Back
+            return Input::KEY_CODE::MOUSE_X1;
+        case SDL_BUTTON_X2: // Next
+            return Input::KEY_CODE::MOUSE_X2;
 
         // If not defined, stay safe and do nothing.
         default:
