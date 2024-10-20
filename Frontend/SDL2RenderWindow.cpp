@@ -76,6 +76,10 @@ void SDL2RenderWindow::PollEvents()
             Input::EventManager::RegisterEventMouseDelta(mouseDelta);
             Input::EventManager::RegisterEventMousePosition(mousePos, mousePos);
         }
+        else if (sdlEvent.type == SDL_MOUSEWHEEL) {
+            double mouseWheelDelta = sdlEvent.wheel.y; // y is vertical scrolling, x is horizontal scrolling
+            Input::EventManager::RegisterEventMousewheelDelta(mouseWheelDelta);
+        }
         else if (sdlEvent.type == SDL_KEYDOWN) {
             SDL_KeyboardEvent* keyEvent = &sdlEvent.key;
             // TODO: remap more complex keys like shift
