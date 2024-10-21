@@ -10,8 +10,6 @@ public:
 	MC_FurnaceScene();
 
 private:
-    double speedFac = 1.5;
-    Plato::Components::Camera* camera;
     Plato::WorldObject* cube;
     Plato::WorldObject* light;
 };

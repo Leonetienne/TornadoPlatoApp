@@ -20,12 +20,11 @@ Renderer::Renderer(
     std::size_t numThreads,
     double globalIllumination,
     Components::Camera const* camera
-)
-	:
-	renderResolution { renderResolution },
+):
+	workerPool(numThreads),
 	tornado(renderResolution, numThreads, globalIllumination),
-	camera { camera },
-	workerPool(numThreads)
+	renderResolution { renderResolution },
+	camera { camera }
 {
 	
 	worldMatrix[0] = {  1,  0,  0, 0 };

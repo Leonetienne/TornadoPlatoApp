@@ -69,7 +69,6 @@ void BenchmarkPlayer::Run()
     Clock perfTimer;
     Clock statsCaptureTimer;
     constexpr double statsCaptureIntervalMs = 100.0;
-    bool justSetVertTrisCount = false;
 
     // Frametime variables
     Clock frametimer;
@@ -99,7 +98,6 @@ void BenchmarkPlayer::Run()
         WorldObjectManager::CallHook__Render(&renderer);
 
         if (!numTris) {
-            justSetVertTrisCount = true;
             numTris = renderer.GetNumActiveTris();
             numVertices = renderer.GetNumActiveVertices();
             std::cout << "Scene \"" << currentBenchmarkScene->GetSceneName() << "\" has " << numVertices << " verts and " << numTris << " tris!" << std::endl;

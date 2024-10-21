@@ -6,7 +6,6 @@ using namespace TorGL;
 // If we are in a benchmarking context, create a timer used to capture runtimes of inidividual methods
 #include <chrono>
 namespace {
-    std::chrono::high_resolution_clock clock;
     std::chrono::high_resolution_clock::time_point begin;
     double clock_getElapsedTimeMs() {
         return (double)(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - begin).count());

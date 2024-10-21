@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(TestappSDL2)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-Ofast -funroll-loops")
+set(CMAKE_CXX_FLAGS "-Ofast -funroll-loops -Wall")
 
 # Find SDL2
 find_package(SDL2 REQUIRED)

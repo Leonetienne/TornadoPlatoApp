@@ -152,7 +152,6 @@ namespace BMPlib
                 return; // This won't ever be reached but it satisfies the compiler, soooo...
             }
             const std::size_t numPx = width * height;
-            const std::size_t oldPxlbfrSize = sizeofPxlbfr;
             const byte* curPx; // Usage may vary on the conversion in question. It's just a pixel cache for a small performance improvement
             memcpy(tmp_pxlbfr, pixelbfr, sizeofPxlbfr);
 
