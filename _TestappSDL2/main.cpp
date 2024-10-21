@@ -65,13 +65,16 @@ int main(int argc, char *argv[]) {
     WorldObjectManager::CallHook__Update(frametime);
     scene->LateUpdate(frametime);
     WorldObjectManager::CallHook__LateUpdate(frametime);
+
     // Render the frame
     renderer.BeginFrame();
     scene->Render(&renderer);
     WorldObjectManager::CallHook__Render(&renderer);
     renderer.Render();
+
     // Display the frame
     renderWindow.RedrawWindow();
+
     // Calculate how long the frame took to display
     frametime = frametimer.GetElapsedTime().AsMilliseconds();
     frametimer.Reset();
