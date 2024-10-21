@@ -14,3 +14,13 @@ namespace TorGL
 	using Eule::Vector4d;
 }
 
+extern template const Eule::Vector4<double> Eule::Vector4<double>::left;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::right;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::up;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::down;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::forward;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::backward;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::future;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::past;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::one;
+extern template const Eule::Vector4<double> Eule::Vector4<double>::zero;

@@ -14,3 +14,9 @@ namespace TorGL
 	using Eule::Vector2d;
 }
 
+extern template const Eule::Vector2<double> Eule::Vector2<double>::left;
+extern template const Eule::Vector2<double> Eule::Vector2<double>::right;
+extern template const Eule::Vector2<double> Eule::Vector2<double>::up;
+extern template const Eule::Vector2<double> Eule::Vector2<double>::down;
+extern template const Eule::Vector2<double> Eule::Vector2<double>::one;
+extern template const Eule::Vector2<double> Eule::Vector2<double>::zero;
