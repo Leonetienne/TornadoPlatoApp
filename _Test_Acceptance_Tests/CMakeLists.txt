@@ -38,3 +38,9 @@ add_custom_command(
     COMMENT "Linking assets directory to build directory."
 )
 
+# Link assets dir into build dir
+add_custom_command(
+    TARGET AcceptanceTests.out POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
+    COMMENT "Linking assets directory to build directory."
+)

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(Testapp)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-Ofast -funroll-loops -Wall")
 
 file(GLOB Eule ../Eule/*.cpp)
 file(GLOB Tornado ../Tornado/*.cpp)

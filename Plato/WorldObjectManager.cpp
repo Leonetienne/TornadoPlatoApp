@@ -30,14 +30,16 @@ WorldObject* WorldObjectManager::NewWorldObject(const std::string& name, Transfo
 		return newWorldObject;
 
 	}
-	catch (std::bad_alloc& bac)
+	#ifdef _DEBUG
+	catch (const std::bad_alloc& bac)
 	{
-		#ifdef _DEBUG
 		std::cerr << "Bad alloc!: " << bac.what() << std::endl;
-		#else
-		(void*)&bac; // See compiler? bac is not ununsed :3
-		#endif
 	}
+	#else
+	catch (const std::bad_alloc&)
+	{
+	}
+	#endif
 	return nullptr;
 }
 

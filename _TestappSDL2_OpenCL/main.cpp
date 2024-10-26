@@ -6,8 +6,9 @@
 #include "../Plato/WorldObjectManager.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/EventManager.h"
-#include "../Tornado/PixelBuffer.h"
 #include "../Plato/Clock.h"
+#include "../Tornado/PixelBuffer.h"
+#include "../Keybinds.h"
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
@@ -84,7 +85,7 @@ int main(int argc, char* argv[]) {
     clGetDeviceInfo(device, CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(mem_size), &mem_size, NULL);
     clGetDeviceInfo(device, CL_DEVICE_NAME, sizeof(device_name), device_name, NULL);
     printf("GPU Name: %s\n", device_name);
-    printf("Available GPU memory: %lu bytes\n", mem_size);
+    printf("Available GPU memory: %llu bytes\n", mem_size);
 
     // Create an OpenCL context
     cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, &CL_err);
@@ -202,7 +203,7 @@ int main(int argc, char* argv[]) {
 
     // Define the global work size (resolution_x by resolution_y)
     size_t globalSize[] = { (size_t)resolution.x, (size_t)resolution.y };
-    #endif GPU
+    #endif
 
     unsigned int frameCounter = 0;
     while (renderWindow.IsRunning()) {
@@ -210,6 +211,9 @@ int main(int argc, char* argv[]) {
         renderWindow.PollEvents();
         // Digest plato events
         Input::EventManager::Digest();
+
+        if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
+            Input::Application::Exit();
 
         // Draw a fun image using CPU
         // About 170 fps (without redrawing the window)

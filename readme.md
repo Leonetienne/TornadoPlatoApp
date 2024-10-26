@@ -22,6 +22,7 @@ This is still under heavy development. It's just public for the fun in it.
 Every build needs cmake. Install that. 
 Some need SDL2 for presentation aswell. Install that. (`libsdl2-dev`)
 Some (will soon) need OpenCL for non-laggy running. Install that. (`opencl-headers ocl-icd-opencl-dev`)
+Also, you WILL have to create a `Keybinds_local.h` file in project root, even if it stays empty. In this file you can override keybinds from `Keybinds.h`, if required.
 
 ### How2cook terminal player
 1. `cd _TestappTERM`

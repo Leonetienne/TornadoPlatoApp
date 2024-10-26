@@ -24,11 +24,12 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 		Vector3d(1, 0, 1),
 		Vector3d(-1, 0, 1)
 	};
+    constexpr double textureRepeat = 10;
 	mPlane->uv_vertices = {
-		Vector2d(0, 0),
-		Vector2d(1, 0),
-		Vector2d(1, 1),
-		Vector2d(0, 1)
+		Vector2d(0, 0) * textureRepeat,
+		Vector2d(1, 0) * textureRepeat,
+		Vector2d(1, 1) * textureRepeat,
+		Vector2d(0, 1) * textureRepeat
 	};
 	mPlane->normals = {
 		Vector3d::up
@@ -42,12 +43,15 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 		{0, 0, 0},
 	};
 
+    // Load resources
+    const std::string assetsDir = "./assets";
+
 	// Load mesh files
-	ResourceManager::LoadMeshFromObj("monke", "monke.obj");
+	ResourceManager::LoadMeshFromObj("monke", assetsDir+"/monke.obj");
 
 	// Load texture files
-	ResourceManager::LoadTextureFromBmp("monke", "monke.bmp");
-	ResourceManager::LoadTextureFromBmp("floor", "texture_floor__gitignore_.bmp");
+	ResourceManager::LoadTextureFromBmp("monke", assetsDir+"/monke.bmp");
+	ResourceManager::LoadTextureFromBmp("floor", assetsDir+"/ground_texture.bmp");
 
 
 	// Create materials
@@ -82,7 +86,7 @@ Test__Lighting__PointLight::Test__Lighting__PointLight() :
 	rgbParent = WorldObjectManager::NewWorldObject("rgb parent")->transform;
 
 	woLight = WorldObjectManager::NewWorldObject("rgb light", rgbParent);
-	rgbLight = woLight->AddComponent<Components::PointLight>(20, Color(255, 255, 255));
+	rgbLight = woLight->AddComponent<Components::PointLight>(5, Color(255, 255, 255));
 	rgbLight->transform->Move(Vector3d::up * 4 + Vector3d::backward * 0);
 	
 

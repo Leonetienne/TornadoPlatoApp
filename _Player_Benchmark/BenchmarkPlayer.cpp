@@ -7,6 +7,7 @@
 #include "../Plato/Keyboard.h"
 #include "../Plato/ResourceManager.h"
 #include "../Plato/WorldObjectManager.h"
+#include "../Keybinds.h"
 #include <ctime>
 #include <iostream>
 #include <iomanip>
@@ -68,7 +69,6 @@ void BenchmarkPlayer::Run()
     Clock perfTimer;
     Clock statsCaptureTimer;
     constexpr double statsCaptureIntervalMs = 100.0;
-    bool justSetVertTrisCount = false;
 
     // Frametime variables
     Clock frametimer;
@@ -98,7 +98,6 @@ void BenchmarkPlayer::Run()
         WorldObjectManager::CallHook__Render(&renderer);
 
         if (!numTris) {
-            justSetVertTrisCount = true;
             numTris = renderer.GetNumActiveTris();
             numVertices = renderer.GetNumActiveVertices();
             std::cout << "Scene \"" << currentBenchmarkScene->GetSceneName() << "\" has " << numVertices << " verts and " << numTris << " tris!" << std::endl;
@@ -143,9 +142,14 @@ void BenchmarkPlayer::Run()
         }
 
         // If the current scene has finished (or the user pressed SPACE), advance to the next scene
-        if (!currentBenchmarkScene->GetIsRunning() || Input::Keyboard::GetKeyDown(Input::KEY_CODE::SPACE)) {
+        if (!currentBenchmarkScene->GetIsRunning() || Input::Keyboard::GetKeyDown(KB_BENCHMKPLAYER_SKIP)) {
             AdvanceBenchmarkScene();
         }
+
+        // Quit, if the user wants to
+        if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
+            Input::Application::Exit();
+
 
         // Update window title for FPS and vert/tris count
         UpdateWindowTitle(1000.0 / frametime);

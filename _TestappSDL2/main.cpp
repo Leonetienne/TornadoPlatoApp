@@ -8,6 +8,7 @@
 #include "../Prefabs/FPSCamera/FPSCameraPrefab.h"
 #include "../Scenes/Fun/Dust2/Dust2Scene.h"
 #include "../Scenes/Fun/MC_House/MC_HouseScene.h"
+#include "../Keybinds.h"
 #include <cstring>
 #include <fcntl.h>
 #include <iostream>
@@ -56,20 +57,24 @@ int main(int argc, char *argv[]) {
     // Delete objects that were flagged to be deleted
     WorldObjectManager::DeleteFlaggedObjects();
 
-    if (Input::Keyboard::GetKey(Input::KEY_CODE::ESCAPE))
+    if (Input::Keyboard::GetKey(KB_APPPLAYER_QUIT))
       Input::Application::Exit();
+
     // Tick update hooks
     scene->Update(frametime);
     WorldObjectManager::CallHook__Update(frametime);
     scene->LateUpdate(frametime);
     WorldObjectManager::CallHook__LateUpdate(frametime);
+
     // Render the frame
     renderer.BeginFrame();
     scene->Render(&renderer);
     WorldObjectManager::CallHook__Render(&renderer);
     renderer.Render();
+
     // Display the frame
     renderWindow.RedrawWindow();
+
     // Calculate how long the frame took to display
     frametime = frametimer.GetElapsedTime().AsMilliseconds();
     frametimer.Reset();

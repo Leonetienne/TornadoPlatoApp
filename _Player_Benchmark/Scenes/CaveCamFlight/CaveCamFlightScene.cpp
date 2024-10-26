@@ -49,41 +49,41 @@ void CaveCamFlightScene::Setup()
 	matLamps->noShading = true;
 
 	// Create world objects
-    WorldObject* woCave = WorldObjectManager::NewWorldObject("cave")
+    WorldObjectManager::NewWorldObject("cave")
         ->AddComponent<Components::MeshRenderer>(
             ResourceManager::FindMesh("cave"),
             ResourceManager::FindMaterial("cave")
-    )->worldObject;
+    );
 
-    WorldObject* woCones = WorldObjectManager::NewWorldObject("cones")
+    WorldObjectManager::NewWorldObject("cones")
         ->AddComponent<Components::MeshRenderer>(
             ResourceManager::FindMesh("cones"),
             ResourceManager::FindMaterial("cones")
-    )->worldObject;
+    );
 
-    WorldObject* woLamps = WorldObjectManager::NewWorldObject("lamps")
+    WorldObjectManager::NewWorldObject("lamps")
         ->AddComponent<Components::MeshRenderer>(
             ResourceManager::FindMesh("lamps"),
             ResourceManager::FindMaterial("lamps")
-    )->worldObject;
+    );
 
-    WorldObject* woLampsCable = WorldObjectManager::NewWorldObject("lamps-cable")
+   WorldObjectManager::NewWorldObject("lamps-cable")
         ->AddComponent<Components::MeshRenderer>(
             ResourceManager::FindMesh("lamps-cable"),
             ResourceManager::FindMaterial("lamps-cable")
-    )->worldObject;
+    );
 
-    WorldObject* woPlants = WorldObjectManager::NewWorldObject("plants")
+    WorldObjectManager::NewWorldObject("plants")
         ->AddComponent<Components::MeshRenderer>(
             ResourceManager::FindMesh("plants"),
             ResourceManager::FindMaterial("plants")
-    )->worldObject;
+    );
 
-    WorldObject* woWater = WorldObjectManager::NewWorldObject("water")
+    WorldObjectManager::NewWorldObject("water")
         ->AddComponent<Components::MeshRenderer>(
             ResourceManager::FindMesh("water"),
             ResourceManager::FindMaterial("water")
-    )->worldObject;
+    );
 
     // Create and place lamp pointlights
     std::stringstream ss;

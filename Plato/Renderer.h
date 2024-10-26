@@ -17,9 +17,9 @@ namespace Plato
 	public:
         // If numThreads is 0, std::thread::hardware_concurrency() will be used to determine
         // the max number of threads of the system automatically
-        Renderer(
+        explicit Renderer(
             const Vector2i& renderResolution,
-            const std::size_t numThreads = 0,
+            std::size_t numThreads = 0,
             double globalIllumination = 0,
             Components::Camera const* camera = nullptr
         );

@@ -287,7 +287,8 @@ void EventManager::InitializeKeys()
 	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::RSHIFT, KEY_STATE::RELEASED));
 	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::LCONTROL, KEY_STATE::RELEASED));
 	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::RCONTROL, KEY_STATE::RELEASED));
-	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::ALT, KEY_STATE::RELEASED));
+    keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::LALT, KEY_STATE::RELEASED));
+    keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::RALT, KEY_STATE::RELEASED));
 	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::CAPSLOCK, KEY_STATE::RELEASED));
 	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::INSERT, KEY_STATE::RELEASED));
 	keyStates.insert(std::pair<KEY_CODE, KEY_STATE>(KEY_CODE::DEL, KEY_STATE::RELEASED));

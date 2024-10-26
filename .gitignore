@@ -1,7 +1,8 @@
 build/
 cmake-build-debug/
+.idea/
 .DS_Store
 *.out
 *.o
 venv/
-
+Keybinds_local.h
